@@ -4,7 +4,6 @@
 <head>
     <meta charset="utf-8">
     <title>Clean</title>
-    
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <meta content="" name="keywords">
     <meta content="" name="description">
@@ -37,13 +36,12 @@
                         <label for="">Contraseña</label>
                     </div>
 
-                    <a href="CleanProject\vistas/home.php" class="nav-item nav-link active mb-2"><button>Login</button></a>
+                    <a href="vistas/home.php" class="nav-item nav-link active mb-2"><button>Login</button></a>
 
                 </form>
             </div>
         </div>
     </section>
-
 
     <section class="fondo">
         <div class="bubbles">
