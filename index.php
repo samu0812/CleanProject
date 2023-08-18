@@ -1,3 +1,7 @@
+<?php
+    include 'bd/conexion.php';
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -21,24 +25,27 @@
 <body>
     <section class="formulario">
         <div class="form-box">
-            <img src="CleanProject\img\logoClean.png" class="avatar" alt="Avatar Image">
+            <img src="img/logoClean.png" class="avatar" alt="Avatar Image">
             <div class="form-value">
                 <form action="">
                     <h2>Login</h2>
                     <div class="inputbox">
                         <ion-icon name="mail-outline"></ion-icon>
-                        <input type="email" required>
+                        <input type="email" name="correo" required>
                         <label for="">Correo</label>
                     </div>
                     <div class="inputbox">
                         <ion-icon name="lock-closed-outline"></ion-icon>
-                        <input type="password" required>
+                        <input type="password" name="contraseña" required>
                         <label for="">Contraseña</label>
                     </div>
 
-                    <a href="vistas/home.php" class="nav-item nav-link active mb-2"><button>Login</button></a>
+                    <a class="nav-item nav-link active mb-2"><button>Login</button></a>
 
                 </form>
+                <?php
+                    include ('controladores/login.php')
+                ?>
             </div>
         </div>
     </section>
