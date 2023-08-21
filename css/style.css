@@ -1,6 +1,6 @@
 /********** Template CSS **********/
 :root {
-    --primary: #009CFF;
+    --primary: #e77a34;
     --light: #f9f3f8;
     --dark: #191C24;
 }
@@ -85,6 +85,12 @@
     background: #FFFFFF;
     transition: 0.5s;
     
+}
+
+@media (min-width: 1400px) {
+    .container-xxl {
+        max-width: 1900px; /* Ajusta este valor según tus necesidades */
+    }
 }
 
 @media (min-width: 992px) {
