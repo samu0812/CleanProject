@@ -1,4 +1,9 @@
 <!-- Sidebar Start -->
+<?php
+
+$nombrePersona = isset($_SESSION['nombrePersona']) ? $_SESSION['nombrePersona'] : '';
+$rol = isset($_SESSION['rol']) ? $_SESSION['rol'] : '';
+?>
 <div class="sidebar pe-4 pb-3">
     <nav class="navbar bg-light navbar-light">
         <a href="home.php" class="navbar-brand mx-4 mb-3">
@@ -10,8 +15,8 @@
                 <div class="bg-success rounded-circle border border-2 border-white position-absolute end-0 bottom-0 p-1"></div>
             </div>
             <div class="ms-3">
-                <h6 class="mb-0">Cecilia Gaspar</h6>
-                <span>Admin</span>
+                <h6 class="mb-0"><?php echo $nombrePersona?></h6>
+                <span><?php echo $rol?></span>
             </div>
         </div>
         <div class="navbar-nav w-100">

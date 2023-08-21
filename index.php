@@ -40,7 +40,7 @@
                         <label for="">Contraseña</label>
                     </div>
 
-                    <a class="nav-item nav-link active mb-2"><button type="submit" value="Log In">Login</button></a>
+                    <a class="nav-item nav-link active mb-2"><button  type= "submit">Login</button></a>
 
                 </form>
                 <?php

@@ -13,9 +13,5 @@ if ($conn->connect_error) {
 }
 
 
-
 // Aquí puedes realizar operaciones con la base de datos
-
-// Cerrar la conexión
-
 ?>
