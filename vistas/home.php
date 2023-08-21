@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -54,6 +55,7 @@
         <div class="content">
             <!-- Navbar Start -->
             <?php
+
             include "navbar.php";
             ?>
             <!-- Navbar End -->

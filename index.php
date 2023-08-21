@@ -27,7 +27,7 @@
         <div class="form-box">
             <img src="img/logoClean.png" class="avatar" alt="Avatar Image">
             <div class="form-value">
-                <form action="">
+                <form action="" method="post">
                     <h2>Login</h2>
                     <div class="inputbox">
                         <ion-icon name="mail-outline"></ion-icon>
@@ -36,11 +36,11 @@
                     </div>
                     <div class="inputbox">
                         <ion-icon name="lock-closed-outline"></ion-icon>
-                        <input type="password" name="contraseña" required>
+                        <input type="password" name="clave" required>
                         <label for="">Contraseña</label>
                     </div>
 
-                    <a class="nav-item nav-link active mb-2"><button>Login</button></a>
+                    <a class="nav-item nav-link active mb-2"><button type="submit" value="Log In">Login</button></a>
 
                 </form>
                 <?php
