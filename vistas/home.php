@@ -60,39 +60,57 @@
             <!-- Sale & Revenue Start -->
             <div class="container-fluid pt-4 px-4">
                 <div class="row g-4">
-                    <div class="col-sm-6 col-xl-3">
-                        <div class="bg-light rounded d-flex align-items-center justify-content-between p-4">
-                            <i class="fa fa-chart-line fa-3x text-primary"></i>
+                    <div class="col-sm-4 col-xl-2">
+                        <div class="bg-personalizado rounded d-flex align-items-center justify-content-between p-4 cursorPointer"onclick="redireccionar('productos.php')">
+                            <i class="fa fa-chart-line fa-3x" style="color: #fa721c;"></i>
                             <div class="ms-3">
-                                <p class="mb-2">Today Sale</p>
-                                <h6 class="mb-0">$1234</h6>
+                                <p class="mb-2">Productos</p>
+                                <h6 class="mb-0">200</h6>
                             </div>
                         </div>
                     </div>
-                    <div class="col-sm-6 col-xl-3">
-                        <div class="bg-light rounded d-flex align-items-center justify-content-between p-4">
-                            <i class="fa fa-chart-bar fa-3x text-primary"></i>
+                    <div class="col-sm-4 col-xl-2">
+                        <div class="bg-personalizado rounded d-flex align-items-center justify-content-between p-4 cursorPointer"onclick="redireccionar('proveedores.php')">
+                            <i class="fa fa-chart-bar fa-3x" style="color: #fa721c;"></i>
                             <div class="ms-3">
-                                <p class="mb-2">Total Sale</p>
-                                <h6 class="mb-0">$1234</h6>
+                                <p class="mb-2">Proveedores</p>
+                                <h6 class="mb-0">5</h6>
                             </div>
                         </div>
                     </div>
-                    <div class="col-sm-6 col-xl-3">
-                        <div class="bg-light rounded d-flex align-items-center justify-content-between p-4">
-                            <i class="fa fa-chart-area fa-3x text-primary"></i>
+                    <div class="col-sm-4 col-xl-2">
+                        <div class="bg-personalizado rounded d-flex align-items-center justify-content-between p-4 cursorPointer"onclick="redireccionar('empleados.php')">
+                            <i class="fa fa-chart-pie fa-3x" style="color: #fa721c;"></i>
                             <div class="ms-3">
-                                <p class="mb-2">Today Revenue</p>
-                                <h6 class="mb-0">$1234</h6>
+                                <p class="mb-2">Empleados</p>
+                                <h6 class="mb-0">5</h6>
                             </div>
                         </div>
                     </div>
-                    <div class="col-sm-6 col-xl-3">
-                        <div class="bg-light rounded d-flex align-items-center justify-content-between p-4">
-                            <i class="fa fa-chart-pie fa-3x text-primary"></i>
+                    <div class="col-sm-4 col-xl-2">
+                        <div class="bg-personalizado rounded d-flex align-items-center justify-content-between p-4 cursorPointer"onclick="redireccionar('ventas.php')">
+                            <i class="fa fa-chart-pie fa-3x" style="color: #fa721c;"></i>
                             <div class="ms-3">
-                                <p class="mb-2">Total Revenue</p>
-                                <h6 class="mb-0">$1234</h6>
+                                <p class="mb-2">Ventas</p>
+                                <h6 class="mb-0">37</h6>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-4 col-xl-2">
+                        <div class="bg-personalizado rounded d-flex align-items-center justify-content-between p-4 cursorPointer"onclick="redireccionar('usuarios.php')">
+                            <i class="fa fa-chart-pie fa-3x" style="color: #fa721c;"></i>
+                            <div class="ms-3">
+                                <p class="mb-2">Sucursales</p>
+                                <h6 class="mb-0">3</h6>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-4 col-xl-2">
+                        <div class="bg-personalizado rounded d-flex align-items-center justify-content-between p-4 cursorPointer"onclick="redireccionar('ventas.php')">
+                            <i class="fa fa-chart-area fa-3x" style="color: #fa721c;"></i>
+                            <div class="ms-3">
+                                <p class="mb-2">Ganancias</p>
+                                <h6 class="mb-0">$10.000.000</h6>
                             </div>
                         </div>
                     </div>
@@ -136,6 +154,12 @@
         <!-- Back to Top -->
         <a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top"><i class="bi bi-arrow-up"></i></a>
     </div>
+
+    <script>
+        function redireccionar(url) {
+            window.location.href = url;
+        }
+    </script>
 
     <!-- JavaScript Libraries -->
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>

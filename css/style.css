@@ -87,6 +87,15 @@
     
 }
 
+.cursorPointer {
+    cursor: pointer;
+    transition: transform 0.3s ease;
+}
+
+.cursorPointer:hover {
+    transform: translateY(-15px);
+}
+
 @media (min-width: 1400px) {
     .container-xxl {
         max-width: 1900px; /* Ajusta este valor según tus necesidades */
