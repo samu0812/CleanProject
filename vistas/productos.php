@@ -74,9 +74,59 @@ session_start();
             <!-- Sale & Revenue Start -->
             <div class="container-fluid pt-4 px-4">
                 <div class="row g-4">
-                    <div class="col-sm-6 col-xl-3">
-                        <div class="d-flex align-items-center justify-content-center p-3">
-                            <button class="btn btn-lg btn-primary" data-bs-toggle="modal" data-bs-target="#modalAgregarProducto">Agregar Producto</button>
+                    <div class="col-12 col-md-6 col-lg-4 col-xl-3">
+                        <div class="d-flex align-items-center justify-content-center p-4">
+                            <button style="background: #e77a34; color: white" class="btn btn-md" data-bs-toggle="modal" data-bs-target="#modalAgregarProducto"><i class="fas fa-plus"></i> Agregar Producto</button>
+                        </div>
+                    </div>
+                    
+                    <div class="col-12 col-md-6 col-lg-4 col-xl-3">
+                        <div class="bg-personalizado rounded d-flex align-items-center justify-content-center p-4">
+                            <svg xmlns="http://www.w3.org/2000/svg" style="color: #e77a34" class="icon icon-tabler icon-tabler-forklift" width="55" height="55" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                <path d="M5 17m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0"></path>
+                                <path d="M14 17m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0"></path>
+                                <path d="M7 17l5 0"></path>
+                                <path d="M3 17v-6h13v6"></path>
+                                <path d="M5 11v-4h4"></path>
+                                <path d="M9 11v-6h4l3 6"></path>
+                                <path d="M22 15h-3v-10"></path>
+                                <path d="M16 13l3 0"></path>
+                            </svg>
+                            <div class="text-center" style="margin-left: 30px">
+                                <p class="mb-2">Galpon</p>
+                                <h6 class="mb-0">1000</h6>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-12 col-md-6 col-lg-4 col-xl-3">
+                        <div class="bg-personalizado rounded d-flex align-items-center justify-content-center p-4">
+                            <svg xmlns="http://www.w3.org/2000/svg" style="color: #e77a34" class="icon icon-tabler icon-tabler-building-warehouse me-1" width="55" height="55" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                <path d="M3 21v-13l9 -4l9 4v13"></path>
+                                <path d="M13 13h4v8h-10v-6h6"></path>
+                                <path d="M13 21v-9a1 1 0 0 0 -1 -1h-2a1 1 0 0 0 -1 1v3"></path>
+                            </svg>
+                            <div class="text-center" style="margin-left: 30px">
+                                <p class="mb-2">Kirchner</p>
+                                <h6 class="mb-0">600</h6>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-12 col-md-6 col-lg-4 col-xl-3">
+                        <div class="bg-personalizado rounded d-flex align-items-center justify-content-center p-4">
+                            <svg xmlns="http://www.w3.org/2000/svg" style="color: #e77a34" class="icon icon-tabler icon-tabler-building-warehouse" width="55" height="55" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                            <path d="M3 21v-13l9 -4l9 4v13"></path>
+                            <path d="M13 13h4v8h-10v-6h6"></path>
+                            <path d="M13 21v-9a1 1 0 0 0 -1 -1h-2a1 1 0 0 0 -1 1v3"></path>
+                            </svg>
+                            <div class="text-center" style="margin-left: 30px">
+                                <p class="mb-2">Centro</p>
+                                <h6 class="mb-0">600</h6>
+                            </div>
                         </div>
                     </div>
 
@@ -171,87 +221,62 @@ session_start();
                         </div>
                     </div>
 
-                    
-
-                    <div class="col-sm-6 col-xl-3">
-                        <div class="bg-light rounded d-flex align-items-center justify-content-between p-4">
-                            <i class="fa fa-chart-bar fa-3x text-primary"></i>
-                            <div class="ms-3">
-                                <p class="mb-2">Productos Totales</p>
-                                <h6 class="mb-0">1000</h6>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-sm-6 col-xl-3">
-                        <div class="bg-light rounded d-flex align-items-center justify-content-between p-4">
-                            <i class="fa fa-chart-bar fa-3x text-primary"></i>
-                            <div class="ms-3">
-                                <p class="mb-2">Categorías Totales</p>
-                                <h6 class="mb-0">14</h6>
-                            </div>
-                        </div>
-                    </div>
                 </div>
             </div>
             <!-- Sale & Revenue End -->
             <!-- Recent Sales Start -->
             <div class="container-fluid pt-4 px-4">
-                <div class="bg-light text-center rounded p-4">
+                <div class="bg-personalizado text-center rounded p-4">
                     <div class="table-responsive -xxl">
-                        <table id="tableProd" class="table table-striped" style="width:100%">
-                            <h5>Busqueda de Productos</h5>
-                            <thead>
-                                <tr>
-                                    <th>Código</th>
-                                    <th>Nombre</th>
-                                    <th>Proveedor</th>
-                                    <th>Tipo</th>
-                                    <th>Tamaño</th>
-                                    <th>Cantidad</th>
-                                    <th>P. Base</th>
-                                    <th>%</th>
-                                    <th>P. Venta</th>
-                                    <th></th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>001</td>
-                                    <td>Jabon en Polvo</td>
-                                    <td>LCL</td>
-                                    <td>Limpieza</td>
-                                    <td>300grs</td>
-                                    <td>200</td>
-                                    <td>$300</td>
-                                    <td>21</td>
-                                    <td>$363</td>
-                                    <td>
-                                        <button class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#modalActualizarStock"><i class="fas fa-plus"></i></button>
-                                        <button class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#modalEditarStock"><i class="far fa-edit"></i></button>
-                                        <button class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#modalEliminarStock"><i class="fas fa-trash"></i></button>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>002</td>
-                                    <td>Lavandina</td>
-                                    <td>LCL</td>
-                                    <td>Limpieza</td>
-                                    <td>300grs</td>
-                                    <td>200</td>
-                                    <td>$300</td>
-                                    <td>21</td>
-                                    <td>$363</td>
-                                    <td>
-                                        <button class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#modalActualizarStock" ><i class="far fa-edit"></i></button>
-                                        <button class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#modalEditarStock" ><i class="far fa-edit"></i></button>
-                                        <button class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#modalEliminarStock"><i class="fas fa-trash"></i></button>
-                                    </td>
-                                </tr>
-                            </tbody>
-                            <tfoot>
-                            </tfoot>
-                        </table>
+                    <table id="tableProd" class="table table-striped" style="width:100%">
+                        <h5>Busqueda de Productos</h5>
+                        <thead>
+                            <tr>
+                                <th>Código</th>
+                                <th>Nombre</th>
+                                <th>Proveedor</th>
+                                <th>Tipo</th>
+                                <th>Tamaño</th>
+                                <th>Cantidad</th>
+                                <th>P. Base</th>
+                                <th>%</th>
+                                <th>P. Venta</th>
+                                <th>
+                                    <button style="background: #e77a34; color: white;" class="btn btn-sm" data-bs-toggle="modal" data-bs-target="#modalActualizarStock"><i class="fas fa-plus"></i></button>
+                                    <button style="background: #e77a34; color: white;" class="btn btn-sm" data-bs-toggle="modal" data-bs-target="#modalEditarStock"><i class="far fa-edit"></i></button>
+                                    <button style="background: #e77a34; color: white;" class="btn btn-sm" data-bs-toggle="modal" data-bs-target="#modalEliminarStock"><i class="fas fa-trash"></i></button>
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>001</td>
+                                <td>Jabon en Polvo</td>
+                                <td>LCL</td>
+                                <td>Limpieza</td>
+                                <td>300grs</td>
+                                <td>200</td>
+                                <td>$300</td>
+                                <td>21</td>
+                                <td>$363</td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>002</td>
+                                <td>Lavandina</td>
+                                <td>LCL</td>
+                                <td>Limpieza</td>
+                                <td>300grs</td>
+                                <td>200</td>
+                                <td>$300</td>
+                                <td>21</td>
+                                <td>$363</td>
+                                <td></td>
+                            </tr>
+                        </tbody>
+                        <tfoot>
+                        </tfoot>
+                    </table>
                     </div>
                 </div>
             </div>
@@ -286,12 +311,10 @@ session_start();
 
 
             <div class="container-fluid pt-4 px-4">
-                <div class="bg-light text-center rounded p-4">
+                <div class="bg-personalizado text-center rounded p-4">
                     <div class="table-responsive -xxl">
                         <table id="tableSucursal" class="table table-striped" style="width:100%">
                             <h5>Busqueda por Sucursal</h5>
-                            <div class="text-center d-flex justify-content-center mt-1 mb-1">
-                            </div>
                             <thead>
                                 <tr>
                                     <th>Código</th>
@@ -300,7 +323,11 @@ session_start();
                                     <th>Tamaño</th>
                                     <th>Cantidad</th>
                                     <th>P. Venta</th>
-                                    <th></th>
+                                    <th>
+                                        <button style="background: #e77a34; color: white;" class="btn btn-sm" data-bs-toggle="modal" data-bs-target="#modalActualizarStock"><i class="fas fa-plus"></i></button>
+                                        <button style="background: #e77a34; color: white;" class="btn btn-sm" data-bs-toggle="modal" data-bs-target="#modalEditarStock"><i class="far fa-edit"></i></button>
+                                        <button style="background: #e77a34; color: white;" class="btn btn-sm" data-bs-toggle="modal" data-bs-target="#modalEliminarStock"><i class="fas fa-trash"></i></button>
+                                    </th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -311,11 +338,7 @@ session_start();
                                     <td>300grs</td>
                                     <td>200</td>
                                     <td>$363</td>
-                                    <td>
-                                        <button class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#modalActualizarStock"><i class="fas fa-plus"></i></button>
-                                        <button class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#modalEditarStock"><i class="far fa-edit"></i></button>
-                                        <button class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#modalEliminarStock"><i class="fas fa-trash"></i></button>
-                                    </td>
+                                    <td></td>
                                 </tr>
                                 <tr>
                                     <td>002</td>
@@ -324,11 +347,7 @@ session_start();
                                     <td>300grs</td>
                                     <td>200</td>
                                     <td>$363</td>
-                                    <td>
-                                        <button class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#modalActualizarStock"><i class="fas fa-plus"></i></button>
-                                        <button class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#modalEditarStock"><i class="far fa-edit"></i></button>
-                                        <button class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#modalEliminarStock"><i class="fas fa-trash"></i></button>
-                                    </td>
+                                    <td></td>
                                 </tr>
                             </tbody>
                             <tfoot>
@@ -414,7 +433,7 @@ session_start();
 
 
         <!-- Back to Top -->
-        <a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top"><i class="bi bi-arrow-up"></i></a>
+        <a href="#" class="btn btn-lg btn-lg-square back-to-top" style="background: #e77a34; color: white"><i class="bi bi-arrow-up"></i></a>
     </div>
 
     <!-- JavaScript Libraries -->
@@ -441,7 +460,7 @@ session_start();
                 searching: true,      // Habilita la búsqueda estándar
                 lengthChange: true,
                 ordering: true,
-                info: true,
+                info: false,
                 language: {
                     search: "",
                     searchPlaceholder: "Filtrar Productos",
@@ -457,7 +476,7 @@ session_start();
                 searching: true,    
                 lengthChange: true,
                 ordering: true,
-                info: true,
+                info: false,
                 language: {
                     search: "",
                     searchPlaceholder: "Filtrar por sucursal",
@@ -478,6 +497,14 @@ session_start();
             margin-right: auto;
             margin-left: 0;
         }
+
+        .page-item.active .page-link {
+            z-index: 3;
+            color: #fff;
+            background-color: #e77a34;
+            border-color: #e77a34;
+        }
+
 
         /* Estilo para mover el searching a la derecha */
         div.dataTables_wrapper .dataTables_filter {
