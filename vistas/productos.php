@@ -34,15 +34,27 @@ session_start();
     <!-- Template Stylesheet -->
     <link href="../css/style.css" rel="stylesheet">
 
-    <!-- Agrega estos enlaces en el head de tu HTML -->
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <link rel="stylesheet" href="https://cdn.datatables.net/1.11.6/css/jquery.dataTables.min.css">
-    <script src="https://cdn.datatables.net/1.11.6/js/jquery.dataTables.min.js"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <!-- Incluir jQuery -->
+    <script src="https://code.jquery.com/jquery-3.7.0.js"></script>
 
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.12.1/css/all.css" crossorigin="anonymous">
+    <!-- Incluir Bootstrap CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css">
 
-    
+    <!-- Incluir DataTables CSS -->
+    <link href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css" rel="stylesheet">
+
+    <!-- Incluir tus estilos personalizados -->
+    <link href="../css/style.css" rel="stylesheet">
+
+    <!-- Incluir Bootstrap JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/js/bootstrap.min.js"></script>
+
+    <!-- Incluir DataTables JS -->
+    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
+    <script src="https://cdn.datatables.net/select/1.7.0/js/dataTables.select.min.js"></script>
+
+
 </head>
 
 <body>
@@ -228,7 +240,7 @@ session_start();
             <div class="container-fluid pt-4 px-4">
                 <div class="bg-personalizado text-center rounded p-4">
                     <div class="table-responsive -xxl">
-                    <table id="tableProd" class="table table-striped" style="width:100%">
+                    <table id="tableProd" class="table display" style="width:100%">
                         <h5>Busqueda de Productos</h5>
                         <thead>
                             <tr>
@@ -274,8 +286,6 @@ session_start();
                                 <td></td>
                             </tr>
                         </tbody>
-                        <tfoot>
-                        </tfoot>
                     </table>
                     </div>
                 </div>
@@ -436,35 +446,20 @@ session_start();
         <a href="#" class="btn btn-lg btn-lg-square back-to-top" style="background: #e77a34; color: white"><i class="bi bi-arrow-up"></i></a>
     </div>
 
-    <!-- JavaScript Libraries -->
-    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="../lib/chart/chart.min.js"></script>
-    <script src="../lib/easing/easing.min.js"></script>
-    <script src="../lib/waypoints/waypoints.min.js"></script>
-    <script src="../lib/owlcarousel/owl.carousel.min.js"></script>
-    <script src="../lib/tempusdominus/js/moment.min.js"></script>
-    <script src="../lib/tempusdominus/js/moment-timezone.min.js"></script>
-    <script src="../lib/tempusdominus/js/tempusdominus-bootstrap-4.min.js"></script>
-
-    <!-- Table Libraries -->
-    <script src="https://code.jquery.com/jquery-3.7.0.js"></script>
-    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
-    <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css"></script>
-    <script src="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css"></script>
-
     <script>
         $(document).ready(function() {
-            var table1 = $('#tableProd').DataTable({
-                searching: true,      // Habilita la búsqueda estándar
+            var tableProd = $('#tableProd').DataTable({
+                select: {
+                    style: 'multi'
+                },
+                searching: true,
                 lengthChange: true,
-                ordering: true,
+                ordering: false ,
                 info: false,
                 language: {
                     search: "",
                     searchPlaceholder: "Filtrar Productos",
-                    lengthMenu: "Mostrar _MENU_ registros", // Cambia el texto del "Show x entries"
+                    lengthMenu: "Mostrar _MENU_ registros",
                     zeroRecords: "No se encontraron resultados",
                     info: "Mostrando _START_ a _END_ de _TOTAL_ registros",
                     infoEmpty: "Mostrando 0 a 0 de 0 registros",
@@ -472,23 +467,17 @@ session_start();
                 }
             });
 
-            var table2 = $('#tableSucursal').DataTable({
-                searching: true,    
-                lengthChange: true,
-                ordering: true,
-                info: false,
-                language: {
-                    search: "",
-                    searchPlaceholder: "Filtrar por sucursal",
-                    lengthMenu: "Mostrar _MENU_ registros", // Cambia el texto del "Show x entries"
-                    zeroRecords: "No se encontraron resultados",
-                    info: "Mostrando _START_ a _END_ de _TOTAL_ registros",
-                    infoEmpty: "Mostrando 0 a 0 de 0 registros",
-                    infoFiltered: "(filtrado de _MAX_ registros en total)"
+            $('#tableProd tbody').on('click', 'tr', function () {
+                if ($(this).hasClass('selected')) {
+                    $(this).removeClass('selected');
+                } else {
+                    tableProd.$('tr.selected').removeClass('selected');
+                    $(this).addClass('selected');
                 }
             });
         });
     </script>
+
 
     <style>
         /* Estilo para mover el lengthChange a la izquierda */
@@ -555,7 +544,7 @@ session_start();
 
     <!-- Template Javascript -->
     <script src="../js/main.js"></script>
-
+    
 </body>
 
 </html>
