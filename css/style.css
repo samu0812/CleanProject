@@ -5,6 +5,24 @@
     --dark: #191C24;
 }
 
+.cursorPointer {
+    cursor: pointer;
+    transition: transform 0.3s ease;
+}
+
+.cursorPointer:hover {
+    transform: translateY(-5px);
+}
+
+.cursorPointer2 {
+    cursor: pointer;
+    transition: transform 0.3s ease;
+}
+
+.cursorPointer2:hover {
+    transform: scale(1.05);
+}
+
 .back-to-top {
     position: fixed;
     display: none;
@@ -74,7 +92,7 @@
     width: 250px;
     height: 100vh;
     overflow-y: auto;
-    background: var(--light);
+    background: #feeac7;
     transition: 0.5s;
     z-index: 999;
 }
@@ -82,7 +100,7 @@
 .content {
     margin-left: 250px;
     min-height: 100vh;
-    background: #FFFFFF;
+    background: #feeac7;
     transition: 0.5s;
     
 }
@@ -328,3 +346,11 @@
   #customForm div.DTE_Field {
     padding: 5px;
   }
+
+.bg-light{
+    background-color: #feeac7 !important;
+}
+
+.bg-personalizado{
+    background-color: #FFFFFF !important
+}
