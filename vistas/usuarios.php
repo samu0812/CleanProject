@@ -236,31 +236,32 @@ session_start();
 
 
             <!-- Modal de edición -->
-            <div class="modal fade" id="modalEditarStock" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="exampleModalLabel">Editar Usuario</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body">
-                            <!-- Campos de edición con identificadores únicos -->
-                            <input type="text" id="editNombre" class="form-control" placeholder="Nombre">
-                            <input type="text" id="editEmail" class="form-control" placeholder="Email">
-                            <input type="text" id="editTelefono" class="form-control" placeholder="Teléfono">
-                            <input type="text" id="editFechaNacimiento" class="form-control" placeholder="Fecha de Nacimiento">
-                            <input type="text" id="editDireccion" class="form-control" placeholder="Direccion">
-                            <input type="text" id="editRol" class="form-control" placeholder="Rol">
-                            <input type="text" id="editSucursal" class="form-control" placeholder="Sucursal">
-                            <input type="text" id="editClave" class="form-control" placeholder="Contraseña">
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                            <button type="button" class="btn btn-primary">Guardar</button>
-                        </div>
-                    </div>
-                </div>
+    <!-- Modal para editar usuario -->
+    <div class="modal fade" id="modalEditarUser" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Editar Usuario</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
+            <div class="modal-body">
+                <input type="hidden" id="editCodigo">
+                <input type="text" id="editNombre" class="form-control" placeholder="Nombre">
+                <input type="email" id="editEmail" class="form-control" placeholder="Email">
+                <input type="tel" id="editTelefono" class="form-control" placeholder="Teléfono">
+                <input type="text" id="editDireccion" class="form-control" placeholder="Dirección">
+                <input type="date" id="editFechaNacimiento" class="form-control" placeholder="Fecha de Nacimiento">
+                <input type="text" id="editRol" class="form-control" placeholder="Rol">
+                <input type="text" id="editSucursal" class="form-control" placeholder="Sucursal">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-primary btn-actualizar">Guardar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 
 
 
@@ -361,17 +362,15 @@ $(document).ready(function() {
             $('#editRol').val(rowData[6]);
             $('#editSucursal').val(rowData[7]);
 
-            // Abre el modal de edición
-            $('#modalEditarStock').modal('show');
+             // Abre el modal de edición
+            $('#modalEditarUser').modal('show');
         } else {
             alert('Por favor, seleccione al menos una fila para editar.');
         }
     });
 
     // Agrega el manejador de eventos para el botón "Guardar" dentro del modal de edición
-    $('#modalEditarStock').on('click', '.btn-primary', function() {
-        // Aquí puedes realizar la lógica para guardar los cambios en la fila seleccionada
-        // Recopila los valores de los campos de edición y realiza la actualización en la base de datos
+    $('#modalEditarUser').on('click', '.btn-actualizar', function() {
         var editNombre = $('#editNombre').val();
         var editEmail = $('#editEmail').val();
         var editTelefono = $('#editTelefono').val();
@@ -379,11 +378,36 @@ $(document).ready(function() {
         var editFechaNacimiento = $('#editFechaNacimiento').val();
         var editRol = $('#editRol').val();
         var editSucursal = $('#editSucursal').val();
-        
-        // Luego, cierra el modal
-        $('#modalEditarStock').modal('hide');
+
+        var idPersona = $('#editCodigo').val(); // Obtén el ID del usuario
+
+        var data = {
+            idPersona: idPersona,
+            editNombre: editNombre,
+            editEmail: editEmail,
+            editTelefono: editTelefono,
+            editDireccion: editDireccion,
+            editFechaNacimiento: editFechaNacimiento,
+            editRol: editRol,
+            editSucursal: editSucursal
+        };
+
+        // Envía los datos al servidor mediante una solicitud AJAX
+        $.ajax({
+            type: 'POST',
+            url: '../controladores/updateUsuarios.php', // Ruta al archivo PHP de actualización
+            data: data,
+            success: function(response) {
+                console.log(response); // Muestra la respuesta del servidor en la consola
+                $('#modalEditarUser').modal('hide'); // Cierra el modal de edición
+                location.reload(); // Recarga la página para ver los cambios actualizados
+            },
+            error: function(error) {
+                console.error(error);
+            }
+        });
     });
-});
+    });
 </script>
 
 
