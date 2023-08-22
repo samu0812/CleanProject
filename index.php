@@ -1,5 +1,6 @@
 <?php
     include 'bd/conexion.php';
+    
 ?>
 
 <!DOCTYPE html>

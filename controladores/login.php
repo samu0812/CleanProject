@@ -1,6 +1,6 @@
 <?php
     session_start(); // Iniciar la sesión
-    include ("bd/conexion.php");
+    include ("bd\conexion.php");
     // login.php
 
     // Verificar si ya se ha iniciado sesión

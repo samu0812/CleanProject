@@ -1,7 +1,7 @@
 /********** Template CSS **********/
 :root {
-    --primary: #009CFF;
-    --light: #F3F6F9;
+    --primary: #e77a34;
+    --light: #f9f3f8;
     --dark: #191C24;
 }
 
@@ -85,6 +85,21 @@
     background: #FFFFFF;
     transition: 0.5s;
     
+}
+
+.cursorPointer {
+    cursor: pointer;
+    transition: transform 0.3s ease;
+}
+
+.cursorPointer:hover {
+    transform: translateY(-15px);
+}
+
+@media (min-width: 1400px) {
+    .container-xxl {
+        max-width: 1900px; /* Ajusta este valor según tus necesidades */
+    }
 }
 
 @media (min-width: 992px) {
@@ -276,3 +291,40 @@
     background: var(--dark);
     border-color: var(--primary);
 }
+
+#customForm {
+    display: flex;
+    flex-flow: row wrap;
+  }
+  
+  #customForm fieldset {
+    flex: 1;
+    border: 1px solid #aaa;
+    margin: 0.5em;
+  }
+  
+  #customForm fieldset legend {
+    padding: 5px 20px;
+    border: 1px solid #aaa;
+    font-weight: bold;
+  }
+  
+  #customForm fieldset.name {
+    flex: 2 100%;
+  }
+  
+  #customForm fieldset.name legend {
+    background: #bfffbf;
+  }
+  
+  #customForm fieldset.office legend {
+    background: #ffffbf;
+  }
+  
+  #customForm fieldset.hr legend {
+    background: #ffbfbf;
+  }
+  
+  #customForm div.DTE_Field {
+    padding: 5px;
+  }

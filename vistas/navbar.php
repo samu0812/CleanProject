@@ -23,7 +23,7 @@ $nombrePersona = isset($_SESSION['nombrePersona']) ? $_SESSION['nombrePersona'] 
             </a>
             <div class="dropdown-menu dropdown-menu-end bg-light border-0 rounded-0 rounded-bottom m-0">
                 <a href="../usuarios.php" class="dropdown-item">Ajustes</a>
-                <a href="logout.php" class="dropdown-item">LogOut</a>
+                <a href="logout.php" class="dropdown-item">Cerrar Sesión</a>
             </div>
         </div>
     </div>
