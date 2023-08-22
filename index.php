@@ -27,20 +27,20 @@
         <div class="form-box">
             <img src="img/logoClean.png" class="avatar" alt="Avatar Image">
             <div class="form-value">
-                <form action="">
+                <form  method="post" action="">
                     <h2>Login</h2>
                     <div class="inputbox">
                         <ion-icon name="mail-outline"></ion-icon>
-                        <input type="email" name="correo" required>
+                        <input type="email" name="correo" id= "correo" required>
                         <label for="">Correo</label>
                     </div>
                     <div class="inputbox">
                         <ion-icon name="lock-closed-outline"></ion-icon>
-                        <input type="password" name="contraseña" required>
+                        <input type="password" name="contraseña" id= "contraseña" required>
                         <label for="">Contraseña</label>
                     </div>
 
-                    <a class="nav-item nav-link active mb-2"><button>Login</button></a>
+                    <a class="nav-item nav-link active mb-2"><button type="submit">Login</button></a>
 
                 </form>
                 <?php
