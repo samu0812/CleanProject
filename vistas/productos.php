@@ -89,7 +89,8 @@ session_start();
                 <div class="row g-4">
                     <div class="col-12 col-md-6 col-lg-4 col-xl-3">
                         <div class="d-flex align-items-center justify-content-center p-4">
-                            <button id="btnAgregarProd" style="background: #e77a34; color: white" class="btn btn-md" data-bs-toggle="modal" data-bs-target="#modalAgregarProducto"><i class="fas fa-plus"></i> Agregar Producto</button>
+                            <button id="btnAgregarProd" style="background: #e77a34; color: white" class="btn btn-md" data-bs-toggle="modal" data-bs-target="#modalAgregarProducto">
+                            <i class="fas fa-plus"></i> Agregar Producto</button>    
                         </div>
                     </div>
                     
@@ -205,9 +206,19 @@ session_start();
 
             <div class="container-fluid pt-4 px-4">
                 <div class="bg-personalizado text-center rounded p-4">
+                    <div class="d-flex justify-content-center align-items-center mb-3">
+                        <h5 class="mb-0">Busqueda por Sucursal</h5>
+                    </div>
+                    <div class="d-flex justify-content-center align-items-center text-center">
+                        <select id="filtroSucursal" class="form-select form-select-sm" style="width: 150px;">
+                            <option value="">Sucursales</option>
+                            <option value="Galpon">Galpon</option>
+                            <option value="Kirchner">Kirchner</option>
+                            <option value="Centro">Centro</option>
+                        </select>
+                    </div>
                     <div class="table-responsive -xxl">
                         <table id="tableSucursal" class="table display" style="width:100%">
-                            <h5>Busqueda por Sucursal</h5>
                             <thead>
                                 <tr>
                                     <th>Código</th>
@@ -237,11 +248,9 @@ session_start();
                                     <td>Grs</td>
                                     <td>200</td>
                                     <td>363</td>
-                                    <td></td>
+                                </tr>
                                 </tr>
                             </tbody>
-                            <tfoot>
-                            </tfoot>
                         </table>
                     </div>
                 </div>
@@ -373,7 +382,36 @@ session_start();
     </div>
 
     <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            // Inicializar la tabla DataTable
+            var tableSucursal = $('#tableSucursal').DataTable({
+                select: {
+                    style: 'single'
+                },
+                searching: true,
+                lengthChange: true,
+                ordering: false ,
+                info: false,
+                language: {
+                    search: "",
+                    searchPlaceholder: "Filtrar Productos",
+                    lengthMenu: "Mostrar MENU registros",
+                    zeroRecords: "No se encontraron resultados",
+                    info: "Mostrando START a END de TOTAL registros",
+                    infoEmpty: "Mostrando 0 a 0 de 0 registros",
+                    infoFiltered: "(filtrado de MAX registros en total)"
+                }
+            });
 
+            // Capturar el evento de cambio del select y aplicar el filtro a la tabla
+            $("#filtroSucursal").on("change", function() {
+                var filtro = $(this).val();
+                tableSucursal.column(2).search(filtro).draw();
+            });
+        });
+    </script>
+
+    <script>
         function limpiarModal () {
             $('#codigo').val('');
             $('#nombre').val('');
@@ -423,30 +461,11 @@ session_start();
                 language: {
                     search: "",
                     searchPlaceholder: "Filtrar Productos",
-                    lengthMenu: "Mostrar _MENU_ registros",
+                    lengthMenu: "Mostrar MENU registros",
                     zeroRecords: "No se encontraron resultados",
-                    info: "Mostrando _START_ a _END_ de _TOTAL_ registros",
+                    info: "Mostrando START a END de TOTAL registros",
                     infoEmpty: "Mostrando 0 a 0 de 0 registros",
-                    infoFiltered: "(filtrado de _MAX_ registros en total)"
-                }
-            });
-
-            var tableSucursal = $('#tableSucursal').DataTable({
-                select: {
-                    style: 'single'
-                },
-                searching: true,
-                lengthChange: true,
-                ordering: false ,
-                info: false,
-                language: {
-                    search: "",
-                    searchPlaceholder: "Filtrar Productos",
-                    lengthMenu: "Mostrar _MENU_ registros",
-                    zeroRecords: "No se encontraron resultados",
-                    info: "Mostrando _START_ a _END_ de _TOTAL_ registros",
-                    infoEmpty: "Mostrando 0 a 0 de 0 registros",
-                    infoFiltered: "(filtrado de _MAX_ registros en total)"
+                    infoFiltered: "(filtrado de MAX registros en total)"
                 }
             });
 
