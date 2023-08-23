@@ -70,36 +70,36 @@ $rol = isset($_SESSION['rol']) ? $_SESSION['rol'] : '';
             <div class="container-fluid pt-4 px-4">
                 <div class="row g-4">
                     <div class="col-12 col-md-6 col-lg-4 col-xl-3">
-                        <div class="bg-personalizado rounded d-flex align-items-center justify-content-between p-4 cursorPointer" onclick="redireccionar('productos.php')">
-                            <i class="fa fa-chart-line fa-3x" style="color: #e77a34"></i>
-                            <div class="ms-3">
+                        <div class="bg-personalizado rounded d-flex align-items-center justify-content-center p-4 cursorPointer" onclick="redireccionar('productos.php')">
+                            <i class="fas fa-boxes fa-3x" style="color: #e77a34"></i>
+                            <div class="text-center" style="margin-left: 30px">
                                 <p class="mb-2">Productos</p>
-                                <h6 class="mb-0">200</h6>
+                                <h6 class="mb-0">20</h6>
                             </div>
                         </div>
                     </div>
                     <div class="col-12 col-md-6 col-lg-4 col-xl-3">
-                        <div class="bg-personalizado rounded d-flex align-items-center justify-content-between p-4 cursorPointer" onclick="redireccionar('proveedores.php')">
-                            <i class="fa fa-chart-bar fa-3x" style="color: #e77a34"></i>
-                            <div class="ms-3">
+                        <div class="bg-personalizado rounded d-flex align-items-center justify-content-center p-4 cursorPointer" onclick="redireccionar('proveedores.php')">
+                            <i class="fas fa-truck-loading fa-3x" style="color: #e77a34"></i>
+                            <div class="text-center" style="margin-left: 30px">
                                 <p class="mb-2">Proveedores</p>
                                 <h6 class="mb-0">5</h6>
                             </div>
                         </div>
                     </div>
                     <div class="col-12 col-md-6 col-lg-4 col-xl-3">
-                        <div class="bg-personalizado rounded d-flex align-items-center justify-content-between p-4 cursorPointer" onclick="redireccionar('ventas.php')">
+                        <div class="bg-personalizado rounded d-flex align-items-center justify-content-center p-4 cursorPointer" onclick="redireccionar('ventas.php')">
                             <i class="fa fa-chart-area fa-3x" style="color: #e77a34"></i>
-                            <div class="ms-3">
-                                <p class="mb-2">Ventas en el Mes</p>
+                            <div class="text-center" style="margin-left: 30px">
+                                <p class="mb-2">Ventas</p>
                                 <h6 class="mb-0">543</h6>
                             </div>
                         </div>
                     </div>
                     <div class="col-12 col-md-6 col-lg-4 col-xl-3">
-                        <div class="bg-personalizado rounded d-flex align-items-center justify-content-between p-4 cursorPointer" onclick="redireccionar('usuarios.php')">
-                            <i class="fa fa-chart-pie fa-3x" style="color: #e77a34"></i>
-                            <div class="ms-3">
+                        <div class="bg-personalizado rounded d-flex align-items-center justify-content-center p-4 cursorPointer" onclick="redireccionar('usuarios.php')">
+                            <i class="fas fa-people-carry fa-2x" style="color: #e77a34"></i>
+                            <div class="text-center" style="margin-left: 30px">
                                 <p class="mb-2">Empleados Act.</p>
                                 <h6 class="mb-0">6</h6>
                             </div>
@@ -144,7 +144,7 @@ $rol = isset($_SESSION['rol']) ? $_SESSION['rol'] : '';
         <!-- Content End -->
 
         <!-- Back to Top -->
-        <a href="#" class="btn btn-lg btn-warning btn-lg-square back-to-top" style="background-color: #e77a34"><i class="bi bi-arrow-up"></i></a>
+        <a href="#" class="btn btn-lg btn-lg-square back-to-top" style="background: #e77a34; color: white"><i class="bi bi-arrow-up"></i></a>
     </div>
 
     <script>
