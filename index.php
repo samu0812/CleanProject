@@ -32,12 +32,12 @@
                     <h2>Login</h2>
                     <div class="inputbox">
                         <ion-icon name="mail-outline"></ion-icon>
-                        <input type="email" name="correo" required>
+                        <input type="email" name="Email" required>
                         <label for="">Correo</label>
                     </div>
                     <div class="inputbox">
                         <ion-icon name="lock-closed-outline"></ion-icon>
-                        <input type="password" name="clave" required>
+                        <input type="password" name="Clave" required>
                         <label for="">Contraseña</label>
                     </div>
 

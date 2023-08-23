@@ -89,7 +89,8 @@ session_start();
                 <div class="row g-4">
                     <div class="col-12 col-md-6 col-lg-4 col-xl-3">
                         <div class="d-flex align-items-center justify-content-center p-4">
-                            <button style="background: #e77a34; color: white" class="btn btn-md" data-bs-toggle="modal" data-bs-target="#modalAgregarProducto"><i class="fas fa-plus"></i> Agregar Producto</button>
+                            <button id="btnAgregarProd" style="background: #e77a34; color: white" class="btn btn-md" data-bs-toggle="modal" data-bs-target="#modalAgregarProducto">
+                            <i class="fas fa-plus"></i> Agregar Producto</button>    
                         </div>
                     </div>
                     
@@ -157,16 +158,16 @@ session_start();
                                 <th>Nombre</th>
                                 <th>Proveedor</th>
                                 <th>Tipo</th>
-                                <th>Tipo Tamaño</th>
                                 <th>Tamaño</th>
+                                <th>Medida</th>
                                 <th>Cantidad</th>
                                 <th>P. Base</th>
                                 <th>%</th>
                                 <th>P. Venta</th>
                                 <th>
-                                    <button id="btnAgregar" style="background: #e77a34; color: white;" class="btn btn-sm" disabled><i class="fas fa-plus"></i></button>
-                                    <button id="btnEditar" style="background: #e77a34; color: white;" class="btn btn-sm" disabled><i class="far fa-edit"></i></button>
-                                    <button id="btnEliminar" style="background: #e77a34; color: white;" class="btn btn-sm" disabled><i class="fas fa-trash"></i></button>
+                                    <button id="btnAgregarTableProd" style="background: #e77a34; color: white;" class="btn btn-sm" disabled><i class="fas fa-plus"></i></button>
+                                    <button id="btnEditarTableProd" style="background: #e77a34; color: white;" class="btn btn-sm" disabled><i class="far fa-edit"></i></button>
+                                    <button id="btnEliminarTableProd" style="background: #e77a34; color: white;" class="btn btn-sm" disabled><i class="fas fa-trash"></i></button>
                                 </th>
                             </tr>
                         </thead>
@@ -176,8 +177,8 @@ session_start();
                                 <td>Jabon en Polvo</td>
                                 <td>LCL</td>
                                 <td>Envasado</td>
-                                <td>Grs</td>
                                 <td>300</td>
+                                <td>Grs</td>
                                 <td>200</td>
                                 <td>300</td>
                                 <td>21</td>
@@ -189,8 +190,8 @@ session_start();
                                 <td>Lavandina</td>
                                 <td>LCL</td>
                                 <td>Preparado</td>
-                                <td>Lts</td>
                                 <td>300</td>
+                                <td>Lts</td>
                                 <td>200</td>
                                 <td>300</td>
                                 <td>21</td>
@@ -205,22 +206,28 @@ session_start();
 
             <div class="container-fluid pt-4 px-4">
                 <div class="bg-personalizado text-center rounded p-4">
+                    <div class="d-flex justify-content-center align-items-center mb-3">
+                        <h5 class="mb-0">Busqueda por Sucursal</h5>
+                    </div>
+                    <div class="d-flex justify-content-center align-items-center text-center">
+                        <select id="filtroSucursal" class="form-select form-select-sm" style="width: 150px;">
+                            <option value="">Sucursales</option>
+                            <option value="Galpon">Galpon</option>
+                            <option value="Kirchner">Kirchner</option>
+                            <option value="Centro">Centro</option>
+                        </select>
+                    </div>
                     <div class="table-responsive -xxl">
                         <table id="tableSucursal" class="table display" style="width:100%">
-                            <h5>Busqueda por Sucursal</h5>
                             <thead>
                                 <tr>
                                     <th>Código</th>
                                     <th>Nombre</th>
                                     <th>Sucursal</th>
                                     <th>Tamaño</th>
+                                    <th>Medida</th>
                                     <th>Cantidad</th>
                                     <th>P. Venta</th>
-                                    <th>
-                                        <button id="btnAgregar" style="background: #e77a34; color: white;" class="btn btn-sm" data-bs-toggle="modal" data-bs-target="#modalActualizarStock"><i class="fas fa-plus"></i></button>
-                                        <button id="btnEditar" style="background: #e77a34; color: white;" class="btn btn-sm" data-bs-toggle="modal" data-bs-target="#modalEditarStock"><i class="far fa-edit"></i></button>
-                                        <button id="btnEliminar" style="background: #e77a34; color: white;" class="btn btn-sm" data-bs-toggle="modal" data-bs-target="#modalEliminarStock"><i class="fas fa-trash"></i></button>
-                                    </th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -228,23 +235,22 @@ session_start();
                                     <td>001</td>
                                     <td>Jabon en Polvo</td>
                                     <td>Galpon</td>
-                                    <td>300grs</td>
+                                    <td>300</td>
+                                    <td>Grs</td>
                                     <td>200</td>
-                                    <td>$363</td>
-                                    <td></td>
+                                    <td>363</td>
                                 </tr>
                                 <tr>
                                     <td>002</td>
                                     <td>Lavandina</td>
                                     <td>Kirchner</td>
-                                    <td>300grs</td>
+                                    <td>300</td>
+                                    <td>Grs</td>
                                     <td>200</td>
-                                    <td>$363</td>
-                                    <td></td>
+                                    <td>363</td>
+                                </tr>
                                 </tr>
                             </tbody>
-                            <tfoot>
-                            </tfoot>
                         </table>
                     </div>
                 </div>
@@ -292,17 +298,16 @@ session_start();
                                     <div class="col-md-4 mb-3">
                                         <label for="tamaño" class="form-label">Tamaño</label>
                                         <div class="input-group">
-                                            <select class="form-select" id="tamaño" style="width: 2px;">
-                                                <option value="" selected disabled>Seleccione un tamaño</option>
+                                            <input type="text" class="form-control" id="tamaño" placeholder="Tamaño">
+                                            <select class="form-select" id="medida" style="width: 2px;">
+                                                <option value="" selected disabled>Seleccione una Medida</option>
                                                 <option value="Cm3">Cm3</option>
                                                 <option value="Lts">Lts</option>
                                                 <option value="Grs">Grs</option>
                                                 <option value="Kg">Kg</option>
                                             </select>
-                                            <input type="text" class="form-control" id="cantidadTamaño" placeholder="Cantidad">
                                         </div>
                                     </div>
-
                                     <div class="col-md-4 mb-3">
                                         <label for="cantidad" class="form-label">Cantidad</label>
                                         <input type="number" class="form-control" id="cantidad">
@@ -377,6 +382,73 @@ session_start();
     </div>
 
     <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            // Inicializar la tabla DataTable
+            var tableSucursal = $('#tableSucursal').DataTable({
+                select: {
+                    style: 'single'
+                },
+                searching: true,
+                lengthChange: true,
+                ordering: false ,
+                info: false,
+                language: {
+                    search: "",
+                    searchPlaceholder: "Filtrar Productos",
+                    lengthMenu: "Mostrar _MENU_ registros",
+                    zeroRecords: "No se encontraron resultados",
+                    info: "Mostrando _START_ a _END_ de _TOTAL_ registros",
+                    infoEmpty: "Mostrando 0 a 0 de 0 registros",
+                    infoFiltered: "(filtrado de _MAX_ registros en total)"
+                }
+            });
+
+            // Capturar el evento de cambio del select y aplicar el filtro a la tabla
+            $("#filtroSucursal").on("change", function() {
+                var filtro = $(this).val();
+                tableSucursal.column(2).search(filtro).draw();
+            });
+        });
+    </script>
+
+    <script>
+        function limpiarModal () {
+            $('#codigo').val('');
+            $('#nombre').val('');
+            $('#proveedor').val('');
+            $('#tipoProducto').val('');
+            $('#tamaño').val('');
+            $('#medida').val('');
+            $('#cantidad').val('');
+            $('#precioBase').val('');
+            $('#porcentajeAumento').val('');
+            $('#precioVenta').val('');
+        }
+
+        function btnOn () {
+            $('#codigo').prop('disabled', false);
+            $('#nombre').prop('disabled', false);
+            $('#proveedor').prop('disabled', false);
+            $('#tipoProducto').prop('disabled', false);
+            $('#tamaño').prop('disabled', false);
+            $('#medida').prop('disabled', false);
+            $('#precioBase').prop('disabled', false);
+            $('#porcentajeAumento').prop('disabled', false);
+            $('#precioVenta').prop('disabled', false);
+        }
+
+        function btnDisabled () {
+            $('#codigo').prop('disabled', true);
+            $('#nombre').prop('disabled', true);
+            $('#proveedor').prop('disabled', true);
+            $('#tipoProducto').prop('disabled', true);
+            $('#tamaño').prop('disabled', true);
+            $('#medida').prop('disabled', true);
+            $('#precioBase').prop('disabled', true);
+            $('#porcentajeAumento').prop('disabled', true);
+            $('#precioVenta').prop('disabled', true);
+        }
+
         $(document).ready(function() {
             var tableProd = $('#tableProd').DataTable({
                 select: {
@@ -400,32 +472,27 @@ session_start();
             $('#tableProd tbody').on('click', 'tr', function() {
                 if ($(this).hasClass('selected')) {
                     $(this).removeClass('selected');
-                    $('#btnAgregar').prop('disabled', true);
-                    $('#btnEditar').prop('disabled', true);
-                    $('#btnEliminar').prop('disabled', true);
+                    $('#labelAgregarStock').text('Agregar Producto');
+                    $('#btnAgregarProd').prop('disabled', false);
+                    btnOn()
+                    limpiarModal()
+                    $('#btnAgregarTableProd').prop('disabled', true);
+                    $('#btnEditarTableProd').prop('disabled', true);
+                    $('#btnEliminarTableProd').prop('disabled', true);
 
                 } else {
                     tableProd.$('tr.selected').removeClass('selected');
                     $(this).addClass('selected');
-
+                    $('#btnAgregarProd').prop('disabled', true);
                     // Mostrar el botón "Ver Detalles"
-                    $('#btnAgregar').prop('disabled', false);
-                    $('#btnEditar').prop('disabled', false);
-                    $('#btnEliminar').prop('disabled', false);
+                    $('#btnAgregarTableProd').prop('disabled', false);
+                    $('#btnEditarTableProd').prop('disabled', false);
+                    $('#btnEliminarTableProd').prop('disabled', false);
                     // Obtener los datos del producto seleccionado
                     var rowData = tableProd.row($(this)).data();
 
                     // Limpiar los datos en el modal
-                    $('#codigo').val('');
-                    $('#nombre').val('');
-                    $('#proveedor').val('');
-                    $('#tipoProducto').val('');
-                    $('#tamaño').val('');
-                    $('#cantidadTamaño').val('');
-                    $('#cantidad').val('');
-                    $('#precioBase').val('');
-                    $('#porcentajeAumento').val('');
-                    $('#precioVenta').val('');
+                    limpiarModal()
 
                     // Llenar los elementos en el modal con los datos del producto
                     $('#codigo').val(rowData[0]);
@@ -433,41 +500,25 @@ session_start();
                     $('#proveedor').val(rowData[2]);
                     $('#tipoProducto').val(rowData[3]);
                     $('#tamaño').val(rowData[4]);
-                    $('#cantidadTamaño').val(rowData[5]);
+                    $('#medida').val(rowData[5]);
                     $('#cantidad').val(rowData[6]);
                     $('#precioBase').val(rowData[7]);
                     $('#porcentajeAumento').val(rowData[8]);
                     $('#precioVenta').val(rowData[9]);
 
                     // Acción cuando se hace clic en el modal
-                    $('#btnAgregar').click(function() {
+                    $('#btnAgregarTableProd').click(function() {
                         // Cambiar el contenido del label
                         $('#labelAgregarStock').text('Agregar Cantidad de Stock');
-                        $('#codigo').prop('disabled', true);
-                        $('#nombre').prop('disabled', true);
-                        $('#proveedor').prop('disabled', true);
-                        $('#tipoProducto').prop('disabled', true);
-                        $('#tamaño').prop('disabled', true);
-                        $('#cantidadTamaño').prop('disabled', true);
-                        $('#precioBase').prop('disabled', true);
-                        $('#porcentajeAumento').prop('disabled', true);
-                        $('#precioVenta').prop('disabled', true);
+                        btnDisabled()
                         $('#modalAgregarProducto').modal('show');
                     });
-                    $('#btnEditar').click(function() {
+                    $('#btnEditarTableProd').click(function() {
                         $('#labelAgregarStock').text('Editar Producto');
-                        $('#codigo').prop('disabled', false);
-                        $('#nombre').prop('disabled', false);
-                        $('#proveedor').prop('disabled', false);
-                        $('#tipoProducto').prop('disabled', false);
-                        $('#tamaño').prop('disabled', false);
-                        $('#cantidadTamaño').prop('disabled', false);
-                        $('#precioBase').prop('disabled', false);
-                        $('#porcentajeAumento').prop('disabled', false);
-                        $('#precioVenta').prop('disabled', false);
+                        btnOn()
                         $('#modalAgregarProducto').modal('show');
                     });
-                    $('#btnEliminar').click(function() {
+                    $('#btnEliminarTableProd').click(function() {
                         $('#modalEliminarStock').modal('show');
                     });
 
@@ -481,40 +532,6 @@ session_start();
                     
                 }
             });
-        });
-    </script>
-
-    <script>
-        $(document).ready(function() {
-            var tableProd = $('#tableSucursal').DataTable({
-                select: {
-                    style: 'single'
-                },
-                searching: true,
-                lengthChange: true,
-                ordering: false ,
-                info: false,
-                language: {
-                    search: "",
-                    searchPlaceholder: "Filtrar Productos",
-                    lengthMenu: "Mostrar _MENU_ registros",
-                    zeroRecords: "No se encontraron resultados",
-                    info: "Mostrando _START_ a _END_ de _TOTAL_ registros",
-                    infoEmpty: "Mostrando 0 a 0 de 0 registros",
-                    infoFiltered: "(filtrado de _MAX_ registros en total)"
-                }
-            });
-
-            $('#tableSucursal tbody').on('click', 'tr', function () {
-                if ($(this).hasClass('selected')) {
-                    $(this).removeClass('selected');
-                } else {
-                    tableProd.$('tr.selected').removeClass('selected');
-                    $(this).addClass('selected');
-                }
-            });
-
-            $('#tableSucursal tbody tr.selected').addClass('selected');
         });
     </script>
 

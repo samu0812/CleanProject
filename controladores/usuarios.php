@@ -39,6 +39,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $DescripcionRol = $_POST['DescripcionRol'];
             $DescripcionSucursal = $_POST['DescripcionSucursal'];
             $Clave = $_POST['Clave'];
+                // Generar hash de la contraseña
+            $hashedClave = password_hash($Clave, PASSWORD_DEFAULT);
             
     
             $consulta1 = "INSERT INTO Persona (Nombre, Email, Telefono, Direccion, FechaNacimiento) VALUES ('$Nombre', '$Email', '$Telefono', '$Direccion', '$FechaNacimiento')";
@@ -53,7 +55,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $resultado3 = mysqli_query($conn, $consulta3);
             $idSucursal= mysqli_insert_id($conn);
 
-            $consulta4= "INSERT INTO Empleado (idSucursales, idPersona, idRol, Clave) VALUES ('$idSucursal','$idPersona', '$idRol', '$Clave')";
+            $consulta4= "INSERT INTO Empleado (idSucursales, idPersona, idRol, Clave) VALUES ('$idSucursal','$idPersona', '$idRol', '$hashedClave')";
             $resultado4 = mysqli_query($conn, $consulta4);
             
     
