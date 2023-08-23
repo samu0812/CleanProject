@@ -54,8 +54,6 @@
             
 
             $password = password_verify($Clave, $hash);
-            echo "Hash almacenado: " . $password;
-            echo "Contraseña ingresada: " . $Clave;
             if ($password === TRUE){
                 // La contraseña es correcta, iniciar la sesión
                 

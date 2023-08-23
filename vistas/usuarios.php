@@ -33,25 +33,29 @@ session_start();
 
     <!-- Template Stylesheet -->
     <link href="../css/style.css" rel="stylesheet">
-    <!-- Agrega estos enlaces en el head de tu HTML -->
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <link rel="stylesheet" href="https://cdn.datatables.net/1.11.6/css/jquery.dataTables.min.css">
-    <script src="https://cdn.datatables.net/1.11.6/js/jquery.dataTables.min.js"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
 
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.12.1/css/all.css" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
-    
-    <!-- Agrega el enlace a la hoja de estilo de DataTables Select -->
-    <link rel="stylesheet" href="https://cdn.datatables.net/select/1.7.0/css/select.dataTables.min.css">
-    
-    <!-- ... (otros enlaces a hojas de estilo y fuentes aquí) ... -->
-    
-    <!-- Agrega el enlace a la hoja de estilo de Bootstrap (ejemplo) -->
-    <link href="../css/bootstrap.min.css" rel="stylesheet">
+    <!-- Incluir jQuery -->
+    <script src="https://code.jquery.com/jquery-3.7.0.js"></script>
+    <script src="https://code.jquery.com/jquery-3.7.0.js" integrity="sha256-JlqSTELeR4TLqP0OG9dxM7yDPqX1ox/HfgiSLBj8+kM=" crossorigin="anonymous"></script>
+
+    <!-- Incluir Bootstrap CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css">
+
+    <!-- Incluir DataTables CSS -->
+    <link href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css" rel="stylesheet">
+
+    <!-- Incluir tus estilos personalizados -->
+    <link href="../css/style.css" rel="stylesheet">
+
+    <!-- Incluir Bootstrap JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/js/bootstrap.min.js"></script>
+
+    <!-- Incluir DataTables JS -->
+    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
+    <script src="https://cdn.datatables.net/select/1.7.0/js/dataTables.select.min.js"></script>
 
 
-    
 </head>
 
 <body>
@@ -83,16 +87,17 @@ session_start();
             <!-- Sale & Revenue Start -->
             <div class="container-fluid pt-4 px-4">
                 <div class="row g-4">
-                    <div class="col-sm-6 col-xl-3">
-                        <div class="d-flex align-items-center justify-content-center p-3">
-                            <button class="btn btn-lg btn-primary" data-bs-toggle="modal" data-bs-target="#modalAgregarProducto">Agregar Nuevo Usuario</button>
+                    <div class="col-12 col-md-6 col-lg-4 col-xl-3">
+                        <div class="d-flex align-items-center justify-content-center p-4">
+                            <button id="btnAgregarUser" style="background: #e77a34; color: white" class="btn btn-md" data-bs-toggle="modal" data-bs-target="#modalAgregarProducto"><i class="fas fa-plus"></i> Agregar Usuario</button>
                         </div>
                     </div>
-                    <div class="col-sm-4 col-xl-2">
-                        <div class="bg-personalizado rounded d-flex align-items-center justify-content-between p-4 cursorPointer"onclick="redireccionar('empleados.php')">
-                            <i class="fa fa-chart-pie fa-3x" style="color: #fa721c;"></i>
-                            <div class="ms-3">
-                                <p class="mb-2">Usuarios</p>
+
+                    <div class="col-12 col-md-6 col-lg-4 col-xl-3">
+                        <div class="bg-personalizado rounded d-flex align-items-center justify-content-center p-4 cursorPointer" onclick="redireccionar('usuarios.php')">
+                            <i class="fas fa-people-carry fa-2x" style="color: #e77a34"></i>
+                            <div class="text-center" style="margin-left: 30px">
+                                <p class="mb-2">Empleados Act.</p>
                                 <?php
                                 include '../bd/conexion.php';
                                 $query = "SELECT COUNT(*) AS count FROM Empleado";
@@ -109,104 +114,38 @@ session_start();
                                 
                                 
                                 ?>
-                                
                             </div>
                         </div>
                     </div>
 
-                    <!-- Modal Agregar Producto-->
-                    
-                    <div class="modal fade" id="modalAgregarProducto" tabindex="-1" aria-labelledby="modalAgregarProducto" aria-hidden="true">
-                        <form class="form" action="" method="POST">
-                            <div class="modal-dialog modal-dialog-centered modal-lg">
-                                <div class="modal-content" style="text-align: center;">
-                                    <div class="modal-header">
-                                        <h5 class="modal-title" id="modalAgregarProducto">Agregar Nuevo Usuario</h5>
-                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                    </div>
-                                    <div class="modal-body">
-                                        <div class="container">
-                                            <div class="row">
-                                                <div class="col-md-4 mb-3">
-                                                    <label for="Nombre" class="form-label">Nombre</label>
-                                                    <input type="text" class="form-control" name="Nombre">
-                                                </div>
-                                                <div class="col-md-4 mb-3">
-                                                    <label for="Email" class="form-label">Email</label>
-                                                    <input type="email" class="form-control" name="Email">
-                                                </div>
-                                                <div class="col-md-4 mb-3">
-                                                    <label for="Telefono" class="form-label">Teléfono</label>
-                                                    <input type="tel" class="form-control" name="Telefono">
-                                                </div>
-                                                <div class="col-md-4 mb-3">
-                                                    <label for="Direccion" class="form-label">Dirección</label>
-                                                    <input type="text" class="form-control" name="Direccion">
-                                                </div>
-                                                <div class="col-md-4 mb-3">
-                                                    <label for="FechaNacimiento" class="form-label">Fecha de Nacimiento</label>
-                                                    <input type="date" class="form-control" name="FechaNacimiento">
-                                                </div>
-                                                <div class="col-md-4 mb-3">
-                                                    <label for="DescripcionRol" class="form-label">Rol</label>
-                                                    <select class="form-select" name="DescripcionRol">
-                                                        <option value="" selected disabled>Seleccione un Rol</option>
-                                                        <option value="Administrador">Administrador</option>
-                                                        <option value="Cajero">Cajero</option>
-                                                        <option value="Cajero">Repositor</option>
-                                                    </select>
-                                                </div>
-                                            </div>
-                                            <div class="row">
-                                                <div class="col-md-4 mb-3">
-                                                    <label for="DescripcionSucursal" class="form-label">Sucursal</label>
-                                                    <select class="form-select" name="DescripcionSucursal">
-                                                        <option value="" selected disabled>Seleccione una Sucursal</option>
-                                                        <option value="Sucursal1">Sucursal 1</option>
-                                                        <option value="Sucursal2">Sucursal 2</option>
-                                                        <option value="Sucursal3">Sucursal 3</option>
-                                                    </select>
-                                                </div>
-                                                <div class="col-md-4 mb-3">
-                                                    <label for="Clave" class="form-label">Contraseña</label>
-                                                    <input type="text" class="form-control" name="Clave">
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-                                        <button type="submit" value="crearUsuario" name="crearUsuario" class="btn btn-primary">Guardar</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
-                    <?php include("../controladores/usuarios.php")?>
-                    <!-- Parte de tu HTML -->
-<div class="container-fluid pt-4 px-4">
-    <div class="bg-light text-center rounded p-4">
-        <div class="table-responsive -xxl">
-            <table id="tableUsuario" class="table table-striped" style="width:100%">
-                <h5>Lista de Usuarios</h5>
-                <thead>
-                    <tr>
-                        <th>ID Persona</th>
-                        <th>Nombre</th>
-                        <th>Email</th>
-                        <th>Teléfono</th>
-                        <th>Dirección</th>
-                        <th>Fecha de Nacimiento</th>
-                        <th>Rol</th>
-                        <th>Sucursal</th>
-                        <th>                       
-                            <button id="editarSeleccionados" class='btn btn-sm btn-primary' data-bs-toggle='modal'><i class='far fa-edit'></i></button>
-                            <button class='btn btn-sm btn-primary' data-bs-toggle='modal' data-bs-target='#modalEliminarStock'><i class='fas fa-trash'></i></button>
-                        </th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php
+                </div>
+            </div>
+
+            <div class="container-fluid pt-4 px-4">
+                <div class="bg-personalizado text-center rounded p-4">
+                    <div class="table-responsive -xxl">
+                    <table id="tableUser" class="table display" style="width:100%">
+                        <h5>Busqueda de Productos</h5>
+                        <thead>
+                            <tr>
+                            <th>ID Persona</th>
+                            <th>Nombre</th>
+                            <th>Email</th>
+                            <th>Teléfono</th>
+                            <th>Dirección</th>
+                            <th>Fecha de Nacimiento</th>
+                            <th>Rol</th>
+                            <th>Sucursal</th>
+                            <th>Clave</th>
+                                <th>
+                                    <button id="btnAgregar" style="background: #e77a34; color: white;" class="btn btn-sm" disabled><i class="fas fa-plus"></i></button>
+                                    <button id="btnEditarTableProd" style="background: #e77a34; color: white;" class="btn btn-sm" disabled><i class="far fa-edit"></i></button>
+                                    <button id="btnEliminarTableProd" style="background: #e77a34; color: white;" class="btn btn-sm" disabled><i class="fas fa-trash"></i></button>
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        <?php
                     // Obtén los datos de la vista 
                     $query = "SELECT * FROM tablaUsuarios";
                     $result = mysqli_query($conn, $query);
@@ -221,60 +160,99 @@ session_start();
                         echo "<td>" . $row['FechaNacimiento'] . "</td>";
                         echo "<td>" . $row['Rol'] . "</td>";
                         echo "<td>" . $row['Sucursal'] . "</td>";
+                        echo "<td> *** </td>";
                         echo "<td></td>";
                         echo "</tr>";
                     }
                     ?>
-                </tbody>
-                <tfoot>
-                </tfoot>
-            </table>
-        </div>
-    </div>
-</div>
-
-
-
-            <!-- Modal de edición -->
-    <!-- Modal para editar usuario -->
-    <div class="modal fade" id="modalEditarUser" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Editar Usuario</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </tbody>
+                    </table>
+                    </div>
+                </div>
             </div>
-            <div class="modal-body">
-                <input type="hidden" id="editCodigo">
-                <input type="text" id="editNombre" class="form-control" placeholder="Nombre">
-                <input type="email" id="editEmail" class="form-control" placeholder="Email">
-                <input type="tel" id="editTelefono" class="form-control" placeholder="Teléfono">
-                <input type="text" id="editDireccion" class="form-control" placeholder="Dirección">
-                <input type="date" id="editFechaNacimiento" class="form-control" placeholder="Fecha de Nacimiento">
-                <input type="text" id="editRol" class="form-control" placeholder="Rol">
-                <input type="text" id="editSucursal" class="form-control" placeholder="Sucursal">
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                <button type="button" class="btn btn-primary btn-actualizar">Guardar</button>
-            </div>
-        </div>
-    </div>
-</div>
 
-
-
-
-            <!-- Modal para eliminar registro -->
-            <div class="modal fade" id="modalEliminarStock" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                <div class="modal-dialog">
-                    <div class="modal-content">
+            
+            <!-- Modal Agregar Producto-->
+            <div class="modal fade" id="modalAgregarUsuario" tabindex="-1" aria-labelledby="modalAgregarProducto" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered modal-lg">
+                    <div class="modal-content" style="text-align: center;">
                         <div class="modal-header">
-                            <h5 class="modal-title" id="exampleModalLabel">Confirmar Acción</h5>
+                            <h5 class="modal-title" id="labelAgregarStock">Agregar Usuario</h5>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
-                            ¿Estas seguro de que deseas eliminar este usuario?
+                            <div class="container">
+                                <div class="row">
+                                    <div class="col-md-4 mb-3">
+                                        <label for="Nombre" class="form-label">Nombre</label>
+                                        <input type="text" class="form-control" id="Nombre" required>
+                                    </div>
+                                    <div class="col-md-4 mb-3">
+                                        <label for="Email" class="form-label">Email</label>
+                                        <input type="email" class="form-control" id="Email" required>
+                                    </div>
+                                    <div class="col-md-4 mb-3">
+                                        <label for="Telefono" class="form-label">Teléfono</label>
+                                        <input type="tel" class="form-control" id="Telefono" required>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-4 mb-3">
+                                        <label for="FechaNacimiento" class="form-label">Fecha de Nacimiento</label>
+                                        <input type="date" class="form-control" id="FechaNacimiento" required>
+                                    </div>
+                                    <div class="col-md-4 mb-3">
+                                        <label for="Direccion" class="form-label">Dirección</label>
+                                        <input type="text" class="form-control" id="Direccion" required>
+                                    </div>
+                                    <div class="col-md-4 mb-3">
+                                                    <label for="DescripcionRol" class="form-label">Rol</label>
+                                                    <select class="form-select" id="DescripcionRol" required>
+                                                        <option value="" selected disabled>Seleccione un Rol</option>
+                                                        <option value="Administrador">Administrador</option>
+                                                        <option value="Cajero">Cajero</option>
+                                                        <option value="Cajero">Repositor</option>
+                                                    </select>
+                                                </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-4 mb-3">
+                                        <label for="DescripcionSucursal" class="form-label">Sucursal</label>
+                                        <select class="form-select" id="DescripcionSucursal" required>
+                                                <option value="" selected disabled>Seleccione una Sucursal</option>
+                                                <option value="Sucursal1">Sucursal 1</option>
+                                                <option value="Sucursal2">Sucursal 2</option>
+                                                <option value="Sucursal3">Sucursal 3</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-4 mb-3">
+                                        <label for="Clave" class="form-label">Contraseña</label>
+                                        <input type="text" class="form-control" id="Clave" required>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <!-- Cambio en el botón "Cerrar" del modal -->
+                            <button id="btnCerrar" type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                            <!-- Cambio en el botón "Guardar" del modal -->
+                            <button id="btnGuardar" type="button" class="btn btn-primary">Guardar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <!-- Modal para eliminar registro -->
+            <div class="modal fade" id="modalEliminarUsuario" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Confirmar Eliminación</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            ¿Está seguro de que desea eliminar este usuario?
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
@@ -283,8 +261,6 @@ session_start();
                     </div>
                 </div>
             </div>
-
-            <!-- Recent Sales End -->
 
             <!-- Footer Start -->
             <?php
@@ -295,120 +271,134 @@ session_start();
         </div>
         <!-- Content End -->
 
-
         <!-- Back to Top -->
-        <a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top"><i class="bi bi-arrow-up"></i></a>
+        <a href="#" class="btn btn-lg btn-lg-square back-to-top" style="background: #e77a34; color: white"><i class="bi bi-arrow-up"></i></a>
     </div>
 
-    <!-- JavaScript Libraries -->
-    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="../lib/chart/chart.min.js"></script>
-    <script src="../lib/easing/easing.min.js"></script>
-    <script src="../lib/waypoints/waypoints.min.js"></script>
-    <script src="../lib/owlcarousel/owl.carousel.min.js"></script>
-    <script src="../lib/tempusdominus/js/moment.min.js"></script>
-    <script src="../lib/tempusdominus/js/moment-timezone.min.js"></script>
-    <script src="../lib/tempusdominus/js/tempusdominus-bootstrap-4.min.js"></script>
-
-    <!-- Table Libraries -->
-    <script src="https://code.jquery.com/jquery-3.7.0.js"></script>
-    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
-    <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css"></script>
-    <script src="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css"></script>
-    <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
-    
-    <!-- Agrega la librería DataTables -->
-    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
-    
-    <!-- Agrega la extensión Select para DataTables -->
-    <script src="https://cdn.datatables.net/select/1.7.0/js/dataTables.select.min.js"></script>
-
     <script>
-$(document).ready(function() {
-    var table = $('#tableUsuario').DataTable({
-        searching: true,
-        lengthChange: true,
-        ordering: true,
-        info: true,
-        language: {
-            search: "",
-            searchPlaceholder: "Filtrar Nombre",
-            lengthMenu: "Mostrar _MENU_ registros",
-            zeroRecords: "No se encontraron resultados",
-            info: "Mostrando _START_ a _END_ de _TOTAL_ registros",
-            infoEmpty: "Mostrando 0 a 0 de 0 registros",
-            infoFiltered: "(filtrado de _MAX_ registros en total)"
-        },
-        select: {
-            style: 'multi'
+
+        function limpiarModal () {
+            $('#codigo').val('');
+            $('#nombre').val('');
+            $('#proveedor').val('');
+            $('#tipoProducto').val('');
+            $('#tamaño').val('');
+            $('#medida').val('');
+            $('#cantidad').val('');
+            $('#precioBase').val('');
+            $('#porcentajeAumento').val('');
+            $('#precioVenta').val('');
         }
-    });
 
-    $('#editarSeleccionados').click(function() {
-        var selectedRows = table.rows('.selected').data(); // Obtiene los datos de las filas seleccionadas
-
-        if (selectedRows.length > 0) {
-            // Obtiene los datos de la primera fila seleccionada
-            var rowData = selectedRows[0];
-            
-            // Llena los campos de edición con los valores de la fila seleccionada
-            $('#editNombre').val(rowData[1]);
-            $('#editEmail').val(rowData[2]);
-            $('#editTelefono').val(rowData[3]);
-            $('#editDireccion').val(rowData[4]);
-            $('#editFechaNacimiento').val(rowData[5]);
-            $('#editRol').val(rowData[6]);
-            $('#editSucursal').val(rowData[7]);
-
-             // Abre el modal de edición
-            $('#modalEditarUser').modal('show');
-        } else {
-            alert('Por favor, seleccione al menos una fila para editar.');
+        function btnOn () {
+            $('#codigo').prop('disabled', false);
+            $('#nombre').prop('disabled', false);
+            $('#proveedor').prop('disabled', false);
+            $('#tipoProducto').prop('disabled', false);
+            $('#tamaño').prop('disabled', false);
+            $('#medida').prop('disabled', false);
+            $('#precioBase').prop('disabled', false);
+            $('#porcentajeAumento').prop('disabled', false);
+            $('#precioVenta').prop('disabled', false);
         }
-    });
 
-    // Agrega el manejador de eventos para el botón "Guardar" dentro del modal de edición
-    $('#modalEditarUser').on('click', '.btn-actualizar', function() {
-        var editNombre = $('#editNombre').val();
-        var editEmail = $('#editEmail').val();
-        var editTelefono = $('#editTelefono').val();
-        var editDireccion = $('#editDireccion').val();
-        var editFechaNacimiento = $('#editFechaNacimiento').val();
-        var editRol = $('#editRol').val();
-        var editSucursal = $('#editSucursal').val();
+        function btnDisabled () {
+            $('#codigo').prop('disabled', true);
+            $('#nombre').prop('disabled', true);
+            $('#proveedor').prop('disabled', true);
+            $('#tipoProducto').prop('disabled', true);
+            $('#tamaño').prop('disabled', true);
+            $('#medida').prop('disabled', true);
+            $('#precioBase').prop('disabled', true);
+            $('#porcentajeAumento').prop('disabled', true);
+            $('#precioVenta').prop('disabled', true);
+        }
 
-        var idPersona = $('#editCodigo').val(); // Obtén el ID del usuario
+        $(document).ready(function() {
+            var modalAgregarUsuario = $('#modalAgregarUsuario').DataTable({
+                select: {
+                    style: 'single'
+                },
+                searching: true,
+                lengthChange: true,
+                ordering: false ,
+                info: false,
+                language: {
+                    search: "",
+                    searchPlaceholder: "Filtrar Nombre",
+                    lengthMenu: "Mostrar _MENU_ registros",
+                    zeroRecords: "No se encontraron resultados",
+                    info: "Mostrando _START_ a _END_ de _TOTAL_ registros",
+                    infoEmpty: "Mostrando 0 a 0 de 0 registros",
+                    infoFiltered: "(filtrado de _MAX_ registros en total)"
+                }
+            });
 
-        var data = {
-            idPersona: idPersona,
-            editNombre: editNombre,
-            editEmail: editEmail,
-            editTelefono: editTelefono,
-            editDireccion: editDireccion,
-            editFechaNacimiento: editFechaNacimiento,
-            editRol: editRol,
-            editSucursal: editSucursal
-        };
+            $('#modalAgregarUsuario tbody').on('click', 'tr', function() {
+                if ($(this).hasClass('selected')) {
+                    $(this).removeClass('selected');
+                    $('#labelAgregarStock').text('Agregar Producto');
+                    $('#btnAgregarUser').prop('disabled', false);
+                    btnOn()
+                    limpiarModal()
+                    $('#btnAgregarTableProd').prop('disabled', true);
+                    $('#btnEditarTableProd').prop('disabled', true);
+                    $('#btnEliminarTableProd').prop('disabled', true);
 
-        // Envía los datos al servidor mediante una solicitud AJAX
-        $.ajax({
-            type: 'POST',
-            url: '../controladores/updateUsuarios.php', // Ruta al archivo PHP de actualización
-            data: data,
-            success: function(response) {
-                console.log(response); // Muestra la respuesta del servidor en la consola
-                $('#modalEditarUser').modal('hide'); // Cierra el modal de edición
-                location.reload(); // Recarga la página para ver los cambios actualizados
-            },
-            error: function(error) {
-                console.error(error);
-            }
+                } else {
+                    modalAgregarUsuario.$('tr.selected').removeClass('selected');
+                    $(this).addClass('selected');
+                    $('#btnAgregarUser').prop('disabled', true);
+                    // Mostrar el botón "Ver Detalles"
+                    $('#btnAgregarTableProd').prop('disabled', false);
+                    $('#btnEditarTableProd').prop('disabled', false);
+                    $('#btnEliminarTableProd').prop('disabled', false);
+                    // Obtener los datos del producto seleccionado
+                    var rowData = tableProd.row($(this)).data();
+
+                    // Limpiar los datos en el modal
+                    limpiarModal()
+
+                    // Llenar los elementos en el modal con los datos del producto
+                    $('#codigo').val(rowData[0]);
+                    $('#nombre').val(rowData[1]);
+                    $('#proveedor').val(rowData[2]);
+                    $('#tipoProducto').val(rowData[3]);
+                    $('#tamaño').val(rowData[4]);
+                    $('#medida').val(rowData[5]);
+                    $('#cantidad').val(rowData[6]);
+                    $('#precioBase').val(rowData[7]);
+                    $('#porcentajeAumento').val(rowData[8]);
+                    $('#precioVenta').val(rowData[9]);
+
+                    // Acción cuando se hace clic en el modal
+                    $('#btnAgregarTableProd').click(function() {
+                        // Cambiar el contenido del label
+                        $('#labelAgregarStock').text('Agregar Cantidad de Stock');
+                        btnDisabled()
+                        $('#modalAgregarProducto').modal('show');
+                    });
+                    $('#btnEditarTableProd').click(function() {
+                        $('#labelAgregarStock').text('Editar Producto');
+                        btnOn()
+                        $('#modalAgregarProducto').modal('show');
+                    });
+                    $('#btnEliminarTableProd').click(function() {
+                        $('#modalEliminarStock').modal('show');
+                    });
+
+                // Acción cuando se hace clic en el botón "Guardar" en el modal
+                    $('#btnGuardar').click(function() {
+                        // Aquí puedes agregar el código para guardar los datos si es necesario
+                        // ...
+                        // Cerrar el modal después de guardar los datos (si es necesario)
+                        $('#modalAgregarProducto').modal('hide');
+                    });
+                    
+                }
+            });
         });
-    });
-    });
-</script>
+    </script>
 
 
     <style>
@@ -418,6 +408,14 @@ $(document).ready(function() {
             margin-right: auto;
             margin-left: 0;
         }
+
+        .page-item.active .page-link {
+            z-index: 3;
+            color: #fff;
+            background-color: #e77a34;
+            border-color: #e77a34;
+        }
+
 
         /* Estilo para mover el searching a la derecha */
         div.dataTables_wrapper .dataTables_filter {
@@ -468,7 +466,7 @@ $(document).ready(function() {
 
     <!-- Template Javascript -->
     <script src="../js/main.js"></script>
-
+    
 </body>
 
 </html>
