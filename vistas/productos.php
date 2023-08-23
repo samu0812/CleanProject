@@ -36,6 +36,7 @@ session_start();
 
     <!-- Incluir jQuery -->
     <script src="https://code.jquery.com/jquery-3.7.0.js"></script>
+    <script src="https://code.jquery.com/jquery-3.7.0.js" integrity="sha256-JlqSTELeR4TLqP0OG9dxM7yDPqX1ox/HfgiSLBj8+kM=" crossorigin="anonymous"></script>
 
     <!-- Incluir Bootstrap CSS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css">
@@ -142,101 +143,9 @@ session_start();
                         </div>
                     </div>
 
-                    <!-- Modal Agregar Producto-->
-                    <div class="modal fade" id="modalAgregarProducto" tabindex="-1" aria-labelledby="modalAgregarProducto" aria-hidden="true">
-                        <div class="modal-dialog modal-dialog-centered modal-lg">
-                            <div class="modal-content" style="text-align: center;">
-                                <div class="modal-header">
-                                    <h5 class="modal-title" id="modalAgregarProducto">Agregar Producto</h5>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                </div>
-                                <div class="modal-body">
-                                    <div class="container">
-                                        <div class="row">
-                                            <div class="col-md-4 mb-3">
-                                                <label for="codigo" class="form-label">Código</label>
-                                                <input type="text" class="form-control" id="codigo">
-                                            </div>
-                                            <div class="col-md-4 mb-3">
-                                                <label for="nombre" class="form-label">Nombre</label>
-                                                <input type="text" class="form-control" id="nombre">
-                                            </div>
-                                            <div class="col-md-4 mb-3">
-                                                <label for="proveedor" class="form-label">Proveedor</label>
-                                                <select class="form-select" id="proveedor">
-                                                    <option value="" selected disabled>Seleccione un proveedor</option>
-                                                    <option value="proveedor1">Proveedor 1</option>
-                                                    <option value="proveedor2">Proveedor 2</option>
-                                                    <option value="proveedor3">Proveedor 3</option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-md-4 mb-3">
-                                                <label for="tipoProducto" class="form-label">Tipo de Producto</label>
-                                                <select class="form-select" id="tipoProducto">
-                                                    <option value="" selected disabled>Seleccione un tipo</option>
-                                                    <option value="suelto">Suelto</option>
-                                                    <option value="envasado">Envasado</option>
-                                                    <option value="preparado">Preparado</option>
-                                                </select>
-                                            </div>
-                                            <div class="col-md-4 mb-3">
-                                                <label for="tamaño" class="form-label">Tamaño</label>
-                                                <div class="input-group">
-                                                    <select class="form-select" id="tamaño" style="width: 2px;">
-                                                        <option value="" selected disabled>Seleccione un tamaño</option>
-                                                        <option value="centimetrosCubicos">Cm3</option>
-                                                        <option value="litro">Lts</option>
-                                                        <option value="gramos">Grs</option>
-                                                        <option value="kilo">Kg</option>
-                                                    </select>
-                                                    <input type="text" class="form-control" id="cantidadTamaño" placeholder="Cantidad">
-                                                </div>
-                                            </div>
-
-                                            <div class="col-md-4 mb-3">
-                                                <label for="cantidad" class="form-label">Cantidad</label>
-                                                <input type="number" class="form-control" id="cantidad">
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-md-4 mb-3">
-                                                <label for="precioBase" class="form-label">Precio Base</label>
-                                                <div class="input-group">
-                                                    <span class="input-group-text"><i class="fas fa-dollar-sign"></i></span>
-                                                    <input type="number" class="form-control" id="precioBase">
-                                                </div>
-                                            </div>
-                                            <div class="col-md-4 mb-3">
-                                                <label for="porcentajeAumento" class="form-label">Porcentaje para Aumentar</label>
-                                                <div class="input-group">
-                                                    <input type="number" class="form-control" id="porcentajeAumento">
-                                                    <span class="input-group-text"><i class="fas fa-percent"></i></span>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-4 mb-3">
-                                                <label for="precioVenta" class="form-label">Precio de Venta</label>
-                                                <div class="input-group">
-                                                    <span class="input-group-text"><i class="fas fa-dollar-sign"></i></span>
-                                                    <input type="number" class="form-control" id="precioVenta">
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-                                    <button type="button" class="btn btn-primary">Guardar</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
                 </div>
             </div>
-            <!-- Sale & Revenue End -->
-            <!-- Recent Sales Start -->
+
             <div class="container-fluid pt-4 px-4">
                 <div class="bg-personalizado text-center rounded p-4">
                     <div class="table-responsive -xxl">
@@ -248,15 +157,16 @@ session_start();
                                 <th>Nombre</th>
                                 <th>Proveedor</th>
                                 <th>Tipo</th>
+                                <th>Tipo Tamaño</th>
                                 <th>Tamaño</th>
                                 <th>Cantidad</th>
                                 <th>P. Base</th>
                                 <th>%</th>
                                 <th>P. Venta</th>
                                 <th>
-                                    <button style="background: #e77a34; color: white;" class="btn btn-sm" data-bs-toggle="modal" data-bs-target="#modalActualizarStock"><i class="fas fa-plus"></i></button>
-                                    <button style="background: #e77a34; color: white;" class="btn btn-sm" data-bs-toggle="modal" data-bs-target="#modalEditarStock"><i class="far fa-edit"></i></button>
-                                    <button style="background: #e77a34; color: white;" class="btn btn-sm" data-bs-toggle="modal" data-bs-target="#modalEliminarStock"><i class="fas fa-trash"></i></button>
+                                    <button id="btnAgregar" style="background: #e77a34; color: white;" class="btn btn-sm" disabled><i class="fas fa-plus"></i></button>
+                                    <button id="btnEditar" style="background: #e77a34; color: white;" class="btn btn-sm" disabled><i class="far fa-edit"></i></button>
+                                    <button id="btnEliminar" style="background: #e77a34; color: white;" class="btn btn-sm" disabled><i class="fas fa-trash"></i></button>
                                 </th>
                             </tr>
                         </thead>
@@ -265,24 +175,26 @@ session_start();
                                 <td>001</td>
                                 <td>Jabon en Polvo</td>
                                 <td>LCL</td>
-                                <td>Limpieza</td>
-                                <td>300grs</td>
+                                <td>Envasado</td>
+                                <td>Grs</td>
+                                <td>300</td>
                                 <td>200</td>
-                                <td>$300</td>
+                                <td>300</td>
                                 <td>21</td>
-                                <td>$363</td>
+                                <td>363</td>
                                 <td></td>
                             </tr>
                             <tr>
                                 <td>002</td>
                                 <td>Lavandina</td>
                                 <td>LCL</td>
-                                <td>Limpieza</td>
-                                <td>300grs</td>
+                                <td>Preparado</td>
+                                <td>Lts</td>
+                                <td>300</td>
                                 <td>200</td>
-                                <td>$300</td>
+                                <td>300</td>
                                 <td>21</td>
-                                <td>$363</td>
+                                <td>363</td>
                                 <td></td>
                             </tr>
                         </tbody>
@@ -291,39 +203,10 @@ session_start();
                 </div>
             </div>
 
-            <!-- Modal de edición -->
-            <div class="modal fade" id="modalEditarStock" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="exampleModalLabel">Editar Producto</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body">
-                            <!-- Campos de edición con identificadores únicos -->
-                            <input type="text" id="editCodigo" class="form-control" placeholder="Código">
-                            <input type="text" id="editNombre" class="form-control" placeholder="Nombre">
-                            <input type="text" id="editProveedor" class="form-control" placeholder="Proveedor">
-                            <input type="text" id="editTipo" class="form-control" placeholder="Tipo">
-                            <input type="text" id="editTamaño" class="form-control" placeholder="Tamaño">
-                            <input type="text" id="editCantidad" class="form-control" placeholder="Cantidad">
-                            <input type="text" id="editPrecioBase" class="form-control" placeholder="Precio Base">
-                            <input type="text" id="editPorcentaje" class="form-control" placeholder="%">
-                            <input type="text" id="editPrecioVenta" class="form-control" placeholder="Precio de Venta">
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                            <button type="button" class="btn btn-primary">Guardar</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-
             <div class="container-fluid pt-4 px-4">
                 <div class="bg-personalizado text-center rounded p-4">
                     <div class="table-responsive -xxl">
-                        <table id="tableSucursal" class="table table-striped" style="width:100%">
+                        <table id="tableSucursal" class="table display" style="width:100%">
                             <h5>Busqueda por Sucursal</h5>
                             <thead>
                                 <tr>
@@ -334,9 +217,9 @@ session_start();
                                     <th>Cantidad</th>
                                     <th>P. Venta</th>
                                     <th>
-                                        <button style="background: #e77a34; color: white;" class="btn btn-sm" data-bs-toggle="modal" data-bs-target="#modalActualizarStock"><i class="fas fa-plus"></i></button>
-                                        <button style="background: #e77a34; color: white;" class="btn btn-sm" data-bs-toggle="modal" data-bs-target="#modalEditarStock"><i class="far fa-edit"></i></button>
-                                        <button style="background: #e77a34; color: white;" class="btn btn-sm" data-bs-toggle="modal" data-bs-target="#modalEliminarStock"><i class="fas fa-trash"></i></button>
+                                        <button id="btnAgregar" style="background: #e77a34; color: white;" class="btn btn-sm" data-bs-toggle="modal" data-bs-target="#modalActualizarStock"><i class="fas fa-plus"></i></button>
+                                        <button id="btnEditar" style="background: #e77a34; color: white;" class="btn btn-sm" data-bs-toggle="modal" data-bs-target="#modalEditarStock"><i class="far fa-edit"></i></button>
+                                        <button id="btnEliminar" style="background: #e77a34; color: white;" class="btn btn-sm" data-bs-toggle="modal" data-bs-target="#modalEliminarStock"><i class="fas fa-trash"></i></button>
                                     </th>
                                 </tr>
                             </thead>
@@ -367,70 +250,118 @@ session_start();
                 </div>
             </div>
 
-            <!-- Modal para actualizar stock -->
-            <div class="modal fade" id="modalActualizarStock" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                <div class="modal-dialog">
-                    <div class="modal-content">
+            <!-- Modal Agregar Producto-->
+            <div class="modal fade" id="modalAgregarProducto" tabindex="-1" aria-labelledby="modalAgregarProducto" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered modal-lg">
+                    <div class="modal-content" style="text-align: center;">
                         <div class="modal-header">
-                            <h5 class="modal-title" id="exampleModalLabel">Update Stock</h5>
+                            <h5 class="modal-title" id="labelAgregarStock">Agregar Producto</h5>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
-                            <!-- Contenido del modal para actualizar stock -->
-                            <form>
-                                <!-- Agrega aquí los inputs para actualizar el stock -->
-                            </form>
+                            <div class="container">
+                                <div class="row">
+                                    <div class="col-md-4 mb-3">
+                                        <label for="codigo" class="form-label">Código</label>
+                                        <input type="text" class="form-control" id="codigo">
+                                    </div>
+                                    <div class="col-md-4 mb-3">
+                                        <label for="nombre" class="form-label">Nombre</label>
+                                        <input type="text" class="form-control" id="nombre">
+                                    </div>
+                                    <div class="col-md-4 mb-3">
+                                        <label for="proveedor" class="form-label">Proveedor</label>
+                                        <select class="form-select" id="proveedor">
+                                            <option value="" selected disabled>Seleccione un proveedor</option>
+                                            <option value="LCL">LCL</option>
+                                            <option value="ACD">ACD</option>
+                                            <option value="CHANGOMAS">CHANGO MAS</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-4 mb-3">
+                                        <label for="tipoProducto" class="form-label">Tipo de Producto</label>
+                                        <select class="form-select" id="tipoProducto">
+                                            <option value="" selected disabled>Seleccione un tipo</option>
+                                            <option value="Suelto">Suelto</option>
+                                            <option value="Envasado">Envasado</option>
+                                            <option value="Preparado">Preparado</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-4 mb-3">
+                                        <label for="tamaño" class="form-label">Tamaño</label>
+                                        <div class="input-group">
+                                            <select class="form-select" id="tamaño" style="width: 2px;">
+                                                <option value="" selected disabled>Seleccione un tamaño</option>
+                                                <option value="Cm3">Cm3</option>
+                                                <option value="Lts">Lts</option>
+                                                <option value="Grs">Grs</option>
+                                                <option value="Kg">Kg</option>
+                                            </select>
+                                            <input type="text" class="form-control" id="cantidadTamaño" placeholder="Cantidad">
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-4 mb-3">
+                                        <label for="cantidad" class="form-label">Cantidad</label>
+                                        <input type="number" class="form-control" id="cantidad">
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-4 mb-3">
+                                        <label for="precioBase" class="form-label">Precio Base</label>
+                                        <div class="input-group">
+                                            <span class="input-group-text"><i class="fas fa-dollar-sign"></i></span>
+                                            <input type="number" class="form-control" id="precioBase">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4 mb-3">
+                                        <label for="porcentajeAumento" class="form-label">Porcentaje para Aumentar</label>
+                                        <div class="input-group">
+                                            <input type="number" class="form-control" id="porcentajeAumento">
+                                            <span class="input-group-text"><i class="fas fa-percent"></i></span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4 mb-3">
+                                        <label for="precioVenta" class="form-label">Precio de Venta</label>
+                                        <div class="input-group">
+                                            <span class="input-group-text"><i class="fas fa-dollar-sign"></i></span>
+                                            <input type="number" class="form-control" id="precioVenta">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                            <button type="button" class="btn btn-primary">Save changes</button>
+                            <!-- Cambio en el botón "Cerrar" del modal -->
+                            <button id="btnCerrar" type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                            <!-- Cambio en el botón "Guardar" del modal -->
+                            <button id="btnGuardar" type="button" class="btn btn-primary">Guardar</button>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <!-- Modal para editar stock -->
-            <div class="modal fade" id="modalEditarStock" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="exampleModalLabel">Update Stock</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body">
-                            <!-- Contenido del modal para actualizar stock -->
-                            <form>
-                                <!-- Agrega aquí los inputs para actualizar el stock -->
-                            </form>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                            <button type="button" class="btn btn-primary">Save changes</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
 
             <!-- Modal para eliminar registro -->
             <div class="modal fade" id="modalEliminarStock" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                <div class="modal-dialog">
+                <div class="modal-dialog modal-dialog-centered">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title" id="exampleModalLabel">Confirm Delete</h5>
+                            <h5 class="modal-title" id="exampleModalLabel">Confirmar Eliminación</h5>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
-                            Are you sure you want to delete this record?
+                            ¿Está seguro que quiere eliminar este producto?
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                            <button type="button" class="btn btn-danger">Delete</button>
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                            <button type="button" class="btn btn-danger">Eliminar</button>
                         </div>
                     </div>
                 </div>
             </div>
-
-            <!-- Recent Sales End -->
 
             <!-- Footer Start -->
             <?php
@@ -441,7 +372,6 @@ session_start();
         </div>
         <!-- Content End -->
 
-
         <!-- Back to Top -->
         <a href="#" class="btn btn-lg btn-lg-square back-to-top" style="background: #e77a34; color: white"><i class="bi bi-arrow-up"></i></a>
     </div>
@@ -450,7 +380,7 @@ session_start();
         $(document).ready(function() {
             var tableProd = $('#tableProd').DataTable({
                 select: {
-                    style: 'multi'
+                    style: 'single'
                 },
                 searching: true,
                 lengthChange: true,
@@ -467,7 +397,115 @@ session_start();
                 }
             });
 
-            $('#tableProd tbody').on('click', 'tr', function () {
+            $('#tableProd tbody').on('click', 'tr', function() {
+                if ($(this).hasClass('selected')) {
+                    $(this).removeClass('selected');
+                    $('#btnAgregar').prop('disabled', true);
+                    $('#btnEditar').prop('disabled', true);
+                    $('#btnEliminar').prop('disabled', true);
+
+                } else {
+                    tableProd.$('tr.selected').removeClass('selected');
+                    $(this).addClass('selected');
+
+                    // Mostrar el botón "Ver Detalles"
+                    $('#btnAgregar').prop('disabled', false);
+                    $('#btnEditar').prop('disabled', false);
+                    $('#btnEliminar').prop('disabled', false);
+                    // Obtener los datos del producto seleccionado
+                    var rowData = tableProd.row($(this)).data();
+
+                    // Limpiar los datos en el modal
+                    $('#codigo').val('');
+                    $('#nombre').val('');
+                    $('#proveedor').val('');
+                    $('#tipoProducto').val('');
+                    $('#tamaño').val('');
+                    $('#cantidadTamaño').val('');
+                    $('#cantidad').val('');
+                    $('#precioBase').val('');
+                    $('#porcentajeAumento').val('');
+                    $('#precioVenta').val('');
+
+                    // Llenar los elementos en el modal con los datos del producto
+                    $('#codigo').val(rowData[0]);
+                    $('#nombre').val(rowData[1]);
+                    $('#proveedor').val(rowData[2]);
+                    $('#tipoProducto').val(rowData[3]);
+                    $('#tamaño').val(rowData[4]);
+                    $('#cantidadTamaño').val(rowData[5]);
+                    $('#cantidad').val(rowData[6]);
+                    $('#precioBase').val(rowData[7]);
+                    $('#porcentajeAumento').val(rowData[8]);
+                    $('#precioVenta').val(rowData[9]);
+
+                    // Acción cuando se hace clic en el modal
+                    $('#btnAgregar').click(function() {
+                        // Cambiar el contenido del label
+                        $('#labelAgregarStock').text('Agregar Cantidad de Stock');
+                        $('#codigo').prop('disabled', true);
+                        $('#nombre').prop('disabled', true);
+                        $('#proveedor').prop('disabled', true);
+                        $('#tipoProducto').prop('disabled', true);
+                        $('#tamaño').prop('disabled', true);
+                        $('#cantidadTamaño').prop('disabled', true);
+                        $('#precioBase').prop('disabled', true);
+                        $('#porcentajeAumento').prop('disabled', true);
+                        $('#precioVenta').prop('disabled', true);
+                        $('#modalAgregarProducto').modal('show');
+                    });
+                    $('#btnEditar').click(function() {
+                        $('#labelAgregarStock').text('Editar Producto');
+                        $('#codigo').prop('disabled', false);
+                        $('#nombre').prop('disabled', false);
+                        $('#proveedor').prop('disabled', false);
+                        $('#tipoProducto').prop('disabled', false);
+                        $('#tamaño').prop('disabled', false);
+                        $('#cantidadTamaño').prop('disabled', false);
+                        $('#precioBase').prop('disabled', false);
+                        $('#porcentajeAumento').prop('disabled', false);
+                        $('#precioVenta').prop('disabled', false);
+                        $('#modalAgregarProducto').modal('show');
+                    });
+                    $('#btnEliminar').click(function() {
+                        $('#modalEliminarStock').modal('show');
+                    });
+
+                // Acción cuando se hace clic en el botón "Guardar" en el modal
+                    $('#btnGuardar').click(function() {
+                        // Aquí puedes agregar el código para guardar los datos si es necesario
+                        // ...
+                        // Cerrar el modal después de guardar los datos (si es necesario)
+                        $('#modalAgregarProducto').modal('hide');
+                    });
+                    
+                }
+            });
+        });
+    </script>
+
+    <script>
+        $(document).ready(function() {
+            var tableProd = $('#tableSucursal').DataTable({
+                select: {
+                    style: 'single'
+                },
+                searching: true,
+                lengthChange: true,
+                ordering: false ,
+                info: false,
+                language: {
+                    search: "",
+                    searchPlaceholder: "Filtrar Productos",
+                    lengthMenu: "Mostrar _MENU_ registros",
+                    zeroRecords: "No se encontraron resultados",
+                    info: "Mostrando _START_ a _END_ de _TOTAL_ registros",
+                    infoEmpty: "Mostrando 0 a 0 de 0 registros",
+                    infoFiltered: "(filtrado de _MAX_ registros en total)"
+                }
+            });
+
+            $('#tableSucursal tbody').on('click', 'tr', function () {
                 if ($(this).hasClass('selected')) {
                     $(this).removeClass('selected');
                 } else {
@@ -475,6 +513,8 @@ session_start();
                     $(this).addClass('selected');
                 }
             });
+
+            $('#tableSucursal tbody tr.selected').addClass('selected');
         });
     </script>
 
