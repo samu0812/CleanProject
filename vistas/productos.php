@@ -44,6 +44,10 @@ session_start();
     <!-- Incluir DataTables CSS -->
     <link href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css" rel="stylesheet">
 
+    <link href="../css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+
     <!-- Incluir tus estilos personalizados -->
     <link href="../css/style.css" rel="stylesheet">
 
@@ -79,7 +83,7 @@ session_start();
         <div class="content">
             <!-- Navbar Start -->
             <?php
-            include "navbar.php";
+            include 'navbar.php';
             ?>
             <!-- Navbar End -->
 
