@@ -138,9 +138,8 @@ session_start();
                             <th>Sucursal</th>
                             <th>Clave</th>
                                 <th>
-                                    <button id="btnAgregarTableProd" style="background: #e77a34; color: white;" class="btn btn-sm" disabled><i class="fas fa-plus"></i></button>
-                                    <button id="btnEditarTableProd" style="background: #e77a34; color: white;" class="btn btn-sm" disabled><i class="far fa-edit"></i></button>
-                                    <button id="btnEliminarTableProd" style="background: #e77a34; color: white;" class="btn btn-sm" disabled><i class="fas fa-trash"></i></button>
+                                    <button id="btnEditarTableUsuario" style="background: #e77a34; color: white;" class="btn btn-sm" disabled><i class="far fa-edit"></i></button>
+                                    <button id="btnEliminarTableUsuario" style="background: #e77a34; color: white;" class="btn btn-sm" disabled><i class="fas fa-trash"></i></button>
                                 </th>
                             </tr>
                         </thead>
@@ -178,7 +177,7 @@ session_start();
         <div class="modal-dialog modal-dialog-centered modal-lg">
             <div class="modal-content" style="text-align: center;">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="labelAgregarStock">Agregar Usuario</h5>
+                    <h5 class="modal-title" id="labelAgregarUsuario">Agregar Usuario</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
@@ -186,29 +185,29 @@ session_start();
                         <div class="row">
                             <div class="col-md-4 mb-3">
                                 <label for="Nombre" class="form-label">Nombre</label>
-                                <input type="text" class="form-control" name="Nombre" required>
+                                <input type="text" class="form-control" name="Nombre" id="Nombre" required>
                             </div>
                             <div class="col-md-4 mb-3">
                                 <label for="Email" class="form-label">Email</label>
-                                <input type="email" class="form-control" name="Email" required>
+                                <input type="email" class="form-control" name="Email" id="Email" required>
                             </div>
                             <div class="col-md-4 mb-3">
                                 <label for="Telefono" class="form-label">Teléfono</label>
-                                <input type="tel" class="form-control" name="Telefono" required>
+                                <input type="tel" class="form-control" name="Telefono" id="Telefono" required>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-md-4 mb-3">
                                 <label for="FechaNacimiento" class="form-label">Fecha de Nacimiento</label>
-                                <input type="date" class="form-control" name="FechaNacimiento" required>
+                                <input type="date" class="form-control" name="FechaNacimiento" id="FechaNacimiento" required>
                             </div>
                             <div class="col-md-4 mb-3">
                                 <label for="Direccion" class="form-label">Dirección</label>
-                                <input type="text" class="form-control" name="Direccion" required>
+                                <input type="text" class="form-control" name="Direccion" id="Direccion" required>
                             </div>
                             <div class="col-md-4 mb-3">
                                 <label for="DescripcionRol" class="form-label">Rol</label>
-                                <select class="form-select" name="DescripcionRol" required>
+                                <select class="form-select" name="DescripcionRol" id="DescripcionRol"  required>
                                     <option value="" selected disabled>Seleccione un Rol</option>
                                     <option value="Administrador">Administrador</option>
                                     <option value="Cajero">Cajero</option>
@@ -219,7 +218,7 @@ session_start();
                         <div class="row">
                             <div class="col-md-4 mb-3">
                                 <label for="DescripcionSucursal" class="form-label">Sucursal</label>
-                                <select class="form-select" name="DescripcionSucursal" required>
+                                <select class="form-select" name="DescripcionSucursal" id="DescripcionSucursal" required>
                                     <option value="" selected disabled>Seleccione una Sucursal</option>
                                     <option value="Sucursal1">Sucursal 1</option>
                                     <option value="Sucursal2">Sucursal 2</option>
@@ -228,7 +227,7 @@ session_start();
                             </div>
                             <div class="col-md-4 mb-3">
                                 <label for="Clave" class="form-label">Contraseña</label>
-                                <input type="text" class="form-control" name="Clave" required>
+                                <input type="text" class="form-control" name="Clave" id="Clave" required>
                             </div>
                         </div>
                     </div>
@@ -237,7 +236,7 @@ session_start();
                     <!-- Cambio en el botón "Cerrar" del modal -->
                     <button id="btnCerrar" type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
                     <!-- Cambio en el botón "Guardar" del modal -->
-                    <button type="submit" value="crearUsuario" name="crearUsuario" type="button" class="btn btn-primary">Guardar</button>
+                    <button type="submit" value="crearUsuario" id="btnCrearUsuario" name="crearUsuario" type="button" class="btn btn-primary">Guardar</button>
                 </div>
             </div>
         </div>
@@ -284,40 +283,38 @@ session_start();
     <script>
 
         function limpiarModal () {
-            $('#codigo').val('');
-            $('#nombre').val('');
-            $('#proveedor').val('');
-            $('#tipoProducto').val('');
-            $('#tamaño').val('');
-            $('#medida').val('');
-            $('#cantidad').val('');
-            $('#precioBase').val('');
-            $('#porcentajeAumento').val('');
-            $('#precioVenta').val('');
+            $('#idPersona').val('');
+            $('#Nombre').val('');
+            $('#Email').val('');
+            $('#Telefono').val('');
+            $('#Direccion').val('');
+            $('#FechaNacimiento').val('');
+            $('#DescripcionRol').val('');
+            $('#DescripcionSucursal').val('');
+
+            
         }
 
         function btnOn () {
-            $('#codigo').prop('disabled', false);
-            $('#nombre').prop('disabled', false);
-            $('#proveedor').prop('disabled', false);
-            $('#tipoProducto').prop('disabled', false);
-            $('#tamaño').prop('disabled', false);
-            $('#medida').prop('disabled', false);
-            $('#precioBase').prop('disabled', false);
-            $('#porcentajeAumento').prop('disabled', false);
-            $('#precioVenta').prop('disabled', false);
+            $('#idPersona').prop('disabled', false);
+            $('#Nombre').prop('disabled', false);
+            $('#Email').prop('disabled', false);
+            $('#Telefono').prop('disabled', false);
+            $('#Direccion').prop('disabled', false);
+            $('#FechaNacimiento').prop('disabled', false);
+            $('#DescripcionRol').prop('disabled', false);
+            $('#DescripcionSucursal').prop('disabled', false);
         }
 
         function btnDisabled () {
-            $('#codigo').prop('disabled', true);
-            $('#nombre').prop('disabled', true);
-            $('#proveedor').prop('disabled', true);
-            $('#tipoProducto').prop('disabled', true);
-            $('#tamaño').prop('disabled', true);
-            $('#medida').prop('disabled', true);
-            $('#precioBase').prop('disabled', true);
-            $('#porcentajeAumento').prop('disabled', true);
-            $('#precioVenta').prop('disabled', true);
+            $('#idPersona').prop('disabled', true);
+            $('#Nombre').prop('disabled', true);
+            $('#Email').prop('disabled', true);
+            $('#Telefono').prop('disabled', true);
+            $('#Direccion').prop('disabled', true);
+            $('#FechaNacimiento').prop('disabled', true);
+            $('#DescripcionRol').prop('disabled', true);
+            $('#DescripcionSucursal').prop('disabled', true);
         }
 
         $(document).ready(function() {
@@ -331,7 +328,7 @@ session_start();
                 info: false,
                 language: {
                     search: "",
-                    searchPlaceholder: "Filtrar Productos",
+                    searchPlaceholder: "Filtrar Nombre",
                     lengthMenu: "Mostrar _MENU_ registros",
                     zeroRecords: "No se encontraron resultados",
                     info: "Mostrando _START_ a _END_ de _TOTAL_ registros",
@@ -344,22 +341,20 @@ session_start();
             $('#tableUser tbody').on('click', 'tr', function() {
                 if ($(this).hasClass('selected')) {
                     $(this).removeClass('selected');
-                    $('#labelAgregarStock').text('Agregar Producto');
+                    $('#labelAgregarUsuario').text('Agregar Usuario');
                     $('#btnAgregarUser').prop('disabled', false);
                     btnOn()
                     limpiarModal()
-                    $('#btnAgregarTableProd').prop('disabled', true);
-                    $('#btnEditarTableProd').prop('disabled', true);
-                    $('#btnEliminarTableProd').prop('disabled', true);
+                    $('#btnEditarTableUsuario').prop('disabled', true);
+                    $('#btnEliminarTableUsuario').prop('disabled', true);
 
                 } else {
                     tableUser.$('tr.selected').removeClass('selected');
                     $(this).addClass('selected');
                     $('#btnAgregarUser').prop('disabled', true);
                     // Mostrar el botón "Ver Detalles"
-                    $('#btnAgregarTableProd').prop('disabled', false);
-                    $('#btnEditarTableProd').prop('disabled', false);
-                    $('#btnEliminarTableProd').prop('disabled', false);
+                    $('#btnEditarTableUsuario').prop('disabled', false);
+                    $('#btnEliminarTableUsuario').prop('disabled', false);
                     // Obtener los datos del producto seleccionado
                     var rowData = tableUser.row($(this)).data();
 
@@ -367,31 +362,83 @@ session_start();
                     limpiarModal()
 
                     // Llenar los elementos en el modal con los datos del producto
-                    $('#codigo').val(rowData[0]);
-                    $('#nombre').val(rowData[1]);
-                    $('#proveedor').val(rowData[2]);
-                    $('#tipoProducto').val(rowData[3]);
-                    $('#tamaño').val(rowData[4]);
-                    $('#medida').val(rowData[5]);
-                    $('#cantidad').val(rowData[6]);
-                    $('#precioBase').val(rowData[7]);
-                    $('#porcentajeAumento').val(rowData[8]);
-                    $('#precioVenta').val(rowData[9]);
+                    $('#idPersona').val(rowData[0]);
+                    $('#Nombre').val(rowData[1]);
+                    $('#Email').val(rowData[2]);
+                    $('#Telefono').val(rowData[3]);
+                    $('#Direccion').val(rowData[4]);
+                    $('#FechaNacimiento').val(rowData[5]);
+                    $('#DescripcionRol').val(rowData[6]);
+                    $('#DescripcionSucursal').val(rowData[7]);
 
                     // Acción cuando se hace clic en el modal
-                    $('#btnAgregarTableProd').click(function() {
-                        // Cambiar el contenido del label
-                        $('#labelAgregarStock').text('Agregar Cantidad de Stock');
-                        btnDisabled()
+
+                    $('#btnEditarTableUsuario').click(function() {
+                        $('#labelAgregarUsuario').text('Editar Usuario');
+                        btnOn();
                         $('#modalAgregarUsuario').modal('show');
+    
+                        // Comprobar si el botón ya existe
+                        var nuevoBoton = $('#nuevoBoton');
+    
+                        if (nuevoBoton.length === 0) {
+                            // El botón no existe, así que se crea
+                            nuevoBoton = $('<button>', {
+                            id: 'updateUser',       // Asignar un id al botón para futuras referencias
+                            value: "updateUser",
+                            class: 'btn btn-success',
+                            text: 'Guardar Cambios'});
+        
+                            // Agregar el nuevo botón al pie del modal
+                            $('#modalAgregarUsuario .modal-footer').append(nuevoBoton);} 
+                        else {
+                                // El botón ya existe, se actualiza su contenido y función click
+
+                                nuevoBoton.off('click');  // Eliminar eventos de clic anteriores
+                                nuevoBoton.click(function() {
+    // Obtener los datos del formulario
+    var idPersona = $('#idPersona').val();
+    var editNombre = $('#Nombre').val();
+    var editEmail = $('#Email').val();
+    var editTelefono = $('#Telefono').val();
+    var editDireccion = $('#Direccion').val();
+    var editFechaNacimiento = $('#FechaNacimiento').val();
+    var editRol = $('#DescripcionRol').val();
+    var editSucursal = $('#DescripcionSucursal').val();
+    var editSucursal = $('#Clave').val();
+
+    // Crear objeto de datos a enviar al servidor
+    var dataToSend = {
+        idPersona: idPersona,
+        editNombre: editNombre,
+        editEmail: editEmail,
+        editTelefono: editTelefono,
+        editDireccion: editDireccion,
+        editFechaNacimiento: editFechaNacimiento,
+        editRol: editRol,
+        editSucursal: editSucursal,
+        editClave: Clave
+    };
+
+    // Enviar datos al servidor utilizando AJAX
+    $.ajax({
+        type: 'POST',
+        url: '../controladores/updateUsuarios.php', // Cambiar por la ruta correcta
+        data: dataToSend,
+        success: function(response) {
+            alert(response); // Muestra la respuesta del servidor (éxito o error)
+        },
+        error: function(xhr, status, error) {
+            alert('Error en la solicitud AJAX: ' + error);
+        }
+    });
+});}
+                            // Eliminar el botón con id 'btnEliminar' si existe
+                        $('#btnEliminar').remove();
+                        $('#btnCrearUsuario').remove();  
                     });
-                    $('#btnEditarTableProd').click(function() {
-                        $('#labelAgregarStock').text('Editar Producto');
-                        btnOn()
-                        $('#modalAgregarUsuario').modal('show');
-                    });
-                    $('#btnEliminarTableProd').click(function() {
-                        $('#modalEliminarStock').modal('show');
+                    $('#btnEliminarTableUsuario').click(function() {
+                        $('#modalEliminarUsuario').modal('show');
                     });
 
                 // Acción cuando se hace clic en el botón "Guardar" en el modal
