@@ -1,30 +1,68 @@
 <?php
 include '../bd/conexion.php';
 
-if (isset($_POST['idPersona'])) {
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    $Nombre = $_POST['Nombre'];
+    $Email = $_POST['Email'];
+    $Telefono = $_POST['Telefono'];
+    $Direccion = $_POST['Direccion'];
+    $FechaNacimiento = $_POST['FechaNacimiento'];
+    $DescripcionRol = $_POST['DescripcionRol'];
+    $DescripcionSucursal = $_POST['DescripcionSucursal'];
+    $Clave = $_POST['Clave']; // Asegúrate de agregar esta línea
     $idPersona = $_POST['idPersona'];
-    $nombre = $_POST['editNombre'];
-    $email = $_POST['editEmail'];
-    $telefono = $_POST['editTelefono'];
-    $direccion = $_POST['editDireccion'];
-    $fechaNacimiento = $_POST['editFechaNacimiento'];
-    $rol = $_POST['editRol'];
-    $sucursal = $_POST['editSucursal'];
+    
+    if (isset($_POST['UpdateUsuario'])) {
+        $consulta1 = "SELECT idEmpleado, idRol, idSucursales FROM empleado WHERE idPersona = '$idPersona'";
+        $result = $conn->query($consulta1);
+        if ($result->num_rows > 0) {
+            while ($row = $result->fetch_assoc()) {
+                $idEmpleado = $row["idEmpleado"];
+                $idSucursal = $row["idSucursales"];
+                $idRol = $row["idRol"];
+                echo $idEmpleado, $idSucursal, $idRol;
+                $hashedClave = password_hash($Clave, PASSWORD_DEFAULT);
+                // Actualizar datos en la tabla Persona
+                if (empty($Nombre) || empty($Email) || empty($Telefono) || empty($Direccion) || empty($FechaNacimiento) || empty($DescripcionRol) || empty($DescripcionSucursal) || empty($Clave) || empty($idPersona)) {
+                    echo "Por favor, complete todos los campos.";
+                    //AGREGAR MENSAJE
+                } else {
+            
+                    $queryPersona = "UPDATE Persona SET Nombre=?, Email=?, Telefono=?, Direccion=?, FechaNacimiento=? WHERE idPersona=?";
+                    $stmtPersona = $conn->prepare($queryPersona);
+                    $stmtPersona->bind_param("sssssi", $Nombre, $Email, $Telefono, $Direccion, $FechaNacimiento, $idPersona);
+            
+                // Actualizar rol en la tabla Rol
+                    $queryRol = "UPDATE Rol SET Descripcion=? WHERE idRol=?";
+                    $stmtRol = $conn->prepare($queryRol);
+                    $stmtRol->bind_param("si", $DescripcionRol, $idRol);
+            
+                // Actualizar sucursal en la tabla Sucursal
+                    $querySucursal = "UPDATE Sucursales SET Descripcion=? WHERE idSucursales=?";
+                    $stmtSucursal = $conn->prepare($querySucursal);
+                    $stmtSucursal->bind_param("si", $DescripcionSucursal, $idSucursal);
+            
+                // Actualizar clave en la tabla Empleados
+                    $queryEmpleado = "UPDATE Empleado SET Clave=? WHERE idEmpleado=?";
+                    $stmtEmpleado = $conn->prepare($queryEmpleado);
+                    $stmtEmpleado->bind_param("si", $hashedClave, $idEmpleado);
+            
+                // Ejecutar las actualizaciones en las tablas
+                    if ($stmtPersona->execute() && $stmtRol->execute() && $stmtSucursal->execute() && $stmtEmpleado->execute()) {
+                        echo "Actualización exitosa en todas las tablas";
+                    } else {
+                        echo "Error al actualizar: " . $conn->error;
+                    }
+                // Aquí puedes hacer lo que necesites con los datos
 
-    $query = "UPDATE tablaUsuarios SET Nombre=?, Email=?, Telefono=?, Direccion=?, FechaNacimiento=?, Rol=?, Sucursal=? WHERE idPersona=?";
-    $stmt = $conn->prepare($query);
-    $stmt->bind_param("sssssssi", $nombre, $email, $telefono, $direccion, $fechaNacimiento, $rol, $sucursal, $idPersona);
-
-    if ($stmt->execute()) {
-        echo "Actualización exitosa";
-    } else {
-        echo "Error al actualizar: " . $stmt->error;
-    }
-
-    $stmt->close();
-}else{
-    echo "no anda"; }
-
+                    // Cerrar las declaraciones preparadas
+                    $stmtPersona->close();
+                    $stmtRol->close();
+                    $stmtSucursal->close();
+                    $stmtEmpleado->close();}
+            }
+}
+}}
 // Cierra la conexión a la base de datos
-$conn->close();
+
 ?>

@@ -229,6 +229,10 @@ session_start();
                                 <label for="Clave" class="form-label">Contraseña</label>
                                 <input type="text" class="form-control" name="Clave" id="Clave" required>
                             </div>
+                            <div class="col-md-4 mb-3">
+                                <label for="idPersona" class="form-label">Id Persona</label>
+                                <input type="number" class="form-control" name="idPersona" id="idPersona">
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -237,12 +241,13 @@ session_start();
                     <button id="btnCerrar" type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
                     <!-- Cambio en el botón "Guardar" del modal -->
                     <button type="submit" value="crearUsuario" id="btnCrearUsuario" name="crearUsuario" type="button" class="btn btn-primary">Guardar</button>
+                    <button type="submit" value="UpdateUsuario" id="btnUpdateUsuario" name="UpdateUsuario" type="button" class="btn btn-primary" disabled>Actualizar</button>
                 </div>
             </div>
         </div>
     </form>
 </div>
-<?php include("../controladores/usuarios.php")?>
+<?php include("../controladores/usuarios.php");?>
 
 
 
@@ -283,7 +288,6 @@ session_start();
     <script>
 
         function limpiarModal () {
-            $('#idPersona').val('');
             $('#Nombre').val('');
             $('#Email').val('');
             $('#Telefono').val('');
@@ -291,12 +295,12 @@ session_start();
             $('#FechaNacimiento').val('');
             $('#DescripcionRol').val('');
             $('#DescripcionSucursal').val('');
+            $('#idPersona').val('');
 
             
         }
 
         function btnOn () {
-            $('#idPersona').prop('disabled', false);
             $('#Nombre').prop('disabled', false);
             $('#Email').prop('disabled', false);
             $('#Telefono').prop('disabled', false);
@@ -304,10 +308,10 @@ session_start();
             $('#FechaNacimiento').prop('disabled', false);
             $('#DescripcionRol').prop('disabled', false);
             $('#DescripcionSucursal').prop('disabled', false);
+            $('#idPersona').prop('disabled', true);
         }
 
         function btnDisabled () {
-            $('#idPersona').prop('disabled', true);
             $('#Nombre').prop('disabled', true);
             $('#Email').prop('disabled', true);
             $('#Telefono').prop('disabled', true);
@@ -315,6 +319,7 @@ session_start();
             $('#FechaNacimiento').prop('disabled', true);
             $('#DescripcionRol').prop('disabled', true);
             $('#DescripcionSucursal').prop('disabled', true);
+            $('#idPersona').prop('disabled', false);
         }
 
         $(document).ready(function() {
@@ -336,6 +341,7 @@ session_start();
                     infoFiltered: "(filtrado de _MAX_ registros en total)"
                 }
             });
+            $('#idPersona').prop('disabled', true);
 
 
             $('#tableUser tbody').on('click', 'tr', function() {
@@ -343,16 +349,23 @@ session_start();
                     $(this).removeClass('selected');
                     $('#labelAgregarUsuario').text('Agregar Usuario');
                     $('#btnAgregarUser').prop('disabled', false);
+                    $('#btnCrearUsuario').prop('disabled', false);
                     btnOn()
                     limpiarModal()
+                    $('#idPersona').prop('disabled', true);
+                    $('#btnUpdateUsuario').prop('disabled', true);
                     $('#btnEditarTableUsuario').prop('disabled', true);
                     $('#btnEliminarTableUsuario').prop('disabled', true);
+                    $('#idPersona').prop('disabled', true);
 
                 } else {
                     tableUser.$('tr.selected').removeClass('selected');
                     $(this).addClass('selected');
                     $('#btnAgregarUser').prop('disabled', true);
+                    $('#btnCrearUsuario').prop('disabled', true);
                     // Mostrar el botón "Ver Detalles"
+                    $('#idPersona').prop('disabled', true);
+                    $('#btnUpdateUsuario').prop('disabled', false);
                     $('#btnEditarTableUsuario').prop('disabled', false);
                     $('#btnEliminarTableUsuario').prop('disabled', false);
                     // Obtener los datos del producto seleccionado
@@ -374,79 +387,31 @@ session_start();
                     // Acción cuando se hace clic en el modal
 
                     $('#btnEditarTableUsuario').click(function() {
-                        $('#labelAgregarUsuario').text('Editar Usuario');
-                        btnOn();
-                        $('#modalAgregarUsuario').modal('show');
-    
-                        // Comprobar si el botón ya existe
-                        var nuevoBoton = $('#nuevoBoton');
-    
-                        if (nuevoBoton.length === 0) {
-                            // El botón no existe, así que se crea
-                            nuevoBoton = $('<button>', {
-                            id: 'updateUser',       // Asignar un id al botón para futuras referencias
-                            value: "updateUser",
-                            class: 'btn btn-success',
-                            text: 'Guardar Cambios'});
-        
-                            // Agregar el nuevo botón al pie del modal
-                            $('#modalAgregarUsuario .modal-footer').append(nuevoBoton);} 
-                        else {
-                                // El botón ya existe, se actualiza su contenido y función click
-
-                                nuevoBoton.off('click');  // Eliminar eventos de clic anteriores
-                                nuevoBoton.click(function() {
-    // Obtener los datos del formulario
-    var idPersona = $('#idPersona').val();
-    var editNombre = $('#Nombre').val();
-    var editEmail = $('#Email').val();
-    var editTelefono = $('#Telefono').val();
-    var editDireccion = $('#Direccion').val();
-    var editFechaNacimiento = $('#FechaNacimiento').val();
-    var editRol = $('#DescripcionRol').val();
-    var editSucursal = $('#DescripcionSucursal').val();
-    var editSucursal = $('#Clave').val();
-
-    // Crear objeto de datos a enviar al servidor
-    var dataToSend = {
-        idPersona: idPersona,
-        editNombre: editNombre,
-        editEmail: editEmail,
-        editTelefono: editTelefono,
-        editDireccion: editDireccion,
-        editFechaNacimiento: editFechaNacimiento,
-        editRol: editRol,
-        editSucursal: editSucursal,
-        editClave: Clave
-    };
-
-    // Enviar datos al servidor utilizando AJAX
-    $.ajax({
-        type: 'POST',
-        url: '../controladores/updateUsuarios.php', // Cambiar por la ruta correcta
-        data: dataToSend,
-        success: function(response) {
-            alert(response); // Muestra la respuesta del servidor (éxito o error)
-        },
-        error: function(xhr, status, error) {
-            alert('Error en la solicitud AJAX: ' + error);
-        }
-    });
-});}
-                            // Eliminar el botón con id 'btnEliminar' si existe
-                        $('#btnEliminar').remove();
-                        $('#btnCrearUsuario').remove();  
-                    });
+                    $('#labelAgregarUsuario').text('Editar Usuario');
+                    btnOn();
+                    $('#modalAgregarUsuario').modal('show');});
                     $('#btnEliminarTableUsuario').click(function() {
                         $('#modalEliminarUsuario').modal('show');
                     });
 
                 // Acción cuando se hace clic en el botón "Guardar" en el modal
-                    $('#btnGuardar').click(function() {
+                    $('#btnUpdateUsuario').click(function() {
+                        <?php include("../controladores/updateUsuarios.php");?>
                         // Aquí puedes agregar el código para guardar los datos si es necesario
                         // ...
                         // Cerrar el modal después de guardar los datos (si es necesario)
+                        $('#idPersona').prop('disabled', false);
                         $('#modalAgregarUsuario').modal('hide');
+
+                        
+                    });
+                    $('#btnCrearUsuario').click(function() {
+                        // Aquí puedes agregar el código para guardar los datos si es necesario
+                        // ...
+                        // Cerrar el modal después de guardar los datos (si es necesario)
+                        $('#idPersona').prop('disabled', false);
+                        $('#modalAgregarUsuario').modal('hide');
+                        
                     });
                     
                 }

@@ -25,51 +25,51 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $result = mysqli_query($conn, $validar);
     
         if (mysqli_num_rows($result) > 0) {
-            // El usuario ya existe
+            // El usuario ya existe agregar mensaje
             ?>
             <h3 class="na">¡El usuario ya existe en la base de datos!</h3>
             <?php
         } else {
             // Insertar nuevo usuario
-            
-            $Nombre = $_POST["Nombre"];
-            $Telefono = $_POST['Telefono'];
-            $Direccion = $_POST['Direccion'];
-            $FechaNacimiento = $_POST['FechaNacimiento'];
-            $DescripcionRol = $_POST['DescripcionRol'];
-            $DescripcionSucursal = $_POST['DescripcionSucursal'];
-            $Clave = $_POST['Clave'];
+            if (empty($Nombre) || empty($Email) || empty($Telefono) || empty($Direccion) || empty($FechaNacimiento) || empty($DescripcionRol) || empty($DescripcionSucursal) || empty($Clave)) {
+                echo "Por favor, complete todos los campos.";
+            }else{
+                $Nombre = $_POST["Nombre"];
+                $Telefono = $_POST['Telefono'];
+                $Direccion = $_POST['Direccion'];
+                $FechaNacimiento = $_POST['FechaNacimiento'];
+                $DescripcionRol = $_POST['DescripcionRol'];
+                $DescripcionSucursal = $_POST['DescripcionSucursal'];
+                $Clave = $_POST['Clave'];
                 // Generar hash de la contraseña
-            $hashedClave = password_hash($Clave, PASSWORD_DEFAULT);
+                $hashedClave = password_hash($Clave, PASSWORD_DEFAULT);
             
     
-            $consulta1 = "INSERT INTO Persona (Nombre, Email, Telefono, Direccion, FechaNacimiento) VALUES ('$Nombre', '$Email', '$Telefono', '$Direccion', '$FechaNacimiento')";
-            $resultado1 = mysqli_query($conn, $consulta1);
-            $idPersona= mysqli_insert_id($conn);
+                $consulta1 = "INSERT INTO Persona (Nombre, Email, Telefono, Direccion, FechaNacimiento) VALUES ('$Nombre', '$Email', '$Telefono', '$Direccion', '$FechaNacimiento')";
+                $resultado1 = mysqli_query($conn, $consulta1);
+                $idPersona= mysqli_insert_id($conn);
 
-            $consulta2= "INSERT INTO Rol (Descripcion) VALUES ('$DescripcionRol')";
-            $resultado2 = mysqli_query($conn, $consulta2);
-            $idRol= mysqli_insert_id($conn);
+                $consulta2= "INSERT INTO Rol (Descripcion) VALUES ('$DescripcionRol')";
+                $resultado2 = mysqli_query($conn, $consulta2);
+                $idRol= mysqli_insert_id($conn);
 
-            $consulta3= "INSERT INTO Sucursales (Descripcion) VALUES ('$DescripcionSucursal')";
-            $resultado3 = mysqli_query($conn, $consulta3);
-            $idSucursal= mysqli_insert_id($conn);
+                $consulta3= "INSERT INTO Sucursales (Descripcion) VALUES ('$DescripcionSucursal')";
+                $resultado3 = mysqli_query($conn, $consulta3);
+                $idSucursal= mysqli_insert_id($conn);
 
-            $consulta4= "INSERT INTO Empleado (idSucursales, idPersona, idRol, Clave) VALUES ('$idSucursal','$idPersona', '$idRol', '$hashedClave')";
-            $resultado4 = mysqli_query($conn, $consulta4);
+                $consulta4= "INSERT INTO Empleado (idSucursales, idPersona, idRol, Clave) VALUES ('$idSucursal','$idPersona', '$idRol', '$hashedClave')";
+                $resultado4 = mysqli_query($conn, $consulta4);
             
     
-            if ($resultado1 && $resultado2 && $resultado3) {
-                echo 'Usuario registrado correctamente';
-
-
-            } else {
+                if ($resultado1 && $resultado2 && $resultado3) {
+                    echo 'Usuario registrado correctamente'; //agregar mensaje
+                } else {
                 // Error al registrar el usuario
-                ?>
-                <h3 class="bad">¡ha ocurrido un error!</h3>
-                <?php
+                    ?>
+                    <h3 class="bad">¡ha ocurrido un error!</h3>//agregar mensaje
+                    <?php
             }
-        }
+        }}
     }
     
     
