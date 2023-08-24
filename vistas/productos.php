@@ -237,7 +237,16 @@ session_start();
                                     <td>Galpon</td>
                                     <td>300</td>
                                     <td>Grs</td>
-                                    <td>200</td>
+                                    <td>100</td>
+                                    <td>363</td>
+                                </tr>
+                                <tr>
+                                    <td>001</td>
+                                    <td>Jabon en Polvo</td>
+                                    <td>Kirchner</td>
+                                    <td>300</td>
+                                    <td>Grs</td>
+                                    <td>100</td>
                                     <td>363</td>
                                 </tr>
                                 <tr>
