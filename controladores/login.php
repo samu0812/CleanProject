@@ -51,10 +51,7 @@
             $fila = mysqli_fetch_assoc($resultado);
             $hash = $fila['Clave']; 
             
-            
-
-            $password = password_verify($Clave, $hash);
-            if ($password === TRUE){
+            if ($hash === $Clave){
                 // La contraseña es correcta, iniciar la sesión
                 
                 $_SESSION['usuario'] = $fila['idPersona'];

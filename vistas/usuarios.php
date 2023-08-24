@@ -125,7 +125,7 @@ session_start();
                 <div class="bg-personalizado text-center rounded p-4">
                     <div class="table-responsive -xxl">
                     <table id="tableUser" class="table display" style="width:100%">
-                        <h5>Busqueda de Productos</h5>
+                        <h5>Busqueda de usuarios</h5>
                         <thead>
                             <tr>
                             <th>ID Persona</th>

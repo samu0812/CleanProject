@@ -20,7 +20,7 @@ $nombrePersona = isset($_SESSION['nombrePersona']) ? $_SESSION['nombrePersona'] 
                 <span class="d-none d-lg-inline-flex"><?php echo $nombrePersona?></span>
             </a>
             <div class="dropdown-menu dropdown-menu-end bg-light border-0 rounded-0 rounded-bottom m-0">
-                <a href="../vistas/usuarios.php" class="dropdown-item">Ajustes</a>
+                <a href="ajustes.php" class="dropdown-item">Ajustes</a>
                 <a href="logout.php" class="dropdown-item">Cerrar Sesión</a>
             </div>
         </div>

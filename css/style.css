@@ -360,3 +360,8 @@ table.dataTable>tbody>tr.selected>* {
 .bg-personalizado{
     background-color: #FFFFFF !important
 }
+
+.navbar a.active {
+    background-color: #ffa200; /* Color de fondo para el enlace activo */
+    color: #d57924; /* Color del texto para el enlace activo */
+}
