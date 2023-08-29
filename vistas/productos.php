@@ -89,7 +89,8 @@ session_start();
                 <div class="row g-4">
                     <div class="col-12 col-md-6 col-lg-4 col-xl-3">
                         <div class="d-flex align-items-center justify-content-center p-4">
-                            <button id="btnAgregarProd" style="background: #e77a34; color: white" class="btn btn-md" data-bs-toggle="modal" data-bs-target="#modalAgregarProducto"><i class="fas fa-plus"></i> Agregar Producto</button>
+                            <button id="btnAgregarProd" style="background: #e77a34; color: white" class="btn btn-md" data-bs-toggle="modal" data-bs-target="#modalAgregarProducto">
+                            <i class="fas fa-plus"></i> Agregar Producto</button>    
                         </div>
                     </div>
                     
@@ -205,9 +206,19 @@ session_start();
 
             <div class="container-fluid pt-4 px-4">
                 <div class="bg-personalizado text-center rounded p-4">
+                    <div class="d-flex justify-content-center align-items-center mb-3">
+                        <h5 class="mb-0">Busqueda por Sucursal</h5>
+                    </div>
+                    <div class="d-flex justify-content-center align-items-center text-center">
+                        <select id="filtroSucursal" class="form-select form-select-sm" style="width: 150px;">
+                            <option value="">Sucursales</option>
+                            <option value="Galpon">Galpon</option>
+                            <option value="Kirchner">Kirchner</option>
+                            <option value="Centro">Centro</option>
+                        </select>
+                    </div>
                     <div class="table-responsive -xxl">
                         <table id="tableSucursal" class="table display" style="width:100%">
-                            <h5>Busqueda por Sucursal</h5>
                             <thead>
                                 <tr>
                                     <th>Código</th>
@@ -226,7 +237,16 @@ session_start();
                                     <td>Galpon</td>
                                     <td>300</td>
                                     <td>Grs</td>
-                                    <td>200</td>
+                                    <td>100</td>
+                                    <td>363</td>
+                                </tr>
+                                <tr>
+                                    <td>001</td>
+                                    <td>Jabon en Polvo</td>
+                                    <td>Kirchner</td>
+                                    <td>300</td>
+                                    <td>Grs</td>
+                                    <td>100</td>
                                     <td>363</td>
                                 </tr>
                                 <tr>
@@ -237,16 +257,14 @@ session_start();
                                     <td>Grs</td>
                                     <td>200</td>
                                     <td>363</td>
-                                    <td></td>
+                                </tr>
                                 </tr>
                             </tbody>
-                            <tfoot>
-                            </tfoot>
                         </table>
                     </div>
                 </div>
             </div>
- <!-- PONE LOS NAMESSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS-->
+
             <!-- Modal Agregar Producto-->
             <div class="modal fade" id="modalAgregarProducto" tabindex="-1" aria-labelledby="modalAgregarProducto" aria-hidden="true">
                 <div class="modal-dialog modal-dialog-centered modal-lg">
@@ -339,7 +357,6 @@ session_start();
                 </div>
             </div>
 
-
             <!-- Modal para eliminar registro -->
             <div class="modal fade" id="modalEliminarStock" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                 <div class="modal-dialog modal-dialog-centered">
@@ -373,7 +390,36 @@ session_start();
     </div>
 
     <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            // Inicializar la tabla DataTable
+            var tableSucursal = $('#tableSucursal').DataTable({
+                select: {
+                    style: 'single'
+                },
+                searching: true,
+                lengthChange: true,
+                ordering: false ,
+                info: false,
+                language: {
+                    search: "",
+                    searchPlaceholder: "Filtrar Productos",
+                    lengthMenu: "Mostrar _MENU_ registros",
+                    zeroRecords: "No se encontraron resultados",
+                    info: "Mostrando _START_ a _END_ de _TOTAL_ registros",
+                    infoEmpty: "Mostrando 0 a 0 de 0 registros",
+                    infoFiltered: "(filtrado de _MAX_ registros en total)"
+                }
+            });
 
+            // Capturar el evento de cambio del select y aplicar el filtro a la tabla
+            $("#filtroSucursal").on("change", function() {
+                var filtro = $(this).val();
+                tableSucursal.column(2).search(filtro).draw();
+            });
+        });
+    </script>
+
+    <script>
         function limpiarModal () {
             $('#codigo').val('');
             $('#nombre').val('');
@@ -431,24 +477,28 @@ session_start();
                 }
             });
 
-            var tableSucursal = $('#tableSucursal').DataTable({
-                select: {
-                    style: 'single'
-                },
-                searching: true,
-                lengthChange: true,
-                ordering: false ,
-                info: false,
-                language: {
-                    search: "",
-                    searchPlaceholder: "Filtrar Productos",
-                    lengthMenu: "Mostrar _MENU_ registros",
-                    zeroRecords: "No se encontraron resultados",
-                    info: "Mostrando _START_ a _END_ de _TOTAL_ registros",
-                    infoEmpty: "Mostrando 0 a 0 de 0 registros",
-                    infoFiltered: "(filtrado de _MAX_ registros en total)"
-                }
+            let modoAgregar = true; // Modo por defecto: agregar
+            const btnGuardar = document.getElementById('btnGuardar');
+
+            btnGuardar.addEventListener('click', () => {
+                guardarProducto();
             });
+
+            function guardarProducto() {
+                if (modoAgregar) {
+                    // Estás en modo de agregar, llama a la función para agregar un producto nuevo
+                    // agregarProducto();
+                    console.log("ceci esta agregando")
+                } else {
+                    // Estás en modo de actualizar, llama a la función para actualizar el producto existente
+                    // actualizarProducto();
+                    console.log("ceci esta actualizando")
+                }
+
+                // Cierra el modal después de guardar
+                // Código para cerrar el modal...
+            }
+
 
             $('#tableProd tbody').on('click', 'tr', function() {
                 if ($(this).hasClass('selected')) {
@@ -457,6 +507,7 @@ session_start();
                     $('#btnAgregarProd').prop('disabled', false);
                     btnOn()
                     limpiarModal()
+                    modoAgregar = true;
                     $('#btnAgregarTableProd').prop('disabled', true);
                     $('#btnEditarTableProd').prop('disabled', true);
                     $('#btnEliminarTableProd').prop('disabled', true);
@@ -470,6 +521,7 @@ session_start();
                     $('#btnEditarTableProd').prop('disabled', false);
                     $('#btnEliminarTableProd').prop('disabled', false);
                     // Obtener los datos del producto seleccionado
+                    modoAgregar = false;
                     var rowData = tableProd.row($(this)).data();
 
                     // Limpiar los datos en el modal
@@ -508,9 +560,9 @@ session_start();
                         // Aquí puedes agregar el código para guardar los datos si es necesario
                         // ...
                         // Cerrar el modal después de guardar los datos (si es necesario)
+                        guardarProducto()
                         $('#modalAgregarProducto').modal('hide');
                     });
-                    
                 }
             });
         });
