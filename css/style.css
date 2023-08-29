@@ -98,7 +98,7 @@ table.dataTable>tbody>tr.selected>* {
     width: 250px;
     height: 100vh;
     overflow-y: auto;
-    background: #feeac7;
+    background: #f3f4f6;
     transition: 0.5s;
     z-index: 999;
 }
@@ -106,9 +106,8 @@ table.dataTable>tbody>tr.selected>* {
 .content {
     margin-left: 250px;
     min-height: 100vh;
-    background: #feeac7;
+    background: #f3f4f6;
     transition: 0.5s;
-    
 }
 
 .cursorPointer {
@@ -354,7 +353,7 @@ table.dataTable>tbody>tr.selected>* {
   }
 
 .bg-light{
-    background-color: #feeac7 !important;
+    background-color: #f3f4f6 !important;
 }
 
 .bg-personalizado{

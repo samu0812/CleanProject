@@ -357,7 +357,6 @@ session_start();
                 </div>
             </div>
 
-
             <!-- Modal para eliminar registro -->
             <div class="modal fade" id="modalEliminarStock" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                 <div class="modal-dialog modal-dialog-centered">
@@ -478,6 +477,29 @@ session_start();
                 }
             });
 
+            let modoAgregar = true; // Modo por defecto: agregar
+            const btnGuardar = document.getElementById('btnGuardar');
+
+            btnGuardar.addEventListener('click', () => {
+                guardarProducto();
+            });
+
+            function guardarProducto() {
+                if (modoAgregar) {
+                    // Estás en modo de agregar, llama a la función para agregar un producto nuevo
+                    // agregarProducto();
+                    console.log("ceci esta agregando")
+                } else {
+                    // Estás en modo de actualizar, llama a la función para actualizar el producto existente
+                    // actualizarProducto();
+                    console.log("ceci esta actualizando")
+                }
+
+                // Cierra el modal después de guardar
+                // Código para cerrar el modal...
+            }
+
+
             $('#tableProd tbody').on('click', 'tr', function() {
                 if ($(this).hasClass('selected')) {
                     $(this).removeClass('selected');
@@ -485,6 +507,7 @@ session_start();
                     $('#btnAgregarProd').prop('disabled', false);
                     btnOn()
                     limpiarModal()
+                    modoAgregar = true;
                     $('#btnAgregarTableProd').prop('disabled', true);
                     $('#btnEditarTableProd').prop('disabled', true);
                     $('#btnEliminarTableProd').prop('disabled', true);
@@ -498,6 +521,7 @@ session_start();
                     $('#btnEditarTableProd').prop('disabled', false);
                     $('#btnEliminarTableProd').prop('disabled', false);
                     // Obtener los datos del producto seleccionado
+                    modoAgregar = false;
                     var rowData = tableProd.row($(this)).data();
 
                     // Limpiar los datos en el modal
@@ -536,9 +560,9 @@ session_start();
                         // Aquí puedes agregar el código para guardar los datos si es necesario
                         // ...
                         // Cerrar el modal después de guardar los datos (si es necesario)
+                        guardarProducto()
                         $('#modalAgregarProducto').modal('hide');
                     });
-                    
                 }
             });
         });
