@@ -89,7 +89,7 @@ session_start();
                 <div class="row g-4">
                     <div class="col-12 col-md-6 col-lg-4 col-xl-3">
                         <div class="d-flex align-items-center justify-content-center p-4">
-                            <button id="btnAgregarUser" style="background: #e77a34; color: white" class="btn btn-md" data-bs-toggle="modal" data-bs-target="#modalAgregarProducto"><i class="fas fa-plus"></i> Agregar Usuario</button>
+                            <button id="btnAgregarUser" style="background: #e77a34; color: white" class="btn btn-md" data-bs-toggle="modal" data-bs-target="#modalAgregarUsuario"><i class="fas fa-plus"></i> Agregar Usuario</button>
                         </div>
                     </div>
 
@@ -138,9 +138,8 @@ session_start();
                             <th>Sucursal</th>
                             <th>Clave</th>
                                 <th>
-                                    <button id="btnAgregar" style="background: #e77a34; color: white;" class="btn btn-sm" disabled><i class="fas fa-plus"></i></button>
-                                    <button id="btnEditarTableProd" style="background: #e77a34; color: white;" class="btn btn-sm" disabled><i class="far fa-edit"></i></button>
-                                    <button id="btnEliminarTableProd" style="background: #e77a34; color: white;" class="btn btn-sm" disabled><i class="fas fa-trash"></i></button>
+                                    <button id="btnEditarTableUsuario" style="background: #e77a34; color: white;" class="btn btn-sm" disabled><i class="far fa-edit"></i></button>
+                                    <button id="btnEliminarTableUsuario" style="background: #e77a34; color: white;" class="btn btn-sm" disabled><i class="fas fa-trash"></i></button>
                                 </th>
                             </tr>
                         </thead>
@@ -173,74 +172,83 @@ session_start();
 
             
             <!-- Modal Agregar Producto-->
-            <div class="modal fade" id="modalAgregarUsuario" tabindex="-1" aria-labelledby="modalAgregarProducto" aria-hidden="true">
-                <div class="modal-dialog modal-dialog-centered modal-lg">
-                    <div class="modal-content" style="text-align: center;">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="labelAgregarStock">Agregar Usuario</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body">
-                            <div class="container">
-                                <div class="row">
-                                    <div class="col-md-4 mb-3">
-                                        <label for="Nombre" class="form-label">Nombre</label>
-                                        <input type="text" class="form-control" id="Nombre" required>
-                                    </div>
-                                    <div class="col-md-4 mb-3">
-                                        <label for="Email" class="form-label">Email</label>
-                                        <input type="email" class="form-control" id="Email" required>
-                                    </div>
-                                    <div class="col-md-4 mb-3">
-                                        <label for="Telefono" class="form-label">Teléfono</label>
-                                        <input type="tel" class="form-control" id="Telefono" required>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-4 mb-3">
-                                        <label for="FechaNacimiento" class="form-label">Fecha de Nacimiento</label>
-                                        <input type="date" class="form-control" id="FechaNacimiento" required>
-                                    </div>
-                                    <div class="col-md-4 mb-3">
-                                        <label for="Direccion" class="form-label">Dirección</label>
-                                        <input type="text" class="form-control" id="Direccion" required>
-                                    </div>
-                                    <div class="col-md-4 mb-3">
-                                                    <label for="DescripcionRol" class="form-label">Rol</label>
-                                                    <select class="form-select" id="DescripcionRol" required>
-                                                        <option value="" selected disabled>Seleccione un Rol</option>
-                                                        <option value="Administrador">Administrador</option>
-                                                        <option value="Cajero">Cajero</option>
-                                                        <option value="Cajero">Repositor</option>
-                                                    </select>
-                                                </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-4 mb-3">
-                                        <label for="DescripcionSucursal" class="form-label">Sucursal</label>
-                                        <select class="form-select" id="DescripcionSucursal" required>
-                                                <option value="" selected disabled>Seleccione una Sucursal</option>
-                                                <option value="Sucursal1">Sucursal 1</option>
-                                                <option value="Sucursal2">Sucursal 2</option>
-                                                <option value="Sucursal3">Sucursal 3</option>
-                                        </select>
-                                    </div>
-                                    <div class="col-md-4 mb-3">
-                                        <label for="Clave" class="form-label">Contraseña</label>
-                                        <input type="text" class="form-control" id="Clave" required>
-                                    </div>
-                                </div>
+    <div class="modal fade" id="modalAgregarUsuario" tabindex="-1" aria-labelledby="modalAgregarUsuario" aria-hidden="true">
+    <form class="form" action="" method="POST">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content" style="text-align: center;">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="labelAgregarUsuario">Agregar Usuario</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-md-4 mb-3">
+                                <label for="Nombre" class="form-label">Nombre</label>
+                                <input type="text" class="form-control" name="Nombre" id="Nombre" required>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label for="Email" class="form-label">Email</label>
+                                <input type="email" class="form-control" name="Email" id="Email" required>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label for="Telefono" class="form-label">Teléfono</label>
+                                <input type="tel" class="form-control" name="Telefono" id="Telefono" required>
                             </div>
                         </div>
-                        <div class="modal-footer">
-                            <!-- Cambio en el botón "Cerrar" del modal -->
-                            <button id="btnCerrar" type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-                            <!-- Cambio en el botón "Guardar" del modal -->
-                            <button id="btnGuardar" type="button" class="btn btn-primary">Guardar</button>
+                        <div class="row">
+                            <div class="col-md-4 mb-3">
+                                <label for="FechaNacimiento" class="form-label">Fecha de Nacimiento</label>
+                                <input type="date" class="form-control" name="FechaNacimiento" id="FechaNacimiento" required>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label for="Direccion" class="form-label">Dirección</label>
+                                <input type="text" class="form-control" name="Direccion" id="Direccion" required>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label for="DescripcionRol" class="form-label">Rol</label>
+                                <select class="form-select" name="DescripcionRol" id="DescripcionRol"  required>
+                                    <option value="" selected disabled>Seleccione un Rol</option>
+                                    <option value="Administrador">Administrador</option>
+                                    <option value="Cajero">Cajero</option>
+                                    <option value="Repositor">Repositor</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4 mb-3">
+                                <label for="DescripcionSucursal" class="form-label">Sucursal</label>
+                                <select class="form-select" name="DescripcionSucursal" id="DescripcionSucursal" required>
+                                    <option value="" selected disabled>Seleccione una Sucursal</option>
+                                    <option value="Sucursal1">Sucursal 1</option>
+                                    <option value="Sucursal2">Sucursal 2</option>
+                                    <option value="Sucursal3">Sucursal 3</option>
+                                </select>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label for="Clave" class="form-label">Contraseña</label>
+                                <input type="text" class="form-control" name="Clave" id="Clave" required>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label for="idPersona" class="form-label">Id Persona</label>
+                                <input type="number" class="form-control" name="idPersona" id="idPersona">
+                            </div>
                         </div>
                     </div>
                 </div>
+                <div class="modal-footer">
+                    <!-- Cambio en el botón "Cerrar" del modal -->
+                    <button id="btnCerrar" type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                    <!-- Cambio en el botón "Guardar" del modal -->
+                    <button type="submit" value="crearUsuario" id="btnCrearUsuario" name="crearUsuario" type="button" class="btn btn-primary">Guardar</button>
+                    <button type="submit" value="UpdateUsuario" id="btnUpdateUsuario" name="UpdateUsuario" type="button" class="btn btn-primary" disabled>Actualizar</button>
+                </div>
             </div>
+        </div>
+    </form>
+</div>
+<?php include("../controladores/usuarios.php");?>
+
 
 
             <!-- Modal para eliminar registro -->
@@ -260,6 +268,8 @@ session_start();
                         </div>
                     </div>
                 </div>
+                </form>
+
             </div>
 
             <!-- Footer Start -->
@@ -278,44 +288,42 @@ session_start();
     <script>
 
         function limpiarModal () {
-            $('#codigo').val('');
-            $('#nombre').val('');
-            $('#proveedor').val('');
-            $('#tipoProducto').val('');
-            $('#tamaño').val('');
-            $('#medida').val('');
-            $('#cantidad').val('');
-            $('#precioBase').val('');
-            $('#porcentajeAumento').val('');
-            $('#precioVenta').val('');
+            $('#Nombre').val('');
+            $('#Email').val('');
+            $('#Telefono').val('');
+            $('#Direccion').val('');
+            $('#FechaNacimiento').val('');
+            $('#DescripcionRol').val('');
+            $('#DescripcionSucursal').val('');
+            $('#idPersona').val('');
+
+            
         }
 
         function btnOn () {
-            $('#codigo').prop('disabled', false);
-            $('#nombre').prop('disabled', false);
-            $('#proveedor').prop('disabled', false);
-            $('#tipoProducto').prop('disabled', false);
-            $('#tamaño').prop('disabled', false);
-            $('#medida').prop('disabled', false);
-            $('#precioBase').prop('disabled', false);
-            $('#porcentajeAumento').prop('disabled', false);
-            $('#precioVenta').prop('disabled', false);
+            $('#Nombre').prop('disabled', false);
+            $('#Email').prop('disabled', false);
+            $('#Telefono').prop('disabled', false);
+            $('#Direccion').prop('disabled', false);
+            $('#FechaNacimiento').prop('disabled', false);
+            $('#DescripcionRol').prop('disabled', false);
+            $('#DescripcionSucursal').prop('disabled', false);
+            $('#idPersona').prop('disabled', true);
         }
 
         function btnDisabled () {
-            $('#codigo').prop('disabled', true);
-            $('#nombre').prop('disabled', true);
-            $('#proveedor').prop('disabled', true);
-            $('#tipoProducto').prop('disabled', true);
-            $('#tamaño').prop('disabled', true);
-            $('#medida').prop('disabled', true);
-            $('#precioBase').prop('disabled', true);
-            $('#porcentajeAumento').prop('disabled', true);
-            $('#precioVenta').prop('disabled', true);
+            $('#Nombre').prop('disabled', true);
+            $('#Email').prop('disabled', true);
+            $('#Telefono').prop('disabled', true);
+            $('#Direccion').prop('disabled', true);
+            $('#FechaNacimiento').prop('disabled', true);
+            $('#DescripcionRol').prop('disabled', true);
+            $('#DescripcionSucursal').prop('disabled', true);
+            $('#idPersona').prop('disabled', false);
         }
 
         $(document).ready(function() {
-            var modalAgregarUsuario = $('#modalAgregarUsuario').DataTable({
+            var tableUser = $('#tableUser').DataTable({
                 select: {
                     style: 'single'
                 },
@@ -333,66 +341,77 @@ session_start();
                     infoFiltered: "(filtrado de _MAX_ registros en total)"
                 }
             });
+            $('#idPersona').prop('disabled', true);
 
-            $('#modalAgregarUsuario tbody').on('click', 'tr', function() {
+
+            $('#tableUser tbody').on('click', 'tr', function() {
                 if ($(this).hasClass('selected')) {
                     $(this).removeClass('selected');
-                    $('#labelAgregarStock').text('Agregar Producto');
+                    $('#labelAgregarUsuario').text('Agregar Usuario');
                     $('#btnAgregarUser').prop('disabled', false);
+                    $('#btnCrearUsuario').prop('disabled', false);
                     btnOn()
                     limpiarModal()
-                    $('#btnAgregarTableProd').prop('disabled', true);
-                    $('#btnEditarTableProd').prop('disabled', true);
-                    $('#btnEliminarTableProd').prop('disabled', true);
+                    $('#idPersona').prop('disabled', true);
+                    $('#btnUpdateUsuario').prop('disabled', true);
+                    $('#btnEditarTableUsuario').prop('disabled', true);
+                    $('#btnEliminarTableUsuario').prop('disabled', true);
+                    $('#idPersona').prop('disabled', true);
 
                 } else {
-                    modalAgregarUsuario.$('tr.selected').removeClass('selected');
+                    tableUser.$('tr.selected').removeClass('selected');
                     $(this).addClass('selected');
                     $('#btnAgregarUser').prop('disabled', true);
+                    $('#btnCrearUsuario').prop('disabled', true);
                     // Mostrar el botón "Ver Detalles"
-                    $('#btnAgregarTableProd').prop('disabled', false);
-                    $('#btnEditarTableProd').prop('disabled', false);
-                    $('#btnEliminarTableProd').prop('disabled', false);
+                    $('#idPersona').prop('disabled', true);
+                    $('#btnUpdateUsuario').prop('disabled', false);
+                    $('#btnEditarTableUsuario').prop('disabled', false);
+                    $('#btnEliminarTableUsuario').prop('disabled', false);
                     // Obtener los datos del producto seleccionado
-                    var rowData = tableProd.row($(this)).data();
+                    var rowData = tableUser.row($(this)).data();
 
                     // Limpiar los datos en el modal
                     limpiarModal()
 
                     // Llenar los elementos en el modal con los datos del producto
-                    $('#codigo').val(rowData[0]);
-                    $('#nombre').val(rowData[1]);
-                    $('#proveedor').val(rowData[2]);
-                    $('#tipoProducto').val(rowData[3]);
-                    $('#tamaño').val(rowData[4]);
-                    $('#medida').val(rowData[5]);
-                    $('#cantidad').val(rowData[6]);
-                    $('#precioBase').val(rowData[7]);
-                    $('#porcentajeAumento').val(rowData[8]);
-                    $('#precioVenta').val(rowData[9]);
+                    $('#idPersona').val(rowData[0]);
+                    $('#Nombre').val(rowData[1]);
+                    $('#Email').val(rowData[2]);
+                    $('#Telefono').val(rowData[3]);
+                    $('#Direccion').val(rowData[4]);
+                    $('#FechaNacimiento').val(rowData[5]);
+                    $('#DescripcionRol').val(rowData[6]);
+                    $('#DescripcionSucursal').val(rowData[7]);
 
                     // Acción cuando se hace clic en el modal
-                    $('#btnAgregarTableProd').click(function() {
-                        // Cambiar el contenido del label
-                        $('#labelAgregarStock').text('Agregar Cantidad de Stock');
-                        btnDisabled()
-                        $('#modalAgregarProducto').modal('show');
-                    });
-                    $('#btnEditarTableProd').click(function() {
-                        $('#labelAgregarStock').text('Editar Producto');
-                        btnOn()
-                        $('#modalAgregarProducto').modal('show');
-                    });
-                    $('#btnEliminarTableProd').click(function() {
-                        $('#modalEliminarStock').modal('show');
+
+                    $('#btnEditarTableUsuario').click(function() {
+                    $('#labelAgregarUsuario').text('Editar Usuario');
+                    btnOn();
+                    $('#modalAgregarUsuario').modal('show');});
+                    $('#btnEliminarTableUsuario').click(function() {
+                        $('#modalEliminarUsuario').modal('show');
                     });
 
                 // Acción cuando se hace clic en el botón "Guardar" en el modal
-                    $('#btnGuardar').click(function() {
+                    $('#btnUpdateUsuario').click(function() {
+                        <?php include("../controladores/updateUsuarios.php");?>
                         // Aquí puedes agregar el código para guardar los datos si es necesario
                         // ...
                         // Cerrar el modal después de guardar los datos (si es necesario)
-                        $('#modalAgregarProducto').modal('hide');
+                        $('#idPersona').prop('disabled', false);
+                        $('#modalAgregarUsuario').modal('hide');
+
+                        
+                    });
+                    $('#btnCrearUsuario').click(function() {
+                        // Aquí puedes agregar el código para guardar los datos si es necesario
+                        // ...
+                        // Cerrar el modal después de guardar los datos (si es necesario)
+                        $('#idPersona').prop('disabled', false);
+                        $('#modalAgregarUsuario').modal('hide');
+                        
                     });
                     
                 }
