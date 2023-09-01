@@ -1,8 +1,7 @@
 
 <?php 
 session_start();
-$nombrePersona = isset($_SESSION['nombrePersona']) ? $_SESSION['nombrePersona'] : '';
-$rol = isset($_SESSION['rol']) ? $_SESSION['rol'] : '';
+
 ?>
 
 <!DOCTYPE html>
