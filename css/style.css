@@ -1,15 +1,9 @@
 /********** Template CSS **********/
+/********** Template CSS **********/
 :root {
-    --primary: #e77a34;
     --light: #f9f3f8;
+    --primary: #fa721c; /*cambio: lauty*/
     --dark: #191C24;
-    --dt-row-selected: #e77a34; /* Cambia el color de fondo de la fila seleccionada */
-    --dt-row-selected-text: #ffffff; /* Cambia el color de texto de la fila seleccionada */
-}
-
-table.dataTable>tbody>tr.selected>* {
-    box-shadow: inset 0 0 0 9999px var(--dt-row-selected);
-    color: var(--dt-row-selected-text);
 }
 
 .cursorPointer {
@@ -37,6 +31,7 @@ table.dataTable>tbody>tr.selected>* {
     bottom: 45px;
     z-index: 99;
 }
+
 
 /*** Spinner ***/
 #spinner {
@@ -191,6 +186,7 @@ table.dataTable>tbody>tr.selected>* {
 .sidebar .navbar .navbar-nav .nav-link:hover i,
 .sidebar .navbar .navbar-nav .nav-link.active i {
     background: var(--light);
+    color: #fa721c;   /*cambie: lauty*/
 }
 
 .sidebar .navbar .dropdown-toggle::after {
@@ -357,6 +353,179 @@ table.dataTable>tbody>tr.selected>* {
     background-color: #feeac7 !important;
 }
 
-.bg-personalizado{
-    background-color: #FFFFFF !important
+.input-group-text {
+    background-color: #e77a34;
+}
+
+.modal-body i {
+    color: white;
+}
+
+.modal-header {
+    text-align: center;
+    align-items: center;
+
+  }
+  
+.modal-title {
+    margin: 0 auto; /* Centra horizontalmente el título */
+  }
+/********** cambios al boton agregar proveedor **********/
+.botonAgregarProveedor {
+    appearance: none;
+    background-color: transparent;
+    border: 0.125em solid #e77a34;
+    border-radius: 0.9375em;
+    box-sizing: border-box;
+    color: #e77a34;
+    cursor: pointer;
+    display: inline-block;
+    font-family: Font Awesome 5 Free;
+    font-size: 0.95em;
+    font-weight: 400;
+    line-height: normal;
+    margin: 0;
+    min-height: 3.75em;
+    min-width: 0;
+    outline: none;
+    padding: 0.1em 1em;
+    text-align: center;
+    text-decoration: none;
+    transition: all 350ms cubic-bezier(.23, 1, 0.32, 1);
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
+    will-change: transform;
+   }
+   
+.botonAgregarProveedor:disabled {
+    pointer-events: none;
+   }
+   
+.botonAgregarProveedor:hover {
+    color: #ffffff;
+    background-color: #e77a34;
+    box-shadow: rgba(255, 255, 255, 0.25) 0 8px 15px;
+    transform: translateY(-2px);
+   }
+   
+.botonAgregarProveedor:active {
+    box-shadow: none;
+    transform: translateY(0);
+   }
+/********************/
+
+/********** cambios a los botones de guardar y salir de agregar proveedor **********/
+.modal-footer .btn:visited {
+    text-transform: uppercase;
+    text-decoration: none;
+    color: rgb(27, 27, 27);
+    padding: 10px 30px;
+    border: 1px solid;
+    border-radius: 1000px;
+    display: inline-block;
+    transition: all .2s;
+    position: relative;
+   }
+   
+.modal-footer .btn:hover {
+    transform: translateY(-5px);
+   }
+   
+.modal-footer .btn:active {
+    transform: translateY(-3px);
+   }
+   
+.modal-footer .btn::after {
+    content: "";
+    display: inline-block;
+    height: 100%;
+    width: 100%;
+    border-radius: 100px;
+    top: 0;
+    left: 0;
+    position: absolute;
+    z-index: -1;
+    transition: all .3s;
+   }
+   
+.modal-footer .btn-danger:hover::after {
+    background-color: #bb2d3b;
+    transform: scaleX(1.4) scaleY(1.5);
+    opacity: 0;
+   }
+
+.modal-footer .btn-secondary:hover::after {
+    background-color: #6c757d;
+    transform: scaleX(1.4) scaleY(1.5);
+    opacity: 0;
+   }
+/********************/
+
+/********** cambios a las letra de los td ya que la tabla se desfasa**********/
+#tableProveedores td {
+    font-size: 13px; /* Ajusta el tamaño de fuente según lo desees */
+    /* Otros estilos para los elementos <td> aquí */
+}
+/********************/
+
+/********** cambios a los botones de la tabla editar y eliminar**********/
+#tableProveedores td button {
+    font-size: 12px; /* Ajusta el tamaño de fuente según lo desees */
+    padding: 5px 6px; /* Ajusta el espaciado interno del botón según lo desees */
+    /* Otros estilos para los botones aquí */
+}
+
+
+/********** cambios responsive a la tabla, a las letras y los botones**********/
+@media (max-width: 767px) {
+    .table-responsive {
+        width: 100%;
+
+    }
+    #tableProveedores th {
+        padding: 1px 1px;
+        font-size: 12px; /* Ajusta el tamaño de fuente según lo desees */
+        /* Otros estilos para los elementos <td> aquí */
+    }
+    #tableProveedores td {
+        margin: 0px 20px;
+        padding: 1px 4px;
+        font-size: 14px; /* Ajusta el tamaño de fuente según lo desees */
+        /* Otros estilos para los elementos <td> aquí */
+    }
+    #tableProveedores td button {
+        margin: 2px;
+        font-size: 14px; /* Reducir tamaño de fuente en pantallas pequeñas */
+        padding: 2px 2px; /* Reducir espaciado interno en pantallas pequeñas */
+        /* Otros estilos para los botones en pantallas pequeñas aquí */
+    }
+
+}
+
+.navbar-brand i{
+    color: var(--primary);  /*cambio: lauty*/
+}
+
+.navbar-brand h3 {
+    color: #fa721c; /*cambio: lauty*/
+}
+
+.dataTables_filter {
+    padding: 10px;
+}
+/********** cambios para centrar el agregar proveedores**********/
+.modal-header .btn-close {
+    margin-left: 0px;
+    padding-left: 0px;
+
+}
+
+/********** cambios al color de la tabla**********/
+.bg-personalizado {
+    background-color: white;
+}
+
+.table-responsive h5 {
+    margin: 10px;
 }
