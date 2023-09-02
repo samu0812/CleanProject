@@ -157,7 +157,8 @@ session_start();
                                 <th>Código</th>
                                 <th>Nombre</th>
                                 <th>Proveedor</th>
-                                <th>Tipo</th>
+                                <th>Tipo Prod</th>
+                                <th>Tipo Cat</th>
                                 <th>Tamaño</th>
                                 <th>Medida</th>
                                 <th>Cantidad</th>
@@ -172,32 +173,7 @@ session_start();
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td>001</td>
-                                <td>Jabon en Polvo</td>
-                                <td>LCL</td>
-                                <td>Envasado</td>
-                                <td>300</td>
-                                <td>Grs</td>
-                                <td>200</td>
-                                <td>300</td>
-                                <td>21</td>
-                                <td>363</td>
-                                <td></td>
-                            </tr>
-                            <tr>
-                                <td>002</td>
-                                <td>Lavandina</td>
-                                <td>LCL</td>
-                                <td>Preparado</td>
-                                <td>300</td>
-                                <td>Lts</td>
-                                <td>200</td>
-                                <td>300</td>
-                                <td>21</td>
-                                <td>363</td>
-                                <td></td>
-                            </tr>
+                            <?php include '../controladores/obtener_productos.php'; ?>
                         </tbody>
                     </table>
                     </div>
@@ -273,85 +249,94 @@ session_start();
                             <h5 class="modal-title" id="labelAgregarStock">Agregar Producto</h5>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
-                        <div class="modal-body">
-                            <div class="container">
-                                <div class="row">
-                                    <div class="col-md-4 mb-3">
-                                        <label for="codigo" class="form-label">Código</label>
-                                        <input type="text" class="form-control" id="codigo">
-                                    </div>
-                                    <div class="col-md-4 mb-3">
-                                        <label for="nombre" class="form-label">Nombre</label>
-                                        <input type="text" class="form-control" id="nombre">
-                                    </div>
-                                    <div class="col-md-4 mb-3">
-                                        <label for="proveedor" class="form-label">Proveedor</label>
-                                        <select class="form-select" id="proveedor">
+                        <form action="../controladores/nuevo_producto.php" method="POST">
+                            <div class="modal-body">
+                                <div class="container">
+                                    <div class="row">
+                                        <div class="col-md-4 mb-3">
+                                            <label for="codigo" class="form-label">Código</label>
+                                            <input type="text" class="form-control" id="codigo" name="codigo">
+                                        </div>
+                                        <div class="col-md-4 mb-3">
+                                            <label for="nombre" class="form-label">Nombre</label>
+                                            <input type="text" class="form-control" id="nombre" name="nombre">
+                                        </div>
+                                        <div class="col-md-4 mb-3">
+                                            <label for="proveedor" class="form-label">Proveedor</label>
+                                            <select class="form-select" id="proveedor" name="proveedor">
                                             <option value="" selected disabled>Seleccione un proveedor</option>
-                                            <option value="LCL">LCL</option>
-                                            <option value="ACD">ACD</option>
-                                            <option value="CHANGOMAS">CHANGO MAS</option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-4 mb-3">
-                                        <label for="tipoProducto" class="form-label">Tipo de Producto</label>
-                                        <select class="form-select" id="tipoProducto">
-                                            <option value="" selected disabled>Seleccione un tipo</option>
-                                            <option value="Suelto">Suelto</option>
-                                            <option value="Envasado">Envasado</option>
-                                            <option value="Preparado">Preparado</option>
-                                        </select>
-                                    </div>
-                                    <div class="col-md-4 mb-3">
-                                        <label for="tamaño" class="form-label">Tamaño</label>
-                                        <div class="input-group">
-                                            <input type="text" class="form-control" id="tamaño" placeholder="Tamaño">
-                                            <select class="form-select" id="medida" style="width: 2px;">
-                                                <option value="" selected disabled>Seleccione una Medida</option>
-                                                <option value="Cm3">Cm3</option>
-                                                <option value="Lts">Lts</option>
-                                                <option value="Grs">Grs</option>
-                                                <option value="Kg">Kg</option>
+                                            <?php include '../controladores/obtener_proveedores.php'; ?>
                                             </select>
                                         </div>
                                     </div>
-                                    <div class="col-md-4 mb-3">
-                                        <label for="cantidad" class="form-label">Cantidad</label>
-                                        <input type="number" class="form-control" id="cantidad">
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-4 mb-3">
-                                        <label for="precioBase" class="form-label">Precio Base</label>
-                                        <div class="input-group">
-                                            <span class="input-group-text"><i class="fas fa-dollar-sign"></i></span>
-                                            <input type="number" class="form-control" id="precioBase">
+                                    <div class="row">
+                                        <div class="col-md-4 mb-3">
+                                            <label for="tipoProducto" class="form-label">Tipo Producto</label>
+                                            <label for="tipoCategoria" class="form-label">Tipo Categoria</label>
+                                            <div class="input-group">
+                                                <select class="form-select" id="tipoProducto" name="tipoProducto">
+                                                    <option value="" selected disabled>Seleccione...</option>
+                                                    <?php include '../controladores/obtener_tipoproducto.php'; ?>
+                                                </select>
+                                                <select class="form-select" id="tipoCategoria" name="tipoCategoria">
+                                                    <option value="" selected disabled>Seleccione...</option>
+                                                    <?php include '../controladores/obtener_prodcategoria.php'; ?>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4 mb-3">
+                                            <label for="tamaño" class="form-label">Tamaño</label>
+                                            <div class="input-group">
+                                                <input type="number" class="form-control" id="tamaño" name="tamaño" placeholder="Tamaño">
+                                                <select class="form-select" id="tipoTamaño" name="tipoTamaño" style="width: 2px;">
+                                                    <option value="" selected disabled>Seleccione una Medida</option>
+                                                    <?php include '../controladores/obtener_tipotamaño.php'; ?>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4 mb-3">
+                                            <label for="cantidad" class="form-label">Cantidad</label>
+                                            <input type="number" class="form-control" id="cantidad" name="cantidad">
                                         </div>
                                     </div>
-                                    <div class="col-md-4 mb-3">
-                                        <label for="porcentajeAumento" class="form-label">Porcentaje para Aumentar</label>
-                                        <div class="input-group">
-                                            <input type="number" class="form-control" id="porcentajeAumento">
-                                            <span class="input-group-text"><i class="fas fa-percent"></i></span>
+                                    <div class="row">
+                                        <div class="col-md-4 mb-3">
+                                            <label for="precioBase" class="form-label">Precio Base</label>
+                                            <div class="input-group">
+                                                <span class="input-group-text"><i class="fas fa-dollar-sign"></i></span>
+                                                <input type="number" class="form-control" id="precioBase" name="precioBase">
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div class="col-md-4 mb-3">
-                                        <label for="precioVenta" class="form-label">Precio de Venta</label>
-                                        <div class="input-group">
-                                            <span class="input-group-text"><i class="fas fa-dollar-sign"></i></span>
-                                            <input type="number" class="form-control" id="precioVenta">
+                                        <div class="col-md-4 mb-3">
+                                            <label for="porcentajeAumento" class="form-label">Porcentaje de Aumento</label>
+                                            <!-- <label for="precioVenta" class="form-label">Precio Venta</label> -->
+                                            <div class="input-group">
+                                                <input style="width: 40px;" type="number" class="form-control" name="porcentajeAumento" id="porcentajeAumento">
+                                                <!--<input style="width: 40px;" type="number" class="form-control" id="precioVenta">-->
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-4 mb-3">
+                                            <label for="sucursal" id="sucursalField" style="display: none;" class="form-label">Sucursal</label>
+                                            <div class="input-group">
+                                                <select class="form-select" id="sucursalField2" style="display: none;" name="sucursal" id="sucursal" style="width: 2px;">
+                                                    <option value="" selected disabled>Seleccione una Sucursal</option>
+                                                    <?php include '../controladores/obtener_sucursales.php'; ?>
+                                                </select>
+                                            </div>
+                                            <div id="precioVentaField" style="display: none;">
+                                                <label for="precioVenta" class="form-label">Precio Venta</label>
+                                                <input style="width: 240px;" type="number" class="form-control" id="precioVenta">
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
                         <div class="modal-footer">
                             <!-- Cambio en el botón "Cerrar" del modal -->
                             <button id="btnCerrar" type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
                             <!-- Cambio en el botón "Guardar" del modal -->
-                            <button id="btnGuardar" type="button" class="btn btn-primary">Guardar</button>
+                            <button id="btnGuardar" type="submit" class="btn btn-primary">Guardar</button>
                         </div>
                     </div>
                 </div>
@@ -420,17 +405,77 @@ session_start();
     </script>
 
     <script>
+
+        // Obtener elementos relevantes
+            const precioVentaField = document.getElementById('precioVentaField');
+            const sucursalField = document.getElementById('sucursalField');
+            const sucursalField2 = document.getElementById('sucursalField2');
+            const btnAgregarProd = document.getElementById('btnAgregarProd');
+            const btnEditarTableProd = document.getElementById('btnEditarTableProd');
+            const btnEliminarTableProd = document.getElementById('btnEliminarTableProd');
+
+            // Función para mostrar u ocultar el campo de "Precio Venta"
+            function togglePrecioVentaField(showPrecioVenta) {
+            if (showPrecioVenta) {
+                precioVentaField.style.display = 'block';
+            } else {
+                precioVentaField.style.display = 'none';
+            }
+            }
+
+            // Función para mostrar u ocultar el campo de "Sucursal"
+            function toggleSucursalField(showSucursal) {
+            if (showSucursal) {
+                sucursalField.style.display = 'block';
+                sucursalField2.style.display = 'block';
+            } else {
+                sucursalField.style.display = 'none';
+                sucursalField2.style.display = 'none';
+            }
+            }
+
+            // Manejar el evento de hacer clic en "Editar"
+            btnEditarTableProd.addEventListener('click', function() {
+            togglePrecioVentaField(true);
+            toggleSucursalField(false);
+            toggleSucursalField2(false);
+            });
+
+            // Manejar el evento de hacer clic en "Eliminar"
+            btnEliminarTableProd.addEventListener('click', function() {
+            togglePrecioVentaField(true);
+            toggleSucursalField(false);
+            toggleSucursalField2(false);
+            });
+
+            // Manejar el evento de hacer clic en "Agregar"
+            btnAgregarProd.addEventListener('click', function() {
+            togglePrecioVentaField(false);
+            toggleSucursalField(true);
+            toggleSucursalField2(true);
+            });
+
+            btnAgregarTableProd.addEventListener('click', function() {
+            togglePrecioVentaField(true);
+            toggleSucursalField(false);
+            toggleSucursalField2(false);
+            });
+
+
+
         function limpiarModal () {
             $('#codigo').val('');
             $('#nombre').val('');
             $('#proveedor').val('');
             $('#tipoProducto').val('');
+            $('#tipoCategoria').val('');
             $('#tamaño').val('');
-            $('#medida').val('');
+            $('#tipoTamaño').val('');
             $('#cantidad').val('');
             $('#precioBase').val('');
             $('#porcentajeAumento').val('');
             $('#precioVenta').val('');
+            $('#sucursal').val('');
         }
 
         function btnOn () {
@@ -438,11 +483,13 @@ session_start();
             $('#nombre').prop('disabled', false);
             $('#proveedor').prop('disabled', false);
             $('#tipoProducto').prop('disabled', false);
+            $('#tipoCategoria').prop('disabled', false);
             $('#tamaño').prop('disabled', false);
-            $('#medida').prop('disabled', false);
+            $('#tipoTamaño').prop('disabled', false);
             $('#precioBase').prop('disabled', false);
             $('#porcentajeAumento').prop('disabled', false);
             $('#precioVenta').prop('disabled', false);
+            $('#sucursal').prop('disabled', false);
         }
 
         function btnDisabled () {
@@ -450,11 +497,13 @@ session_start();
             $('#nombre').prop('disabled', true);
             $('#proveedor').prop('disabled', true);
             $('#tipoProducto').prop('disabled', true);
+            $('#tipoCategoria').prop('disabled', true);
             $('#tamaño').prop('disabled', true);
-            $('#medida').prop('disabled', true);
+            $('#tipoTamaño').prop('disabled', true);
             $('#precioBase').prop('disabled', true);
             $('#porcentajeAumento').prop('disabled', true);
             $('#precioVenta').prop('disabled', true);
+            $('#sucursal').prop('disabled', true);
         }
 
         $(document).ready(function() {
@@ -478,27 +527,9 @@ session_start();
             });
 
             let modoAgregar = true; // Modo por defecto: agregar
-            const btnGuardar = document.getElementById('btnGuardar');
-
-            btnGuardar.addEventListener('click', () => {
-                guardarProducto();
+            btnAgregarProd.addEventListener('click', () => {
+                limpiarModal()
             });
-
-            function guardarProducto() {
-                if (modoAgregar) {
-                    // Estás en modo de agregar, llama a la función para agregar un producto nuevo
-                    // agregarProducto();
-                    console.log("ceci esta agregando")
-                } else {
-                    // Estás en modo de actualizar, llama a la función para actualizar el producto existente
-                    // actualizarProducto();
-                    console.log("ceci esta actualizando")
-                }
-
-                // Cierra el modal después de guardar
-                // Código para cerrar el modal...
-            }
-
 
             $('#tableProd tbody').on('click', 'tr', function() {
                 if ($(this).hasClass('selected')) {
@@ -532,12 +563,13 @@ session_start();
                     $('#nombre').val(rowData[1]);
                     $('#proveedor').val(rowData[2]);
                     $('#tipoProducto').val(rowData[3]);
-                    $('#tamaño').val(rowData[4]);
-                    $('#medida').val(rowData[5]);
-                    $('#cantidad').val(rowData[6]);
-                    $('#precioBase').val(rowData[7]);
-                    $('#porcentajeAumento').val(rowData[8]);
-                    $('#precioVenta').val(rowData[9]);
+                    $('#tipoCategoria').val(rowData[4]);
+                    $('#tipoTamaño').val(rowData[5]);
+                    $('#tamaño').val(rowData[6]);
+                    $('#cantidad').val(rowData[7]);
+                    $('#precioBase').val(rowData[8]);
+                    $('#porcentajeAumento').val(rowData[9]);
+                    $('#precioVenta').val(rowData[10]);
 
                     // Acción cuando se hace clic en el modal
                     $('#btnAgregarTableProd').click(function() {
@@ -556,11 +588,59 @@ session_start();
                     });
 
                 // Acción cuando se hace clic en el botón "Guardar" en el modal
-                    $('#btnGuardar').click(function() {
-                        // Aquí puedes agregar el código para guardar los datos si es necesario
-                        // ...
-                        // Cerrar el modal después de guardar los datos (si es necesario)
-                        guardarProducto()
+                    $('#btnGuardar').click(function(e) {
+                        console.log("entro al boton guardar")
+                        if (modoAgregar) {
+                            console.log("entro al modo agregar")
+                            e.preventDefault(); // Previene la acción predeterminada del botón (enviar el formulario)
+                            // Obtén los datos del formulario
+                            var codigo = $("#codigo").val();
+                            var nombre = $("#nombre").val();
+                            var proveedor = $("#proveedor").val();
+                            var tipoProducto = $("#tipoProducto").val();
+                            var tipoCategoria = $("#tipoCategoria").val();
+                            var tamaño = $("#tamaño").val();
+                            var tipoTamaño = $("#tipoTamaño").val();
+                            var cantidad = $("#cantidad").val();
+                            var precioBase = $("#precioBase").val();
+                            var porcentajeAumento = $("#porcentajeAumento").val();
+                            var sucursal = $("#sucursal").val();
+
+
+                            // Realiza una solicitud AJAX para enviar los datos al servidor
+                            $.ajax({
+                                type: "POST",
+                                url: "../controladores/nuevo_producto.php",
+                                data: {
+                                    codigo: codigo,
+                                    nombre: nombre,
+                                    proveedor: proveedor,
+                                    tipoProducto: tipoProducto,
+                                    tipoCategoria: tipoCategoria,
+                                    tamaño: tamaño,
+                                    tipoTamaño: tipoTamaño,
+                                    cantidad: cantidad,
+                                    precioBase: precioBase,
+                                    porcentajeAumento: porcentajeAumento,
+                                    sucursal: sucursal
+                                },
+                                success: function(response) {
+                                    // Maneja la respuesta del servidor
+                                    // Muestra una alerta con la respuesta del servidor (puedes personalizar esto)
+                                    $_SESSION['success_message'] = "Producto agregado con éxito.";
+                                    header('Location: productos.php'); 
+                                    // Puedes redirigir al usuario a la página de productos aquí si es necesario
+                                },
+                                error: function(xhr, status, error) {
+                                    // Maneja los errores de la solicitud AJAX
+                                    console.error(xhr.responseText);
+                                }
+                            });
+                        } else {
+                            // Estás en modo de actualizar, llama a la función para actualizar el producto existente
+                            // actualizarProducto();
+                            console.log("ceci esta actualizando")
+                        }
                         $('#modalAgregarProducto').modal('hide');
                     });
                 }
@@ -633,8 +713,9 @@ session_start();
     </style>
 
     <!-- Template Javascript -->
+    <script src="../js/jquery.min.js"></script>
+    <script src="../js/jquery.waypoints.min.js"></script>
     <script src="../js/main.js"></script>
-    
 </body>
 
 </html>
