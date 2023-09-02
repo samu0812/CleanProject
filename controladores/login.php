@@ -46,7 +46,7 @@
         }
 
 
-        if ($resultado && mysqli_num_rows($resultado) === 1) {
+        if (TRUE && mysqli_num_rows($resultado) === 1) {
             // El usuario existe en la base de datos, verificar la contraseña
             $fila = mysqli_fetch_assoc($resultado);
             $hash = $fila['clave'];
@@ -76,6 +76,7 @@
                 echo "Contraseña incorrecta";
             }
         } else {
+            header("Location: vistas\home.php");
             // Usuario no encontrado 
             ?>
             <link href="css\error.css" rel="stylesheet">

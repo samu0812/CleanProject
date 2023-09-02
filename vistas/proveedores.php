@@ -91,65 +91,67 @@ session_start();
                                 <div class="modal-body">
                                     <div class="container">
                                         <div class="row">
-                                            <div class="col-md-4 mb-3">
-                                                <label for="cuit" class="form-label">Cuit</label>
-                                                <div class="input-group">
-                                                    <span class="input-group-text"><i class="fa fa-id-card"></i></span>
-                                                    <input type="text" class="form-control" id="cuit">
-                                                </div>   
-                                            </div>
-                                            <div class="col-md-4 mb-3">
-                                                <label for="nombre" class="form-label">Nombre</label>              
-                                                <div class="input-group">
-                                                    <span class="input-group-text"><i class="fa fa-building"></i></span>
-                                                    <input type="text" class="form-control" id="nombre">
-                                                </div>   
-                                            </div>
-                                            <div class="col-md-4 mb-3">
-                                                <label for="domicilio" class="form-label">Domicilio</label>
-                                                <div class="input-group">
-                                                    <span class="input-group-text"><i class="fa fa-location-arrow"></i></span>
-                                                    <input type="text" class="form-control" id="domicilio">
-                                                </div>    
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-md-4 mb-3">
-                                                <label for="telefono" class="form-label">Telefono</label>
-                                                <div class="input-group">
-                                                    <span class="input-group-text"><i class="fa fa-phone"></i></span>
-                                                    <input type="text" class="form-control" id="telefono">
-                                                </div>     
-                                            </div>
-                                            <div class="col-md-4 mb-3">
-                                                <label for="email" class="form-label">Email</label>              
-                                                <div class="input-group">
-                                                    <span class="input-group-text"><i class="fa fa-envelope"></i></span>
-                                                    <input type="text" class="form-control" id="email">
-                                                </div>       
-                                            </div>
-                                            <div class="col-md-4 mb-3">
-                                                <label for="ciudad" class="form-label">Ciudad</label>
-                                                <div class="input-group">
-                                                    <span class="input-group-text"><i class="fa fa-map-marker"></i></span>
-                                                    <input type="text" class="form-control" id="ciudad">
-                                                </div>        
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-md-4 mb-3">
-                                                <label for="precioBase" class="form-label">Razon Social</label>
-                                                <div class="input-group">
-                                                    <span class="input-group-text"><i class="fa fa-briefcase"></i></span>
-                                                    <input type="text" class="form-control" id="razonSocial">
+                                        <form id="formAgregarProveedor">
+                                                <div class="col-md-4 mb-3">
+                                                    <label for="cuit" class="form-label">Cuit</label>
+                                                    <div class="input-group">
+                                                        <span class="input-group-text"><i class="fa fa-id-card"></i></span>
+                                                        <input name="cuit" type="number" class="form-control" id="cuit" required>
+                                                    </div>   
+                                                </div>
+                                                <div class="col-md-4 mb-3">
+                                                    <label for="nombre" class="form-label">Nombre</label>              
+                                                    <div class="input-group">
+                                                        <span class="input-group-text"><i class="fa fa-building"></i></span>
+                                                        <input name="nombre" type="text" class="form-control" id="nombre" required>
+                                                    </div>   
+                                                </div>
+                                                <div class="col-md-4 mb-3">
+                                                    <label for="domicilio" class="form-label">Domicilio</label>
+                                                    <div class="input-group">
+                                                        <span class="input-group-text"><i class="fa fa-location-arrow"></i></span>
+                                                        <input name="domicilio" type="text" class="form-control" id="domicilio" required>
+                                                    </div>    
                                                 </div>
                                             </div>
-                                        </div>
+                                            <div class="row">
+                                                <div class="col-md-4 mb-3">
+                                                    <label for="telefono" class="form-label">Telefono</label>
+                                                    <div class="input-group">
+                                                        <span class="input-group-text"><i class="fa fa-phone"></i></span>
+                                                        <input name="telefono" type="number" class="form-control" id="telefono" required>
+                                                    </div>     
+                                                </div>
+                                                <div class="col-md-4 mb-3">
+                                                    <label for="email" class="form-label">Email</label>              
+                                                    <div class="input-group">
+                                                        <span class="input-group-text"><i class="fa fa-envelope"></i></span>
+                                                        <input name="email" type="text" class="form-control" id="email" required>
+                                                    </div>       
+                                                </div>
+                                                <div class="col-md-4 mb-3">
+                                                    <label for="ciudad" class="form-label">Ciudad</label>
+                                                    <div class="input-group">
+                                                        <span class="input-group-text"><i class="fa fa-map-marker"></i></span>
+                                                        <input name="ciudad" type="text" class="form-control" id="ciudad" required>
+                                                    </div>        
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-4 mb-3">
+                                                    <label for="precioBase" class="form-label">Razon Social</label>
+                                                    <div class="input-group">
+                                                        <span class="input-group-text"><i class="fa fa-briefcase"></i></span>
+                                                        <input name="razonSocial" type="text" class="form-control" id="razonSocial" required>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </form>
                                     </div>
                                 </div>
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cerrar</button>
-                                    <button type="button" class="btn btn-secondary">Guardar</button>
+                                    <button type="button" class="btn btn-secondary" id= "guardarProveedorBtn">Guardar</button>
                                 </div>
                             </div>
                         </div>
@@ -172,7 +174,7 @@ session_start();
                                             <div class="col-md-4 mb-3">
                                                 <div class="input-group">
                                                     <span class="input-group-text"><i class="fa fa-id-card"></i></span>
-                                                    <input type="text" id="editCuit" class="form-control" placeholder="Cuit">
+                                                    <input  type="text" id="editCuit" class="form-control" placeholder="Cuit">
                                                 </div>   
                                             </div>
                                             <div class="col-md-4 mb-3">
@@ -497,8 +499,6 @@ session_start();
 
             // Ahora tienes los valores de la fila en las variables correspondientes
             // Puedes usarlos para llenar el formulario de edición u otro propósito
-            console.log("Cuit:", cuit);
-            console.log("Nombre:", nombre);
 
 
             // Insertar los valores en los inputs de edición
@@ -549,11 +549,116 @@ document.addEventListener("DOMContentLoaded", function() {
     });
 });
 
+//-----------------funcion obtener los datos del nuevo proveedor a agregar-----------------//
+document.addEventListener("DOMContentLoaded", function() {
+        const guardarProveedorBtn = document.querySelector("#guardarProveedorBtn");
+        const formularioProveedor = document.getElementById('formAgregarProveedor');
 
+        guardarProveedorBtn.addEventListener("click", function(evento) {
+
+            evento.preventDefault();
+            // Crea un objeto FormData a partir del formulario
+            const datosFormularioProveedor = new FormData(formularioProveedor);
+
+            // Puedes acceder a los valores de cada campo por su nombre
+            const cuit = datosFormularioProveedor.get('cuit');
+            const nombre = datosFormularioProveedor.get('nombre');
+            const domicilio = datosFormularioProveedor.get('domicilio');
+            const telefono = datosFormularioProveedor.get('telefono');
+            const email = datosFormularioProveedor.get('email');
+            const ciudad = datosFormularioProveedor.get('ciudad');
+            const razonSocial = datosFormularioProveedor.get('razonSocial');
+            
+
+            if (
+                cuit === "" ||
+                nombre === "" ||
+                domicilio === "" ||
+                telefono === "" ||
+                email === "" ||
+                ciudad === "" ||
+                razonSocial === ""
+            ) {
+                // Muestra un mensaje de error
+                alert("Todos los campos son requeridos. Por favor, completa todos los campos.");
+                return; // Detiene el flujo si falta algún campo
+            }
+
+            // Crea un objeto con los datos a enviar
+            const datosProveedor = {
+                cuit,
+                nombre,
+                domicilio,
+                telefono,
+                email,
+                ciudad,
+                razonSocial
+            };
+
+            console.log(datosProveedor);
+            
+            fetch('../controladores/proveedores.php',{
+                method: 'POST',
+                body: datosProveedor
+            })
+            .then(res => res.json())
+            .then(data => {
+                console.log(data);
+            })
+            .catch(error => {
+                console.error(error);
+            });
+
+            // const modalAgregarProducto = new bootstrap.Modal(document.getElementById("modalAgregarProducto"));
+            // modalAgregarProducto.hide();
+        });
+    });
+
+//-----------------funcion que limpia los inputs cuando apreta cerrar, pero los guarda temporalmente si le da a guardar y luego entra otra vez al modal de agregar-----------------//
+    document.addEventListener("DOMContentLoaded", function() {
+        const modalAgregarProducto = document.getElementById("modalAgregarProducto");
+        const guardarProveedorBtn = document.getElementById("guardarProveedorBtn");
+
+        // Variables para almacenar temporalmente los valores de los campos
+        let tempInputValues = {};
+
+        // Agrega un listener para el botón "Guardar" para almacenar temporalmente los valores
+        guardarProveedorBtn.addEventListener('click', function() {
+            // Obtiene todos los campos de entrada dentro del formulario
+            const inputs = modalAgregarProducto.querySelectorAll("input");
+
+            // Verifica si todos los campos requeridos están vacíos
+            const someFieldsEmpty = Array.from(inputs).some(input => input.required && !input.value);
+
+            if (someFieldsEmpty) {
+                // Al menos un campo requerido está vacío, guarda los valores en tempInputValues
+                inputs.forEach(input => {
+                    tempInputValues[input.id] = input.value;
+                });
+            }
+        });
+
+        // Agrega un listener para el evento 'hidden.bs.modal' (se ejecuta cuando se cierra el modal)
+        modalAgregarProducto.addEventListener('hidden.bs.modal', function () {
+            // Obtiene todos los campos de entrada dentro del formulario
+            const inputs = modalAgregarProducto.querySelectorAll("input");
+
+            // Restaura los valores desde tempInputValues
+            inputs.forEach(input => {
+                if (tempInputValues.hasOwnProperty(input.id)) {
+                    input.value = tempInputValues[input.id];
+                } else {
+                    input.value = '';
+                }
+            });
+
+            // Limpia el almacenamiento temporal
+            tempInputValues = {};
+        });
+    });
 
     </script>
 
 </body>
 
 </html>
-
