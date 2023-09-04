@@ -528,3 +528,8 @@
 .table-responsive h5 {
     margin: 10px;
 }
+
+#tableProd tr.selected {
+    background-color: #e77a34 !important;
+    color: #fff !important;
+}

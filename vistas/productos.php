@@ -2,7 +2,7 @@
 session_start();
 ?>
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 
 <head>
     <meta charset="utf-8">
@@ -44,8 +44,9 @@ session_start();
     <!-- Incluir DataTables CSS -->
     <link href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css" rel="stylesheet">
 
-    <!-- Incluir tus estilos personalizados -->
-    <link href="../css/style.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 
     <!-- Incluir Bootstrap JS -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/js/bootstrap.min.js"></script>
@@ -55,7 +56,8 @@ session_start();
     <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
     <script src="https://cdn.datatables.net/select/1.7.0/js/dataTables.select.min.js"></script>
 
-
+    <!-- Incluir tus estilos personalizados -->
+    <link href="../css/style.css" rel="stylesheet">
 </head>
 
 <body>
@@ -255,15 +257,16 @@ session_start();
                                     <div class="row">
                                         <div class="col-md-4 mb-3">
                                             <label for="codigo" class="form-label">Código</label>
-                                            <input type="text" class="form-control" id="codigo" name="codigo">
+                                            <input type="text" class="form-control" id="codigo" name="codigo" 
+                                            required>
                                         </div>
                                         <div class="col-md-4 mb-3">
                                             <label for="nombre" class="form-label">Nombre</label>
-                                            <input type="text" class="form-control" id="nombre" name="nombre">
+                                            <input type="text" class="form-control" id="nombre" name="nombre" required>
                                         </div>
                                         <div class="col-md-4 mb-3">
                                             <label for="proveedor" class="form-label">Proveedor</label>
-                                            <select class="form-select" id="proveedor" name="proveedor">
+                                            <select class="form-select" id="proveedor" name="proveedor" required>
                                             <option value="" selected disabled>Seleccione un proveedor</option>
                                             <?php include '../controladores/obtener_proveedores.php'; ?>
                                             </select>
@@ -273,12 +276,12 @@ session_start();
                                         <div class="col-md-4 mb-3">
                                             <label for="tipoProducto" class="form-label">Tipo Producto</label>
                                             <label for="tipoCategoria" class="form-label">Tipo Categoria</label>
-                                            <div class="input-group">
-                                                <select class="form-select" id="tipoProducto" name="tipoProducto">
+                                            <div class="input-group"> 
+                                                <select class="form-select" id="tipoProducto" name="tipoProducto" required>
                                                     <option value="" selected disabled>Seleccione...</option>
                                                     <?php include '../controladores/obtener_tipoproducto.php'; ?>
                                                 </select>
-                                                <select class="form-select" id="tipoCategoria" name="tipoCategoria">
+                                                <select class="form-select" id="tipoCategoria" name="tipoCategoria" required>
                                                     <option value="" selected disabled>Seleccione...</option>
                                                     <?php include '../controladores/obtener_prodcategoria.php'; ?>
                                                 </select>
@@ -287,16 +290,16 @@ session_start();
                                         <div class="col-md-4 mb-3">
                                             <label for="tamaño" class="form-label">Tamaño</label>
                                             <div class="input-group">
-                                                <input type="number" class="form-control" id="tamaño" name="tamaño" placeholder="Tamaño">
-                                                <select class="form-select" id="tipoTamaño" name="tipoTamaño" style="width: 2px;">
-                                                    <option value="" selected disabled>Seleccione una Medida</option>
+                                                <input type="number" class="form-control" id="tamaño" name="tamaño" placeholder="Tamaño" required>
+                                                <select class="form-select" id="tipoTamaño" name="tipoTamaño" style="width: 2px;" required>
+                                                    <option value="" selected disabled>Seleccione una Medida</option required>
                                                     <?php include '../controladores/obtener_tipotamaño.php'; ?>
                                                 </select>
                                             </div>
                                         </div>
                                         <div class="col-md-4 mb-3">
                                             <label for="cantidad" class="form-label">Cantidad</label>
-                                            <input type="number" class="form-control" id="cantidad" name="cantidad">
+                                            <input type="number" class="form-control" id="cantidad" name="cantidad" required>
                                         </div>
                                     </div>
                                     <div class="row">
@@ -304,14 +307,14 @@ session_start();
                                             <label for="precioBase" class="form-label">Precio Base</label>
                                             <div class="input-group">
                                                 <span class="input-group-text"><i class="fas fa-dollar-sign"></i></span>
-                                                <input type="number" class="form-control" id="precioBase" name="precioBase">
+                                                <input type="number" class="form-control" id="precioBase" name="precioBase" requirede costo')">
                                             </div>
                                         </div>
                                         <div class="col-md-4 mb-3">
                                             <label for="porcentajeAumento" class="form-label">Porcentaje de Aumento</label>
                                             <!-- <label for="precioVenta" class="form-label">Precio Venta</label> -->
                                             <div class="input-group">
-                                                <input style="width: 40px;" type="number" class="form-control" name="porcentajeAumento" id="porcentajeAumento">
+                                                <input style="width: 40px;" type="number" class="form-control" name="porcentajeAumento" id="porcentajeAumento" required>
                                                 <!--<input style="width: 40px;" type="number" class="form-control" id="precioVenta">-->
                                             </div>
                                         </div>
@@ -319,7 +322,7 @@ session_start();
                                         <div class="col-md-4 mb-3">
                                             <label for="sucursal" id="sucursalField" style="display: none;" class="form-label">Sucursal</label>
                                             <div class="input-group">
-                                                <select class="form-select" id="sucursalField2" style="display: none;" name="sucursal" id="sucursal" style="width: 2px;">
+                                                <select class="form-select" id="sucursalField2" style="display: none;" name="sucursal" id="sucursal" style="width: 2px;" required>
                                                     <option value="" selected disabled>Seleccione una Sucursal</option>
                                                     <?php include '../controladores/obtener_sucursales.php'; ?>
                                                 </select>
@@ -509,7 +512,7 @@ session_start();
         $(document).ready(function() {
             var tableProd = $('#tableProd').DataTable({
                 select: {
-                    style: 'single'
+                    style: 'single',
                 },
                 searching: true,
                 lengthChange: true,
@@ -606,7 +609,6 @@ session_start();
                             var porcentajeAumento = $("#porcentajeAumento").val();
                             var sucursal = $("#sucursal").val();
 
-
                             // Realiza una solicitud AJAX para enviar los datos al servidor
                             $.ajax({
                                 type: "POST",
@@ -625,16 +627,32 @@ session_start();
                                     sucursal: sucursal
                                 },
                                 success: function(response) {
-                                    // Maneja la respuesta del servidor
-                                    // Muestra una alerta con la respuesta del servidor (puedes personalizar esto)
-                                    $_SESSION['success_message'] = "Producto agregado con éxito.";
-                                    header('Location: productos.php'); 
-                                    // Puedes redirigir al usuario a la página de productos aquí si es necesario
-                                },
-                                error: function(xhr, status, error) {
-                                    // Maneja los errores de la solicitud AJAX
-                                    console.error(xhr.responseText);
+                                    if (response === "success") {
+                                        var responseObject = JSON.parse(response);
+                                        alert(responseObject.message);
+                                } else if (response === "error_stock") {
+                                    // Manejar el caso de error en la respuesta, si es necesario
+                                    toastr.error("Hubo un error al insertar en StockSucursales", "Error");
                                 }
+                            },
+                            error: function(xhr, status, error) {
+                                console.log("ceci")
+                                // Maneja los errores de la solicitud AJAX
+                                toastr.error("Surgió un problema al intentar agregar el nuevo producto", "Error", {
+                                    closeButton: true,
+                                    positionClass: "toast-bottom-right",
+                                    preventDuplicates: true,
+                                    onclick: null,
+                                    showDuration: "300",
+                                    hideDuration: "1000",
+                                    timeOut: "4000",
+                                    extendedTimeOut: "1000",
+                                    showEasing: "swing",
+                                    hideEasing: "linear",
+                                    showMethod: "fadeIn",
+                                    hideMethod: "fadeOut"
+                                });
+                            }
                             });
                         } else {
                             // Estás en modo de actualizar, llama a la función para actualizar el producto existente
@@ -648,8 +666,16 @@ session_start();
         });
     </script>
 
-
     <style>
+        .toast-warning {
+            background-color: #e77a34 !important; /* Cambia el color a tu preferencia */
+        }
+
+        #tableProd tr.selected {
+            background-color: #e77a34 !important;
+            color: #fff !important;
+        }
+
         /* Estilo para mover el lengthChange a la izquierda */
         div.dataTables_wrapper .dataTables_length {
             text-align: left;
@@ -663,7 +689,6 @@ session_start();
             background-color: #e77a34;
             border-color: #e77a34;
         }
-
 
         /* Estilo para mover el searching a la derecha */
         div.dataTables_wrapper .dataTables_filter {
@@ -706,15 +731,12 @@ session_start();
         }
 
         .modal-footer .btn-primary:hover {
-            background-color: #5a104c; /* Cambia el color de fondo en el hover */
-            border-color: #0056b3; /* Cambia el color del borde en el hover */
+            background-color: #e77a34; /* Cambia el color de fondo en el hover */
+            border-color: #e77a34; /* Cambia el color del borde en el hover */
         }
 
     </style>
 
-    <!-- Template Javascript -->
-    <script src="../js/jquery.min.js"></script>
-    <script src="../js/jquery.waypoints.min.js"></script>
     <script src="../js/main.js"></script>
 </body>
 
