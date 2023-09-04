@@ -43,6 +43,9 @@ session_start();
     <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
     <script src="https://cdn.datatables.net/select/1.7.0/js/dataTables.select.min.js"></script>
 
+    <!-- toast -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+
     <!-- Incluir tus estilos personalizados -->
     <link href="../css/style.css" rel="stylesheet">
 </head>
@@ -114,7 +117,7 @@ session_start();
                 <div class="bg-personalizado text-center rounded p-4">
                     <div class="table-responsive -xxl">
                     <table id="tableUser" class="table display" style="width:100%">
-                        <h5>Busqueda de Productos</h5>
+                        <h5>Usuarios </h5>
                         <thead>
                             <tr>
                             <th>ID Persona</th>
@@ -335,6 +338,7 @@ session_start();
                 }
             });
             $('#idPersona').prop('disabled', true);
+            
 
 
 
@@ -398,9 +402,6 @@ session_start();
                         // ...
                         // Cerrar el modal después de guardar los datos (si es necesario)
                         $('#idPersona').prop('disabled', false);
-                        $('#modalAgregarUsuario').modal('hide');
-
-                        
                     });
                     $('#btnCrearUsuario').click(function() {
                         // Aquí puedes agregar el código para guardar los datos si es necesario
@@ -408,7 +409,6 @@ session_start();
                         // Cerrar el modal después de guardar los datos (si es necesario)
                         $('#idPersona').prop('disabled', false);
                         $('#modalAgregarUsuario').modal('hide');
-                        
                     });
                     
                 }
@@ -479,6 +479,7 @@ session_start();
         }
 
     </style>
+    
 <!-- JavaScript Libraries -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="../lib/chart/chart.min.js"></script>
@@ -491,6 +492,7 @@ session_start();
 
     <!-- Template Javascript -->
     <script src="../js/main.js"></script>
+
     
 </body>
 

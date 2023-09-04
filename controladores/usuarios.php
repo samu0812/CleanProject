@@ -59,10 +59,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
                 $consulta4= "INSERT INTO Empleado (idSucursales, idPersona, idRol, Clave) VALUES ('$idSucursal','$idPersona', '$idRol', '$hashedClave')";
                 $resultado4 = mysqli_query($conn, $consulta4);
-            
+                
     
                 if ($resultado1 && $resultado2 && $resultado3) {
                     echo 'Usuario registrado correctamente'; //agregar mensaje
+                    
                 } else {
                 // Error al registrar el usuario
                     ?>
