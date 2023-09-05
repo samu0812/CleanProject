@@ -1,6 +1,7 @@
 <?php 
 session_start();
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -41,6 +42,9 @@ session_start();
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
 
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.12.1/css/all.css" crossorigin="anonymous">
+
+    <!-- libreria toast -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
 
     
 </head>
@@ -253,8 +257,8 @@ session_start();
                                     </th>
                                 </tr>
                             </thead>
-                            <tbody>
-                                <tr>
+                            <tbody id="proveedoresBody">
+                                <!-- <tr>
                                     <td>001</td>
                                     <td>20334595968</td>
                                     <td>indio</td>
@@ -282,7 +286,7 @@ session_start();
                                         <button id="btnEditarTableProveedores" style="background: #e77a34; color: white;" class="btn btn-sm d-inline-block" data-bs-toggle="modal" data-bs-target="#modalEditarStock"><i class="far fa-edit"></i></button>
                                         <button id="btnEliminarTableProveedores" data-id="002" style="background: #e77a34; color: white;" class="btn btn-sm d-inline-block" data-bs-toggle="modal" data-bs-target="#modalEliminarStock"><i class="fas fa-trash"></i></button>
                                     </td>
-                                </tr>
+                                </tr> -->
                             </tbody>
                             <tfoot>
                             </tfoot>
@@ -366,25 +370,9 @@ session_start();
     <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css"></script>
     <script src="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css"></script>
 
-    <script>
-        $(document).ready(function() {
-            var table1 = $('#tableProveedores').DataTable({
-                searching: true,      // Habilita la búsqueda estándar
-                lengthChange: true,
-                ordering: true,
-                info: true,
-                language: {
-                    search: "",
-                    searchPlaceholder: "Filtrar proveedores",
-                    zeroRecords: "No se encontraron resultados",
-                    info: "Mostrando _START_ a _END_ de _TOTAL_ registros",
-                    infoEmpty: "Mostrando 0 a 0 de 0 registros",
-                    infoFiltered: "(filtrado de MAX registros en total)"
-                }
-            });
-
-        });
-    </script>
+    <!-- libreria toast -->
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 
     <style>
         /* Estilo para mover el lengthChange a la izquierda */
@@ -551,9 +539,78 @@ document.addEventListener("DOMContentLoaded", function() {
 
 //-----------------funcion obtener los datos del nuevo proveedor a agregar-----------------//
 document.addEventListener("DOMContentLoaded", function() {
+    const tableProveedores = document.getElementById("tableProveedores");
+        let table1
+
+        function obtenerProveedores() {
+            // Inicializa DataTables al cargar la página
+            $(document).ready(function() {
+                if (table1 !== undefined && $.fn.DataTable.isDataTable('#tableProveedores')) {
+                    table1.destroy();
+                }
+                table1 = $('#tableProveedores').DataTable({
+                    searching: true,      // Habilita la búsqueda estándar
+                    lengthChange: true,
+                    ordering: true,
+                    info: true,
+                    lengthMenu: [ 5, 10, 15, 20 ], // Personaliza las opciones disponibles
+                    language: {
+                        search: "",
+                        searchPlaceholder: "Filtrar proveedores",
+                        zeroRecords: "No se encontraron resultados",
+                        info: "Mostrando _START_ a _END_ de _TOTAL_ registros",
+                        infoEmpty: "Mostrando 0 a 0 de 0 registros",
+                        infoFiltered: "(filtrado de MAX registros en total)"
+                    }
+                });
+
+            });
+            // Realiza una solicitud Fetch para obtener los datos de los proveedores desde tu servidor
+            fetch('../controladores/proveedores.php?action=listar')
+                .then(response => response.json())
+                .then(data => {
+                    //inicializo la tabla despues de cargar los datos
+                    const tbody = tableProveedores.querySelector("tbody");
+                    console.log(data);
+                    let proveedores = data
+                // Limpia el contenido actual de la tabla
+                table1.clear().draw();
+
+                // Recorre los datos de los proveedores y crea filas para cada uno
+                proveedores.forEach(proveedor => {
+                        const row = [
+                            proveedor.idProveedores,
+                            proveedor.Cuit,
+                            proveedor.Nombre,
+                            proveedor.Domicilio,
+                            proveedor.Telefono,
+                            proveedor.Email,
+                            proveedor.Ciudad,
+                            proveedor.RazonSocial,
+                            `
+                            <button id="btnEditarTableProveedores" data-id=${proveedor.idProveedores} style="background: #e77a34; color: white;" class="btn btn-sm d-inline-block" data-bs-toggle="modal" data-bs-target="#modalEditarStock"><i class="far fa-edit"></i></button>
+                            <button id="btnEliminarTableProveedores" data-id=${proveedor.idProveedores} style="background: #e77a34; color: white;" class="btn btn-sm d-inline-block" data-bs-toggle="modal" data-bs-target="#modalEliminarStock"><i class="fas fa-trash"></i></button>
+                            `
+                        ];
+                        table1.rows.add([row]).draw();
+                        //table1.clear().rows.add(row).draw();
+                    });
+                })
+                .catch(error => {
+                    console.error('Error al obtener los proveedores: ', error);
+                });
+        }
+    
+    //llamamos a listar los proveedores
+    obtenerProveedores()
+
+        //obtenemos el boton de agregar y el formulario
+        const modalAgregarProveedor= new bootstrap.Modal(document.getElementById("modalAgregarProducto"));
+
         const guardarProveedorBtn = document.querySelector("#guardarProveedorBtn");
         const formularioProveedor = document.getElementById('formAgregarProveedor');
 
+        //capturamos cuando hace click al boton guardar
         guardarProveedorBtn.addEventListener("click", function(evento) {
 
             evento.preventDefault();
@@ -595,22 +652,43 @@ document.addEventListener("DOMContentLoaded", function() {
                 razonSocial
             };
 
-            console.log(datosProveedor);
-            
-            fetch('../controladores/proveedores.php',{
-                method: 'POST',
-                body: datosProveedor
-            })
-            .then(res => res.json())
-            .then(data => {
-                console.log(data);
-            })
-            .catch(error => {
-                console.error(error);
-            });
+            // hacemos el fetch al backend
+            fetch("../controladores/proveedores.php?action=agregar", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify(datosProveedor)
+                })
+                .then(response => response.text())
+                .then(data => {
+                    // recargamos la tabla
+                    obtenerProveedores()
+                    // mostramos el mensaje
+                    toastr.warning("Se ha añadido el usuario correctamente a la base de datos", "Usuario Registrado!" , {
+                        "closeButton": true,
+                        "positionClass": "toast-bottom-right",
+                        "preventDuplicates": true,
+                        "onclick": null,
+                        "showDuration": "300",
+                        "hideDuration": "1000",
+                        "timeOut": "4000",
+                        "extendedTimeOut": "1000",
+                        "showEasing": "swing",
+                        "hideEasing": "linear",
+                        "showMethod": "fadeIn",
+                        "hideMethod": "fadeOut"
+                    })
+                    // cerramos el modal
+                    modalAgregarProveedor.hide();
 
-            // const modalAgregarProducto = new bootstrap.Modal(document.getElementById("modalAgregarProducto"));
-            // modalAgregarProducto.hide();
+                })
+                .catch(error => {
+                    console.error("Error al enviar los datos: ", error);
+                });
+
+            
+
         });
     });
 
@@ -658,7 +736,7 @@ document.addEventListener("DOMContentLoaded", function() {
     });
 
     </script>
-
+    
 </body>
 
 </html>
