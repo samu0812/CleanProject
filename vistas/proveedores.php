@@ -1,6 +1,7 @@
 <?php 
 session_start();
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -41,6 +42,9 @@ session_start();
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
 
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.12.1/css/all.css" crossorigin="anonymous">
+
+    <!-- libreria toast -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
 
     
 </head>
@@ -91,65 +95,67 @@ session_start();
                                 <div class="modal-body">
                                     <div class="container">
                                         <div class="row">
-                                            <div class="col-md-4 mb-3">
-                                                <label for="cuit" class="form-label">Cuit</label>
-                                                <div class="input-group">
-                                                    <span class="input-group-text"><i class="fa fa-id-card"></i></span>
-                                                    <input type="text" class="form-control" id="cuit">
-                                                </div>   
-                                            </div>
-                                            <div class="col-md-4 mb-3">
-                                                <label for="nombre" class="form-label">Nombre</label>              
-                                                <div class="input-group">
-                                                    <span class="input-group-text"><i class="fa fa-building"></i></span>
-                                                    <input type="text" class="form-control" id="nombre">
-                                                </div>   
-                                            </div>
-                                            <div class="col-md-4 mb-3">
-                                                <label for="domicilio" class="form-label">Domicilio</label>
-                                                <div class="input-group">
-                                                    <span class="input-group-text"><i class="fa fa-location-arrow"></i></span>
-                                                    <input type="text" class="form-control" id="domicilio">
-                                                </div>    
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-md-4 mb-3">
-                                                <label for="telefono" class="form-label">Telefono</label>
-                                                <div class="input-group">
-                                                    <span class="input-group-text"><i class="fa fa-phone"></i></span>
-                                                    <input type="text" class="form-control" id="telefono">
-                                                </div>     
-                                            </div>
-                                            <div class="col-md-4 mb-3">
-                                                <label for="email" class="form-label">Email</label>              
-                                                <div class="input-group">
-                                                    <span class="input-group-text"><i class="fa fa-envelope"></i></span>
-                                                    <input type="text" class="form-control" id="email">
-                                                </div>       
-                                            </div>
-                                            <div class="col-md-4 mb-3">
-                                                <label for="ciudad" class="form-label">Ciudad</label>
-                                                <div class="input-group">
-                                                    <span class="input-group-text"><i class="fa fa-map-marker"></i></span>
-                                                    <input type="text" class="form-control" id="ciudad">
-                                                </div>        
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-md-4 mb-3">
-                                                <label for="precioBase" class="form-label">Razon Social</label>
-                                                <div class="input-group">
-                                                    <span class="input-group-text"><i class="fa fa-briefcase"></i></span>
-                                                    <input type="text" class="form-control" id="razonSocial">
+                                        <form id="formAgregarProveedor">
+                                                <div class="col-md-4 mb-3">
+                                                    <label for="cuit" class="form-label">Cuit</label>
+                                                    <div class="input-group">
+                                                        <span class="input-group-text"><i class="fa fa-id-card"></i></span>
+                                                        <input name="cuit" type="number" class="form-control" id="cuit" required>
+                                                    </div>   
+                                                </div>
+                                                <div class="col-md-4 mb-3">
+                                                    <label for="nombre" class="form-label">Nombre</label>              
+                                                    <div class="input-group">
+                                                        <span class="input-group-text"><i class="fa fa-building"></i></span>
+                                                        <input name="nombre" type="text" class="form-control" id="nombre" required>
+                                                    </div>   
+                                                </div>
+                                                <div class="col-md-4 mb-3">
+                                                    <label for="domicilio" class="form-label">Domicilio</label>
+                                                    <div class="input-group">
+                                                        <span class="input-group-text"><i class="fa fa-location-arrow"></i></span>
+                                                        <input name="domicilio" type="text" class="form-control" id="domicilio" required>
+                                                    </div>    
                                                 </div>
                                             </div>
-                                        </div>
+                                            <div class="row">
+                                                <div class="col-md-4 mb-3">
+                                                    <label for="telefono" class="form-label">Telefono</label>
+                                                    <div class="input-group">
+                                                        <span class="input-group-text"><i class="fa fa-phone"></i></span>
+                                                        <input name="telefono" type="number" class="form-control" id="telefono" maxlength="10" required>
+                                                    </div>     
+                                                </div>
+                                                <div class="col-md-4 mb-3">
+                                                    <label for="email" class="form-label">Email</label>              
+                                                    <div class="input-group">
+                                                        <span class="input-group-text"><i class="fa fa-envelope"></i></span>
+                                                        <input name="email" type="text" class="form-control" id="email" required>
+                                                    </div>       
+                                                </div>
+                                                <div class="col-md-4 mb-3">
+                                                    <label for="ciudad" class="form-label">Ciudad</label>
+                                                    <div class="input-group">
+                                                        <span class="input-group-text"><i class="fa fa-map-marker"></i></span>
+                                                        <input name="ciudad" type="text" class="form-control" id="ciudad" required>
+                                                    </div>        
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-4 mb-3">
+                                                    <label for="precioBase" class="form-label">Razon Social</label>
+                                                    <div class="input-group">
+                                                        <span class="input-group-text"><i class="fa fa-briefcase"></i></span>
+                                                        <input name="razonSocial" type="text" class="form-control" id="razonSocial" required>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </form>
                                     </div>
                                 </div>
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cerrar</button>
-                                    <button type="button" class="btn btn-secondary">Guardar</button>
+                                    <button type="button" class="btn btn-secondary" id= "guardarProveedorBtn">Guardar</button>
                                 </div>
                             </div>
                         </div>
@@ -172,7 +178,7 @@ session_start();
                                             <div class="col-md-4 mb-3">
                                                 <div class="input-group">
                                                     <span class="input-group-text"><i class="fa fa-id-card"></i></span>
-                                                    <input type="text" id="editCuit" class="form-control" placeholder="Cuit">
+                                                    <input  type="number" id="editCuit" class="form-control" placeholder="Cuit">
                                                 </div>   
                                             </div>
                                             <div class="col-md-4 mb-3">
@@ -195,7 +201,7 @@ session_start();
     
                                                 <div class="input-group">
                                                     <span class="input-group-text"><i class="fa fa-phone"></i></span>
-                                                    <input type="text" id="editTelefono" class="form-control"  placeholder="Telefono">
+                                                    <input type="number" id="editTelefono" class="form-control"  placeholder="Telefono" maxlength="10">
                                                 </div>     
                                             </div>
                                             <div class="col-md-4 mb-3">            
@@ -224,8 +230,8 @@ session_start();
                                     </div>
                         </div>
                         <div class="modal-footer">
-                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cerrar</button>
-                                    <button type="button" class="btn btn-secondary">Guardar</button>
+                            <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cerrar</button>
+                            <button type="button" class="btn btn-secondary" id="btnGuardarEdicion">Guardar</button>
                         </div>
                     </div>
                 </div>
@@ -251,36 +257,7 @@ session_start();
                                     </th>
                                 </tr>
                             </thead>
-                            <tbody>
-                                <tr>
-                                    <td>001</td>
-                                    <td>20334595968</td>
-                                    <td>indio</td>
-                                    <td>gonzalez</td>
-                                    <td>3704112234</td>
-                                    <td>indio@gmail.com</td>
-                                    <td>chaco</td>
-                                    <td>indio SOCIEDAD</td>
-                                    <td class="d-flex justify-content-between">
-                                        <button id="btnEditarTableProveedores" style="background: #e77a34; color: white;" class="btn btn-sm d-inline-block" data-bs-toggle="modal" data-bs-target="#modalEditarStock"><i class="far fa-edit"></i></button>
-                                        <button id="btnEliminarTableProveedores" data-id="001" style="background: #e77a34; color: white;" class="btn btn-sm d-inline-block" data-bs-toggle="modal" data-bs-target="#modalEliminarStock"><i class="fas fa-trash"></i></button>
-                                        
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>002</td>
-                                    <td>20444649328</td>
-                                    <td>domitec</td>
-                                    <td>Kirchner</td>
-                                    <td>3704008834</td>
-                                    <td>domitec@gmail.com</td>
-                                    <td>formosa</td>
-                                    <td>domitec SOCIEDAD</td>
-                                    <td class="d-flex justify-content-between">
-                                        <button id="btnEditarTableProveedores" style="background: #e77a34; color: white;" class="btn btn-sm d-inline-block" data-bs-toggle="modal" data-bs-target="#modalEditarStock"><i class="far fa-edit"></i></button>
-                                        <button id="btnEliminarTableProveedores" data-id="002" style="background: #e77a34; color: white;" class="btn btn-sm d-inline-block" data-bs-toggle="modal" data-bs-target="#modalEliminarStock"><i class="fas fa-trash"></i></button>
-                                    </td>
-                                </tr>
+                            <tbody id="proveedoresBody">
                             </tbody>
                             <tfoot>
                             </tfoot>
@@ -309,7 +286,7 @@ session_start();
                 </div>
             </div>
                 
-            <!-- Modal de eliminacion exitosa -->
+            <!-- Modal de eliminacion exitosa
             <div class="modal fade" id="modalExitoEliminar" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                 <div class="modal-dialog modal-dialog-centered">
                     <div class="modal-content">
@@ -325,7 +302,7 @@ session_start();
                         </div>
                     </div>
                 </div>
-            </div>
+            </div> -->
 
 
             
@@ -364,25 +341,9 @@ session_start();
     <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css"></script>
     <script src="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css"></script>
 
-    <script>
-        $(document).ready(function() {
-            var table1 = $('#tableProveedores').DataTable({
-                searching: true,      // Habilita la búsqueda estándar
-                lengthChange: true,
-                ordering: true,
-                info: true,
-                language: {
-                    search: "",
-                    searchPlaceholder: "Filtrar proveedores",
-                    zeroRecords: "No se encontraron resultados",
-                    info: "Mostrando _START_ a _END_ de _TOTAL_ registros",
-                    infoEmpty: "Mostrando 0 a 0 de 0 registros",
-                    infoFiltered: "(filtrado de MAX registros en total)"
-                }
-            });
-
-        });
-    </script>
+    <!-- libreria toast -->
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 
     <style>
         /* Estilo para mover el lengthChange a la izquierda */
@@ -480,80 +441,429 @@ session_start();
             $('#razonSocial').prop('disabled', true);
         }
 
+
+        const tableProveedores = document.getElementById("tableProveedores");
+        let table1
+
+        function obtenerProveedores() {
+            // Inicializa DataTables al cargar la página
+            $(document).ready(function() {
+                if (table1 !== undefined && $.fn.DataTable.isDataTable('#tableProveedores')) {
+                    table1.destroy();
+                }
+                table1 = $('#tableProveedores').DataTable({
+                    searching: true,      // Habilita la búsqueda estándar
+                    lengthChange: true,
+                    ordering: true,
+                    info: true,
+                    lengthMenu: [ 5, 10, 15, 20 ], // Personaliza las opciones disponibles
+                    language: {
+                        search: "",
+                        searchPlaceholder: "Filtrar proveedores",
+                        zeroRecords: "No se encontraron resultados",
+                        info: "Mostrando _START_ a _END_ de _TOTAL_ registros",
+                        infoEmpty: "Mostrando 0 a 0 de 0 registros",
+                        infoFiltered: "(filtrado de MAX registros en total)"
+                    }
+                });
+
+            });
+            // Realiza una solicitud Fetch para obtener los datos de los proveedores desde tu servidor
+            fetch('../controladores/proveedores.php?action=listar')
+                .then(response => response.json())
+                .then(data => {
+                    //inicializo la tabla despues de cargar los datos
+                    const tbody = tableProveedores.querySelector("tbody");
+                    console.log(data);
+                    let proveedores = data
+                // Limpia el contenido actual de la tabla
+                table1.clear().draw();
+
+                // Recorre los datos de los proveedores y crea filas para cada uno
+                proveedores.forEach(proveedor => {
+                        const row = [
+                            proveedor.idProveedores,
+                            proveedor.Cuit,
+                            proveedor.Nombre,
+                            proveedor.Domicilio,
+                            proveedor.Telefono,
+                            proveedor.Email,
+                            proveedor.Ciudad,
+                            proveedor.RazonSocial,
+                            `
+                            <button id="btnEditarTableProveedores" data-id=${proveedor.idProveedores} style="background: #e77a34; color: white;" class="btn btn-sm d-inline-block" data-bs-toggle="modal" data-bs-target="#modalEditarStock"><i class="far fa-edit"></i></button>
+                            <button id="btnEliminarTableProveedores" data-id=${proveedor.idProveedores} style="background: #e77a34; color: white;" class="btn btn-sm d-inline-block" data-bs-toggle="modal" data-bs-target="#modalEliminarStock"><i class="fas fa-trash"></i></button>
+                            `
+                        ];
+                        table1.rows.add([row]).draw();
+                        //table1.clear().rows.add(row).draw();
+                    });
+                })
+                .catch(error => {
+                    console.error('Error al obtener los proveedores: ', error);
+                });
+        }
+    
+    //llamamos a listar los proveedores
+    obtenerProveedores()    
+
     //-----------------funcion que obtiene datos del registro y los inserta en los inputs-----------------//
-    document.addEventListener("DOMContentLoaded", function() {
-    const btnEditarTableProveedores = document.querySelectorAll("#btnEditarTableProveedores");
+    // Variables para almacenar los valores actuales
+    let valoresActuales = {};
+    let proveedorId;
+    // Cuando se hace clic en el botón de editar
+    $('#tableProveedores tbody').on('click', '#btnEditarTableProveedores', function() {
+        proveedorId = $(this).data('id');
 
-    btnEditarTableProveedores.forEach(button => {
-        button.addEventListener("click", function() {
-            const row = this.closest("tr"); // Obtenemos la fila más cercana al botón clickeado
-            const cuit = row.cells[1].textContent;
-            const nombre = row.cells[2].textContent;
-            const domicilio = row.cells[3].textContent;
-            const telefono = row.cells[4].textContent;
-            const email = row.cells[5].textContent;
-            const ciudad = row.cells[6].textContent;
-            const razonSocial = row.cells[7].textContent;
+        // Realizar una solicitud Fetch para obtener los detalles del proveedor por su ID
+        fetch('../controladores/proveedores.php?action=obtener&id=' + proveedorId)
+            .then(response => response.json())
+            .then(data => {
+                // Almacena los valores actuales antes de mostrar el modal
+                valoresActuales = {
+                    Cuit: String(data.Cuit),
+                    Nombre: String(data.Nombre),
+                    Domicilio: String(data.Domicilio),
+                    Telefono: String(data.Telefono),
+                    Email: String(data.Email),
+                    Ciudad: String(data.Ciudad),
+                    RazonSocial: String(data.RazonSocial)
+                };
 
-            // Ahora tienes los valores de la fila en las variables correspondientes
-            // Puedes usarlos para llenar el formulario de edición u otro propósito
-            console.log("Cuit:", cuit);
-            console.log("Nombre:", nombre);
+                // Llenar los campos del formulario de edición con los datos obtenidos
+                document.getElementById('editCuit').value = valoresActuales.Cuit;
+                document.getElementById('editNombre').value = valoresActuales.Nombre;
+                document.getElementById('editDomicilio').value = valoresActuales.Domicilio;
+                document.getElementById('editTelefono').value = valoresActuales.Telefono;
+                document.getElementById('editEmail').value = valoresActuales.Email;
+                document.getElementById('editCiudad').value = valoresActuales.Ciudad;
+                document.getElementById('editRazonSocial').value = valoresActuales.RazonSocial;
 
+                // Mostrar el modal de edición
+                $('#modalEditarStock').modal('show');
+            })
+            .catch(error => {
+                console.error('Error al obtener datos del proveedor: ', error);
+            });
 
-            // Insertar los valores en los inputs de edición
-            document.getElementById("editCuit").value = cuit;
-            document.getElementById("editNombre").value = nombre;
-            document.getElementById("editDomicilio").value = domicilio;
-            document.getElementById("editTelefono").value = telefono;
-            document.getElementById("editEmail").value = email;
-            document.getElementById("editCiudad").value = ciudad;
-            document.getElementById("editRazonSocial").value = razonSocial;
+            $('#btnGuardarEdicion').on('click', function() {
+                console.log(proveedorId, "id prov")
+                // Obtén los valores editados del formulario
+                const valoresEditados = {
+                    ProveedorId: proveedorId,
+                    Cuit: document.getElementById('editCuit').value,
+                    Nombre: document.getElementById('editNombre').value,
+                    Domicilio: document.getElementById('editDomicilio').value,
+                    Telefono: document.getElementById('editTelefono').value,
+                    Email: document.getElementById('editEmail').value,
+                    Ciudad: document.getElementById('editCiudad').value,
+                    RazonSocial: document.getElementById('editRazonSocial').value
+                };
 
-        });
+                // Verifica si se han realizado cambios
+                if (sonIguales(valoresActuales, valoresEditados)) {
+                    // No se realizaron cambios, muestra un mensaje al usuario
+                    console.log(valoresActuales);
+                    console.log(valoresEditados);
+                    toastr.error("No se realizaron cambios.", "Edición Cancelada", {
+                        "closeButton": true,
+                        "positionClass": "toast-bottom-right",
+                        "preventDuplicates": true,
+                        "onclick": null,
+                        "showDuration": "300",
+                        "hideDuration": "1000",
+                        "timeOut": "4000",
+                        "extendedTimeOut": "1000",
+                        "showEasing": "swing",
+                        "hideEasing": "linear",
+                        "showMethod": "fadeIn",
+                        "hideMethod": "fadeOut"
+                    });
+                } else {
+                    console.log("valores editados", valoresEditados)
+                    fetch('../controladores/proveedores.php?action=editar', {
+                            method: "POST",
+                            headers: {
+                                "Content-Type": "application/json"
+                            },
+                            body: JSON.stringify(valoresEditados)
+                        } )
+                        .then(response => response.text())
+                        .then(data => {
+                            console.log(data);
+                            obtenerProveedores()
+                            // Cierra el modal de confirmación
+                            $('#modalEditarStock').modal('hide');
+                            // mostramos el mensaje
+                            toastr.success("Se ha actualizado los datos del proveedor correctamente en la base de datos", "Proveedor Actualizado!" , {
+                                "closeButton": true,
+                                "positionClass": "toast-bottom-right",
+                                "preventDuplicates": true,
+                                "onclick": null,
+                                "showDuration": "300",
+                                "hideDuration": "1000",
+                                "timeOut": "4000",
+                                "extendedTimeOut": "1000",
+                                "showEasing": "swing",
+                                "hideEasing": "linear",
+                                "showMethod": "fadeIn",
+                                "hideMethod": "fadeOut"
+                            })
+                        })
+                        .catch(error => {
+                            console.log(error);
+                            toastr.error("Sucedio un error al actualizar el proveedor", "Error al actualizar!" , {
+                                "closeButton": true,
+                                "positionClass": "toast-bottom-right",
+                                "preventDuplicates": true,
+                                "onclick": null,
+                                "showDuration": "300",
+                                "hideDuration": "1000",
+                                "timeOut": "4000",
+                                "extendedTimeOut": "1000",
+                                "showEasing": "swing",
+                                "hideEasing": "linear",
+                                "showMethod": "fadeIn",
+                                "hideMethod": "fadeOut"
+                            });
+                        });
+                }
+            });
+
+            // Función para comparar dos objetos y verificar si tienen los mismos valores
+            function sonIguales(objeto1, objeto2) {
+                for (let clave in objeto1) {
+                    if (objeto1[clave] !== objeto2[clave]) {
+                        return false;
+                    }
+                }
+                return true;
+            }
     });
-});
+
+// Cuando se hace clic en el botón de guardar edición
+
+
 
 //-----------------funcion que obtiene el id del registro que quiere eliminarr-----------------//
-document.addEventListener("DOMContentLoaded", function() {
-    const btnEliminarTableProveedores = document.querySelectorAll("#btnEliminarTableProveedores");
-    const confirmarEliminarButton = document.getElementById("confirmarEliminar");
-    const modalExitoEliminar = new bootstrap.Modal(document.getElementById("modalExitoEliminar"));
-    const modalEliminarStock = new bootstrap.Modal(document.getElementById("modalEliminarStock"));
-    let selectedId = null;
+    $('#tableProveedores tbody').on('click', '#btnEliminarTableProveedores', function() {
+        const proveedorId = $(this).data('id');
 
-    btnEliminarTableProveedores.forEach(button => {
-        button.addEventListener("click", function() {
-            selectedId = this.getAttribute("data-id");
+        // Cuando se hace clic en el botón de eliminar, actualiza el valor del botón de confirmación en el modal
+        $('#confirmarEliminar').data('id', proveedorId);
+    });
+        // Manejador de eventos para el botón "Eliminar" en el modal de confirmación
+        $('#confirmarEliminar').on('click', function() {
+            const proveedorId = $(this).data('id');
+            console.log(proveedorId, "confirmado");
+            const datosProveedor = {
+                idDelProveedor : proveedorId,
+            };
+            console.log(datosProveedor);
+
+            fetch("../controladores/proveedores.php?action=eliminar", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(datosProveedor)
+            })
+            .then(response => response.text())
+            .then(data => {
+                console.log(data);
+                // recargamos la tabla
+                obtenerProveedores()
+                // Cierra el modal de confirmación
+                $('#modalEliminarStock').modal('hide');
+                // mostramos el mensaje
+                toastr.success("Se ha eliminado el Proveedor correctamente de la base de datos", "Proveedor Eliminado!" , {
+                    "closeButton": true,
+                    "positionClass": "toast-bottom-right",
+                    "preventDuplicates": true,
+                    "onclick": null,
+                    "showDuration": "300",
+                    "hideDuration": "1000",
+                    "timeOut": "4000",
+                    "extendedTimeOut": "1000",
+                    "showEasing": "swing",
+                    "hideEasing": "linear",
+                    "showMethod": "fadeIn",
+                    "hideMethod": "fadeOut"
+                })
+            })
+            .catch(error => {
+                console.log(error);
+                toastr.error("Sucedio un error al eliminar el proveedor", "Error al Eliminar!" , {
+                    "closeButton": true,
+                    "positionClass": "toast-bottom-right",
+                    "preventDuplicates": true,
+                    "onclick": null,
+                    "showDuration": "300",
+                    "hideDuration": "1000",
+                    "timeOut": "4000",
+                    "extendedTimeOut": "1000",
+                    "showEasing": "swing",
+                    "hideEasing": "linear",
+                    "showMethod": "fadeIn",
+                    "hideMethod": "fadeOut"
+                });
+            });
+
+
+        });
+
+
+//-----------------funcion obtener los datos del nuevo proveedor a agregar-----------------//
+document.addEventListener("DOMContentLoaded", function() {
+
+
+        //obtenemos el boton de agregar y el formulario
+        const modalAgregarProveedor= new bootstrap.Modal(document.getElementById("modalAgregarProducto"));
+
+        const guardarProveedorBtn = document.querySelector("#guardarProveedorBtn");
+        const formularioProveedor = document.getElementById('formAgregarProveedor');
+
+        //capturamos cuando hace click al boton guardar
+        guardarProveedorBtn.addEventListener("click", function(evento) {
+
+            evento.preventDefault();
+            // Crea un objeto FormData a partir del formulario
+            const datosFormularioProveedor = new FormData(formularioProveedor);
+
+            // Puedes acceder a los valores de cada campo por su nombre
+            const cuit = datosFormularioProveedor.get('cuit');
+            const nombre = datosFormularioProveedor.get('nombre');
+            const domicilio = datosFormularioProveedor.get('domicilio');
+            const telefono = datosFormularioProveedor.get('telefono');
+            const email = datosFormularioProveedor.get('email');
+            const ciudad = datosFormularioProveedor.get('ciudad');
+            const razonSocial = datosFormularioProveedor.get('razonSocial');
+            
+
+            if (
+                cuit === "" ||
+                nombre === "" ||
+                domicilio === "" ||
+                telefono === "" ||
+                email === "" ||
+                ciudad === "" ||
+                razonSocial === ""
+            ) {
+                // Muestra un mensaje de error
+                alert("Todos los campos son requeridos. Por favor, completa todos los campos.");
+                return; // Detiene el flujo si falta algún campo
+            }
+
+            // Crea un objeto con los datos a enviar
+            const datosProveedor = {
+                cuit,
+                nombre,
+                domicilio,
+                telefono,
+                email,
+                ciudad,
+                razonSocial
+            };
+
+            // hacemos el fetch al backend
+            fetch("../controladores/proveedores.php?action=agregar", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify(datosProveedor)
+                })
+                .then(response => response.text())
+                .then(data => {
+                    // recargamos la tabla
+                    obtenerProveedores()
+                    // mostramos el mensaje
+                    toastr.warning("Se ha añadido el Proveedor correctamente a la base de datos", "Proveedor Registrado!" , {
+                        "closeButton": true,
+                        "positionClass": "toast-bottom-right",
+                        "preventDuplicates": true,
+                        "onclick": null,
+                        "showDuration": "300",
+                        "hideDuration": "1000",
+                        "timeOut": "4000",
+                        "extendedTimeOut": "1000",
+                        "showEasing": "swing",
+                        "hideEasing": "linear",
+                        "showMethod": "fadeIn",
+                        "hideMethod": "fadeOut"
+                    })
+                    // cerramos el modal
+                    modalAgregarProveedor.hide();
+
+                })
+                .catch(error => {
+                    console.log(error);
+                    toastr.error("Sucedio un error al agregar el proveedor", "Error al Agregar!" , {
+                    "closeButton": true,
+                    "positionClass": "toast-bottom-right",
+                    "preventDuplicates": true,
+                    "onclick": null,
+                    "showDuration": "300",
+                    "hideDuration": "1000",
+                    "timeOut": "4000",
+                    "extendedTimeOut": "1000",
+                    "showEasing": "swing",
+                    "hideEasing": "linear",
+                    "showMethod": "fadeIn",
+                    "hideMethod": "fadeOut"
+                });
+                });
+
+            
+
         });
     });
 
-    confirmarEliminarButton.addEventListener("click", function() {
-        if (selectedId) {
-            // Aquí puedes enviar el ID al backend para eliminar el registro
-            console.log("Eliminar registro con ID:", selectedId);
-            selectedId = null; // Reiniciar el valor para futuras acciones
+//-----------------funcion que limpia los inputs cuando apreta cerrar, pero los guarda temporalmente si le da a guardar y luego entra otra vez al modal de agregar-----------------//
+    document.addEventListener("DOMContentLoaded", function() {
+        const modalAgregarProducto = document.getElementById("modalAgregarProducto");
+        const guardarProveedorBtn = document.getElementById("guardarProveedorBtn");
 
-            // Cerrar el modal de confirmación
+        // Variables para almacenar temporalmente los valores de los campos
+        let tempInputValues = {};
 
-            modalEliminarStock.hide();
+        // Agrega un listener para el botón "Guardar" para almacenar temporalmente los valores
+        guardarProveedorBtn.addEventListener('click', function() {
+            // Obtiene todos los campos de entrada dentro del formulario
+            const inputs = modalAgregarProducto.querySelectorAll("input");
 
-            // Abrir el modal de éxito de eliminación
-            modalExitoEliminar.show();
+            // Verifica si todos los campos requeridos están vacíos
+            const someFieldsEmpty = Array.from(inputs).some(input => input.required && !input.value);
 
-            // Cerrar el modal de éxito después de 3 segundos
-            setTimeout(() => {
-                modalExitoEliminar.hide();
-            }, 3000);
-        }
+            if (someFieldsEmpty) {
+                // Al menos un campo requerido está vacío, guarda los valores en tempInputValues
+                inputs.forEach(input => {
+                    tempInputValues[input.id] = input.value;
+                });
+            }
+        });
+
+        // Agrega un listener para el evento 'hidden.bs.modal' (se ejecuta cuando se cierra el modal)
+        modalAgregarProducto.addEventListener('hidden.bs.modal', function () {
+            // Obtiene todos los campos de entrada dentro del formulario
+            const inputs = modalAgregarProducto.querySelectorAll("input");
+
+            // Restaura los valores desde tempInputValues
+            inputs.forEach(input => {
+                if (tempInputValues.hasOwnProperty(input.id)) {
+                    input.value = tempInputValues[input.id];
+                } else {
+                    input.value = '';
+                }
+            });
+
+            // Limpia el almacenamiento temporal
+            tempInputValues = {};
+        });
     });
-});
-
-
 
     </script>
-
+    
 </body>
 
 </html>
-
