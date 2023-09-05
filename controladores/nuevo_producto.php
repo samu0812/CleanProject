@@ -207,26 +207,22 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         
 
         if (!$proveedorID || !$tipoProductoID || !$tipoCategoriaID || !$tipoTamañoID || !$sucursalID) {
-            // Mostrar error de validación
-            echo "error_validacion"; // Puedes manejar esto con Toastr
+            $response = array("message" => "error");
         } elseif (!validarImpuesto($conn, $porcentajeAumento)) {
-            // Mostrar error de impuesto no válido
-            echo "error_impuesto"; // Puedes manejar esto con Toastr
+            $response = array("message" => "error");
         } elseif (insertarProducto($conn, $codigo, $proveedorID, $tipoProductoID, $tipoCategoriaID, $nombre, $precioBase, $tipoTamañoID, $tamaño)) {
             if (insertarStock($conn, $sucursalID, $codigo, $cantidad, $porcentajeAumentoID, $precioFinal)) {
                 // Producto agregado con éxito, redirigir a productos.php
                 $response = array("message" => "success");
-                echo json_encode($response);
             } else {
-                // Mostrar error al insertar en StockSucursales
-                echo "error_stock"; // Puedes manejar esto con Toastr
+                $response = array("message" => "error");
             }
         } else {
-            // Mostrar error al insertar en Productos
-            echo "error_productos"; // Puedes manejar esto con Toastr
+            $response = array("message" => "error");
         }
-
-        $conn->close();
     }
+    header('Content-Type: application/json; charset=utf-8'); // Establece la codificación adecuada
+    echo json_encode($response, JSON_UNESCAPED_UNICODE); // Asegura que los caracteres especiales se manejen correctamente
+    $conn->close();
 }
 ?>

@@ -4,6 +4,8 @@
     --light: #f9f3f8;
     --primary: #fa721c; /*cambio: lauty*/
     --dark: #191C24;
+    --dt-row-selected: #e77a34; /* Cambia el color de fondo de la fila seleccionada */
+    --dt-row-selected-text: #ffffff; /* Cambia el color de texto de la fila seleccionada */
 }
 
 .cursorPointer {
@@ -532,4 +534,9 @@
 #tableProd tr.selected {
     background-color: #e77a34 !important;
     color: #fff !important;
+}
+
+table.dataTable>tbody>tr.selected>* {
+    box-shadow: inset 0 0 0 9999px var(--dt-row-selected);
+    color: var(--dt-row-selected-text);
 }

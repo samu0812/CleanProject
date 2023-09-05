@@ -7,7 +7,6 @@ session_start();
 <head>
     <meta charset="utf-8">
     <title>Clean</title>
-    
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <meta content="" name="keywords">
     <meta content="" name="description">
@@ -56,6 +55,8 @@ session_start();
     <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
     <script src="https://cdn.datatables.net/select/1.7.0/js/dataTables.select.min.js"></script>
 
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
     <!-- Incluir tus estilos personalizados -->
     <link href="../css/style.css" rel="stylesheet">
 </head>
@@ -69,14 +70,11 @@ session_start();
             </div>
         </div>
         <!-- Spinner End -->
-
         <!-- Sidebar Start -->
         <?php
         include "sidebar.php";
         ?>
         <!-- Sidebar End -->
-
-
         <!-- Content Start -->
         <div class="content">
             <!-- Navbar Start -->
@@ -84,9 +82,7 @@ session_start();
             include "navbar.php";
             ?>
             <!-- Navbar End -->
-
-
-            <!-- Sale & Revenue Start -->
+            <!-- Contenido de la Página -->
             <div class="container-fluid pt-4 px-4">
                 <div class="row g-4">
                     <div class="col-12 col-md-6 col-lg-4 col-xl-3">
@@ -145,7 +141,6 @@ session_start();
                             </div>
                         </div>
                     </div>
-
                 </div>
             </div>
 
@@ -218,25 +213,6 @@ session_start();
                                     <td>100</td>
                                     <td>363</td>
                                 </tr>
-                                <tr>
-                                    <td>001</td>
-                                    <td>Jabon en Polvo</td>
-                                    <td>Kirchner</td>
-                                    <td>300</td>
-                                    <td>Grs</td>
-                                    <td>100</td>
-                                    <td>363</td>
-                                </tr>
-                                <tr>
-                                    <td>002</td>
-                                    <td>Lavandina</td>
-                                    <td>Kirchner</td>
-                                    <td>300</td>
-                                    <td>Grs</td>
-                                    <td>200</td>
-                                    <td>363</td>
-                                </tr>
-                                </tr>
                             </tbody>
                         </table>
                     </div>
@@ -257,8 +233,7 @@ session_start();
                                     <div class="row">
                                         <div class="col-md-4 mb-3">
                                             <label for="codigo" class="form-label">Código</label>
-                                            <input type="text" class="form-control" id="codigo" name="codigo" 
-                                            required>
+                                            <input type="text" class="form-control" id="codigo" name="codigo" required>
                                         </div>
                                         <div class="col-md-4 mb-3">
                                             <label for="nombre" class="form-label">Nombre</label>
@@ -336,9 +311,7 @@ session_start();
                                 </div>
                             </div>
                         <div class="modal-footer">
-                            <!-- Cambio en el botón "Cerrar" del modal -->
                             <button id="btnCerrar" type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-                            <!-- Cambio en el botón "Guardar" del modal -->
                             <button id="btnGuardar" type="submit" class="btn btn-primary">Guardar</button>
                         </div>
                     </div>
@@ -434,8 +407,19 @@ session_start();
             } else {
                 sucursalField.style.display = 'none';
                 sucursalField2.style.display = 'none';
+            }}
+
+            // Función para mostrar u ocultar el campo de "Sucursal" adicional
+            function toggleSucursalField2(showSucursal) {
+                if (showSucursal) {
+                    // Muestra el campo de sucursal adicional (sucursalField2)
+                    sucursalField2.style.display = 'block';
+                } else {
+                    // Oculta el campo de sucursal adicional (sucursalField2)
+                    sucursalField2.style.display = 'none';
+                }
             }
-            }
+
 
             // Manejar el evento de hacer clic en "Editar"
             btnEditarTableProd.addEventListener('click', function() {
@@ -589,79 +573,80 @@ session_start();
                     $('#btnEliminarTableProd').click(function() {
                         $('#modalEliminarStock').modal('show');
                     });
-
-                // Acción cuando se hace clic en el botón "Guardar" en el modal
-                    $('#btnGuardar').click(function(e) {
-                        console.log("entro al boton guardar")
-                        if (modoAgregar) {
-                            console.log("entro al modo agregar")
-                            e.preventDefault(); // Previene la acción predeterminada del botón (enviar el formulario)
-                            // Obtén los datos del formulario
-                            var codigo = $("#codigo").val();
-                            var nombre = $("#nombre").val();
-                            var proveedor = $("#proveedor").val();
-                            var tipoProducto = $("#tipoProducto").val();
-                            var tipoCategoria = $("#tipoCategoria").val();
-                            var tamaño = $("#tamaño").val();
-                            var tipoTamaño = $("#tipoTamaño").val();
-                            var cantidad = $("#cantidad").val();
-                            var precioBase = $("#precioBase").val();
-                            var porcentajeAumento = $("#porcentajeAumento").val();
-                            var sucursal = $("#sucursal").val();
-
-                            // Realiza una solicitud AJAX para enviar los datos al servidor
-                            $.ajax({
-                                type: "POST",
-                                url: "../controladores/nuevo_producto.php",
-                                data: {
-                                    codigo: codigo,
-                                    nombre: nombre,
-                                    proveedor: proveedor,
-                                    tipoProducto: tipoProducto,
-                                    tipoCategoria: tipoCategoria,
-                                    tamaño: tamaño,
-                                    tipoTamaño: tipoTamaño,
-                                    cantidad: cantidad,
-                                    precioBase: precioBase,
-                                    porcentajeAumento: porcentajeAumento,
-                                    sucursal: sucursal
-                                },
-                                success: function(response) {
-                                    if (response === "success") {
-                                        var responseObject = JSON.parse(response);
-                                        alert(responseObject.message);
-                                } else if (response === "error_stock") {
-                                    // Manejar el caso de error en la respuesta, si es necesario
-                                    toastr.error("Hubo un error al insertar en StockSucursales", "Error");
-                                }
-                            },
-                            error: function(xhr, status, error) {
-                                console.log("ceci")
-                                // Maneja los errores de la solicitud AJAX
-                                toastr.error("Surgió un problema al intentar agregar el nuevo producto", "Error", {
-                                    closeButton: true,
-                                    positionClass: "toast-bottom-right",
-                                    preventDuplicates: true,
-                                    onclick: null,
-                                    showDuration: "300",
-                                    hideDuration: "1000",
-                                    timeOut: "4000",
-                                    extendedTimeOut: "1000",
-                                    showEasing: "swing",
-                                    hideEasing: "linear",
-                                    showMethod: "fadeIn",
-                                    hideMethod: "fadeOut"
-                                });
-                            }
-                            });
-                        } else {
-                            // Estás en modo de actualizar, llama a la función para actualizar el producto existente
-                            // actualizarProducto();
-                            console.log("ceci esta actualizando")
-                        }
-                        $('#modalAgregarProducto').modal('hide');
-                    });
                 }
+            });
+            // Acción cuando se hace clic en el botón "Guardar" en el modal
+            $('#btnGuardar').click(function(e) {
+                console.log("entro al boton guardar")
+                if (modoAgregar) {
+                    console.log("entro al modo agregar")
+                    e.preventDefault(); // Previene la acción predeterminada del botón (enviar el formulario)
+                    // Obtén los datos del formulario
+                    var codigo = $("#codigo").val();
+                    var nombre = $("#nombre").val();
+                    var proveedor = $("#proveedor").val();
+                    var tipoProducto = $("#tipoProducto").val();
+                    var tipoCategoria = $("#tipoCategoria").val();
+                    var tamaño = $("#tamaño").val();
+                    var tipoTamaño = $("#tipoTamaño").val();
+                    var cantidad = $("#cantidad").val();
+                    var precioBase = $("#precioBase").val();
+                    var porcentajeAumento = $("#porcentajeAumento").val();
+                    var sucursal = $("#sucursal").val();
+
+                    // Realiza una solicitud Axios para enviar los datos al servidor
+                    axios.post("../controladores/nuevo_producto.php", {
+                        codigo: codigo,
+                        nombre: nombre,
+                        proveedor: proveedor,
+                        tipoProducto: tipoProducto,
+                        tipoCategoria: tipoCategoria,
+                        tamaño: tamaño,
+                        tipoTamaño: tipoTamaño,
+                        cantidad: cantidad,
+                        precioBase: precioBase,
+                        porcentajeAumento: porcentajeAumento,
+                        sucursal: sucursal
+                    })
+                    .then(function(response) {
+                        // Maneja la respuesta del servidor
+                        console.log(response),
+                        console.log(response.data.message)
+                        if (response.data.message == "success") {
+                            console.log("entro")
+                            // Redirigir al usuario a productos.php después de una respuesta exitosa
+                            window.location.href = '../vistas/productos.php';
+                            alert("CECI")
+                            toastr.success("Hubo un error al insertar en StockSucursales", "Error");
+                        } else if (response.data.message === "error_stock") {
+                            // Manejar el caso de error en la respuesta, si es necesario
+                            toastr.error("Hubo un error al insertar en StockSucursales", "Error");
+                        }
+                    })
+                    .catch(function(error) {
+                        // Maneja los errores de la solicitud Axios
+                        console.error("Error en la solicitud Axios:", error);
+                        toastr.error("Surgió un problema al intentar agregar el nuevo producto", "Error", {
+                            closeButton: true,
+                            positionClass: "toast-bottom-right",
+                            preventDuplicates: true,
+                            onclick: null,
+                            showDuration: "300",
+                            hideDuration: "1000",
+                            timeOut: "4000",
+                            extendedTimeOut: "1000",
+                            showEasing: "swing",
+                            hideEasing: "linear",
+                            showMethod: "fadeIn",
+                            hideMethod: "fadeOut"
+                        });
+                    });
+                } else {
+                    // Estás en modo de actualizar, llama a la función para actualizar el producto existente
+                    // actualizarProducto();
+                    console.log("ceci esta actualizando")
+                }
+                $('#modalAgregarProducto').modal('hide');
             });
         });
     </script>
