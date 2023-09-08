@@ -94,43 +94,44 @@ session_start();
                                 </div>
                                 <div class="modal-body">
                                     <div class="container">
-                                        <div class="row">
                                         <form id="formAgregarProveedor">
-                                                <div class="col-md-4 mb-3">
-                                                    <label for="cuit" class="form-label">Cuit</label>
-                                                    <div class="input-group">
-                                                        <span class="input-group-text"><i class="fa fa-id-card"></i></span>
-                                                        <input name="cuit" type="number" class="form-control" id="cuit" required>
-                                                    </div>   
-                                                </div>
-                                                <div class="col-md-4 mb-3">
-                                                    <label for="nombre" class="form-label">Nombre</label>              
-                                                    <div class="input-group">
-                                                        <span class="input-group-text"><i class="fa fa-building"></i></span>
-                                                        <input name="nombre" type="text" class="form-control" id="nombre" required>
-                                                    </div>   
-                                                </div>
-                                                <div class="col-md-4 mb-3">
-                                                    <label for="domicilio" class="form-label">Domicilio</label>
-                                                    <div class="input-group">
-                                                        <span class="input-group-text"><i class="fa fa-location-arrow"></i></span>
-                                                        <input name="domicilio" type="text" class="form-control" id="domicilio" required>
-                                                    </div>    
-                                                </div>
+                                            <div class="row">
+                                                    <div class="col-md-4 mb-3">
+                                                        <label for="cuit" class="form-label">Cuit</label>
+                                                        <div class="input-group">
+                                                            <span class="input-group-text"><i class="fa fa-id-card"></i></span>
+                                                            <input name="cuit" type="text" class="form-control" id="cuit" maxlength="11" required>
+                                                        </div>   
+                                                    </div>
+                                                    <div class="col-md-4 mb-3">
+                                                        <label for="nombre" class="form-label">Nombre</label>              
+                                                        <div class="input-group">
+                                                            <span class="input-group-text"><i class="fa fa-building"></i></span>
+                                                            <input name="nombre" type="text" class="form-control" id="nombre" required>
+                                                        </div>   
+                                                    </div>
+                                                    <div class="col-md-4 mb-3">
+                                                        <label for="domicilio" class="form-label">Domicilio</label>
+                                                        <div class="input-group">
+                                                            <span class="input-group-text"><i class="fa fa-location-arrow"></i></span>
+                                                            <input name="domicilio" type="text" class="form-control" id="domicilio" required>
+                                                        </div>    
+                                                    </div>
                                             </div>
+
                                             <div class="row">
                                                 <div class="col-md-4 mb-3">
                                                     <label for="telefono" class="form-label">Telefono</label>
                                                     <div class="input-group">
                                                         <span class="input-group-text"><i class="fa fa-phone"></i></span>
-                                                        <input name="telefono" type="number" class="form-control" id="telefono" maxlength="10" required>
+                                                        <input name="telefono" type="text"  class="form-control" id="telefono" maxlength="15" required>
                                                     </div>     
                                                 </div>
                                                 <div class="col-md-4 mb-3">
                                                     <label for="email" class="form-label">Email</label>              
                                                     <div class="input-group">
                                                         <span class="input-group-text"><i class="fa fa-envelope"></i></span>
-                                                        <input name="email" type="text" class="form-control" id="email" required>
+                                                        <input name="email" type="email" class="form-control" id="email" required>
                                                     </div>       
                                                 </div>
                                                 <div class="col-md-4 mb-3">
@@ -154,8 +155,8 @@ session_start();
                                     </div>
                                 </div>
                                 <div class="modal-footer">
-                                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cerrar</button>
-                                    <button type="button" class="btn btn-secondary" id= "guardarProveedorBtn">Guardar</button>
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                                    <button type="button" class="btn btn-primary" id= "guardarProveedorBtn">Guardar</button>
                                 </div>
                             </div>
                         </div>
@@ -174,64 +175,66 @@ session_start();
                         <div class="modal-body">
                             <!-- Campos de edición con identificadores únicos -->                 
                             <div class="container">
-                                        <div class="row">
-                                            <div class="col-md-4 mb-3">
-                                                <div class="input-group">
-                                                    <span class="input-group-text"><i class="fa fa-id-card"></i></span>
-                                                    <input  type="number" id="editCuit" class="form-control" placeholder="Cuit">
-                                                </div>   
-                                            </div>
-                                            <div class="col-md-4 mb-3">
-                
-                                                <div class="input-group">
-                                                    <span class="input-group-text"><i class="fa fa-building"></i></span>
-                                                    <input type="text" id="editNombre" class="form-control"  placeholder="Nombre">
-                                                </div>   
-                                            </div>
-                                            <div class="col-md-4 mb-3">
-        
-                                                <div class="input-group">
-                                                    <span class="input-group-text"><i class="fa fa-location-arrow"></i></span>
-                                                    <input type="text" id="editDomicilio" class="form-control"  placeholder="Domicilio">
-                                                </div>    
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-md-4 mb-3">
-    
-                                                <div class="input-group">
-                                                    <span class="input-group-text"><i class="fa fa-phone"></i></span>
-                                                    <input type="number" id="editTelefono" class="form-control"  placeholder="Telefono" maxlength="10">
-                                                </div>     
-                                            </div>
-                                            <div class="col-md-4 mb-3">            
-                                                <div class="input-group">
-                                                    <span class="input-group-text"><i class="fa fa-envelope"></i></span>
-                                                    <input type="text" id="editEmail" class="form-control"  placeholder="Email">
-                                                </div>       
-                                            </div>
-                                            <div class="col-md-4 mb-3">
-
-                                                <div class="input-group">
-                                                    <span class="input-group-text"><i class="fa fa-map-marker"></i></span>
-                                                    <input type="text" id="editCiudad" class="form-control"  placeholder="Ciudad">
-                                                </div>        
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-md-4 mb-3">
-            
-                                                <div class="input-group">
-                                                    <span class="input-group-text"><i class="fa fa-briefcase"></i></span>
-                                                    <input type="text" id="editRazonSocial" class="form-control"  placeholder="Razon Social">
-                                                </div>
-                                            </div>
+                                <div class="row">
+                                    <div class="col-md-4 mb-3">
+                                    <label for="cuit" class="form-label center-label">Cuit</label>
+                                        <div class="input-group">
+                                            <span class="input-group-text"><i class="fa fa-id-card"></i></span>
+                                            <input  type="text" id="editCuit" class="form-control" placeholder="Cuit" maxlength="11" required>
+                                        </div>   
+                                    </div>
+                                    <div class="col-md-4 mb-3"> 
+                                        <label for="nombre" class="form-label">Nombre</label> 
+                                        <div class="input-group">
+                                            <span class="input-group-text"><i class="fa fa-building"></i></span>
+                                            <input type="text" id="editNombre" class="form-control"  placeholder="Nombre" required>
+                                        </div>   
+                                    </div>
+                                    <div class="col-md-4 mb-3">
+                                        <label for="domicilio" class="form-label">Domicilio</label>
+                                        <div class="input-group">
+                                            <span class="input-group-text"><i class="fa fa-location-arrow"></i></span>
+                                            <input type="text" id="editDomicilio" class="form-control"  placeholder="Domicilio" required>
+                                        </div>    
+                                    </div>`
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-4 mb-3">
+                                        <label for="telefono" class="form-label">Telefono</label>
+                                        <div class="input-group">
+                                            <span class="input-group-text"><i class="fa fa-phone"></i></span>
+                                            <input type="text" id="editTelefono" class="form-control"  placeholder="Telefono" maxlength="15" required>
+                                        </div>     
+                                    </div>
+                                    <div class="col-md-4 mb-3">  
+                                        <label for="email" class="form-label">Email</label>          
+                                        <div class="input-group">
+                                            <span class="input-group-text"><i class="fa fa-envelope"></i></span>
+                                            <input type="email" id="editEmail" class="form-control"  placeholder="Email" required>
+                                        </div>       
+                                    </div>
+                                    <div class="col-md-4 mb-3">
+                                        <label for="ciudad" class="form-label">Ciudad</label>
+                                        <div class="input-group">
+                                            <span class="input-group-text"><i class="fa fa-map-marker"></i></span>
+                                            <input type="text" id="editCiudad" class="form-control"  placeholder="Ciudad" required>
+                                        </div>        
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-4 mb-3">
+                                        <label for="precioBase" class="form-label">Razon Social</label>
+                                        <div class="input-group">
+                                            <span class="input-group-text"><i class="fa fa-briefcase"></i></span>
+                                            <input type="text" id="editRazonSocial" class="form-control"  placeholder="Razon Social" required>
                                         </div>
                                     </div>
+                                </div>
+                            </div>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cerrar</button>
-                            <button type="button" class="btn btn-secondary" id="btnGuardarEdicion">Guardar</button>
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                            <button type="button" class="btn btn-primary" id="btnGuardarEdicion">Guardar</button>
                         </div>
                     </div>
                 </div>
@@ -280,33 +283,12 @@ session_start();
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                            <button id="confirmarEliminar" type="button" class="btn btn-danger">Eliminar</button>
+                            <button id="confirmarEliminar" type="button" class="btn btn-primary">Eliminar</button>
                         </div>
                     </div>
                 </div>
             </div>
                 
-            <!-- Modal de eliminacion exitosa
-            <div class="modal fade" id="modalExitoEliminar" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                <div class="modal-dialog modal-dialog-centered">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="exampleModalLabel">Eliminación Exitosa</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body">
-                            El registro ha sido eliminado exitosamente.
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-                        </div>
-                    </div>
-                </div>
-            </div> -->
-
-
-            
-
             <!-- Recent Sales End -->
 
             <!-- Footer Start -->
@@ -341,9 +323,9 @@ session_start();
     <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css"></script>
     <script src="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css"></script>
 
-    <!-- libreria toast -->
+    <!-- libreria sweetAlert -->
     
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <style>
         /* Estilo para mover el lengthChange a la izquierda */
@@ -404,6 +386,59 @@ session_start();
         .modal-footer .btn-primary:hover {
             background-color: #5a104c; /* Cambia el color de fondo en el hover */
             border-color: #0056b3; /* Cambia el color del borde en el hover */
+        }
+
+
+        /* Estilo CSS para la clase personalizada de la alerta */
+        .custom-popup-class {
+            width: 250px; /* Ajusta el ancho de la alerta según tus necesidades */
+            font-size: 10px; /* Ajusta el tamaño de fuente del contenido de la alerta */
+            padding: 2px 3px; /* Ajusta el relleno de la alerta para hacerla un poco más pequeña */
+            border-radius: 10px; /* Añade bordes redondeados a la alerta */
+            }
+
+        /* Estilo CSS para la clase personalizada del título */
+        .custom-title-class {
+            font-size: 13px; /* Ajusta el tamaño de fuente del título de la alerta */
+            padding: 10px 3px; 
+            }
+
+
+        /* Estilo CSS para la clase personalizada del icono */
+        .custom-icon-class {
+            font-size: 8px; /* Ajusta el tamaño del icono según tus necesidades */
+        }
+
+        /* Estilo CSS para centrar las etiquetas dentro del div con la clase col-md-4 mb-3 */
+        .col-md-4.mb-3 label {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+
+        /* Estilo CSS para los botones de editar y eliminar */
+        .button-group {
+            display: flex; /* Muestra los botones en línea */
+            gap: 5px; /* Espacio entre los botones */
+            align-items: center; /* Centra verticalmente los botones en caso de que tengan alturas diferentes */
+        }
+
+        /* Estilo CSS para los botones de editar y eliminar individualmente */
+        .button-group button {
+            background: #e77a34;
+            color: white;
+        }
+
+        /* Estilo para el botón Guardar */
+        .modal-footer .btn-primary  {
+            background-color: #007bff; /* Cambia el color de fondo */
+            border-color: #007bff; /* Cambia el color del borde */
+        }
+
+        .modal-footer .btn-primary:hover {
+            background-color: #e77a34; /* Cambia el color de fondo en el hover */
+            border-color: #e77a34; /* Cambia el color del borde en el hover */
         }
 
     </style>
@@ -474,7 +509,6 @@ session_start();
                 .then(data => {
                     //inicializo la tabla despues de cargar los datos
                     const tbody = tableProveedores.querySelector("tbody");
-                    console.log(data);
                     let proveedores = data
                 // Limpia el contenido actual de la tabla
                 table1.clear().draw();
@@ -491,9 +525,11 @@ session_start();
                             proveedor.Ciudad,
                             proveedor.RazonSocial,
                             `
-                            <button id="btnEditarTableProveedores" data-id=${proveedor.idProveedores} style="background: #e77a34; color: white;" class="btn btn-sm d-inline-block" data-bs-toggle="modal" data-bs-target="#modalEditarStock"><i class="far fa-edit"></i></button>
-                            <button id="btnEliminarTableProveedores" data-id=${proveedor.idProveedores} style="background: #e77a34; color: white;" class="btn btn-sm d-inline-block" data-bs-toggle="modal" data-bs-target="#modalEliminarStock"><i class="fas fa-trash"></i></button>
-                            `
+                            <div class="button-group">
+                                <button id="btnEditarTableProveedores" data-id=${proveedor.idProveedores} class="btn btn-sm" data-bs-toggle="modal" data-bs-target="#modalEditarStock"><i class="far fa-edit"></i></button>
+                                <button id="btnEliminarTableProveedores" data-id=${proveedor.idProveedores} class="btn btn-sm" data-bs-toggle="modal" data-bs-target="#modalEliminarStock"><i class="fas fa-trash"></i></button>
+                            </div>
+                        `
                         ];
                         table1.rows.add([row]).draw();
                         //table1.clear().rows.add(row).draw();
@@ -547,7 +583,6 @@ session_start();
             });
 
             $('#btnGuardarEdicion').on('click', function() {
-                console.log(proveedorId, "id prov")
                 // Obtén los valores editados del formulario
                 const valoresEditados = {
                     ProveedorId: proveedorId,
@@ -560,27 +595,101 @@ session_start();
                     RazonSocial: document.getElementById('editRazonSocial').value
                 };
 
+                
+
+                if (!verificarCamposLlenos(valoresEditados)) {
+                Swal.fire({
+                        position: 'top-end',
+                        icon: 'warning',
+                        title: 'Por favor completa todos los campos',
+                        showConfirmButton: false,
+                        timer: 2000,
+                        background: false, // Desactiva el fondo oscurecido
+                        backdrop: false,
+                        customClass: {
+                            container: 'custom-container-class',
+                            popup: 'custom-popup-class', // Clase personalizada para ajustar el tamaño de la alerta
+                            title: 'custom-title-class', // Clase personalizada para ajustar el tamaño del título
+                            icon: 'custom-icon-class',
+                        },
+                        })
+                return; // Detiene el flujo si falta algún campo
+            }
+            if (!validarCUIT(valoresEditados.Cuit) ) {
+                Swal.fire({
+                    position: 'top-end',
+                    icon: 'error',
+                    title: 'El cuit debe contener 11 caracteres numericos',
+                    showConfirmButton: false,
+                    timer: 2000,
+                    background: false, // Desactiva el fondo oscurecido
+                    backdrop: false,
+                    customClass: {
+                        container: 'custom-container-class',
+                        popup: 'custom-popup-class', // Clase personalizada para ajustar el tamaño de la alerta
+                        title: 'custom-title-class', // Clase personalizada para ajustar el tamaño del título
+                        icon: 'custom-icon-class',
+                    },
+                })
+                return; // Detiene el flujo si falta algún campo
+            }
+
+            if (!validarTelefono(valoresEditados.Telefono) ) {
+                Swal.fire({
+                    position: 'top-end',
+                    icon: 'error',
+                    title: 'El telefono debe contener solo numeros',
+                    showConfirmButton: false,
+                    timer: 2000,
+                    background: false, // Desactiva el fondo oscurecido
+                    backdrop: false,
+                    customClass: {
+                        container: 'custom-container-class',
+                        popup: 'custom-popup-class', // Clase personalizada para ajustar el tamaño de la alerta
+                        title: 'custom-title-class', // Clase personalizada para ajustar el tamaño del título
+                        icon: 'custom-icon-class',
+                    },
+                })
+                return; // Detiene el flujo si falta algún campo
+            }
+
+            if (!validarEmail(valoresEditados.Email)) {
+                Swal.fire({
+                        position: 'top-end',
+                        icon: 'warning',
+                        title: 'El email no es valido',
+                        showConfirmButton: false,
+                        timer: 2000,
+                        background: false, // Desactiva el fondo oscurecido
+                        backdrop: false,
+                        customClass: {
+                            container: 'custom-container-class',
+                            popup: 'custom-popup-class', // Clase personalizada para ajustar el tamaño de la alerta
+                            title: 'custom-title-class', // Clase personalizada para ajustar el tamaño del título
+                            icon: 'custom-icon-class',
+                        },
+                        })
+                return; // Detiene el flujo si falta algún campo
+            }
                 // Verifica si se han realizado cambios
                 if (sonIguales(valoresActuales, valoresEditados)) {
                     // No se realizaron cambios, muestra un mensaje al usuario
-                    console.log(valoresActuales);
-                    console.log(valoresEditados);
-                    toastr.error("No se realizaron cambios.", "Edición Cancelada", {
-                        "closeButton": true,
-                        "positionClass": "toast-bottom-right",
-                        "preventDuplicates": true,
-                        "onclick": null,
-                        "showDuration": "300",
-                        "hideDuration": "1000",
-                        "timeOut": "4000",
-                        "extendedTimeOut": "1000",
-                        "showEasing": "swing",
-                        "hideEasing": "linear",
-                        "showMethod": "fadeIn",
-                        "hideMethod": "fadeOut"
-                    });
+                    Swal.fire({
+                                position: 'top-end',
+                                icon: 'info',
+                                title: 'No se ha realizado ningun cambio',
+                                showConfirmButton: false,
+                                timer: 2000,
+                                background: false, // Desactiva el fondo oscurecido
+                                backdrop: false,
+                                customClass: {
+                                    container: 'custom-container-class',
+                                    popup: 'custom-popup-class', // Clase personalizada para ajustar el tamaño de la alerta
+                                    title: 'custom-title-class', // Clase personalizada para ajustar el tamaño del título
+                                    icon: 'custom-icon-class',
+                                },
+                        })
                 } else {
-                    console.log("valores editados", valoresEditados)
                     fetch('../controladores/proveedores.php?action=editar', {
                             method: "POST",
                             headers: {
@@ -588,44 +697,51 @@ session_start();
                             },
                             body: JSON.stringify(valoresEditados)
                         } )
-                        .then(response => response.text())
+                        .then(response => {
+                            if (!response.ok) {
+                                // El servidor devolvió un código de estado de error
+                                // Forzar que se vaya por el catch
+                                throw new Error("Error en la solicitud al servidor");
+                            }
+                            return response.json();
+                        })
                         .then(data => {
-                            console.log(data);
                             obtenerProveedores()
                             // Cierra el modal de confirmación
                             $('#modalEditarStock').modal('hide');
                             // mostramos el mensaje
-                            toastr.success("Se ha actualizado los datos del proveedor correctamente en la base de datos", "Proveedor Actualizado!" , {
-                                "closeButton": true,
-                                "positionClass": "toast-bottom-right",
-                                "preventDuplicates": true,
-                                "onclick": null,
-                                "showDuration": "300",
-                                "hideDuration": "1000",
-                                "timeOut": "4000",
-                                "extendedTimeOut": "1000",
-                                "showEasing": "swing",
-                                "hideEasing": "linear",
-                                "showMethod": "fadeIn",
-                                "hideMethod": "fadeOut"
-                            })
+                            Swal.fire({
+                                position: 'top-end',
+                                icon: 'success',
+                                title: 'Se ha actualizado el Proveedor de la base de datos',
+                                showConfirmButton: false,
+                                timer: 2000,
+                                background: false, // Desactiva el fondo oscurecido
+                                backdrop: false,
+                                customClass: {
+                                    container: 'custom-container-class',
+                                    popup: 'custom-popup-class', // Clase personalizada para ajustar el tamaño de la alerta
+                                    title: 'custom-title-class', // Clase personalizada para ajustar el tamaño del título
+                                    icon: 'custom-icon-class',
+                                },
+                        })
                         })
                         .catch(error => {
-                            console.log(error);
-                            toastr.error("Sucedio un error al actualizar el proveedor", "Error al actualizar!" , {
-                                "closeButton": true,
-                                "positionClass": "toast-bottom-right",
-                                "preventDuplicates": true,
-                                "onclick": null,
-                                "showDuration": "300",
-                                "hideDuration": "1000",
-                                "timeOut": "4000",
-                                "extendedTimeOut": "1000",
-                                "showEasing": "swing",
-                                "hideEasing": "linear",
-                                "showMethod": "fadeIn",
-                                "hideMethod": "fadeOut"
-                            });
+                            Swal.fire({
+                                position: 'top-end',
+                                icon: 'error',
+                                title: 'A ocurrido un error al actualizar el proveedor, por favor revisa los campos',
+                                showConfirmButton: false,
+                                timer: 2000,
+                                background: false, // Desactiva el fondo oscurecido
+                                backdrop: false,
+                                customClass: {
+                                    container: 'custom-container-class',
+                                    popup: 'custom-popup-class', // Clase personalizada para ajustar el tamaño de la alerta
+                                    title: 'custom-title-class', // Clase personalizada para ajustar el tamaño del título
+                                    icon: 'custom-icon-class',
+                                },
+                        })
                         });
                 }
             });
@@ -639,9 +755,19 @@ session_start();
                 }
                 return true;
             }
+
+
     });
 
-// Cuando se hace clic en el botón de guardar edición
+    function verificarCamposLlenos(campos) {
+                for (let clave in campos) {
+                    if (!campos[clave]) {
+                        return false;
+                    }
+                }
+                return true;
+            }
+
 
 
 
@@ -655,11 +781,9 @@ session_start();
         // Manejador de eventos para el botón "Eliminar" en el modal de confirmación
         $('#confirmarEliminar').on('click', function() {
             const proveedorId = $(this).data('id');
-            console.log(proveedorId, "confirmado");
             const datosProveedor = {
                 idDelProveedor : proveedorId,
             };
-            console.log(datosProveedor);
 
             fetch("../controladores/proveedores.php?action=eliminar", {
                 method: "POST",
@@ -668,45 +792,52 @@ session_start();
                 },
                 body: JSON.stringify(datosProveedor)
             })
-            .then(response => response.text())
+            .then(response => {
+                    if (!response.ok) {
+                        // El servidor devolvió un código de estado de error
+                        // Forzar que se vaya por el catch
+                        throw new Error("Error en la solicitud al servidor");
+                    }
+                    return response.json();
+                })
             .then(data => {
-                console.log(data);
                 // recargamos la tabla
                 obtenerProveedores()
                 // Cierra el modal de confirmación
                 $('#modalEliminarStock').modal('hide');
                 // mostramos el mensaje
-                toastr.success("Se ha eliminado el Proveedor correctamente de la base de datos", "Proveedor Eliminado!" , {
-                    "closeButton": true,
-                    "positionClass": "toast-bottom-right",
-                    "preventDuplicates": true,
-                    "onclick": null,
-                    "showDuration": "300",
-                    "hideDuration": "1000",
-                    "timeOut": "4000",
-                    "extendedTimeOut": "1000",
-                    "showEasing": "swing",
-                    "hideEasing": "linear",
-                    "showMethod": "fadeIn",
-                    "hideMethod": "fadeOut"
-                })
+                Swal.fire({
+                        position: 'top-end',
+                        icon: 'success',
+                        title: 'Se ha eliminado el Proveedor de la base de datos',
+                        showConfirmButton: false,
+                        timer: 2000,
+                        background: false, // Desactiva el fondo oscurecido
+                        backdrop: false,
+                        customClass: {
+                            container: 'custom-container-class',
+                            popup: 'custom-popup-class', // Clase personalizada para ajustar el tamaño de la alerta
+                            title: 'custom-title-class', // Clase personalizada para ajustar el tamaño del título
+                            icon: 'custom-icon-class',
+                        },
+                        })
             })
             .catch(error => {
-                console.log(error);
-                toastr.error("Sucedio un error al eliminar el proveedor", "Error al Eliminar!" , {
-                    "closeButton": true,
-                    "positionClass": "toast-bottom-right",
-                    "preventDuplicates": true,
-                    "onclick": null,
-                    "showDuration": "300",
-                    "hideDuration": "1000",
-                    "timeOut": "4000",
-                    "extendedTimeOut": "1000",
-                    "showEasing": "swing",
-                    "hideEasing": "linear",
-                    "showMethod": "fadeIn",
-                    "hideMethod": "fadeOut"
-                });
+                Swal.fire({
+                        position: 'top-end',
+                        icon: 'error',
+                        title: 'A ocurrido un error al eliminar el proveedor de la base de datos',
+                        showConfirmButton: false,
+                        timer: 2000,
+                        background: false, // Desactiva el fondo oscurecido
+                        backdrop: false,
+                        customClass: {
+                            container: 'custom-container-class',
+                            popup: 'custom-popup-class', // Clase personalizada para ajustar el tamaño de la alerta
+                            title: 'custom-title-class', // Clase personalizada para ajustar el tamaño del título
+                            icon: 'custom-icon-class',
+                        },
+                        })
             });
 
 
@@ -715,8 +846,6 @@ session_start();
 
 //-----------------funcion obtener los datos del nuevo proveedor a agregar-----------------//
 document.addEventListener("DOMContentLoaded", function() {
-
-
         //obtenemos el boton de agregar y el formulario
         const modalAgregarProveedor= new bootstrap.Modal(document.getElementById("modalAgregarProducto"));
 
@@ -738,23 +867,8 @@ document.addEventListener("DOMContentLoaded", function() {
             const email = datosFormularioProveedor.get('email');
             const ciudad = datosFormularioProveedor.get('ciudad');
             const razonSocial = datosFormularioProveedor.get('razonSocial');
-            
 
-            if (
-                cuit === "" ||
-                nombre === "" ||
-                domicilio === "" ||
-                telefono === "" ||
-                email === "" ||
-                ciudad === "" ||
-                razonSocial === ""
-            ) {
-                // Muestra un mensaje de error
-                alert("Todos los campos son requeridos. Por favor, completa todos los campos.");
-                return; // Detiene el flujo si falta algún campo
-            }
 
-            // Crea un objeto con los datos a enviar
             const datosProveedor = {
                 cuit,
                 nombre,
@@ -765,102 +879,256 @@ document.addEventListener("DOMContentLoaded", function() {
                 razonSocial
             };
 
-            // hacemos el fetch al backend
-            fetch("../controladores/proveedores.php?action=agregar", {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json"
-                    },
-                    body: JSON.stringify(datosProveedor)
-                })
-                .then(response => response.text())
-                .then(data => {
-                    // recargamos la tabla
-                    obtenerProveedores()
-                    // mostramos el mensaje
-                    toastr.warning("Se ha añadido el Proveedor correctamente a la base de datos", "Proveedor Registrado!" , {
-                        "closeButton": true,
-                        "positionClass": "toast-bottom-right",
-                        "preventDuplicates": true,
-                        "onclick": null,
-                        "showDuration": "300",
-                        "hideDuration": "1000",
-                        "timeOut": "4000",
-                        "extendedTimeOut": "1000",
-                        "showEasing": "swing",
-                        "hideEasing": "linear",
-                        "showMethod": "fadeIn",
-                        "hideMethod": "fadeOut"
-                    })
-                    // cerramos el modal
-                    modalAgregarProveedor.hide();
 
-                })
-                .catch(error => {
-                    console.log(error);
-                    toastr.error("Sucedio un error al agregar el proveedor", "Error al Agregar!" , {
-                    "closeButton": true,
-                    "positionClass": "toast-bottom-right",
-                    "preventDuplicates": true,
-                    "onclick": null,
-                    "showDuration": "300",
-                    "hideDuration": "1000",
-                    "timeOut": "4000",
-                    "extendedTimeOut": "1000",
-                    "showEasing": "swing",
-                    "hideEasing": "linear",
-                    "showMethod": "fadeIn",
-                    "hideMethod": "fadeOut"
-                });
-                });
 
-            
-
-        });
-    });
-
-//-----------------funcion que limpia los inputs cuando apreta cerrar, pero los guarda temporalmente si le da a guardar y luego entra otra vez al modal de agregar-----------------//
-    document.addEventListener("DOMContentLoaded", function() {
-        const modalAgregarProducto = document.getElementById("modalAgregarProducto");
-        const guardarProveedorBtn = document.getElementById("guardarProveedorBtn");
-
-        // Variables para almacenar temporalmente los valores de los campos
-        let tempInputValues = {};
-
-        // Agrega un listener para el botón "Guardar" para almacenar temporalmente los valores
-        guardarProveedorBtn.addEventListener('click', function() {
-            // Obtiene todos los campos de entrada dentro del formulario
-            const inputs = modalAgregarProducto.querySelectorAll("input");
-
-            // Verifica si todos los campos requeridos están vacíos
-            const someFieldsEmpty = Array.from(inputs).some(input => input.required && !input.value);
-
-            if (someFieldsEmpty) {
-                // Al menos un campo requerido está vacío, guarda los valores en tempInputValues
-                inputs.forEach(input => {
-                    tempInputValues[input.id] = input.value;
-                });
+            if (!verificarCamposLlenos(datosProveedor)) {
+                Swal.fire({
+                        position: 'top-end',
+                        icon: 'warning',
+                        title: 'Por favor completa todos los campos',
+                        showConfirmButton: false,
+                        timer: 2000,
+                        background: false, // Desactiva el fondo oscurecido
+                        backdrop: false,
+                        customClass: {
+                            container: 'custom-container-class',
+                            popup: 'custom-popup-class', // Clase personalizada para ajustar el tamaño de la alerta
+                            title: 'custom-title-class', // Clase personalizada para ajustar el tamaño del título
+                            icon: 'custom-icon-class',
+                        },
+                        })
+                return; // Detiene el flujo si falta algún campo
             }
-        });
 
-        // Agrega un listener para el evento 'hidden.bs.modal' (se ejecuta cuando se cierra el modal)
-        modalAgregarProducto.addEventListener('hidden.bs.modal', function () {
-            // Obtiene todos los campos de entrada dentro del formulario
-            const inputs = modalAgregarProducto.querySelectorAll("input");
 
-            // Restaura los valores desde tempInputValues
-            inputs.forEach(input => {
-                if (tempInputValues.hasOwnProperty(input.id)) {
-                    input.value = tempInputValues[input.id];
-                } else {
-                    input.value = '';
+            if (!validarCUIT(datosProveedor.cuit) ) {
+                Swal.fire({
+                    position: 'top-end',
+                    icon: 'error',
+                    title: 'El cuit debe contener 11 caracteres numericos',
+                    showConfirmButton: false,
+                    timer: 2000,
+                    background: false, // Desactiva el fondo oscurecido
+                    backdrop: false,
+                    customClass: {
+                        container: 'custom-container-class',
+                        popup: 'custom-popup-class', // Clase personalizada para ajustar el tamaño de la alerta
+                        title: 'custom-title-class', // Clase personalizada para ajustar el tamaño del título
+                        icon: 'custom-icon-class',
+                    },
+                })
+                return; // Detiene el flujo si falta algún campo
+            }
+
+            if (!validarTelefono(datosProveedor.telefono) ) {
+                Swal.fire({
+                    position: 'top-end',
+                    icon: 'error',
+                    title: 'El telefono debe contener solo numeros y almenos 10 digitos',
+                    showConfirmButton: false,
+                    timer: 2000,
+                    background: false, // Desactiva el fondo oscurecido
+                    backdrop: false,
+                    customClass: {
+                        container: 'custom-container-class',
+                        popup: 'custom-popup-class', // Clase personalizada para ajustar el tamaño de la alerta
+                        title: 'custom-title-class', // Clase personalizada para ajustar el tamaño del título
+                        icon: 'custom-icon-class',
+                    },
+                })
+                return; // Detiene el flujo si falta algún campo
+            }
+
+            if (!validarEmail(email)) {
+                Swal.fire({
+                        position: 'top-end',
+                        icon: 'warning',
+                        title: 'El email no es valido',
+                        showConfirmButton: false,
+                        timer: 2000,
+                        background: false, // Desactiva el fondo oscurecido
+                        backdrop: false,
+                        customClass: {
+                            container: 'custom-container-class',
+                            popup: 'custom-popup-class', // Clase personalizada para ajustar el tamaño de la alerta
+                            title: 'custom-title-class', // Clase personalizada para ajustar el tamaño del título
+                            icon: 'custom-icon-class',
+                        },
+                        })
+                return; // Detiene el flujo si falta algún campo
+            }
+
+            verificarCuit(datosProveedor.cuit);
+
+
+
+            async function verificarCuit(cuit) {
+                const existe = await cuitExiste(cuit);
+                if (existe) {
+                    Swal.fire({
+                        position: 'top-end',
+                        icon: 'error',
+                        title: 'El cuit ya existe',
+                        showConfirmButton: false,
+                        timer: 2000,
+                        background: false, // Desactiva el fondo oscurecido
+                        backdrop: false,
+                        customClass: {
+                            container: 'custom-container-class',
+                            popup: 'custom-popup-class', // Clase personalizada para ajustar el tamaño de la alerta
+                            title: 'custom-title-class', // Clase personalizada para ajustar el tamaño del título
+                            icon: 'custom-icon-class',
+                        },
+                        })
+                    return
+                }else {
+                    verificarEmail(datosProveedor.email);
+                    async function verificarEmail(email) {
+                        const existe = await emailExiste(email);
+                        if (existe) {
+                            Swal.fire({
+                                position: 'top-end',
+                                icon: 'error',
+                                title: 'El email ya existe',
+                                showConfirmButton: false,
+                                timer: 2000,
+                                background: false, // Desactiva el fondo oscurecido
+                                backdrop: false,
+                                customClass: {
+                                    container: 'custom-container-class',
+                                    popup: 'custom-popup-class', // Clase personalizada para ajustar el tamaño de la alerta
+                                    title: 'custom-title-class', // Clase personalizada para ajustar el tamaño del título
+                                    icon: 'custom-icon-class',
+                                },
+                                })
+                            return
+                        } else {
+                            guardarProveedor(datosProveedor);
+                        }        
+                    }
                 }
-            });
-
-            // Limpia el almacenamiento temporal
-            tempInputValues = {};
+            }
+            
         });
+
+        function guardarProveedor(datosProveedor) {
+            // hacemos el fetch al backend
+            console.log(datosProveedor);
+            fetch("../controladores/proveedores.php?action=agregar", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(datosProveedor)
+        })
+        .then(response => {
+            if (!response.ok) {
+                // El servidor devolvió un código de estado de error
+                // Forzar que se vaya por el catch
+                throw new Error("Error en la solicitud al servidor");
+            }
+            return response.json();
+        })
+        .then(data => {
+            // recargamos la tabla
+            obtenerProveedores()
+            // mostramos el mensaje
+            Swal.fire({
+                position: 'top-end',
+                icon: 'success',
+                title: 'Se ha añadido el Proveedor correctamente a la base de datos',
+                showConfirmButton: false,
+                timer: 2000,
+                background: false, // Desactiva el fondo oscurecido
+                backdrop: false,
+                customClass: {
+                    container: 'custom-container-class',
+                    popup: 'custom-popup-class', // Clase personalizada para ajustar el tamaño de la alerta
+                    title: 'custom-title-class', // Clase personalizada para ajustar el tamaño del título
+                    icon: 'custom-icon-class',
+                },
+                })
+            //limpiamos los inputs
+            limpiarModal();
+            // cerramos el modal
+            modalAgregarProveedor.hide();
+
+        })
+        .catch(error => {
+            console.log(error)
+            Swal.fire({
+                position: 'top-end',
+                icon: 'error',
+                title: 'Sucedio un error al agregar el proveedor, por favor revisa los campos',
+                showConfirmButton: false,
+                timer: 2000,
+                background: false, // Desactiva el fondo oscurecido
+                backdrop: false,
+                customClass: {
+                    container: 'custom-container-class',
+                    popup: 'custom-popup-class', // Clase personalizada para ajustar el tamaño de la alerta
+                    title: 'custom-title-class', // Clase personalizada para ajustar el tamaño del título
+                    icon: 'custom-icon-class',
+                },
+                })
+        });
+    }
     });
+
+    $('#modalAgregarProducto button[data-bs-dismiss="modal"]').on('click', function () {
+        limpiarModal();
+});
+
+    function limpiarModal() {
+        // Limpia todos los campos de entrada
+        $('#cuit, #nombre, #domicilio, #telefono, #email, #ciudad, #razonSocial').val('');
+    }
+
+    // Función para validar el CUIT
+    function validarCUIT(cuit) {
+    // Verifica si el valor contiene solo dígitos y tiene exactamente 11 dígitos
+        return /^\d{11}$/.test(cuit);
+    }
+
+    function validarTelefono(telefono) {
+        // Verifica si el valor contiene solo dígitos y no excede 15 dígitos
+        return /^\d{10,15}$/.test(telefono);
+    }
+
+    function validarEmail(email) {
+        // Expresión regular para validar un correo electrónico
+        const regexEmail = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+        return regexEmail.test(email);
+    }   
+
+    async function cuitExiste(cuit) {
+        try {
+            const response = await fetch('../controladores/proveedores.php?action=cuitExiste&cuit=' + cuit);
+            if (!response.ok) {
+                throw new Error("Error en la solicitud al servidor");
+            }
+            const data = await response.json();
+            return data; // Retorna el valor obtenido (true o false)
+        } catch (error) {
+            console.error("Ocurrió un error:", error);
+            return false; // Retorna false en caso de error
+        }
+}
+
+    async function emailExiste(email) {
+            try {
+                const response = await fetch('../controladores/proveedores.php?action=emailExiste&email=' + email);
+                if (!response.ok) {
+                    throw new Error("Error en la solicitud al servidor");
+                }
+                const data = await response.json();
+                return data; // Retorna el valor obtenido (true o false)
+            } catch (error) {
+                console.error("Ocurrió un error:", error);
+                return false; // Retorna false en caso de error
+            }
+    }
+
 
     </script>
     
