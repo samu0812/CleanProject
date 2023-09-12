@@ -49,19 +49,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 $resultado1 = mysqli_query($conn, $consulta1);
                 $idPersona= mysqli_insert_id($conn);
 
-                $consulta2= "INSERT INTO Rol (Descripcion) VALUES ('$DescripcionRol')";
+
+                $consulta2= "INSERT INTO Empleado (idSucursales, idPersona, idRol, Clave) VALUES ('$DescripcionSucursal','$idPersona', '$DescripcionRol', '$hashedClave')";
                 $resultado2 = mysqli_query($conn, $consulta2);
-                $idRol= mysqli_insert_id($conn);
-
-                $consulta3= "INSERT INTO Sucursales (Descripcion) VALUES ('$DescripcionSucursal')";
-                $resultado3 = mysqli_query($conn, $consulta3);
-                $idSucursal= mysqli_insert_id($conn);
-
-                $consulta4= "INSERT INTO Empleado (idSucursales, idPersona, idRol, Clave) VALUES ('$idSucursal','$idPersona', '$idRol', '$hashedClave')";
-                $resultado4 = mysqli_query($conn, $consulta4);
                 
     
-                if ($resultado1 && $resultado2 && $resultado3) {
+                if ($resultado1 && $resultado2) {
                     echo 'Usuario registrado correctamente'; //agregar mensaje
                     
                 } else {

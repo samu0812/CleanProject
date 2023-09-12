@@ -201,9 +201,9 @@ session_start();
                                 <label for="DescripcionRol" class="form-label">Rol</label>
                                 <select class="form-select" name="DescripcionRol" id="DescripcionRol"  required>
                                     <option value="" selected disabled>Seleccione un Rol</option>
-                                    <option value="Administrador">Administrador</option>
-                                    <option value="Cajero">Cajero</option>
-                                    <option value="Repositor">Repositor</option>
+                                    <option value=1>Dueño</option>
+                                    <option value=2>Gerente</option>
+                                    <option value=3>Vendedor</option>
                                 </select>
                             </div>
                         </div>
@@ -212,9 +212,9 @@ session_start();
                                 <label for="DescripcionSucursal" class="form-label">Sucursal</label>
                                 <select class="form-select" name="DescripcionSucursal" id="DescripcionSucursal" required>
                                     <option value="" selected disabled>Seleccione una Sucursal</option>
-                                    <option value="Sucursal1">Sucursal 1</option>
-                                    <option value="Sucursal2">Sucursal 2</option>
-                                    <option value="Sucursal3">Sucursal 3</option>
+                                    <option value=1>Galpón</option>
+                                    <option value=2>Kirchner</option>
+                                    <option value=3>Centro</option>
                                 </select>
                             </div>
                             <div class="col-md-4 mb-3">
@@ -481,7 +481,7 @@ session_start();
     </style>
     
 <!-- JavaScript Libraries -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="../lib/chart/chart.min.js"></script>
     <script src="../lib/easing/easing.min.js"></script>
     <script src="../lib/waypoints/waypoints.min.js"></script>

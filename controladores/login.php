@@ -45,6 +45,47 @@
             }
         }
 
+        function obtenerRolDescripcion($idPersona, $conn) {
+            $sql = "SELECT e.IdRol, r.Descripcion
+                    FROM Empleado e
+                    INNER JOIN Rol r ON e.IdRol = r.idRol
+                    WHERE e.idPersona = $idPersona";
+            
+            // Ejecutar la consulta
+            $resultado = mysqli_query($conn, $sql);
+            $fila = mysqli_fetch_assoc($resultado);
+            mysqli_free_result($resultado);
+            return $fila;
+        }    
+
+        function obtenerSucursalDescripcion($idPersona, $conn) {
+            $sql = "SELECT e.IdSucursales, r.Descripcion
+                    FROM Empleado e
+                    INNER JOIN Sucursales r ON e.IdSucursales = r.IdSucursales
+                    WHERE e.idPersona = $idPersona";
+            
+            // Ejecutar la consulta
+            $resultado = mysqli_query($conn, $sql);
+            $fila = mysqli_fetch_assoc($resultado);
+            mysqli_free_result($resultado);
+            return $fila;
+        }    
+
+
+        function obtnerIdEmpleado($idPersona, $conn){
+            $consultaId = "SELECT idEmpleado from Empleado WHERE idEmpleado = $idPersona";
+            $resultadoId = mysqli_query($conn, $consultaId);
+        
+            if ($resultadoId && mysqli_num_rows($resultadoId) === 1) {
+                $filaId = mysqli_fetch_assoc($resultadoId);
+                return $filaId['idEmpleado'];
+            } else {
+                return "Rol no encontrado";
+            }
+        }
+
+        
+
 
         if ($resultado && mysqli_num_rows($resultado) === 1) {
             // El usuario existe en la base de datos, verificar la contraseña
@@ -67,8 +108,20 @@
                 $nombrePersona = obtenerNombrePersona($idPersona, $conn);
                 $_SESSION['nombrePersona'] = $nombrePersona;
 
-                $rol = obtnerRol($idPersona, $conn);
-                $_SESSION['rol'] = $rol;
+                $rol = obtenerRolDescripcion($idPersona, $conn);
+                $_SESSION['rol'] = $rol['Descripcion'];
+
+                $idRol = obtenerRolDescripcion($idPersona, $conn);
+                $_SESSION['idRol'] = $idRol['idRol'];
+
+                $sucursal = obtenerSucursalDescripcion($idPersona, $conn);
+                $_SESSION['sucursal'] = $sucursal['Descripcion'];
+
+                $idSucursales = obtenerSucursalDescripcion($idPersona, $conn);
+                $_SESSION['idSucursales'] = $idSucursales['IdSucursales'];
+                
+                $idEmpleado = obtnerIdEmpleado($idPersona, $conn);
+                $_SESSION['idEmpleado'] = $idEmpleado;
 
                 header("Location: vistas\home.php");
 
