@@ -24,6 +24,14 @@ if (isset($_GET['action'])) {
             // Lógica para eliminar un proveedor
             eliminarProveedores($conn);
             break;
+        case 'cuitExiste':
+            // Lógica para verificar el cuit un proveedor
+            cuitExiste($conn);
+            break;
+        case 'emailExiste':
+            // Lógica para verificar el cuit un proveedor
+            emailExiste($conn);
+            break;
         default:
             // Acción no válida
             echo json_encode(array("message" => "Acción no válida"));
@@ -79,33 +87,49 @@ function agregarProveedores($conn) {
             "message" => "Error en los datos JSON recibidos"
         );
     } else {
-        // Los datos JSON se decodificaron correctamente
-        // Ahora puedes acceder a los valores individualmente
-        $cuit = $datosProveedor["cuit"];
-        $nombre = $datosProveedor["nombre"];
-        $domicilio = $datosProveedor["domicilio"];
-        $telefono = $datosProveedor["telefono"];
-        $email = $datosProveedor["email"];
-        $ciudad = $datosProveedor["ciudad"];
-        $razonSocial = $datosProveedor["razonSocial"];
+        try {
+                    // Intenta realizar la operación en la base de datos
+                    // ...
 
-        // Realiza la inserción en la base de datos (debes adaptar esta parte a tu esquema de base de datos)
-        $sql = "INSERT INTO proveedores (cuit, nombre, domicilio, telefono, email, ciudad, razonSocial) VALUES (?, ?, ?, ?, ?, ?, ?)";
-        $stmt = $conn->prepare($sql);
-        $stmt->bind_param("sssssss", $cuit, $nombre, $domicilio, $telefono, $email, $ciudad, $razonSocial);
+                // Los datos JSON se decodificaron correctamente
+                // Ahora puedes acceder a los valores individualmente
+                $cuit = $datosProveedor["cuit"];
+                $nombre = $datosProveedor["nombre"];
+                $domicilio = $datosProveedor["domicilio"];
+                $telefono = $datosProveedor["telefono"];
+                $email = $datosProveedor["email"];
+                $ciudad = $datosProveedor["ciudad"];
+                $razonSocial = $datosProveedor["razonSocial"];
 
-        if ($stmt->execute()) {
-            // Inserción exitosa
-            $response = array(
-                "success" => true,
-                "message" => "Proveedor agregado con éxito"
-            );
-        } else {
-            // Error en la inserción
-            $response = array(
-                "success" => false,
-                "message" => "Error al agregar el proveedor: " . $conn->error
-            );
+                // Realiza la inserción en la base de datos (debes adaptar esta parte a tu esquema de base de datos)
+                $sql = "INSERT INTO proveedores (cuit, nombre, domicilio, telefono, email, ciudad, razonSocial) VALUES (?, ?, ?, ?, ?, ?, ?)";
+                $stmt = $conn->prepare($sql);
+                $stmt->bind_param("sssssss", $cuit, $nombre, $domicilio, $telefono, $email, $ciudad, $razonSocial);
+
+
+
+                if ($stmt->execute()) {
+                    // Inserción exitosa
+                    $response = array(
+                        "success" => true,
+                        "message" => "Proveedor agregado con éxito"
+                    );
+                } else {
+                    // Error en la inserción
+                    $response = array(
+                        "success" => false,
+                        "message" => "Error al agregar el proveedor: " . $conn->error
+                    );
+                }
+
+            //throw new Exception("Error en la base de datos");
+        }
+        // Si hay un error, lanza una excepción
+        catch (Exception $e) {
+            // Maneja el error, registra información de error si es necesario
+            // Devuelve una respuesta HTTP con un código de estado de error
+            http_response_code(500); // Código de estado para error interno del servidor
+            echo json_encode(array("error" => $e->getMessage()));
         }
     }
 
@@ -120,6 +144,8 @@ function eliminarProveedores($conn) {
 
     // Decodifica los datos JSON en un array asociativo
     $datosProveedor = json_decode($data, true);
+
+    try {
 
     $idProveedor = $datosProveedor["idDelProveedor"];
 
@@ -144,6 +170,15 @@ function eliminarProveedores($conn) {
         );
     }
 
+    }
+    // Si hay un error, lanza una excepción
+    catch (Exception $e) {
+        // Maneja el error, registra información de error si es necesario
+        // Devuelve una respuesta HTTP con un código de estado de error
+        http_response_code(500); // Código de estado para error interno del servidor
+        echo json_encode(array("error" => $e->getMessage()));
+    }
+
     // Envía la respuesta como JSON
     header("Content-Type: application/json");
     echo json_encode($response);
@@ -158,27 +193,38 @@ function obtenerProveedor($conn) {
             "message" => "ID de proveedor no válido"
         );
     } else {
-        $idProveedor = $_GET['id'];
 
-        // Realiza la consulta SQL para obtener los datos del proveedor por su ID
-        $sql = "SELECT * FROM proveedores WHERE idProveedores = ?";
-        $stmt = $conn->prepare($sql);
-        $stmt->bind_param("i", $idProveedor);
-        $stmt->execute();
-        $result = $stmt->get_result();
+        try {
+            $idProveedor = $_GET['id'];
 
-        if ($result->num_rows > 0) {
-            // El proveedor fue encontrado, obtén sus datos
-            $proveedor = $result->fetch_assoc();
+            // Realiza la consulta SQL para obtener los datos del proveedor por su ID
+            $sql = "SELECT * FROM proveedores WHERE idProveedores = ?";
+            $stmt = $conn->prepare($sql);
+            $stmt->bind_param("i", $idProveedor);
+            $stmt->execute();
+            $result = $stmt->get_result();
 
-            // Genera una respuesta JSON válida utilizando json_encode()
-            $response = json_encode($proveedor);
-        } else {
-            // No se encontró ningún proveedor con ese ID
-            $response = array(
-                "success" => false,
-                "message" => "Proveedor no encontrado"
-            );
+            if ($result->num_rows > 0) {
+                // El proveedor fue encontrado, obtén sus datos
+                $proveedor = $result->fetch_assoc();
+
+                // Genera una respuesta JSON válida utilizando json_encode()
+                $response = json_encode($proveedor);
+            } else {
+                // No se encontró ningún proveedor con ese ID
+                $response = array(
+                    "success" => false,
+                    "message" => "Proveedor no encontrado"
+                );
+            }
+
+        }
+        // Si hay un error, lanza una excepción
+        catch (Exception $e) {
+            // Maneja el error, registra información de error si es necesario
+            // Devuelve una respuesta HTTP con un código de estado de error
+            http_response_code(500); // Código de estado para error interno del servidor
+            echo json_encode(array("error" => $e->getMessage()));
         }
 
         // Configura las cabeceras para indicar que se envía JSON
@@ -202,41 +248,51 @@ function editarProveedor($conn){
             "message" => "Error en los datos JSON recibidos"
         );
     } else {
-        // Los datos JSON se decodificaron correctamente
-        // Ahora puedes acceder a los valores individualmente
-        $proveedorId = $datosProveedor["ProveedorId"];
-        $cuit = $datosProveedor["Cuit"];
-        $nombre = $datosProveedor["Nombre"];
-        $domicilio = $datosProveedor["Domicilio"];
-        $telefono = $datosProveedor["Telefono"];
-        $email = $datosProveedor["Email"];
-        $ciudad = $datosProveedor["Ciudad"];
-        $razonSocial = $datosProveedor["RazonSocial"];
+        try {
+            // Los datos JSON se decodificaron correctamente
+            // Ahora puedes acceder a los valores individualmente
+            $proveedorId = $datosProveedor["ProveedorId"];
+            $cuit = $datosProveedor["Cuit"];
+            $nombre = $datosProveedor["Nombre"];
+            $domicilio = $datosProveedor["Domicilio"];
+            $telefono = $datosProveedor["Telefono"];
+            $email = $datosProveedor["Email"];
+            $ciudad = $datosProveedor["Ciudad"];
+            $razonSocial = $datosProveedor["RazonSocial"];
 
-        // Realiza la actualización en la base de datos
-        $sql = "UPDATE proveedores SET
-            Cuit = ?,
-            Nombre = ?,
-            Domicilio = ?,
-            Telefono = ?,
-            Email = ?,
-            Ciudad = ?,
-            RazonSocial = ?
-            WHERE idProveedores = ?";
-            $stmt = $conn->prepare($sql);
-            $stmt->bind_param("sssssssi", $cuit, $nombre, $domicilio, $telefono, $email, $ciudad, $razonSocial, $proveedorId);
+            // Realiza la actualización en la base de datos
+            $sql = "UPDATE proveedores SET
+                Cuit = ?,
+                Nombre = ?,
+                Domicilio = ?,
+                Telefono = ?,
+                Email = ?,
+                Ciudad = ?,
+                RazonSocial = ?
+                WHERE idProveedores = ?";
+                $stmt = $conn->prepare($sql);
+                $stmt->bind_param("sssssssi", $cuit, $nombre, $domicilio, $telefono, $email, $ciudad, $razonSocial, $proveedorId);
 
 
-        if ($stmt->execute()) {
-            $response = array(
-                "success" => true,
-                "message" => "Registro de proveedor actualizado correctamente"
-            );
-        } else {
-            $response = array(
-                "success" => false,
-                "message" => "Error al actualizar el registro de proveedor"
-            );
+            if ($stmt->execute()) {
+                $response = array(
+                    "success" => true,
+                    "message" => "Registro de proveedor actualizado correctamente"
+                );
+            } else {
+                $response = array(
+                    "success" => false,
+                    "message" => "Error al actualizar el registro de proveedor"
+                );
+            }
+
+        }
+        // Si hay un error, lanza una excepción
+        catch (Exception $e) {
+            // Maneja el error, registra información de error si es necesario
+            // Devuelve una respuesta HTTP con un código de estado de error
+            http_response_code(500); // Código de estado para error interno del servidor
+            echo json_encode(array("error" => $e->getMessage()));
         }
     }
 
@@ -244,5 +300,91 @@ function editarProveedor($conn){
     header("Content-Type: application/json");
     echo json_encode($response);
 }
+
+function cuitExiste($conn) {
+
+    try {
+        // Obtén el CUIT que se envió mediante GET
+        $cuit = $_GET['cuit'];
+
+        // Prepara la consulta SQL para verificar si el CUIT existe
+        $sql = "SELECT Cuit FROM proveedores WHERE Cuit = ?";
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param("s", $cuit);
+    
+        if (!$stmt->execute()) {
+            $response = array(
+                "success" => false,
+                "message" => "Error al hacer la consulta"
+            ); // Hubo un error al ejecutar la consulta
+        }
+    
+        $stmt->store_result();
+    
+        if ($stmt->num_rows > 0) {
+            $stmt->fetch();
+            $stmt->close();
+            $response = true; // El código existe en la base de datos
+            
+        } else {
+            $stmt->fetch();
+            $stmt->close();
+            $response = false; // El código no existe en la base de datos
+        }
+    } catch (Exception $e) {
+        // Maneja el error, registra información de error si es necesario
+        // Devuelve una respuesta HTTP con un código de estado de error
+        http_response_code(500); // Código de estado para error interno del servidor
+        echo json_encode(array("error" => $e->getMessage()));
+    }
+    // Devuelve la respuesta como JSON
+    header("Content-Type: application/json");
+    echo json_encode($response);
+
+
+}
+
+function emailExiste($conn) {
+
+    try {
+        // Obtén el CUIT que se envió mediante GET
+        $email = $_GET['email'];
+
+        // Prepara la consulta SQL para verificar si el CUIT existe
+        $sql = "SELECT Email FROM proveedores WHERE Email = ?";
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param("s", $email);
+    
+        if (!$stmt->execute()) {
+            $response = array(
+                "success" => false,
+                "message" => "Error al hacer la consulta"
+            ); // Hubo un error al ejecutar la consulta
+        }
+    
+        $stmt->store_result();
+    
+        if ($stmt->num_rows > 0) {
+            $stmt->fetch();
+            $stmt->close();
+            $response = true; // El código existe en la base de datos
+            
+        } else {
+            $stmt->fetch();
+            $stmt->close();
+            $response = false; // El código no existe en la base de datos
+        }
+    } catch (Exception $e) {
+        // Maneja el error, registra información de error si es necesario
+        // Devuelve una respuesta HTTP con un código de estado de error
+        http_response_code(500); // Código de estado para error interno del servidor
+        echo json_encode(array("error" => $e->getMessage()));
+    }
+    // Devuelve la respuesta como JSON
+    header("Content-Type: application/json");
+    echo json_encode($response);
+}
+
+
 
 ?>
