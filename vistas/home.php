@@ -1,4 +1,3 @@
-
 <?php 
 session_start();
 $nombrePersona = isset($_SESSION['nombrePersona']) ? $_SESSION['nombrePersona'] : '';
@@ -74,7 +73,23 @@ $rol = isset($_SESSION['rol']) ? $_SESSION['rol'] : '';
                             <i class="fas fa-boxes fa-3x" style="color: #e77a34"></i>
                             <div class="text-center" style="margin-left: 30px">
                                 <p class="mb-2">Productos</p>
-                                <h6 class="mb-0">20</h6>
+                                <?php
+                                include '../bd/conexion.php';
+                                $query = "SELECT COUNT(idProductos) AS cantidad_de_productos
+                                FROM productos;";
+                                $result = $conn->query($query);
+                                
+                                if ($result->num_rows > 0) {
+                                    $row = $result->fetch_assoc();
+                                    $count = $row["cantidad_de_productos"];
+                                    echo "<h6 class='mb-0'>$count</h6>";
+                                } else {
+                                    echo "0";
+                                }
+                                
+                                
+                                
+                                ?>
                             </div>
                         </div>
                     </div>
@@ -83,7 +98,23 @@ $rol = isset($_SESSION['rol']) ? $_SESSION['rol'] : '';
                             <i class="fas fa-truck-loading fa-3x" style="color: #e77a34"></i>
                             <div class="text-center" style="margin-left: 30px">
                                 <p class="mb-2">Proveedores</p>
-                                <h6 class="mb-0">5</h6>
+                                <?php
+                                include '../bd/conexion.php';
+                                $query = "SELECT COUNT(idProveedores) AS cantidad_de_proveedores
+                                FROM proveedores;";
+                                $result = $conn->query($query);
+                                
+                                if ($result->num_rows > 0) {
+                                    $row = $result->fetch_assoc();
+                                    $count = $row["cantidad_de_proveedores"];
+                                    echo "<h6 class='mb-0'>$count</h6>";
+                                } else {
+                                    echo "0";
+                                }
+                                
+                                
+                                
+                                ?>
                             </div>
                         </div>
                     </div>
@@ -92,7 +123,21 @@ $rol = isset($_SESSION['rol']) ? $_SESSION['rol'] : '';
                             <i class="fa fa-chart-area fa-3x" style="color: #e77a34"></i>
                             <div class="text-center" style="margin-left: 30px">
                                 <p class="mb-2">Ventas</p>
-                                <h6 class="mb-0">543</h6>
+                                <!-- <h6 class="mb-0">543</h6> -->
+                                <?php
+                                include '../bd/conexion.php';
+                                $query = "SELECT COUNT(*) AS CantidadVentas FROM Ventas;";
+                                $result = $conn->query($query);
+                                
+                                if ($result->num_rows > 0) {
+                                    $row = $result->fetch_assoc();
+                                    $count = $row["CantidadVentas"];
+                                    echo "<h6 class='mb-0'>$count</h6>";
+                                } else {
+                                    echo "0";
+                                }
+                                   
+                                ?>
                             </div>
                         </div>
                     </div>
@@ -101,7 +146,20 @@ $rol = isset($_SESSION['rol']) ? $_SESSION['rol'] : '';
                             <i class="fas fa-people-carry fa-2x" style="color: #e77a34"></i>
                             <div class="text-center" style="margin-left: 30px">
                                 <p class="mb-2">Empleados Act.</p>
-                                <h6 class="mb-0">6</h6>
+                                <?php
+                                include '../bd/conexion.php';
+                                $query = "SELECT COUNT(*) AS count FROM Empleado";
+                                $result = $conn->query($query);
+                                
+                                if ($result->num_rows > 0) {
+                                    $row = $result->fetch_assoc();
+                                    $count = $row["count"];
+                                    echo "<h6 class='mb-0'>$count</h6>";
+                                } else {
+                                    echo "0";
+                                }
+                                   
+                                ?>
                             </div>
                         </div>
                     </div>
