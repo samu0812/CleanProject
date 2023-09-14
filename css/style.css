@@ -4,6 +4,8 @@
     --light: #f9f3f8;
     --primary: #fa721c; /*cambio: lauty*/
     --dark: #191C24;
+    --dt-row-selected: #e77a34; /* Cambia el color de fondo de la fila seleccionada */
+    --dt-row-selected-text: #ffffff; /* Cambia el color de texto de la fila seleccionada */
 }
 
 .cursorPointer {
@@ -93,7 +95,7 @@
     width: 250px;
     height: 100vh;
     overflow-y: auto;
-    background: #feeac7;
+    background: #f3f4f6;
     transition: 0.5s;
     z-index: 999;
 }
@@ -101,9 +103,8 @@
 .content {
     margin-left: 250px;
     min-height: 100vh;
-    background: #feeac7;
+    background: #f3f4f6;
     transition: 0.5s;
-    
 }
 
 .cursorPointer {
@@ -350,7 +351,7 @@
   }
 
 .bg-light{
-    background-color: #feeac7 !important;
+    background-color: #f3f4f6 !important;
 }
 
 .input-group-text {
@@ -528,4 +529,14 @@
 
 .table-responsive h5 {
     margin: 10px;
+}
+
+#tableProd tr.selected {
+    background-color: #e77a34 !important;
+    color: #fff !important;
+}
+
+table.dataTable>tbody>tr.selected>* {
+    box-shadow: inset 0 0 0 9999px var(--dt-row-selected);
+    color: var(--dt-row-selected-text);
 }

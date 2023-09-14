@@ -172,24 +172,28 @@ $rol = isset($_SESSION['rol']) ? $_SESSION['rol'] : '';
             <!-- Sales Chart Start -->
             <div class="container-fluid pt-4 px-4">
                 <div class="row g-4">
-                    <div class="col-sm-12 col-xl-6">
-                        <div class="bg-personalizado text-center rounded p-4 cursorPointer2">
-                            <div class="d-flex align-items-center justify-content-between mb-4">
-                                <h6 class="mb-0 m-auto">Productos Más Vendidos</h6>
+                    <div class="grafico-container">
+                        <!-- Contenedor del primer gráfico -->
+                        <div class="bg-personalizado text-center rounded p-4 cursorPointer2 chart-container">
+                            <div class="d-flex flex-column align-items-center justify-content-center chart-content">
+                                <h6 class="mb-0">Productos Más Vendidos</h6>
+                                <canvas id="prodMasVendidos" class="chart-canvas"></canvas>
                             </div>
-                            <canvas id="prodMasVendidos"></canvas>
                         </div>
                     </div>
-                    <div class="col-sm-12 col-xl-6">
-                        <div class="bg-personalizado text-center rounded p-4 cursorPointer2">
-                            <div class="d-flex align-items-center justify-content-between mb-4">
-                                <h6 class="mb-0 m-auto">Total Recaudado por Meses</h6>
+                    <div class="grafico-container">
+                        <!-- Contenedor del segundo gráfico -->
+                        <div class="bg-personalizado text-center rounded p-4 cursorPointer2 chart-container">
+                            <div class="d-flex flex-column align-items-center justify-content-center chart-content">
+                                <h6 class="mb-0">Total Recaudado por Meses</h6>
+                                <canvas id="ganancias" class="chart-canvas"></canvas>
                             </div>
-                            <canvas id="ganancias"></canvas>
                         </div>
                     </div>
                 </div>
             </div>
+
+
             <!-- Sales Chart End -->
 
 
@@ -205,6 +209,38 @@ $rol = isset($_SESSION['rol']) ? $_SESSION['rol'] : '';
         <a href="#" class="btn btn-lg btn-lg-square back-to-top" style="background: #e77a34; color: white"><i class="bi bi-arrow-up"></i></a>
     </div>
 
+    <style>
+    .chart-container {
+        max-width: 1000px; /* Cambia el ancho máximo del contenedor */
+        margin: 0 auto; /* Centra el contenedor horizontalmente */
+        padding: 10px; /* Añade espaciado interno al contenedor */
+        text-align: center; /* Centra el contenido horizontalmente */
+        display: flex; /* Usa flexbox para centrar verticalmente */
+        justify-content: center; /* Centra el contenido verticalmente */
+        align-items: center; /* Centra el contenido verticalmente */
+    }
+
+    .chart-content {
+        flex: 1; /* Hace que el contenido se expanda verticalmente para centrarse */
+    }
+
+    .chart-canvas {
+        width: 100%; /* Ocupará todo el ancho del contenedor */
+        height: auto; /* Se ajustará automáticamente para mantener la relación de aspecto */
+    }
+
+    .grafico-container {
+        width: 90%; /* Ajusta el ancho como desees, puedes usar un valor en porcentaje o en píxeles */
+        height: auto;
+        margin: 0 auto; /* Centra el contenedor horizontalmente */
+        padding: 20px; /* Agrega espaciado interno si es necesario */
+    }
+    .chart-canvas {
+        margin-top: 10px; /* Ajusta la cantidad de espacio hacia arriba que desees */
+        padding-bottom: 30px; /* Añade espacio en la parte inferior */
+    }
+    </style>
+
     <script>
         function redireccionar(url) {
             window.location.href = url;
@@ -212,44 +248,99 @@ $rol = isset($_SESSION['rol']) ? $_SESSION['rol'] : '';
     </script>
 
     <script>
-        var ctx = document.getElementById('prodMasVendidos').getContext('2d');
-        
-        var productosData = {
-            labels: ["Lavandina", "Jabon", "Cloro", "Shampoo", "Acondicionador", "Poet", "Escoba", "Escurridor", "Trapo de Piso", "Trapo para el auto"],
-            datasets: [{
-                data: [50, 45, 35, 30, 25, 20, 18, 15, 12, 10],
-                backgroundColor: [
-                    '#e77a34',
-                    '#c65b16',
-                    '#ff8c00',
-                    '#8e3000',
-                    '#ff8c00',
-                    '#c65b16',
-                    '#ff8c00',
-                    '#c65b16',
-                    '#ff8c00',
-                    '#c65b16',
-                ],
-                borderWidth: 0
-            }]
-        };
-
-        new Chart(ctx, {
-            type: 'bar',
-            data: productosData,
-            options: {
-                scales: {
-                    y: {
-                        beginAtZero: true
-                    }
-                },
-                plugins: {
-                    legend: {
-                        display: false // Oculta la leyenda
-                    }
+        function obtenerProductosMasVendidos() {
+            
+            fetch('../controladores/funcionesHome.php?action=obtenerProductosMasVendidos') 
+            .then(response => {
+                console.log(response);
+                if (!response.ok) {
+                    throw new Error("Error en la solicitud al servidor");
                 }
-            }
-        });
+                return response.json();
+            })
+            .then(data => {
+                var graficoProdsMasVendidos = document.getElementById('prodMasVendidos').getContext('2d');
+                graficoProdsMasVendidos.canvas.width = 450; // Modifica el ancho del segundo gráfico
+                graficoProdsMasVendidos.canvas.height = 200; // Modifica la altura del segundo gráfico
+                let nombresProductos = data.map(item => item.NombreProducto);
+                let cantidadesVendidas = data.map(item => item.CantidadVendida);
+
+
+                // Función para abreviar un nombre
+                function abreviarNombre(nombre) {
+                    if (nombre.length > 20) {
+                        return nombre.substring(0, 19) + '..';
+                    }
+                    return nombre;
+                }
+
+                let nombresAbreviados = nombresProductos.map(abreviarNombre);
+
+                const productosMasVendidosData = {
+                    labels: nombresAbreviados,
+                    datasets: [{
+                        data: cantidadesVendidas,
+                        backgroundColor: [
+                            '#e77a34',
+                            '#c65b16',
+                            '#ff8c00',
+                            '#8e3000',
+                            '#ff8c00',
+                            '#c65b16',
+                            '#ff8c00',
+                            '#c65b16',
+                            '#ff8c00',
+                            '#c65b16',
+                        ],
+                        borderWidth: 0,
+                        barThickness: 30 // Ajusta el grosor de las barras
+                    }]
+                };
+
+                const chart = new Chart(graficoProdsMasVendidos, {
+                    type: 'bar',
+                    data: productosMasVendidosData,
+                    options: {
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                            },
+                            x: {
+                                ticks: {
+                                    font: {
+                                        size: 10,
+                                    },
+                                    maxRotation: 45, // Cambia el ángulo de rotación
+                                    minRotation: 25, // Cambia el ángulo de rotación
+                                },
+                            },
+                        },
+                        plugins: {
+                            legend: {
+                                display: false,
+                            },
+                            tooltip: {
+                                callbacks: {
+                                    label: function (context) {
+                                        // Muestra el nombre completo del producto en el tooltip
+                                        return nombresProductos[context.dataIndex];
+                                    },
+                                },
+                            },
+                        },
+                    },
+                });
+
+
+            })
+            .catch(error => {
+                console.error("Ocurrió un error:", error);
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', obtenerProductosMasVendidos);
+
+        
     </script>
 
     <script>
@@ -284,6 +375,10 @@ $rol = isset($_SESSION['rol']) ? $_SESSION['rol'] : '';
             }
         });
     </script>
+
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.0/chart.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/chartjs-plugin-tooltip/1.2.0/plugin.tooltip.min.js"></script>
 
 
     <!-- JavaScript Libraries -->

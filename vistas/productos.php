@@ -2,12 +2,11 @@
 session_start();
 ?>
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 
 <head>
     <meta charset="utf-8">
     <title>Clean</title>
-    
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <meta content="" name="keywords">
     <meta content="" name="description">
@@ -44,8 +43,7 @@ session_start();
     <!-- Incluir DataTables CSS -->
     <link href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css" rel="stylesheet">
 
-    <!-- Incluir tus estilos personalizados -->
-    <link href="../css/style.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <!-- Incluir Bootstrap JS -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/js/bootstrap.min.js"></script>
@@ -55,7 +53,10 @@ session_start();
     <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
     <script src="https://cdn.datatables.net/select/1.7.0/js/dataTables.select.min.js"></script>
 
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 
+    <!-- Incluir tus estilos personalizados -->
+    <link href="../css/style.css" rel="stylesheet">
 </head>
 
 <body>
@@ -67,14 +68,11 @@ session_start();
             </div>
         </div>
         <!-- Spinner End -->
-
         <!-- Sidebar Start -->
         <?php
         include "sidebar.php";
         ?>
         <!-- Sidebar End -->
-
-
         <!-- Content Start -->
         <div class="content">
             <!-- Navbar Start -->
@@ -82,14 +80,12 @@ session_start();
             include "navbar.php";
             ?>
             <!-- Navbar End -->
-
-
-            <!-- Sale & Revenue Start -->
+            <!-- Contenido de la Página -->
             <div class="container-fluid pt-4 px-4">
                 <div class="row g-4">
                     <div class="col-12 col-md-6 col-lg-4 col-xl-3">
                         <div class="d-flex align-items-center justify-content-center p-4">
-                            <button id="btnAgregarProd" style="background: #e77a34; color: white" class="btn btn-md" data-bs-toggle="modal" data-bs-target="#modalAgregarProducto">
+                            <button id="btnAgregarProd" type="button" style="background: #e77a34; color: white" class="btn btn-md" data-bs-toggle="modal" data-bs-target="#modalAgregarProducto">
                             <i class="fas fa-plus"></i> Agregar Producto</button>    
                         </div>
                     </div>
@@ -143,7 +139,6 @@ session_start();
                             </div>
                         </div>
                     </div>
-
                 </div>
             </div>
 
@@ -157,7 +152,8 @@ session_start();
                                 <th>Código</th>
                                 <th>Nombre</th>
                                 <th>Proveedor</th>
-                                <th>Tipo</th>
+                                <th>Tipo Prod</th>
+                                <th>Tipo Cat</th>
                                 <th>Tamaño</th>
                                 <th>Medida</th>
                                 <th>Cantidad</th>
@@ -171,87 +167,9 @@ session_start();
                                 </th>
                             </tr>
                         </thead>
-                        <tbody>
-                            <tr>
-                                <td>001</td>
-                                <td>Jabon en Polvo</td>
-                                <td>LCL</td>
-                                <td>Envasado</td>
-                                <td>300</td>
-                                <td>Grs</td>
-                                <td>200</td>
-                                <td>300</td>
-                                <td>21</td>
-                                <td>363</td>
-                                <td></td>
-                            </tr>
-                            <tr>
-                                <td>002</td>
-                                <td>Lavandina</td>
-                                <td>LCL</td>
-                                <td>Preparado</td>
-                                <td>300</td>
-                                <td>Lts</td>
-                                <td>200</td>
-                                <td>300</td>
-                                <td>21</td>
-                                <td>363</td>
-                                <td></td>
-                            </tr>
+                        <tbody id="tableProdBody">
                         </tbody>
                     </table>
-                    </div>
-                </div>
-            </div>
-
-            <div class="container-fluid pt-4 px-4">
-                <div class="bg-personalizado text-center rounded p-4">
-                    <div class="d-flex justify-content-center align-items-center mb-3">
-                        <h5 class="mb-0">Busqueda por Sucursal</h5>
-                    </div>
-                    <div class="d-flex justify-content-center align-items-center text-center">
-                        <select id="filtroSucursal" class="form-select form-select-sm" style="width: 150px;">
-                            <option value="">Sucursales</option>
-                            <option value="Galpon">Galpon</option>
-                            <option value="Kirchner">Kirchner</option>
-                            <option value="Centro">Centro</option>
-                        </select>
-                    </div>
-                    <div class="table-responsive -xxl">
-                        <table id="tableSucursal" class="table display" style="width:100%">
-                            <thead>
-                                <tr>
-                                    <th>Código</th>
-                                    <th>Nombre</th>
-                                    <th>Sucursal</th>
-                                    <th>Tamaño</th>
-                                    <th>Medida</th>
-                                    <th>Cantidad</th>
-                                    <th>P. Venta</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>001</td>
-                                    <td>Jabon en Polvo</td>
-                                    <td>Galpon</td>
-                                    <td>300</td>
-                                    <td>Grs</td>
-                                    <td>200</td>
-                                    <td>363</td>
-                                </tr>
-                                <tr>
-                                    <td>002</td>
-                                    <td>Lavandina</td>
-                                    <td>Kirchner</td>
-                                    <td>300</td>
-                                    <td>Grs</td>
-                                    <td>200</td>
-                                    <td>363</td>
-                                </tr>
-                                </tr>
-                            </tbody>
-                        </table>
                     </div>
                 </div>
             </div>
@@ -264,90 +182,108 @@ session_start();
                             <h5 class="modal-title" id="labelAgregarStock">Agregar Producto</h5>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
-                        <div class="modal-body">
-                            <div class="container">
-                                <div class="row">
-                                    <div class="col-md-4 mb-3">
-                                        <label for="codigo" class="form-label">Código</label>
-                                        <input type="text" class="form-control" id="codigo">
-                                    </div>
-                                    <div class="col-md-4 mb-3">
-                                        <label for="nombre" class="form-label">Nombre</label>
-                                        <input type="text" class="form-control" id="nombre">
-                                    </div>
-                                    <div class="col-md-4 mb-3">
-                                        <label for="proveedor" class="form-label">Proveedor</label>
-                                        <select class="form-select" id="proveedor">
+                        <form id="formAgregarProducto">
+                            <div class="modal-body">
+                                <div class="container">
+                                    <div class="row">
+                                        <div class="col-md-4 mb-3">
+                                            <label for="codigo" class="form-label">Código</label>
+                                            <input type="text" class="form-control" id="codigo" name="codigo" required>
+                                        </div>
+                                        <div class="col-md-4 mb-3">
+                                            <label for="nombre" class="form-label">Nombre</label>
+                                            <input type="text" class="form-control" id="nombre" name="nombre" required>
+                                        </div>
+                                        <div class="col-md-4 mb-3">
+                                            <label for="proveedor" class="form-label">Proveedor</label>
+                                            <select class="form-select" id="proveedor" name="proveedor" required>
                                             <option value="" selected disabled>Seleccione un proveedor</option>
-                                            <option value="LCL">LCL</option>
-                                            <option value="ACD">ACD</option>
-                                            <option value="CHANGOMAS">CHANGO MAS</option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-4 mb-3">
-                                        <label for="tipoProducto" class="form-label">Tipo de Producto</label>
-                                        <select class="form-select" id="tipoProducto">
-                                            <option value="" selected disabled>Seleccione un tipo</option>
-                                            <option value="Suelto">Suelto</option>
-                                            <option value="Envasado">Envasado</option>
-                                            <option value="Preparado">Preparado</option>
-                                        </select>
-                                    </div>
-                                    <div class="col-md-4 mb-3">
-                                        <label for="tamaño" class="form-label">Tamaño</label>
-                                        <div class="input-group">
-                                            <input type="text" class="form-control" id="tamaño" placeholder="Tamaño">
-                                            <select class="form-select" id="medida" style="width: 2px;">
-                                                <option value="" selected disabled>Seleccione una Medida</option>
-                                                <option value="Cm3">Cm3</option>
-                                                <option value="Lts">Lts</option>
-                                                <option value="Grs">Grs</option>
-                                                <option value="Kg">Kg</option>
+                                            <?php include '../controladores/obtener_proveedores.php'; ?>
                                             </select>
                                         </div>
                                     </div>
-                                    <div class="col-md-4 mb-3">
-                                        <label for="cantidad" class="form-label">Cantidad</label>
-                                        <input type="number" class="form-control" id="cantidad">
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-4 mb-3">
-                                        <label for="precioBase" class="form-label">Precio Base</label>
-                                        <div class="input-group">
-                                            <span class="input-group-text"><i class="fas fa-dollar-sign"></i></span>
-                                            <input type="number" class="form-control" id="precioBase">
+                                    <div class="row">
+                                        <div class="col-md-4 mb-3">
+                                            <label for="tipoProducto" class="form-label">Tipo Producto</label>
+                                            <label for="tipoCategoria" class="form-label">Tipo Categoria</label>
+                                            <div class="input-group"> 
+                                                <select class="form-select" id="tipoProducto" name="tipoProducto" required>
+                                                    <option value="" selected disabled>Seleccione...</option>
+                                                    <?php include '../controladores/obtener_tipoproducto.php'; ?>
+                                                </select>
+                                                <select class="form-select" id="tipoCategoria" name="tipoCategoria" required>
+                                                    <option value="" selected disabled>Seleccione...</option>
+                                                    <?php include '../controladores/obtener_prodcategoria.php'; ?>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4 mb-3">
+                                            <label for="tamaño" class="form-label">Tamaño</label>
+                                            <div class="input-group">
+                                                <input type="number" class="form-control" id="tamaño" name="tamaño" placeholder="Tamaño" required>
+                                                <select class="form-select" id="tipoTamaño" name="tipoTamaño" style="width: 2px;" required>
+                                                    <option value="" selected disabled>Seleccione una Medida</option required>
+                                                    <?php include '../controladores/obtener_tipotamaño.php'; ?>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4 mb-3">
+                                            <label for="cantidad" class="form-label">Cantidad</label>
+                                            <input type="number" class="form-control" id="cantidad" name="cantidad" required>
                                         </div>
                                     </div>
-                                    <div class="col-md-4 mb-3">
-                                        <label for="porcentajeAumento" class="form-label">Porcentaje para Aumentar</label>
-                                        <div class="input-group">
-                                            <input type="number" class="form-control" id="porcentajeAumento">
-                                            <span class="input-group-text"><i class="fas fa-percent"></i></span>
+                                    <div class="row">
+                                        <div class="col-md-4 mb-3">
+                                            <label for="precioBase" class="form-label">Precio Base</label>
+                                            <div class="input-group">
+                                                <span class="input-group-text"><i class="fas fa-dollar-sign"></i></span>
+                                                <input type="number" class="form-control" id="precioBase" name="precioBase" required>
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div class="col-md-4 mb-3">
-                                        <label for="precioVenta" class="form-label">Precio de Venta</label>
-                                        <div class="input-group">
-                                            <span class="input-group-text"><i class="fas fa-dollar-sign"></i></span>
-                                            <input type="number" class="form-control" id="precioVenta">
+
+                                        <div class="col-md-4 mb-3">
+                                            <label for="porcentajeAumento" class="form-label">Porcentaje de Aumento</label>
+                                            <div class="input-group d-flex justify-content-center align-items-center">
+                                                <div class="custom-control custom-checkbox" style="margin-right: 10px;">
+                                                    <input type="checkbox" class="custom-control-input" id="iva" name="iva" value="21">
+                                                    <label class="custom-control-label" id="ivaLabel" for="iva">Iva</label>
+                                                </div>
+
+                                                <div class="custom-control custom-checkbox" style="margin-right: 10px;">
+                                                    <input type="checkbox" class="custom-control-input" id="rentas" name="rentas" value="3">
+                                                    <label class="custom-control-label" id="rentasLabel" for="rentas">Rentas</label>
+                                                </div>
+
+                                                <div class="mr-4">
+                                                    <input style="width: 70px;" type="number" value="0.00" class="form-control" name="porcentajeAumento" id="porcentajeAumento" required>
+                                                </div>
+                                            </div>
+                                        </div>
+
+
+                                        <div class="col-md-4 mb-3">
+                                            <label for="sucursal" id="sucursalField" style="display: none;" class="form-label">Sucursal</label>
+                                            <div class="input-group">
+                                                <select class="form-select" id="sucursalField2" style="display: none;" name="sucursal" id="sucursal" style="width: 2px;">
+                                                    <option value="" selected disabled>Seleccione una Sucursal</option>
+                                                    <?php include '../controladores/obtener_sucursales.php'; ?>
+                                                </select>
+                                            </div>
+                                            <div id="precioVentaField" style="display: none;">
+                                                <label for="precioVenta" class="form-label">Precio Venta</label>
+                                                <input style="width: 240px;" value="0.00" type="number" class="form-control" id="precioVenta">
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
                         <div class="modal-footer">
-                            <!-- Cambio en el botón "Cerrar" del modal -->
                             <button id="btnCerrar" type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-                            <!-- Cambio en el botón "Guardar" del modal -->
                             <button id="btnGuardar" type="button" class="btn btn-primary">Guardar</button>
                         </div>
                     </div>
                 </div>
             </div>
-
 
             <!-- Modal para eliminar registro -->
             <div class="modal fade" id="modalEliminarStock" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -362,7 +298,7 @@ session_start();
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                            <button type="button" class="btn btn-danger">Eliminar</button>
+                            <button id="btnEliminar" type="button" class="btn btn-primary">Eliminar</button>
                         </div>
                     </div>
                 </div>
@@ -382,161 +318,690 @@ session_start();
     </div>
 
     <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            // Inicializar la tabla DataTable
-            var tableSucursal = $('#tableSucursal').DataTable({
-                select: {
-                    style: 'single'
-                },
-                searching: true,
-                lengthChange: true,
-                ordering: false ,
-                info: false,
-                language: {
-                    search: "",
-                    searchPlaceholder: "Filtrar Productos",
-                    lengthMenu: "Mostrar _MENU_ registros",
-                    zeroRecords: "No se encontraron resultados",
-                    info: "Mostrando _START_ a _END_ de _TOTAL_ registros",
-                    infoEmpty: "Mostrando 0 a 0 de 0 registros",
-                    infoFiltered: "(filtrado de _MAX_ registros en total)"
-                }
-            });
+        // Obtener elementos relevantes
+        const precioVentaField = document.getElementById('precioVentaField');
+        const sucursalField = document.getElementById('sucursalField');
+        const sucursalField2 = document.getElementById('sucursalField2');
+        const btnAgregarProd = document.getElementById('btnAgregarProd');
+        const btnEditarTableProd = document.getElementById('btnEditarTableProd');
+        const btnEliminarTableProd = document.getElementById('btnEliminarTableProd');
 
-            // Capturar el evento de cambio del select y aplicar el filtro a la tabla
-            $("#filtroSucursal").on("change", function() {
-                var filtro = $(this).val();
-                tableSucursal.column(2).search(filtro).draw();
-            });
+        // Función para mostrar u ocultar el campo de "Precio Venta"
+        function togglePrecioVentaField(showPrecioVenta) {
+        if (showPrecioVenta) {
+            precioVentaField.style.display = 'block';
+        } else {
+            precioVentaField.style.display = 'none';
+        }}
+
+        // Función para mostrar u ocultar el campo de "Sucursal"
+        function toggleSucursalField(showSucursal) {
+        if (showSucursal) {
+            sucursalField.style.display = 'block';
+            sucursalField2.style.display = 'block';
+        } else {
+            sucursalField.style.display = 'none';
+            sucursalField2.style.display = 'none';
+        }}
+
+        // Función para mostrar u ocultar el campo de "Sucursal" adicional
+        function toggleSucursalField2(showSucursal) {
+            if (showSucursal) {
+                // Muestra el campo de sucursal adicional (sucursalField2)
+                sucursalField2.style.display = 'block';
+            } else {
+                // Oculta el campo de sucursal adicional (sucursalField2)
+                sucursalField2.style.display = 'none';
+        }}
+
+        // Manejar el evento de hacer clic en "Editar"
+        btnEditarTableProd.addEventListener('click', function() {
+        togglePrecioVentaField(true);
+        toggleSucursalField(false);
+        toggleSucursalField2(false);
+        $('#iva').hide(); // Ocultar el checkbox IVA
+        $('#rentas').hide(); // Ocultar el checkbox Rentas
+        $('#ivaLabel').hide(); // Ocultar el checkbox IVA
+        $('#rentasLabel').hide(); // Ocultar el checkbox Rentas
+        $('#porcentajeAumento').css('width', '230px');
+        });
+
+        // Manejar el evento de hacer clic en "Agregar"
+        btnAgregarProd.addEventListener('click', function() {
+        togglePrecioVentaField(false);
+        toggleSucursalField(true);
+        toggleSucursalField2(true);
+        $('#iva').show(); // Ocultar el checkbox IVA
+        $('#rentas').show(); // Ocultar el checkbox Rentas
+        $('#ivaLabel').show(); // Ocultar el checkbox IVA
+        $('#rentasLabel').show(); // Ocultar el checkbox Rentas
+        $('#porcentajeAumento').css('width', '70px');
+        });
+        
+        btnAgregarTableProd.addEventListener('click', function() {
+        togglePrecioVentaField(false);
+        toggleSucursalField(true);
+        toggleSucursalField2(true);
+        $('#iva').hide(); // Ocultar el checkbox IVA
+        $('#rentas').hide(); // Ocultar el checkbox Rentas
+        $('#ivaLabel').hide(); // Ocultar el checkbox IVA
+        $('#rentasLabel').hide(); // Ocultar el checkbox Rentas
+        $('#porcentajeAumento').css('width', '230px');
         });
     </script>
-
+    
     <script>
         function limpiarModal () {
             $('#codigo').val('');
             $('#nombre').val('');
             $('#proveedor').val('');
             $('#tipoProducto').val('');
+            $('#tipoCategoria').val('');
             $('#tamaño').val('');
-            $('#medida').val('');
+            $('#tipoTamaño').val('');
             $('#cantidad').val('');
             $('#precioBase').val('');
-            $('#porcentajeAumento').val('');
+            $('#iva').prop('checked', false);
+            $('#rentas').prop('checked', false);
+            $('#porcentajeAumento').val('0.00');
             $('#precioVenta').val('');
+            $('#sucursalField2').val('');
         }
 
-        function btnOn () {
+        function inputsActivos () {
             $('#codigo').prop('disabled', false);
             $('#nombre').prop('disabled', false);
             $('#proveedor').prop('disabled', false);
             $('#tipoProducto').prop('disabled', false);
+            $('#tipoCategoria').prop('disabled', false);
             $('#tamaño').prop('disabled', false);
-            $('#medida').prop('disabled', false);
+            $('#tipoTamaño').prop('disabled', false);
             $('#precioBase').prop('disabled', false);
+            $('#iva').prop('disabled', false);
+            $('#rentas').prop('disabled', false);
             $('#porcentajeAumento').prop('disabled', false);
             $('#precioVenta').prop('disabled', false);
+            $('#sucursal').prop('disabled', false);
         }
 
-        function btnDisabled () {
+        function inputsOcultos () {
             $('#codigo').prop('disabled', true);
             $('#nombre').prop('disabled', true);
             $('#proveedor').prop('disabled', true);
             $('#tipoProducto').prop('disabled', true);
+            $('#tipoCategoria').prop('disabled', true);
             $('#tamaño').prop('disabled', true);
-            $('#medida').prop('disabled', true);
+            $('#tipoTamaño').prop('disabled', true);
             $('#precioBase').prop('disabled', true);
+            $('#iva').prop('disabled', true);
+            $('#rentas').prop('disabled', true);
             $('#porcentajeAumento').prop('disabled', true);
             $('#precioVenta').prop('disabled', true);
+            $('#sucursal').prop('disabled', true);
         }
 
-        $(document).ready(function() {
-            var tableProd = $('#tableProd').DataTable({
-                select: {
-                    style: 'single'
-                },
-                searching: true,
-                lengthChange: true,
-                ordering: false ,
-                info: false,
-                language: {
-                    search: "",
-                    searchPlaceholder: "Filtrar Productos",
-                    lengthMenu: "Mostrar _MENU_ registros",
-                    zeroRecords: "No se encontraron resultados",
-                    info: "Mostrando _START_ a _END_ de _TOTAL_ registros",
-                    infoEmpty: "Mostrando 0 a 0 de 0 registros",
-                    infoFiltered: "(filtrado de _MAX_ registros en total)"
+        function btnOcultos (accion) {
+            if (accion == "ocultos"){
+                $('#btnAgregarTableProd').prop('disabled', true);
+                $('#btnEditarTableProd').prop('disabled', true);
+                $('#btnEliminarTableProd').prop('disabled', true);
+            } else {
+                $('#btnAgregarTableProd').prop('disabled', false);
+                $('#btnEditarTableProd').prop('disabled', false);
+                $('#btnEliminarTableProd').prop('disabled', false);
+            }
+        }
+
+        function obtenerProductos() {
+            // Inicializa DataTables al cargar la página
+            $(document).ready(function() {
+                if (table1 !== undefined && $.fn.DataTable.isDataTable('#tableProd')) {
+                    table1.destroy();
                 }
+                table1 = $('#tableProd').DataTable({
+                    select: {
+                        style: 'single',
+                    },
+                    searching: true,
+                    lengthChange: true,
+                    ordering: false ,
+                    info: false,
+                    language: {
+                        search: "",
+                        searchPlaceholder: "Filtrar Productos",
+                        lengthMenu: "Mostrar _MENU_ registros",
+                        zeroRecords: "No se encontraron resultados",
+                        info: "Mostrando _START_ a _END_ de _TOTAL_ registros",
+                        infoEmpty: "Mostrando 0 a 0 de 0 registros",
+                        infoFiltered: "(filtrado de _MAX_ registros en total)"
+                    }
+                });
             });
 
-            $('#tableProd tbody').on('click', 'tr', function() {
-                if ($(this).hasClass('selected')) {
-                    $(this).removeClass('selected');
-                    $('#labelAgregarStock').text('Agregar Producto');
+            // Realiza una solicitud Fetch para obtener los datos de los proveedores desde tu servidor
+            fetch('../controladores/nuevo_producto.php?action=listar')
+                .then(response => response.json())
+                .then(data => {
+                    //inicializo la tabla despues de cargar los datos
+                    const tbody = tableProd.querySelector("tbody");
+                    let productos = data
+                    // Limpia el contenido actual de la tabla
+                    table1.clear().draw();
+                    let Vacio = "";
+                    // Recorre los datos de los proveedores y crea filas para cada uno
+                    productos.forEach(producto => {
+                            const row = [
+                                producto.idProductos,
+                                producto.Nombre,
+                                producto.Proveedor,
+                                producto.TipoProd,
+                                producto.TipoCat,
+                                producto.Tamaño,
+                                producto.Medida,
+                                producto.CantidadTotal,
+                                producto.PrecioCosto,
+                                producto.Impuesto,
+                                producto.PrecioFinal,
+                                Vacio
+                            ];
+                            table1.rows.add([row]).draw();
+                            //table1.clear().rows.add(row).draw();
+                        });
+                })
+                .catch(error => {
+                    console.error('Error al obtener los productos: ', error);
+                });
+        };
+
+        function addProducto(){
+            inputsActivos()
+            const formularioProd = document.getElementById('formAgregarProducto');
+            const datosFormularioProductos = new FormData(formularioProd);
+            let iva = $('#iva').prop('checked'); // Valor del checkbox Iva (true si está marcado, false si no)
+            let rentas = $('#rentas').prop('checked'); // Valor del checkbox Rentas (true si está marcado, false si no)
+            let impuesto = 0 // Si el valor de impuesto es 0, significa que no esta seleccionado ninguno, si es 1 son ambos impuestos, 
+            // si es 2 o 3 varia entre iva y rentas.
+
+            if (iva && rentas) {
+                impuesto = 1
+            } else if (iva) {
+                impuesto = 2
+            } else if (rentas) {
+                impuesto = 3
+            }
+
+            // Puedes acceder a los valores de cada campo por su nombre
+            const codigo = datosFormularioProductos.get('codigo');
+            const nombre = datosFormularioProductos.get('nombre');
+            const proveedor = datosFormularioProductos.get('proveedor');
+            const tipoProducto = datosFormularioProductos.get('tipoProducto');
+            const tipoCategoria = datosFormularioProductos.get('tipoCategoria');
+            const tamaño = datosFormularioProductos.get('tamaño');
+            const tipoTamaño = datosFormularioProductos.get('tipoTamaño');
+            const cantidad = datosFormularioProductos.get('cantidad');
+            const precioBase = datosFormularioProductos.get('precioBase');
+            const porcentajeAumento = datosFormularioProductos.get('porcentajeAumento');
+            const sucursal = datosFormularioProductos.get('sucursal');
+            if (codigo === "" || nombre === "" || proveedor === "" || tipoProducto === "" || tipoCategoria === "" || tamaño === "" 
+            || tipoTamaño === "" || cantidad === "" || precioBase === "" || porcentajeAumento === "" || sucursal === "") 
+            {
+                // Muestra un mensaje de error
+                alert("Todos los campos son requeridos. Por favor, completa todos los campos.");
+                return; // Detiene el flujo si falta algún campo
+            }
+
+            // Crea un objeto con los datos a enviar
+            const datosProd = {codigo, nombre, proveedor, tipoProducto, tipoCategoria, tamaño, tipoTamaño,
+                cantidad, precioBase, impuesto, porcentajeAumento, sucursal};
+            // hacemos el fetch al backend
+            fetch("../controladores/nuevo_producto.php?action=agregar", {
+                    method: "POST",
+                    headers: {"Content-Type": "application/json"},
+                    body: JSON.stringify(datosProd)
+                })
+                .then(response => response.text())
+                .then(data => {
+                    console.log(data)
+                    // recargamos la tabla
+                    obtenerProductos()
+                    // mostramos el mensaje
+                    Swal.fire({
+                        position: 'top-end',
+                        icon: 'success',
+                        title: 'Se ha añadido el producto correctamente',
+                        showConfirmButton: false,
+                        timer: 2000,
+                        background: false, // Desactiva el fondo oscurecido
+                        backdrop: false,
+                        customClass: {
+                            container: 'custom-container-class',
+                            popup: 'custom-popup-class', // Clase personalizada para ajustar el tamaño de la alerta
+                            title: 'custom-title-class', // Clase personalizada para ajustar el tamaño del título
+                            icon: 'custom-icon-class',
+                        },
+                    })
+                    btnOcultos("ocultos")
+                    $('#modalAgregarProducto').modal('hide');
                     $('#btnAgregarProd').prop('disabled', false);
-                    btnOn()
-                    limpiarModal()
-                    $('#btnAgregarTableProd').prop('disabled', true);
-                    $('#btnEditarTableProd').prop('disabled', true);
-                    $('#btnEliminarTableProd').prop('disabled', true);
+                })
+                .catch(error => {
+                    Swal.fire({
+                        position: 'top-end',
+                        icon: 'error',
+                        title: 'Ocurrió un error',
+                        showConfirmButton: false,
+                        timer: 2000,
+                        background: false, // Desactiva el fondo oscurecido
+                        backdrop: false,
+                        customClass: {
+                            container: 'custom-container-class',
+                            popup: 'custom-popup-class', // Clase personalizada para ajustar el tamaño de la alerta
+                            title: 'custom-title-class', // Clase personalizada para ajustar el tamaño del título
+                            icon: 'custom-icon-class',
+                        },
+                    })
+                });
+        }
 
-                } else {
-                    tableProd.$('tr.selected').removeClass('selected');
-                    $(this).addClass('selected');
-                    $('#btnAgregarProd').prop('disabled', true);
-                    // Mostrar el botón "Ver Detalles"
-                    $('#btnAgregarTableProd').prop('disabled', false);
-                    $('#btnEditarTableProd').prop('disabled', false);
-                    $('#btnEliminarTableProd').prop('disabled', false);
-                    // Obtener los datos del producto seleccionado
-                    var rowData = tableProd.row($(this)).data();
-
-                    // Limpiar los datos en el modal
-                    limpiarModal()
-
-                    // Llenar los elementos en el modal con los datos del producto
-                    $('#codigo').val(rowData[0]);
-                    $('#nombre').val(rowData[1]);
-                    $('#proveedor').val(rowData[2]);
-                    $('#tipoProducto').val(rowData[3]);
-                    $('#tamaño').val(rowData[4]);
-                    $('#medida').val(rowData[5]);
-                    $('#cantidad').val(rowData[6]);
-                    $('#precioBase').val(rowData[7]);
-                    $('#porcentajeAumento').val(rowData[8]);
-                    $('#precioVenta').val(rowData[9]);
-
-                    // Acción cuando se hace clic en el modal
-                    $('#btnAgregarTableProd').click(function() {
-                        // Cambiar el contenido del label
-                        $('#labelAgregarStock').text('Agregar Cantidad de Stock');
-                        btnDisabled()
-                        $('#modalAgregarProducto').modal('show');
-                    });
-                    $('#btnEditarTableProd').click(function() {
-                        $('#labelAgregarStock').text('Editar Producto');
-                        btnOn()
-                        $('#modalAgregarProducto').modal('show');
-                    });
-                    $('#btnEliminarTableProd').click(function() {
-                        $('#modalEliminarStock').modal('show');
-                    });
-
-                // Acción cuando se hace clic en el botón "Guardar" en el modal
-                    $('#btnGuardar').click(function() {
-                        // Aquí puedes agregar el código para guardar los datos si es necesario
-                        // ...
-                        // Cerrar el modal después de guardar los datos (si es necesario)
-                        $('#modalAgregarProducto').modal('hide');
-                    });
-                    
-                }
+        function addStock(){
+            inputsActivos()
+            const valoresEditados = {
+                codigo: id,
+                nombre: document.getElementById('nombre').value,
+                proveedor: document.getElementById('proveedor').value,
+                tipoProducto: document.getElementById('tipoProducto').value,
+                tipoCategoria: document.getElementById('tipoCategoria').value,
+                tamaño: document.getElementById('tamaño').value,
+                tipoTamaño: document.getElementById('tipoTamaño').value,
+                cantidad: document.getElementById('cantidad').value,
+                precioBase: document.getElementById('precioBase').value,
+                porcentajeAumento: document.getElementById('porcentajeAumento').value,
+                sucursal: document.getElementById('sucursalField2').value,
+            };
+            fetch('../controladores/nuevo_producto.php?action=editarstock', {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(valoresEditados)
+            } )
+            .then(response => response.text())
+            .then(data => {
+                obtenerProductos()
+                // Cierra el modal de confirmación
+                btnOcultos("ocultos")
+                $('#modalAgregarProducto').modal('hide');
+                $('#btnAgregarProd').prop('disabled', false);
+                // mostramos el mensaje
+                Swal.fire({
+                    position: 'top-end',
+                    icon: 'success',
+                    title: 'Se ha actualizado el stock correctamente',
+                    showConfirmButton: false,
+                    timer: 2000,
+                    background: false, // Desactiva el fondo oscurecido
+                    backdrop: false,
+                    customClass: {
+                        container: 'custom-container-class',
+                        popup: 'custom-popup-class', // Clase personalizada para ajustar el tamaño de la alerta
+                        title: 'custom-title-class', // Clase personalizada para ajustar el tamaño del título
+                        icon: 'custom-icon-class',
+                    },
+                })
+            })
+            .catch(error => {
+                Swal.fire({
+                    position: 'top-end',
+                    icon: 'error',
+                    title: 'Ocurrió un error',
+                    showConfirmButton: false,
+                    timer: 2000,
+                    background: false, // Desactiva el fondo oscurecido
+                    backdrop: false,
+                    customClass: {
+                        container: 'custom-container-class',
+                        popup: 'custom-popup-class', // Clase personalizada para ajustar el tamaño de la alerta
+                        title: 'custom-title-class', // Clase personalizada para ajustar el tamaño del título
+                        icon: 'custom-icon-class',
+                    },
+                })
             });
+        }
+
+        function editProducto(){
+            inputsActivos()
+            const valoresEditados = {
+                codigo: id,
+                nombre: document.getElementById('nombre').value,
+                proveedor: document.getElementById('proveedor').value,
+                tipoProducto: document.getElementById('tipoProducto').value,
+                tipoCategoria: document.getElementById('tipoCategoria').value,
+                tamaño: document.getElementById('tamaño').value,
+                tipoTamaño: document.getElementById('tipoTamaño').value,
+                cantidad: document.getElementById('cantidad').value,
+                precioBase: document.getElementById('precioBase').value,
+                porcentajeAumento: document.getElementById('porcentajeAumento').value,
+                precioVenta: document.getElementById('precioVenta').value,
+            };
+            fetch('../controladores/nuevo_producto.php?action=editar', {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(valoresEditados)
+            } )
+            .then(response => {
+                if (!response.ok) {
+                    // El servidor devolvió un código de estado de error
+                    // Forzar que se vaya por el catch
+                    throw new Error("Error en la solicitud al servidor");
+                }
+                return response.text();
+            })
+            .then(data => {
+                obtenerProductos()
+                // Cierra el modal de confirmación
+                btnOcultos("ocultos")
+                $('#modalAgregarProducto').modal('hide');
+                $('#btnAgregarProd').prop('disabled', false);
+                Swal.fire({
+                    position: 'top-end',
+                    icon: 'success',
+                    title: 'Se ha actualizado el producto correctamente',
+                    showConfirmButton: false,
+                    timer: 2000,
+                    background: false, // Desactiva el fondo oscurecido
+                    backdrop: false,
+                    customClass: {
+                        container: 'custom-container-class',
+                        popup: 'custom-popup-class', // Clase personalizada para ajustar el tamaño de la alerta
+                        title: 'custom-title-class', // Clase personalizada para ajustar el tamaño del título
+                        icon: 'custom-icon-class',
+                    },
+                })
+            })
+            .catch(error => {
+                Swal.fire({
+                    position: 'top-end',
+                    icon: 'error',
+                    title: 'Ocurrió un error',
+                    showConfirmButton: false,
+                    timer: 2000,
+                    background: false, // Desactiva el fondo oscurecido
+                    backdrop: false,
+                    customClass: {
+                        container: 'custom-container-class',
+                        popup: 'custom-popup-class', // Clase personalizada para ajustar el tamaño de la alerta
+                        title: 'custom-title-class', // Clase personalizada para ajustar el tamaño del título
+                        icon: 'custom-icon-class',
+                    },
+                })
+            });
+
+            // Función para comparar dos objetos y verificar si tienen los mismos valores
+            function sonIguales(objeto1, objeto2) {
+                for (let clave in objeto1) {
+                    if (objeto1[clave] !== objeto2[clave]) {
+                        return false;
+                    }
+                }
+                return true;
+            }
+        }
+
+        const tableProd = document.getElementById("tableProd");
+        let table1;
+        let contextoActual = null;
+        obtenerProductos()
+        let id;
+        $('#btnAgregarProd').click(function() {
+            limpiarModal()
+            contextoActual = "agregarProducto";
+            $('#labelAgregarStock').text('Agregar Producto');
+            $('#btnAgregarProd').prop('disabled', false);
+        });
+        $('#tableProd tbody').on('click', 'tr', function() {
+            if ($(this).hasClass('selected')) {
+                $(this).removeClass('selected');
+                $('#labelAgregarStock').text('Agregar Producto');
+                $('#btnAgregarProd').prop('disabled', false);
+                inputsActivos()
+                limpiarModal()
+                $('#btnAgregarProd').click(function() {
+                    contextoActual = "agregarProducto";
+                });
+                btnOcultos("ocultos")
+            } else {
+                table1.$('tr.selected').removeClass('selected');
+                $(this).addClass('selected');
+                $('#btnAgregarProd').prop('disabled', true);
+                btnOcultos("mostrar")
+                limpiarModal()
+                $('#btnAgregarTableProd').click(function() {
+                    contextoActual = "agregarTablaProducto";
+                    $('#labelAgregarStock').text('Agregar Cantidad de Stock');
+                    inputsOcultos()
+                    limpiarModal()
+                    $('#sucursalField2').val('');
+                    $('#modalAgregarProducto').modal('show');
+                    var filaSeleccionada = table1.rows('.selected').data()[0];
+                    let valoresActuales = {};
+                    id = filaSeleccionada[0];
+                    fetch('../controladores/nuevo_producto.php?action=obtener&id=' + id)
+                    .then(response => response.json())
+                    .then(data => {
+                        // Almacena los valores actuales antes de mostrar el modal
+                        valoresActuales = {
+                            codigo: String(data.idProductos),
+                            nombre: String(data.Nombre),
+                            proveedor: String(data.Proveedor),
+                            tipoProducto: String(data.TipoProd),
+                            tipoCategoria: String(data.TipoCat),
+                            tamaño: String(data.Medida),
+                            tipoTamaño: String(data.Tamaño),
+                            precioBase: String(data.PrecioCosto),
+                            porcentajeAumento: String(data.Impuesto)
+                        };
+
+                        // Llenar los campos del formulario de edición con los datos obtenidos
+                        document.getElementById('codigo').value = valoresActuales.codigo;
+                        document.getElementById('nombre').value = valoresActuales.nombre;
+                        document.getElementById('proveedor').value = valoresActuales.proveedor;
+                        document.getElementById('tipoProducto').value = valoresActuales.tipoProducto;
+                        document.getElementById('tipoCategoria').value = valoresActuales.tipoCategoria;
+                        document.getElementById('tamaño').value = valoresActuales.tamaño;
+                        document.getElementById('tipoTamaño').value = valoresActuales.tipoTamaño;
+                        document.getElementById('precioBase').value = valoresActuales.precioBase;
+                        document.getElementById('porcentajeAumento').value = valoresActuales.porcentajeAumento;
+                        $('#cantidad').prop('disabled', false);
+                        // Mostrar el modal de edición
+                        $('#modalAgregarProducto').modal('show');
+                    })
+                    .catch(error => {
+                        console.error('Error al obtener datos del producto: ', error);
+                    });
+                });
+                $('#btnEditarTableProd').click(function() {
+                    // Obtén los elementos relevantes
+                    const porcentajeAumentoInput = document.getElementById('porcentajeAumento');
+                    const precioFinalInput = document.getElementById('precioVenta');
+                    // Función para calcular y actualizar el precio final
+                    function calcularPrecioFinal() {
+                        const porcentajeAumento = parseFloat(porcentajeAumentoInput.value);
+                        const precioBase = parseFloat(document.getElementById('precioBase').value); // Asegúrate de tener el ID correcto para el precio base
+                        if (!isNaN(porcentajeAumento) && !isNaN(precioBase)) {
+                            const precioFinal = precioBase * (1 + porcentajeAumento / 100);
+                            precioFinalInput.value = precioFinal.toFixed(2); // Limita a dos decimales
+                        } else {
+                            precioFinalInput.value = '0.00';
+                        }
+                    }
+                    // Agrega un evento de cambio al input del porcentaje
+                    porcentajeAumentoInput.addEventListener('change', calcularPrecioFinal);
+                    // Calcula el precio final inicialmente
+                    calcularPrecioFinal();
+
+                    contextoActual = "editarTablaProducto";
+                    $('#labelAgregarStock').text('Editar Producto');
+                    inputsActivos()
+                    $('#modalAgregarProducto').modal('show');
+                    var filaSeleccionada = table1.rows('.selected').data()[0];
+                    let valoresActuales = {};
+                    id = filaSeleccionada[0];
+                    fetch('../controladores/nuevo_producto.php?action=obtener&id=' + id)
+                        .then(response => response.json())
+                        .then(data => {
+                            // Almacena los valores actuales antes de mostrar el modal
+                            valoresActuales = {
+                                codigo: String(data.idProductos),
+                                nombre: String(data.Nombre),
+                                proveedor: String(data.Proveedor),
+                                tipoProducto: String(data.TipoProd),
+                                tipoCategoria: String(data.TipoCat),
+                                tamaño: String(data.Medida),
+                                tipoTamaño: String(data.Tamaño),
+                                cantidad: String(data.CantidadTotal),
+                                precioBase: String(data.PrecioCosto),
+                                porcentajeAumento: String(data.Impuesto),
+                                precioFinal: String(data.PrecioFinal),
+                            };
+
+                            // Llenar los campos del formulario de edición con los datos obtenidos
+                            document.getElementById('codigo').value = valoresActuales.codigo;
+                            document.getElementById('nombre').value = valoresActuales.nombre;
+                            document.getElementById('proveedor').value = valoresActuales.proveedor;
+                            document.getElementById('tipoProducto').value = valoresActuales.tipoProducto;
+                            document.getElementById('tipoCategoria').value = valoresActuales.tipoCategoria;
+                            document.getElementById('tamaño').value = valoresActuales.tamaño;
+                            document.getElementById('tipoTamaño').value = valoresActuales.tipoTamaño;
+                            document.getElementById('cantidad').value = valoresActuales.cantidad;
+                            document.getElementById('precioBase').value = valoresActuales.precioBase;
+                            document.getElementById('porcentajeAumento').value = valoresActuales.porcentajeAumento;
+                            document.getElementById('precioVenta').value = valoresActuales.precioFinal;
+                            $('#cantidad').prop('disabled', true);
+                            // Mostrar el modal de edición
+                            $('#modalEditarStock').modal('show');
+                        })
+                        .catch(error => {
+                            console.error('Error al obtener datos del producto: ', error);
+                        });
+                });
+            
+                $('#btnEliminarTableProd').click(function() {
+                    var filaSeleccionada = table1.rows('.selected').data()[0];
+                    id = filaSeleccionada[0];
+                    $('#modalEliminarStock').modal('show');
+                    const datosProducto = {
+                        id : id,
+                    };
+                    $('#btnEliminar').click(function() {
+                        fetch("../controladores/nuevo_producto.php?action=eliminar", {
+                            method: "POST",
+                            headers: {
+                                "Content-Type": "application/json"
+                            },
+                            body: JSON.stringify(datosProducto)
+                        })
+                        .then(response => response.text())
+                        .then(data => {
+                            obtenerProductos()
+                            // Cierra el modal de confirmación
+                            $('#modalEliminarStock').modal('hide');
+                            // mostramos el mensaje
+                            Swal.fire({
+                                position: 'top-end',
+                                icon: 'success',
+                                title: 'Se eliminó con éxito',
+                                showConfirmButton: false,
+                                timer: 2000,
+                                background: false, // Desactiva el fondo oscurecido
+                                backdrop: false,
+                                customClass: {
+                                    container: 'custom-container-class',
+                                    popup: 'custom-popup-class', // Clase personalizada para ajustar el tamaño de la alerta
+                                    title: 'custom-title-class', // Clase personalizada para ajustar el tamaño del título
+                                    icon: 'custom-icon-class',
+                                },
+                            })
+                        })
+                        .catch(error => {
+                            Swal.fire({
+                                position: 'top-end',
+                                icon: 'error',
+                                title: 'Ocurrió un error',
+                                showConfirmButton: false,
+                                timer: 2000,
+                                background: false, // Desactiva el fondo oscurecido
+                                backdrop: false,
+                                customClass: {
+                                    container: 'custom-container-class',
+                                    popup: 'custom-popup-class', // Clase personalizada para ajustar el tamaño de la alerta
+                                    title: 'custom-title-class', // Clase personalizada para ajustar el tamaño del título
+                                    icon: 'custom-icon-class',
+                                },
+                            })
+                        });
+                    })
+                });
+            }
+        });
+
+        $('#btnGuardar').click('click', function() {
+            if (contextoActual === "agregarProducto") {
+                addProducto()
+            } else if (contextoActual === "agregarTablaProducto") {
+                addStock()
+            } else if (contextoActual === "editarTablaProducto") {
+                editProducto()
+            }
+            contextoActual = null; // Restablece el contexto después de la acción
         });
     </script>
 
-
     <style>
+        /* Estilo personalizado para los checkboxes */
+        .custom-checkbox {
+            padding-left: 0; /* Elimina el espacio a la izquierda del checkbox */
+        }
+
+        .custom-checkbox .custom-control-input:checked ~ .custom-control-label::before {
+            width: 1.25em; /* Ancho del checkbox cuando está marcado */
+            height: 1.25em; /* Altura del checkbox cuando está marcado */
+        }
+
+        .custom-checkbox .custom-control-label::before {
+            width: 1.25em; /* Ancho del checkbox por defecto */
+            height: 1.25em; /* Altura del checkbox por defecto */
+        }
+
+        /* Estilo para el texto del checkbox */
+        .custom-checkbox .custom-control-label::after {
+            margin-left: 0.5em; /* Espacio entre el checkbox y el texto */
+        }
+
+        .custom-popup-class {
+        width: 250px; /* Ajusta el ancho de la alerta según tus necesidades */
+        font-size: 10px; /* Ajusta el tamaño de fuente del contenido de la alerta */
+        padding: 2px 3px; /* Ajusta el relleno de la alerta para hacerla un poco más pequeña */
+        border-radius: 10px; /* Añade bordes redondeados a la alerta */
+        }
+
+        /* Estilo CSS para la clase personalizada del título */
+        .custom-title-class {
+            font-size: 13px; /* Ajusta el tamaño de fuente del título de la alerta */
+            padding: 6px 3px; 
+            }
+
+
+        /* Estilo CSS para la clase personalizada del icono */
+        .custom-icon-class {
+            font-size: 8px; /* Ajusta el tamaño del icono según tus necesidades */
+        }
+        #tableProd tr.selected {
+            background-color: #e77a34 !important;
+            color: #fff !important;
+        }
+
         /* Estilo para mover el lengthChange a la izquierda */
         div.dataTables_wrapper .dataTables_length {
             text-align: left;
@@ -550,7 +1015,6 @@ session_start();
             background-color: #e77a34;
             border-color: #e77a34;
         }
-
 
         /* Estilo para mover el searching a la derecha */
         div.dataTables_wrapper .dataTables_filter {
@@ -570,7 +1034,6 @@ session_start();
         }
 
         /* Estilo para hacer más pequeños algunos inputs */
-        #porcentajeAumento,
         #precioBase,
         #precioVenta {
             width: 70%; /* Ajusta el valor según tus preferencias */
@@ -593,15 +1056,10 @@ session_start();
         }
 
         .modal-footer .btn-primary:hover {
-            background-color: #5a104c; /* Cambia el color de fondo en el hover */
-            border-color: #0056b3; /* Cambia el color del borde en el hover */
+            background-color: #e77a34; /* Cambia el color de fondo en el hover */
+            border-color: #e77a34; /* Cambia el color del borde en el hover */
         }
-
     </style>
-
-    <!-- Template Javascript -->
     <script src="../js/main.js"></script>
-    
 </body>
-
 </html>

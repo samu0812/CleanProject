@@ -12,22 +12,22 @@
     // Verificar si se envió el formulario de inicio de sesión
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         // Obtener los valores ingresados en el formulario
-        $correo = $_POST['correo'];
-        $clave = $_POST['clave'];
+        $Email = $_POST['Email'];
+        $Clave = $_POST['Clave'];
 
         // Realizar la consulta a la base de datos para verificar las credenciales
 
-        $consulta = "SELECT persona.idPersona, persona.email, empleado.clave 
-        FROM persona INNER JOIN empleado ON persona.idPersona = empleado.idPersona WHERE persona.email = '$correo' and empleado.clave= '$clave'";
+        $consulta = "SELECT Persona.idPersona, Persona.Email, Empleado.Clave 
+        FROM Persona INNER JOIN Empleado ON persona.idPersona = Empleado.idPersona WHERE Persona.email = '$Email'";
         $resultado = mysqli_query($conn, $consulta);
         
         function obtenerNombrePersona($idPersona, $conn) { 
-            $consultaNombre = "SELECT nombre FROM persona WHERE idPersona = $idPersona";
+            $consultaNombre = "SELECT Nombre FROM Persona WHERE idPersona = $idPersona";
             $resultadoNombre = mysqli_query($conn, $consultaNombre);
         
             if ($resultadoNombre && mysqli_num_rows($resultadoNombre) === 1) {
                 $filaNombre = mysqli_fetch_assoc($resultadoNombre);
-                return $filaNombre['nombre'];
+                return $filaNombre['Nombre'];
             } else {
                 return "Nombre no encontrado";
             }
@@ -46,14 +46,17 @@
         }
 
 
-        if (TRUE && mysqli_num_rows($resultado) === 1) {
+        if ($resultado && mysqli_num_rows($resultado) === 1) {
             // El usuario existe en la base de datos, verificar la contraseña
             $fila = mysqli_fetch_assoc($resultado);
-            $hash = $fila['clave'];
+            $hash = $fila['Clave']; 
+            
+            
 
-            if ($clave === $hash) {
+            $password = password_verify($Clave, $hash);
+            if ($password === TRUE){
                 // La contraseña es correcta, iniciar la sesión
-
+                
                 $_SESSION['usuario'] = $fila['idPersona'];
                 header("Location: home.php");
 
@@ -76,7 +79,6 @@
                 echo "Contraseña incorrecta";
             }
         } else {
-            header("Location: vistas\home.php");
             // Usuario no encontrado 
             ?>
             <link href="css\error.css" rel="stylesheet">
