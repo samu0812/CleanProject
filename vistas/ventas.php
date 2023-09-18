@@ -1,6 +1,20 @@
 <?php 
 session_start();
+include("../bd/conexion.php");
+$fechaActual = date("Y-m-d");
 
+// Buscar el registro de número de venta para la fecha actual
+$sql = "SELECT nroVenta FROM Ventas WHERE date(fecha) = '$fechaActual' ORDER BY nroVenta DESC LIMIT 1";
+$result = $conn->query($sql);
+
+if ($result->num_rows > 0) {
+    // Si se encontraron registros, obtener el número de venta actual
+    $row = $result->fetch_assoc();
+    $nroVenta = $row["nroVenta"] + 1;
+} else {
+    // Si no se encontraron registros, establecer el número de venta en 1
+    $nroVenta = 1;
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -33,7 +47,7 @@ session_start();
 
     <!-- Incluir jQuery -->
     <script src="https://code.jquery.com/jquery-3.7.0.js" integrity="sha256-JlqSTELeR4TLqP0OG9dxM7yDPqX1ox/HfgiSLBj8+kM=" crossorigin="anonymous"></script>
-
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <!-- Incluir DataTables CSS -->
     <link href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css" rel="stylesheet">
 
@@ -110,7 +124,7 @@ session_start();
 
                             <!-- BOTONES PARA VACIAR LISTADO Y COMPLETAR LA VENTA -->
                             <div class="col-md-6 text-right">
-                                <button class="btn btn-primary" id="btnIniciarVenta">
+                                <button class="btn btn-primary" id="btnRealizarVenta">
                                     <i class="fas fa-shopping-cart"></i> Realizar Venta
                                 </button>
                                 <button class="btn btn-danger" id="btnVaciarListado">
@@ -130,9 +144,9 @@ session_start();
                                             <th class="thVenta">Tipo Categoria</th>
                                             <th class="thVenta">Tipo Tamaño</th>
                                             <th class="thVenta">Precio Unitario</th>
-                                            <th class="thVenta">Precio Final</th>
+                                            <th class="thVenta">Precio p/ Cant.</th>
                                             <th class="thVenta">Cantidad</th>
-                                            <th class="thVenta">Porcentaje</th>
+                                            <th class="thVenta">Descuento (Mayorista)</th>
                                             <th class="thVenta text-center">Opciones</th>
                                         </tr>
                                     </thead>
@@ -160,25 +174,47 @@ session_start();
 
                                 <!-- SELECCIONAR TIPO DE DOCUMENTO -->
                                 <div class="form-group mb-2">
-
-                                    <label class="col-form-label" for="selCategoriaReg">
+                                    <label class="col-form-label" for="selDocumentoVenta">
                                         <i class="fas fa-file-alt fs-6"></i>
                                         <span class="small">Documento</span><span class="text-danger">*</span>
                                     </label>
 
-                                    <select class="form-select form-select-sm" aria-label=".form-select-sm example"
-                                        id="selDocumentoVenta">
-                                        <option value="0">Seleccione Documento</option>
-                                        <option value="1" selected="true">Boleta</option>
-                                        <option value="2">Factura</option>
-                                        <option value="3">Ticket</option>
+                                    <select class="form-select form-select-sm" aria-label=".form-select-sm example" id="selDocumentoVenta" name="documento">
+                                        <option value="0" required>Seleccione Documento</option>
+                                        <?php
+                                        // Conexión a la base de datos (debes configurar tus datos de conexión)
+                                        include("../bd/conexion.php");
+
+                                        // Verificar la conexión
+                                        if ($conn->connect_error) {
+                                            die("Conexión fallida: " . $conn->connect_error);
+                                        }
+
+                                        // Consulta SQL para obtener los tipos de factura
+                                        $sql = "SELECT idTipoFactura, Descripcion FROM TipoFactura";
+                                        $result = $conn->query($sql);
+                                        // Consulta SQL para obtener las opciones del select "Tipo Pago" desde la tabla "FormaDePago"
+                                        $sqlTipoPago = "SELECT idFormaDePago, Descripcion FROM FormaDePago";
+                                        $resultTipoPago = $conn->query($sqlTipoPago);
+
+
+                                        // Generar las opciones del select
+                                        if ($result->num_rows > 0) {
+                                            while ($row = $result->fetch_assoc()) {
+                                                echo '<option value="' . $row["idTipoFactura"] . '">' . $row["Descripcion"] . '</option>';
+                                            }
+                                        }
+
+                                        // Cerrar la conexión a la base de datos
+                                        $conn->close();
+                                        ?>
                                     </select>
 
                                     <span id="validate_categoria" class="text-danger small fst-italic" style="display:none">
                                         Debe Seleccione documento
                                     </span>
-
                                 </div>
+
 
                                 <!-- SELECCIONAR TIPO DE PAGO -->
                                 <div class="form-group mb-2">
@@ -188,14 +224,19 @@ session_start();
                                         <span class="small">Tipo Pago</span><span class="text-danger">*</span>
                                     </label>
 
-                                    <select class="form-select form-select-sm" aria-label=".form-select-sm example"
-                                        id="selTipoPago">
+                                    <select class="form-select form-select-sm" aria-label=".form-select-sm example" id="selTipoPago">
                                         <option value="0">Seleccione Tipo Pago</option>
-                                        <option value="1" selected="true">Efectivo</option>
-                                        <option value="2">Tarjeta</option>
-                                        <option value="3">Yape</option>
-                                        <option value="4">plin</option>
+                                        <?php
+                                        // Generar las opciones del select "Tipo Pago" desde la consulta SQL
+                                        if ($resultTipoPago->num_rows > 0) {
+                                            while ($rowTipoPago = $resultTipoPago->fetch_assoc()) {
+                                                echo '<option value="' . $rowTipoPago["idFormaDePago"] . '">' . $rowTipoPago["Descripcion"] . '</option>';
+                                            }
+                                        }
+                                        ?>
                                     </select>
+
+                                    
 
                                     <span id="validate_categoria" class="text-danger small fst-italic" style="display:none">
                                         Debe Ingresar tipo de pago
@@ -203,26 +244,15 @@ session_start();
 
                                 </div>
 
+
                                 <!-- SERIE Y NRO DE BOLETA -->
                                 <div class="form-group">
 
                                     <div class="row">
 
-                                        <div class="col-md-4">
-
-                                            <label for="iptNroSerie">Serie</label>
-
-                                            <input type="text" min="0" name="iptEfectivo" id="iptNroSerie"
-                                                class="form-control form-control-sm" placeholder="nro Serie" disabled>
-                                        </div>
-
                                         <div class="col-md-8">
-
                                             <label for="iptNroVenta">Nro Venta</label>
-
-                                            <input type="text" min="0" name="iptEfectivo" id="iptNroVenta"
-                                                class="form-control form-control-sm" placeholder="Nro Venta" disabled>
-
+                                            <input type="text" min="1" name="iptEfectivo" id="iptNroVenta" class="form-control form-control-sm" placeholder="Nro Venta" disabled>
                                         </div>
 
                                     </div>
@@ -231,7 +261,7 @@ session_start();
 
                                 <!-- INPUT DE EFECTIVO ENTREGADO -->
                                 <div class="form-group">
-                                    <label for="iptEfectivoRecibido">Efectivo recibido</label>
+                                    <label for="iptEfectivoRecibido">Monto recibido</label>
                                     <input type="number" min="0" name="iptEfectivo" id="iptEfectivoRecibido"
                                         class="form-control form-control-sm" placeholder="Cantidad de efectivo recibida">
                                 </div>
@@ -240,20 +270,25 @@ session_start();
                                 <div class="form-check">
                                     <input class="form-check-input" type="checkbox" value="" id="chkEfectivoExacto">
                                     <label class="form-check-label" for="chkEfectivoExacto">
-                                        Efectivo Exacto
+                                        Monto Exacto
                                     </label>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="iptagregarDescuento">Agregar Descuento %</label>
+                                    <input type="number" value=0 min="0" max="100" name="agregarDescuento" id="iptagregarDescuento" class="form-control form-control-sm" placeholder="0">
                                 </div>
 
                                 <!-- MOSTRAR MONTO EFECTIVO ENTREGADO Y EL VUELTO -->
                                 <div class="row mt-2">
 
                                     <div class="col-12">
-                                        <h6 class="text-start fw-bold">Monto Efectivo: S./ <span
+                                        <h6 class="text-start fw-bold">Monto: S./ <span
                                                 id="EfectivoEntregado">0.00</span></h6>
                                     </div>
 
                                     <div class="col-12">
-                                        <h6 class="text-start text-danger fw-bold">Vuelto: S./ <span id="Vuelto">0.00</span>
+                                        <h6 class="text-start text-danger fw-bold">Vuelto: S./ <span id="Vuelto" value= 0.00 type="number">0.00</span>
                                         </h6>
                                     </div>
 
@@ -269,10 +304,17 @@ session_start();
                                     </div>
 
                                     <div class="col-md-7">
-                                        <span>IGV (18%)</span>
+                                        <span>Descuentos</span>
                                     </div>
                                     <div class="col-md-5 text-right">
-                                        S./ <span class="" id="boleta_igv">0.00</span>
+                                        S./ <span class="" id="boleta_descuentos">0.00</span>
+                                    </div>
+
+                                    <div class="col-md-7">
+                                        <span>Recargos</span>
+                                    </div>
+                                    <div class="col-md-5 text-right">
+                                        S./ <span class="" id="boleta_recargos">0.00</span>
                                     </div>
 
                                     <div class="col-md-7">
@@ -328,13 +370,13 @@ session_start();
         $('#suggestions').html('');
         });
     });
-    
-
 
     
     $(document).ready(function() {
     // ...
         var productoIdsAgregados = [];
+        $('#iptNroVenta').val('<?php echo $nroVenta; ?>');
+
 
         // Manejar la selección de un producto del autocompletado
         $('#suggestions').on('click', '.autocomplete-suggestion', function() {
@@ -360,8 +402,10 @@ session_start();
             var precioProducto = parseFloat($(this).data('precio'));
             var precioFinal = precioProducto; //multiplicar por la cantidad y si es mayorista o min
             var cantidadStock = parseFloat($(this).data('cantidad-stock'));
+            var descuento = 0.00;
+            var efectivo = 0;
             
-
+            
             // Crear una nueva fila para la tabla de ventas
             var nuevaFila = '<tr>';
             nuevaFila += '<td>' + productoId + '</td>';
@@ -371,8 +415,8 @@ session_start();
             nuevaFila += '<td>' + tamaño + '</td>';
             nuevaFila += '<td>' + precioProducto + '</td>';
             nuevaFila += '<td>' +  precioFinal + '</td>';
-            nuevaFila += '<td><input type="number" min="1" max="' + cantidadStock + '" value="1" class="form-control form-control-sm cantidad-input" id="cantidad"></td>';
-            nuevaFila += '<td><input type="number" min="0" max="100" value="0" class="form-control form-control-sm porcentaje-input" id="porcentaje"></td>';
+            nuevaFila += '<td><input type="number" min="1" max="' + cantidadStock + '" value="1" class="form-control form-control-sm cantidad-input" data-cantidad-stock="' + cantidadStock + '" id="cantidad_' + productoId + '"></td>';
+            nuevaFila += '<td>' +  descuento + '</td>';
             nuevaFila += '<td><button class="btn btn-danger btn-sm eliminar-producto" data-producto-id="' + productoId + '">Eliminar</button></td>';
             nuevaFila += '</tr>';
             
@@ -387,40 +431,62 @@ session_start();
             $('#inputBusqueda').val('');
             $('#suggestions').html('');
         });
-
-    // ...
-        
+     
         $('#btnVaciarListado').click(function() {
             // Limpiar la lista de productos agregados
             productoIdsAgregados = [];
-
             // Limpiar la tabla
             $('#lstProductosVenta tbody').empty();
+            // Restablecer el total a 0
+            $('#boleta_subtotal').text('0.00');
+            $('#boleta_descuentos').text('0.00');
+            $('#boleta_total').text('0.00');
+            // Resetear el campo "Agregar Descuento"
+            $('#iptagregarDescuento').val(0);
+            // Resetear el campo "Monto Recibido"
+            $('#iptEfectivoRecibido').val(0);
+            $('#selTipoPago').val('0');
+            $('#chkEfectivoExacto').prop('checked', false);
 
-            // Calcular el total de la venta (que será 0 en este punto)
+            // Recalcular el total de la venta (que será 0 en este punto)
             calcularTotalVenta();
         });
-    
-
-    // Manejar cambios en la cantidad de productos
-// ...
 
         // Manejar cambios en la cantidad de productos
         $('#lstProductosVenta').on('change', '.cantidad-input', function() {
-            var cantidad = parseInt($(this).val());
+            var productoId = $(this).closest('tr').find('td:eq(0)').text();
+            var cantidad = parseInt($('#cantidad_' + productoId).val());
             var precioUnitario = parseFloat($(this).closest('tr').find('td:eq(5)').text());
-            var cantidadStock = parseFloat($(this).closest('tr').find('td:eq(7)').data('cantidad-stock'));
+            var cantidadStock = parseFloat($(this).data('cantidad-stock'));
+
 
             // Verificar si la cantidad ingresada es mayor que la cantidad en stock
             if (cantidad > cantidadStock) {
-                alert('La cantidad no puede ser mayor que la cantidad en stock (' + cantidadStock + ').');
                 cantidad = cantidadStock; // Establecer la cantidad en stock
                 $(this).val(cantidad); // Actualizar el valor en el campo de cantidad
-            }
 
+                Swal.fire({
+                        position: 'top-end',
+                        icon: 'error',
+                        title: 'La cantidad no puede ser mayor que la cantidad en stock (' + cantidadStock + ').',
+                        showConfirmButton: false,
+                        timer: 4000,
+                        background: false, // Desactiva el fondo oscurecido
+                        backdrop: false,
+                        customClass: {
+                            container: 'custom-container-class',
+                            popup: 'custom-popup-class', // Clase personalizada para ajustar el tamaño de la alerta
+                            title: 'custom-title-class', // Clase personalizada para ajustar el tamaño del título
+                            icon: 'custom-icon-class',
+                        },
+                    })
+            }
             // Aplicar descuento del 10% si es una venta mayorista (cantidad >= 6)
             if (cantidad >= 6) {
-                precioUnitario *= 0.9; // Aplicar descuento del 10%
+                //precioUnitario *= 0.9; // Aplicar descuento del 10%
+                var descuento = (cantidad * precioUnitario) *0.1;
+            }else{
+                var descuento = 0.00;
             }
 
             var precioFinal = cantidad * precioUnitario;
@@ -428,45 +494,372 @@ session_start();
             // Verificar si la cantidad es 1 y establecer el precioFinal a precioUnitario en ese caso
             if (cantidad === 1) {
                 precioFinal = precioUnitario;
+                var descuento = 0.00;
             }
 
             // Actualizar el precio final en la tabla
             $(this).closest('tr').find('td:eq(6)').text(precioFinal.toFixed(2));
+            $(this).closest('tr').find('td:eq(8)').text(descuento.toFixed(2));
 
             // Recalcular el total de la venta
             calcularTotalVenta();
         });
 
-// ...
+        $('#iptEfectivoRecibido').keyup(function() {
+                calcularTotalVenta(); // Llama a la función al ingresar el efectivo
+        });
+
+        // Manejar cambios en el campo de entrada de descuento
+        $('#iptagregarDescuento').on('input', function() {
+            var descuentoPorcentaje = parseFloat($(this).val()) / 100; // Divide por 100 para obtener el valor en porcentaje
+            var subtotal = parseFloat($('#boleta_subtotal').text()); // Obtener el subtotal actual
+            // Calcula el descuento en base al porcentaje y al subtotal
+
+            var descuentos = 0;
+            $('#lstProductosVenta tbody tr').each(function() {
+                var descuentoProducto = parseFloat($(this).find('td:eq(8)').text()); // Obtener el descuento del producto
+                descuentos = descuentoProducto + descuentoAgregado;
+                total=subtotal+descuentos;
+                
+            });
+
+            if (isNaN(descuentoPorcentaje)) {
+                descuentos = calcularDescuentos(); // Establecer 0 como valor predeterminado
+            }
+
+
+            
+            console.log('Evento de entrada input activado.', descuentos);
+
+            // Actualiza el valor de los descuentos en la tarjeta
+            $('#boleta_descuentos').text(descuentos.toFixed(2));
+          
+
+            // Recalcula el total de la venta
+            calcularTotalVenta();
+        });
+
 
 
 
         // Manejar clics en el botón "Eliminar" de un producto en la tabla
         $('#lstProductosVenta').on('click', '.eliminar-producto', function() {
-        var productoId = $(this).data('producto-id');
-        // Eliminar el productoId del array de productos agregados
-        var index = productoIdsAgregados.indexOf(productoId);
-        if (index !== -1) {
-            productoIdsAgregados.splice(index, 1);
-        }
-        // Eliminar la fila de la tabla
-        $(this).closest('tr').remove();
-        // Recalcular el total de la venta
-        calcularTotalVenta();
+            var productoId = $(this).data('producto-id');
+            // Eliminar el productoId del array de productos agregados
+            var index = productoIdsAgregados.indexOf(productoId);
+            if (index !== -1) {
+                productoIdsAgregados.splice(index, 1);
+            }
+            // Eliminar la fila de la tabla
+            $(this).closest('tr').remove();
+            // Recalcular el total de la venta
+            calcularTotalVenta();
         });
         
-        // Función para calcular el total de la venta
-        function calcularTotalVenta() {
-        var total = 0;
-        $('#lstProductosVenta tbody tr').each(function() {
-            var subtotal = parseFloat($(this).find('td:eq(6)').text()); // Obtener el precioFinal del producto
-            total += subtotal;
+
+        $('#chkEfectivoExacto').change(function() {
+            var isChecked = $(this).is(":checked");
+            var totalVenta = parseFloat($('#boleta_total').text());
+
+            if (isChecked) {
+                // Si está marcado, establece el monto efectivo igual al total
+                $('#iptEfectivoRecibido').val(totalVenta.toFixed(2));
+                $('#EfectivoEntregado').text(totalVenta.toFixed(2));
+                $('#Vuelto').text('0.00'); // Actualiza el campo "Monto Efectivo"
+            } else {
+                // Si no está marcado, limpia el campo de monto efectivo
+                $('#iptEfectivoRecibido').val('');
+                $('#EfectivoEntregado').text('0.00'); // Reinicia el campo "Monto Efectivo"
+            }
+
+            // Vuelve a calcular el vuelto y actualizar los totales
+            calcularTotalVenta();
+            habilitarEfectivoRecibido();
         });
 
-        $('#totalVenta').text(total.toFixed(2)); // Actualizar el valor en el elemento HTML
+        function habilitarEfectivoRecibido() {
+            var isChecked = $('#chkEfectivoExacto').is(":checked");
+            $('#iptEfectivoRecibido').prop('disabled', isChecked);
+        }
+
+            // Escuchar cambios en el total de la venta
+        function observarCambioEnTotalVenta() {
+            // Obtiene el total actualizado
+            var totalVenta = parseFloat($('#boleta_total').text());
+
+            // Verifica si la casilla "Monto Exacto" está marcada
+            var isChecked = $('#chkEfectivoExacto').is(":checked");
+
+            // Actualiza el campo "Monto Efectivo" si la casilla está marcada
+            if (isChecked) {
+                $('#iptEfectivoRecibido').val(totalVenta.toFixed(2));
+                $('#EfectivoEntregado').text(totalVenta.toFixed(2));
+            }
+
+            // Vuelve a calcular el vuelto y actualizar los totales
+            calcularTotalVenta();
+            habilitarEfectivoRecibido();
+        }
+
+        // Llama a la función cuando se cambia el total de la venta
+        setInterval(observarCambioEnTotalVenta, 1000); // Se verifica cada segundo (ajusta el intervalo según tus necesidades)
+
+        // ...
+
+        // Función para calcular el total de la venta
+        function calcularTotalVenta() {
+            calcularSubtotalVenta(); // Calcular el subtotal
+            //calcularDescuentos(); // Calcular los descuentos
+
+            var subtotal = parseFloat($('#boleta_subtotal').text());
+            var descuentos = parseFloat($('#boleta_descuentos').text());
+            var recargo = parseFloat($('#boleta_recargos').text());
+            var total = subtotal - descuentos + recargo;
+            
+
+            var descuentoPorcentaje = parseFloat($('#iptagregarDescuento').val()) / 100;
+            if (isNaN(descuentoPorcentaje)) {
+                descuentoPorcentaje = 0; // Establecer 0 como valor predeterminado
+            }
+
+            var descuentoAgregado = descuentoPorcentaje * subtotal;
+            var descuentos = calcularDescuentos() + descuentoAgregado; // Sumar el descuento agregado
+
+            $('#boleta_descuentos').text(descuentos.toFixed(2));
+
+            $('#boleta_total').text(total.toFixed(2)); // Actualizar el total en el elemento HTML
+
+            var efectivoRecibido = parseFloat($('#iptEfectivoRecibido').val()); // Obtener el efectivo recibido
+            var vuelto = efectivoRecibido - total;
+
+            if (isNaN(efectivoRecibido)) {
+                efectivoRecibido = 0; // Establecer 0 como valor predeterminado
+            }
+
+            if (isNaN(vuelto)) {
+                vuelto = 0; // Establecer 0 como valor predeterminado
+            }
+
+            $('#Vuelto').text(vuelto.toFixed(2)); // Actualizar el vuelto en el elemento HTML
+            $('#totalVenta').text(total.toFixed(2));
+            $('#EfectivoEntregado').text(efectivoRecibido.toFixed(2));
+        }
+
+
+
+        function calcularSubtotalVenta() {
+            var subtotal = 0;
+            $('#lstProductosVenta tbody tr').each(function() {
+                var precioFinal = parseFloat($(this).find('td:eq(6)').text()); // Obtener el precioFinal del producto
+                subtotal += precioFinal;
+            });
+
+            $('#boleta_subtotal').text(subtotal.toFixed(2)); // Actualizar el subtotal en el elemento HTML
+        }
+
+        function calcularDescuentos() {
+            var descuentos = 0;
+    
+            $('#lstProductosVenta tbody tr').each(function() {
+                var cantidad = parseFloat($(this).find('td:eq(7) input').val()); // Obtener la cantidad del producto
+                var precioUnitario = parseFloat($(this).find('td:eq(5)').text()); // Obtener el precio unitario
+                var descuentoProducto = parseFloat($(this).find('td:eq(8)').text()); // Obtener el descuento del producto
+                var subtotalProducto = cantidad * precioUnitario; // Calcular el subtotal del producto
+                
+                // Sumar el descuento del producto al total de descuentos
+                descuentos += descuentoProducto;
+            });
+            
+            return descuentos;
         }
 
         });
+
+            // Agregar evento al cambio de opción en el select de tipo de pago
+        $('#selTipoPago').change(function() {
+            // Obtener el valor seleccionado
+            var tipoPagoSeleccionado = $(this).val();
+            console.log(tipoPagoSeleccionado);
+            // Calcular el recargo solo si el tipo de pago es "tarjeta de crédito"
+            if (tipoPagoSeleccionado === '2') {
+                // Calcular el recargo como el 10% del subtotal de la venta
+                var subtotal = parseFloat($('#boleta_subtotal').text());
+                var recargo = subtotal * 0.10; // 10% del subtotal
+
+                // Actualizar el total sumando el recargo
+                var total = subtotal + recargo;
+                $('#boleta_total').text(total.toFixed(2));
+
+                // Actualizar el contenido del elemento span con el recargo
+                $('#boleta_recargos').text(recargo.toFixed(2));
+            } else {
+                // Si el tipo de pago no es tarjeta de crédito, quitar el recargo del total
+                var subtotal = parseFloat($('#boleta_subtotal').text());
+                $('#boleta_total').text(subtotal.toFixed(2));
+
+                // Restablecer el contenido del elemento span de recargos
+                $('#boleta_recargos').text('0.00');
+            }
+        });
+
+
+        $('#btnRealizarVenta').click(function() {
+            // Verificar si todos los campos están completos
+            if (validarCampos()) {
+                // Obtén los datos de la tabla de productos y de la card
+                var datosProductos = obtenerDatosTablaProductos();
+                var datosCard = obtenerDatosCard();
+
+                // Crea un objeto con los datos a enviar
+                var datosVenta = {
+                    productos: datosProductos,
+                    card: datosCard
+                };
+
+                // Envía los datos al archivo PHP utilizando AJAX
+                $.ajax({
+                    url: '../controladores/realizarVenta.php',
+                    method: 'POST',
+                    data: { ventaData: JSON.stringify(datosVenta) },
+                    success: function(response) {
+                        response = JSON.parse(response); // Parsear la respuesta JSON
+
+                        if (response.success) {
+                            // Si la venta fue exitosa, muestra una notificación
+                            Swal.fire({
+                                position: 'top-end',
+                                icon: 'success',
+                                title: response.message,
+                                showConfirmButton: false,
+                                timer: 4000,
+                                background: false,
+                                backdrop: false,
+                                customClass: {
+                                    container: 'custom-container-class',
+                                    popup: 'custom-popup-class',
+                                    title: 'custom-title-class',
+                                    icon: 'custom-icon-class',
+                                }
+                            });
+
+                            // Actualiza la página después de 4 segundos (4000 ms)
+                            setTimeout(function() {
+                                location.reload();
+                            }, 2000);
+                        } else {
+                            // Si la venta no fue exitosa, muestra una notificación de error
+                            Swal.fire({
+                                position: 'top-end',
+                                icon: 'error',
+                                title: response.message,
+                                showConfirmButton: false,
+                                timer: 4000,
+                                background: false,
+                                backdrop: false,
+                                customClass: {
+                                    container: 'custom-container-class',
+                                    popup: 'custom-popup-class',
+                                    title: 'custom-title-class',
+                                    icon: 'custom-icon-class',
+                                }
+                            });
+                        }
+                    },
+                    error: function(error) {
+                        // Maneja los errores aquí
+                        console.error(error);
+                    }
+                });
+            } else {
+                // Si no se completaron todos los campos, muestra un mensaje de error
+                Swal.fire({
+                                position: 'top-end',
+                                icon: 'error',
+                                title: 'Por favor complete todos los campos',
+                                showConfirmButton: false,
+                                timer: 2000,
+                                background: false,
+                                backdrop: false,
+                                customClass: {
+                                    container: 'custom-container-class',
+                                    popup: 'custom-popup-class',
+                                    title: 'custom-title-class',
+                                    icon: 'custom-icon-class',
+                                }
+                            });
+            }
+        });
+
+        function validarCampos() {
+            var documentoVenta = $('#selDocumentoVenta').val();
+            var tipoPago = $('#selTipoPago').val();
+            var destinatario = $('#selDestinatario').val();
+            var montoRecibido = parseFloat($('#iptEfectivoRecibido').val());
+
+            // Verificar que los campos requeridos no estén vacíos
+            if (documentoVenta === '' || tipoPago === '' || destinatario === '') {
+                return false;
+            }
+
+            // Verificar que el monto recibido sea un número válido y mayor que cero
+            if (isNaN(montoRecibido) || montoRecibido <= 0) {
+                return false;
+            }
+
+            // Verificar que haya al menos un producto en la tabla
+            if ($('#lstProductosVenta tbody tr').length === 0) {
+                return false;
+            }
+
+            // Si todos los campos están completos y el monto recibido es válido, y hay productos en la tabla, retornar true
+            return true;
+        }
+        // Función para obtener los datos de la tabla de productos
+        function obtenerDatosTablaProductos() {
+            var datos = [];
+            $('#lstProductosVenta tbody tr').each(function() {
+                var idProducto = $(this).find('td:eq(0)').text();
+                var nombreProducto = $(this).find('td:eq(1)').text();
+                var cantidad = parseInt($('#cantidad_' + idProducto).val());
+                var cantidadStock = parseFloat($(this).find('td:eq(7) input').data('cantidad-stock'));
+                console.log(cantidadStock);
+                datos.push({
+                    id: idProducto,
+                    nombre: nombreProducto,
+                    cantidad: cantidad,
+                    cantidadStock: cantidadStock
+                });
+            });
+            return datos;
+        }
+
+        // Función para obtener los datos de la card
+        function obtenerDatosCard() {
+            var subtotal = parseFloat($('#boleta_subtotal').text()); // Obtiene el subtotal
+            var descuentos = parseFloat($('#boleta_descuentos').text()); // Obtiene los descuentos
+            var totalVenta = $('#totalVentaRegistrar').text();
+            var tipoDocumento = $('#selDocumentoVenta').val();
+            var recargos = parseFloat($('#boleta_recargos').text());
+            var tipoPago = $('#selTipoPago').val();
+            var nroVenta = $('#iptNroVenta').val();
+            var efectivoRecibido = $('#iptEfectivoRecibido').val();
+            // Agrega más campos según sea necesario
+            var datosCard = {
+                subtotal: subtotal,
+                descuentos: descuentos,
+                totalVenta: totalVenta,
+                tipoDocumento: tipoDocumento,
+                recargos: recargos,
+                tipoPago: tipoPago,
+                nroVenta: nroVenta,
+                efectivoRecibido: efectivoRecibido
+                // Agrega más campos aquí
+            };
+            return datosCard;
+        }
+
+
+    
 
     </script>
 
@@ -583,6 +976,26 @@ session_start();
         .modal-footer .btn-primary:hover {
             background-color: #5a104c; /* Cambia el color de fondo en el hover */
             border-color: #0056b3; /* Cambia el color del borde en el hover */
+        }
+
+                /* Estilo CSS para la clase personalizada de la alerta */
+                .custom-popup-class {
+            width: 250px; /* Ajusta el ancho de la alerta según tus necesidades */
+            font-size: 10px; /* Ajusta el tamaño de fuente del contenido de la alerta */
+            padding: 2px 3px; /* Ajusta el relleno de la alerta para hacerla un poco más pequeña */
+            border-radius: 10px; /* Añade bordes redondeados a la alerta */
+            }
+
+        /* Estilo CSS para la clase personalizada del título */
+        .custom-title-class {
+            font-size: 13px; /* Ajusta el tamaño de fuente del título de la alerta */
+            padding: 6px 3px; 
+            }
+
+
+        /* Estilo CSS para la clase personalizada del icono */
+        .custom-icon-class {
+            font-size: 8px; /* Ajusta el tamaño del icono según tus necesidades */
         }
 
     </style>

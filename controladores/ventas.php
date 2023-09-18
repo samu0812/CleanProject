@@ -32,7 +32,6 @@ if ($result->num_rows > 0) {
     while ($row = $result->fetch_assoc()) {
         // Concatenar abreviatura y tamaño y agregarlos a la sugerencia
         $tamañoConAbreviatura = $row['Tamaño'] . ' ' . $row['AbreviaturaTipoTamaño'];
-
         // Agregar datos adicionales al elemento HTML para usarlos más tarde
         echo '<div class="autocomplete-suggestion" data-producto-id="' . $row['idProducto'] . '" data-precio="' . $row['PrecioFinalStock'] . 
         '" data-nombre="' . $row['NombreProducto'] .
