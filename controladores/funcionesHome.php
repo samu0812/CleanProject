@@ -13,6 +13,11 @@ if (isset($_GET['action'])) {
             // Lógica para listar proveedores
             obtenerProductosMasVendidos($conn); // Pasa la conexión como parámetro
             break;
+        case 'ObtenerGananciasPorMeses':
+            // Lógica para listar proveedores
+            ObtenerGananciasPorMeses($conn); // Pasa la conexión como parámetro
+            break;
+            
         default:
             // Acción no válida
             echo json_encode(array("message" => "Acción no válida"));
@@ -87,4 +92,66 @@ function obtenerProductosMasVendidos($conn) {
         echo json_encode(array("error" => $e->getMessage()));
     }
 }
+
+
+function ObtenerGananciasPorMeses($conn) {
+    try {
+        // Realiza la consulta SQL para obtener los 10 productos más vendidos
+        $sql = "SELECT
+        Anio,
+        CASE
+            WHEN Mes = 1 THEN 'Enero'
+            WHEN Mes = 2 THEN 'Febrero'
+            WHEN Mes = 3 THEN 'Marzo'
+            WHEN Mes = 4 THEN 'Abril'
+            WHEN Mes = 5 THEN 'Mayo'
+            WHEN Mes = 6 THEN 'Junio'
+            WHEN Mes = 7 THEN 'Julio'
+            WHEN Mes = 8 THEN 'Agosto'
+            WHEN Mes = 9 THEN 'Septiembre'
+            WHEN Mes = 10 THEN 'Octubre'
+            WHEN Mes = 11 THEN 'Noviembre'
+            WHEN Mes = 12 THEN 'Diciembre'
+        END AS MesNombre,
+        TotalRecaudado
+    FROM (
+        SELECT
+            YEAR(Fecha) AS Anio,
+            MONTH(Fecha) AS Mes,
+            SUM(df.Total) AS TotalRecaudado
+        FROM Ventas AS v
+        INNER JOIN DetalleFactura AS df ON v.idDetalleFactura = df.idDetalleFactura
+        WHERE Fecha >= DATE_SUB(CURRENT_DATE, INTERVAL 5 MONTH) -- Filtra los últimos 5 meses
+        GROUP BY Anio, Mes
+    ) AS Subconsulta
+    ORDER BY Anio DESC, Mes DESC;";
+        $stmt = $conn->prepare($sql);
+
+        if (!$stmt->execute()) {
+            throw new Exception("Error al ejecutar la consulta");
+        }
+
+        $result = $stmt->get_result();
+        $productosMasVendidos = array();
+
+        while ($row = $result->fetch_assoc()) {
+            // Almacena cada producto más vendido en un arreglo
+            $productosMasVendidos[] = $row;
+        }
+
+        // Devuelve la respuesta en formato JSON
+        header("Content-Type: application/json");
+        echo json_encode($productosMasVendidos);
+    } catch (Exception $e) {
+        // Maneja el error, registra información de error si es necesario
+        // Devuelve una respuesta HTTP con un código de estado de error
+        http_response_code(500); // Código de estado para error interno del servidor
+        echo json_encode(array("error" => $e->getMessage()));
+    }
+
+}
+
+
+
+
 ?>

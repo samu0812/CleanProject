@@ -190,6 +190,15 @@ $rol = isset($_SESSION['rol']) ? $_SESSION['rol'] : '';
                             </div>
                         </div>
                     </div>
+                    <div class="grafico-container">
+                        <!-- Contenedor del segundo gráfico -->
+                        <div class="bg-personalizado text-center rounded p-4 cursorPointer2 chart-container">
+                            <div class="d-flex flex-column align-items-center justify-content-center chart-content">
+                                <h6 class="mb-0">Total de ventas por Sucursal</h6>
+                                <canvas id="ganancias" class="chart-canvas"></canvas>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
 
@@ -248,11 +257,11 @@ $rol = isset($_SESSION['rol']) ? $_SESSION['rol'] : '';
     </script>
 
     <script>
+
         function obtenerProductosMasVendidos() {
             
             fetch('../controladores/funcionesHome.php?action=obtenerProductosMasVendidos') 
             .then(response => {
-                console.log(response);
                 if (!response.ok) {
                     throw new Error("Error en la solicitud al servidor");
                 }
@@ -281,18 +290,31 @@ $rol = isset($_SESSION['rol']) ? $_SESSION['rol'] : '';
                     datasets: [{
                         data: cantidadesVendidas,
                         backgroundColor: [
-                            '#e77a34',
-                            '#c65b16',
-                            '#ff8c00',
-                            '#8e3000',
-                            '#ff8c00',
-                            '#c65b16',
-                            '#ff8c00',
-                            '#c65b16',
-                            '#ff8c00',
-                            '#c65b16',
-                        ],
-                        borderWidth: 0,
+                            'rgba(250, 114, 28, 0.2)',
+                            'rgba(198, 91, 22, 0.2)',
+                            'rgba(255, 140, 0, 0.2)',
+                            'rgba(218, 119, 0, 0.2)',
+                            'rgba(255, 140, 0, 0.2)',
+                            'rgba(162, 69, 0, 0.2)',
+                            'rgba(198, 91, 22, 0.2)',
+                            'rgba(255, 170, 0, 0.2)',
+                            'rgba(168, 94, 0, 0.2)',
+                            'rgba(255, 140, 0, 0.2)',
+                            
+                            ],
+                        borderColor: [
+                            'rgb(250, 114, 28)',
+                            'rgb(198, 91, 22)',
+                            'rgb(255, 140, 0)',
+                            'rgb(218, 119, 0)',
+                            'rgb(255, 140, 0)',
+                            'rgb(162, 69, 0)',
+                            'rgb(198, 91, 22)',
+                            'rgb(255, 170, 0)',
+                            'rgb(168, 94, 0)',
+                            'rgb(255, 140, 0)',
+                            ],
+                        borderWidth: 1,
                         barThickness: 30 // Ajusta el grosor de las barras
                     }]
                 };
@@ -338,42 +360,96 @@ $rol = isset($_SESSION['rol']) ? $_SESSION['rol'] : '';
             });
         }
 
-        document.addEventListener('DOMContentLoaded', obtenerProductosMasVendidos);
 
-        
-    </script>
-
-    <script>
-        var ctx = document.getElementById('ganancias').getContext('2d');
-        
-        var gananciasPorMesData = {
-            labels: ["Enero", "Febrero", "Marzo", "Abril", "Mayo"],
-            datasets: [{
-                label: 'Ganancias por Mes',
-                data: [500, 600, 900, 1100, 1600],
-                backgroundColor: 'rgba(231, 122, 52, 0.5)',
-                borderColor: '#e77a34',
-                borderWidth: 2,
-                fill: true
-            }]
-        };
-
-        new Chart(ctx, {
-            type: 'line',
-            data: gananciasPorMesData,
-            options: {
-                scales: {
-                    y: {
-                        beginAtZero: true
-                    }
-                },
-                plugins: {
-                    legend: {
-                        display: false // Oculta la leyenda
-                    }
+        function ObtenerGananciasPorMeses() {
+            fetch('../controladores/funcionesHome.php?action=ObtenerGananciasPorMeses') 
+            .then(response => {
+                console.log(response);
+                if (!response.ok) {
+                    throw new Error("Error en la solicitud al servidor");
                 }
-            }
+                return response.json();
+            })
+            .then(data => {
+            // Procesa los datos recibidos y organízalos en el formato adecuado
+            const mesesData = data.map(item => ({ mes: item.MesNombre, ganancia: parseFloat(item.TotalRecaudado) }));
+                        
+            // Ordena los datos por mes en orden ascendente
+            mesesData.sort((a, b) => {
+                const meses = [
+                    'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'
+                ];
+                return meses.indexOf(a.mes) - meses.indexOf(b.mes);
+            });
+
+            const meses = mesesData.map(item => item.mes);
+            const ganancias = mesesData.map(item => item.ganancia);
+
+            console.log(meses);
+            console.log(ganancias);
+
+            var graficoGananciasPorMeses = document.getElementById('ganancias').getContext('2d');
+        
+            var gananciasPorMesData = {
+                labels: meses,
+                datasets: [{
+                    label: 'Ganancias por Mes',
+                    data: ganancias,
+                    backgroundColor: 'rgba(231, 122, 52, 0.5)',
+                    borderColor: '#e77a34',
+                    borderWidth: 2,
+                    fill: true,
+                    lineTension: 0.3,
+                    pointRadius: 2,
+                    pointHoverRadius: 10,
+                    pointHitRadius: 30,
+                }]
+            };
+
+            new Chart(graficoGananciasPorMeses, {
+                type: 'line',
+                data: gananciasPorMesData,
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        },
+                        x: {
+                            ticks: {
+                                font: {
+                                    size: 14, // Ajusta el tamaño de fuente para las etiquetas del eje X
+                                }
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            display: true,
+                            labels: {
+                                boxWidth: 20,
+                                fontColor: 'orange'
+                            }
+                        }
+                    },
+                }
+            });
+
+
+
+            })
+            .catch(error => {
+                console.error("Ocurrió un error:", error);
+            });
+        }
+
+        
+
+        document.addEventListener('DOMContentLoaded', function() {
+            obtenerProductosMasVendidos();
+            ObtenerGananciasPorMeses();
         });
+
+        
     </script>
 
 
