@@ -481,6 +481,27 @@ if ($result->num_rows > 0) {
                         },
                     })
             }
+
+            if (cantidad <= 0) {
+                cantidad = 1; // Establecer la cantidad en stock
+                $(this).val(cantidad); // Actualizar el valor en el campo de cantidad
+
+                Swal.fire({
+                        position: 'top-end',
+                        icon: 'error',
+                        title: 'La cantidad no puede ser Menor o Igual a 0.',
+                        showConfirmButton: false,
+                        timer: 4000,
+                        background: false, // Desactiva el fondo oscurecido
+                        backdrop: false,
+                        customClass: {
+                            container: 'custom-container-class',
+                            popup: 'custom-popup-class', // Clase personalizada para ajustar el tamaño de la alerta
+                            title: 'custom-title-class', // Clase personalizada para ajustar el tamaño del título
+                            icon: 'custom-icon-class',
+                        },
+                    })
+            }
             // Aplicar descuento del 10% si es una venta mayorista (cantidad >= 6)
             if (cantidad >= 6) {
                 //precioUnitario *= 0.9; // Aplicar descuento del 10%
@@ -552,6 +573,23 @@ if ($result->num_rows > 0) {
             }
             // Eliminar la fila de la tabla
             $(this).closest('tr').remove();
+            if ($('#lstProductosVenta tbody tr').length === 0) {
+                productoIdsAgregados = [];
+                // Limpiar la tabla
+                $('#lstProductosVenta tbody').empty();
+                // Restablecer el total a 0
+                $('#boleta_subtotal').text('0.00');
+                $('#boleta_descuentos').text('0.00');
+                $('#boleta_recargos').text('0.00');
+                $('#boleta_total').text('0.00');
+                $('#selDocumentoVenta').val('0');
+                // Resetear el campo "Agregar Descuento"
+                $('#iptagregarDescuento').val(0);
+                // Resetear el campo "Monto Recibido"
+                $('#iptEfectivoRecibido').val(0);
+                $('#selTipoPago').val('0');
+                $('#chkEfectivoExacto').prop('checked', false);
+            }
             // Recalcular el total de la venta
             calcularTotalVenta();
         });
