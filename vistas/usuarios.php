@@ -208,10 +208,8 @@ session_start();
                             <div class="col-md-4 mb-3">
                                 <label for="DescripcionRol" class="form-label">Rol</label>
                                 <select class="form-select" name="DescripcionRol" id="DescripcionRol"  required>
-                                    <option value="" selected disabled>Seleccione un Rol</option>
-                                    <option value="Administrador">Administrador</option>
-                                    <option value="Cajero">Cajero</option>
-                                    <option value="Repositor">Repositor</option>
+                                    <option value="" selected disabled>Seleccione un rol</option>
+                                    <?php include '../controladores/obtener_rol.php'; ?>
                                 </select>
                             </div>
                         </div>
@@ -220,9 +218,7 @@ session_start();
                                 <label for="DescripcionSucursal" class="form-label">Sucursal</label>
                                 <select class="form-select" name="DescripcionSucursal" id="DescripcionSucursal" required>
                                     <option value="" selected disabled>Seleccione una Sucursal</option>
-                                    <option value="Sucursal1">Sucursal 1</option>
-                                    <option value="Sucursal2">Sucursal 2</option>
-                                    <option value="Sucursal3">Sucursal 3</option>
+                                    <?php include '../controladores/obtener_sucursales.php'; ?>
                                 </select>
                             </div>
                             <div class="col-md-4 mb-3">
@@ -247,7 +243,7 @@ session_start();
         </div>
     </form>
 </div>
-<?php include("../controladores/usuarios.php");?>
+        <?php include("../controladores/usuarios.php");?>
 
 
 

@@ -9,6 +9,14 @@ if (isset($_GET['action'])) {
             // Lógica para listar proveedores
             listarProductos($conn); // Pasa la conexión como parámetro
             break;
+        case 'listarcards':
+            // Lógica para listar proveedores
+            obtenerCantStockPorSucursal($conn); // Pasa la conexión como parámetro
+            break;
+        case 'verificarcodigo':
+            // Lógica para listar proveedores
+            codigoExiste2($conn); // Pasa la conexión como parámetro
+            break;
         case 'agregar':
             // Lógica para agregar un proveedor
             agregarProductos($conn);
@@ -36,6 +44,64 @@ if (isset($_GET['action'])) {
 } else {
     // No se proporcionó ninguna acción válida en la solicitud
     echo json_encode(array("message" => "Acción no válida"));
+}
+
+function codigoExiste2($conn) {
+    // Obtiene el cuerpo de la solicitud
+    $data = file_get_contents("php://input");
+    // Decodifica los datos JSON en un array asociativo
+    $dataProd = json_decode($data, true);
+    // Verifica si se pudo decodificar correctamente
+    if ($dataProd === null) {
+        // Hubo un error al decodificar los datos JSON
+        $response = array(
+            "existe" => false, // Cambia "success" a "existe"
+            "message" => "Error en los datos JSON recibidos"
+        );
+    } else {
+        try {
+            $codigo = $dataProd["codigo"];
+            $sql = "SELECT idProductos FROM Productos WHERE idProductos = ?";
+            $stmt = $conn->prepare($sql);
+            $stmt->bind_param("s", $codigo);
+
+            if (!$stmt->execute()) {
+                $response = array(
+                    "existe" => false, // Hubo un error al ejecutar la consulta
+                    "message" => "Error al ejecutar la consulta"
+                );
+            } else {
+                $stmt->store_result();
+                if ($stmt->num_rows > 0) {
+                    $stmt->fetch();
+                    $stmt->close();
+                    $response = array(
+                        "existe" => true, // El código existe en la base de datos
+                        "message" => "El código existe en la base de datos"
+                    );
+                } else {
+                    $stmt->fetch();
+                    $stmt->close();
+                    $response = array(
+                        "existe" => false, // El código no existe en la base de datos
+                        "message" => "El código no existe en la base de datos"
+                    );
+                }
+            }
+        } catch (Exception $e) {
+            // Maneja el error, registra información de error si es necesario
+            // Devuelve una respuesta HTTP con un código de estado de error
+            http_response_code(500); // Código de estado para error interno del servidor
+            $response = array(
+                "existe" => false,
+                "error" => $e->getMessage()
+            );
+        }
+    }
+
+    // Devuelve la respuesta como JSON
+    header("Content-Type: application/json");
+    echo json_encode($response);
 }
 
 function listarProductos($conn) {
@@ -312,66 +378,68 @@ function agregarProductos($conn) {
             "message" => "Error en los datos JSON recibidos"
         );
     } else {
-        // Los datos JSON se decodificaron correctamente
-        // Ahora puedes acceder a los valores individualmente
-        $codigo = $datosProd["codigo"];
-        $nombre = $datosProd["nombre"];
-        $proveedor = $datosProd["proveedor"];
-        $tipoProducto = $datosProd["tipoProducto"];
-        $tipoCategoria = $datosProd["tipoCategoria"];
-        $tamaño = $datosProd["tamaño"];
-        $tipoTamaño = $datosProd["tipoTamaño"];
-        $cantidad = $datosProd["cantidad"];
-        $precioBase = $datosProd["precioBase"];
-        $porcentajeAumento = $datosProd["porcentajeAumento"];
-        $sucursal = $datosProd["sucursal"];
-        $impuesto = $datosProd["impuesto"]; // Si el valor de impuesto es 0, significa que no esta seleccionado ninguno, 
-        // si es 1 son ambos impuestos, si es 2 o 3 varia entre iva y rentas.
-        $precioFinal = 0;
+        try {
+            // Los datos JSON se decodificaron correctamente
+            // Ahora puedes acceder a los valores individualmente
+            $codigo = $datosProd["codigo"];
+            $nombre = $datosProd["nombre"];
+            $proveedor = $datosProd["proveedor"];
+            $tipoProducto = $datosProd["tipoProducto"];
+            $tipoCategoria = $datosProd["tipoCategoria"];
+            $tamaño = $datosProd["tamaño"];
+            $tipoTamaño = $datosProd["tipoTamaño"];
+            $cantidad = $datosProd["cantidad"];
+            $precioBase = $datosProd["precioBase"];
+            $porcentajeAumento = $datosProd["porcentajeAumento"];
+            $sucursal = $datosProd["sucursal"];
+            $impuesto = $datosProd["impuesto"]; // Si el valor de impuesto es 0, significa que no esta seleccionado ninguno, 
+            // si es 1 son ambos impuestos, si es 2 o 3 varia entre iva y rentas.
+            $precioFinal = 0;
 
-        // Realiza la inserción en la base de datos (debes adaptar esta parte a tu esquema de base de datos)
-        if (codigoExiste($conn, $codigo)) {
-            $response = array(
-                "success" => false,
-                "message" => "Error al agregar el producto (codigo): " . $conn->error
-            );
-        } else {
-            $proveedorID = obtenerProveedorID($conn, $proveedor);
-            $tipoProductoID = obtenerTipoProductoID($conn, $tipoProducto);
-            $tipoCategoriaID = obtenerTipoCategoriaID($conn, $tipoCategoria);
-            $tipoTamañoID = obtenerTipoTamañoID($conn, $tipoTamaño);
-            $sucursalID = obtenerSucursalID($conn, $sucursal);
-            $porcentajeAumentoTotal = validarImpuesto($conn, $impuesto, $porcentajeAumento);
-            $precioFinal = precioFinal($conn, $precioBase, $porcentajeAumentoTotal);
-    
-            if (!$proveedorID || !$tipoProductoID || !$tipoCategoriaID || !$tipoTamañoID || !$sucursalID) {
+            // Realiza la inserción en la base de datos (debes adaptar esta parte a tu esquema de base de datos)
+            if (codigoExiste($conn, $codigo)) {
                 $response = array(
                     "success" => false,
-                    "message" => "Error al agregar el producto (1): " . $conn->error
+                    "message" => "ingresó un codigo existente." . $conn->error
                 );
-            } elseif (!validarImpuesto($conn, $impuesto, $porcentajeAumento)) {
-                $response = array(
-                    "success" => false,
-                    "message" => "Error al agregar el producto (2): " . $conn->error
-                );
-            } elseif (insertarProducto($conn, $codigo, $proveedorID, $tipoProductoID, $tipoCategoriaID, $nombre, $precioBase, $tipoTamañoID, $tamaño)) {
-                if (insertarStock($conn, $sucursalID, $codigo, $cantidad, $porcentajeAumentoTotal, $precioFinal)) {
+            } else {
+                $proveedorID = obtenerProveedorID($conn, $proveedor);
+                $tipoProductoID = obtenerTipoProductoID($conn, $tipoProducto);
+                $tipoCategoriaID = obtenerTipoCategoriaID($conn, $tipoCategoria);
+                $tipoTamañoID = obtenerTipoTamañoID($conn, $tipoTamaño);
+                $sucursalID = obtenerSucursalID($conn, $sucursal);
+                $porcentajeAumentoTotal = validarImpuesto($conn, $impuesto, $porcentajeAumento);
+                $precioFinal = precioFinal($conn, $precioBase, $porcentajeAumentoTotal);
+        
+                if (!$proveedorID || !$tipoProductoID || !$tipoCategoriaID || !$tipoTamañoID || !$sucursalID) {
                     $response = array(
-                        "success" => true,
-                        "message" => "Producto agregado con éxito"
+                        "success" => false,
+                        "message" => "ingresó un dato inválido" . $conn->error
                     );
+                } elseif (insertarProducto($conn, $codigo, $proveedorID, $tipoProductoID, $tipoCategoriaID, $nombre, $precioBase, $tipoTamañoID, $tamaño)) {
+                    if (insertarStock($conn, $sucursalID, $codigo, $cantidad, $porcentajeAumentoTotal, $precioFinal)) {
+                        $response = array(
+                            "success" => true,
+                            "message" => "Producto agregado con éxito"
+                        );
+                    } else {
+                        $response = array(
+                            "success" => false,
+                            "message" => "error al agregar el producto" . $conn->error
+                        );
+                    }
                 } else {
                     $response = array(
                         "success" => false,
-                        "message" => "Error al agregar el producto (3): " . $conn->error
+                        "message" => "error al agregar el producto" . $conn->error
                     );
                 }
-            } else {
-                $response = array(
-                    "success" => false,
-                    "message" => "Error al agregar el producto (4): " . $conn->error
-                );
             }
+        } catch (Exception $e) {
+            // Maneja el error, registra información de error si es necesario
+            // Devuelve una respuesta HTTP con un código de estado de error
+            http_response_code(500); // Código de estado para error interno del servidor
+            echo json_encode(array("error" => $e->getMessage()));
         }
     }
     // Envía la respuesta como JSON
@@ -384,24 +452,38 @@ function eliminarProductos($conn) {
     $data = file_get_contents("php://input");
     // Decodifica los datos JSON en un array asociativo
     $datosProd = json_decode($data, true);
-    $idProductos = $datosProd["id"];
+    try {
+        $idProductos = $datosProd["id"];
 
-    // Consulta SQL para eliminar el proveedor por su ID
-    $sql = "DELETE FROM stocksucursales WHERE idProductos = ?";
-    $stmt = $conn->prepare($sql);
-    $stmt->bind_param("i", $idProductos);
-
-    $response = array();
-
-    if ($stmt->execute()) {
         // Consulta SQL para eliminar el proveedor por su ID
-        $sql = "DELETE FROM productos WHERE idProductos = ?";
+        $sql = "DELETE FROM stocksucursales WHERE idProductos = ?";
         $stmt = $conn->prepare($sql);
         $stmt->bind_param("i", $idProductos);
 
         $response = array();
 
         if ($stmt->execute()) {
+            // Consulta SQL para eliminar el proveedor por su ID
+            $sql = "DELETE FROM productos WHERE idProductos = ?";
+            $stmt = $conn->prepare($sql);
+            $stmt->bind_param("i", $idProductos);
+
+            $response = array();
+
+            if ($stmt->execute()) {
+                // Eliminación exitosa
+                $response = array(
+                    "success" => true,
+                    "message" => "Producto eliminado con éxito"
+                );
+            } else {
+                // Error en la eliminación
+                $response = array(
+                    "success" => false,
+                    "message" => "Error al eliminar el producto: " . $stmt->error
+                );
+            }
+
             // Eliminación exitosa
             $response = array(
                 "success" => true,
@@ -414,25 +496,17 @@ function eliminarProductos($conn) {
                 "message" => "Error al eliminar el producto: " . $stmt->error
             );
         }
-
-        // Eliminación exitosa
-        $response = array(
-            "success" => true,
-            "message" => "Producto eliminado con éxito"
-        );
-    } else {
-        // Error en la eliminación
-        $response = array(
-            "success" => false,
-            "message" => "Error al eliminar el producto: " . $stmt->error
-        );
+    } catch (Exception $e) {
+        // Maneja el error, registra información de error si es necesario
+        // Devuelve una respuesta HTTP con un código de estado de error
+        http_response_code(500); // Código de estado para error interno del servidor
+        echo json_encode(array("error" => $e->getMessage()));
     }
     // Envía la respuesta como JSON
     header("Content-Type: application/json");
     echo json_encode($response);
     
 }
-
 function obtenerProductos($conn) {
     // Verifica si se proporcionó un ID válido en la solicitud
     if (!isset($_GET['id']) || !is_numeric($_GET['id'])) {
@@ -441,48 +515,54 @@ function obtenerProductos($conn) {
             "message" => "ID de producto no válido"
         );
     } else {
-        $idProductos = $_GET['id'];
+        try {
+            $idProductos = $_GET['id'];
 
-        // Realiza la consulta SQL para obtener los datos del proveedor por su ID
-        $sql = "SELECT 
-        P.idProductos, 
-        P.Nombre, 
-        Pr.Nombre AS Proveedor, 
-        TP.Descripcion AS TipoProd, 
-        TC.Descripcion AS TipoCat, 
-        TT.Abreviatura AS Tamaño, 
-        P.Tamaño AS Medida, 
-        SS.Cantidad AS CantidadTotal, 
-        P.PrecioCosto, 
-        SS.Impuestos AS Impuesto, 
-        SS.PrecioFinal
-        FROM Productos P
-        INNER JOIN Proveedores Pr ON P.idProveedores = Pr.idProveedores
-        INNER JOIN TipoProducto TP ON P.idTipoProducto = TP.idTipoProducto
-        INNER JOIN TipoCategoria TC ON P.idTipoCategoria = TC.idTipoCategoria
-        INNER JOIN TipoTamaño TT ON P.idTipoTamaño = TT.idTipoTamaño
-        INNER JOIN StockSucursales SS ON P.idProductos = SS.idProductos
-        WHERE P.idProductos = ?
-        ";
-        $stmt = $conn->prepare($sql);
-        $stmt->bind_param("i", $idProductos);
-        $stmt->execute();
-        $result = $stmt->get_result();
+            // Realiza la consulta SQL para obtener los datos del proveedor por su ID
+            $sql = "SELECT 
+            P.idProductos, 
+            P.Nombre, 
+            Pr.Nombre AS Proveedor, 
+            TP.Descripcion AS TipoProd, 
+            TC.Descripcion AS TipoCat, 
+            TT.Abreviatura AS Tamaño, 
+            P.Tamaño AS Medida, 
+            SS.Cantidad AS CantidadTotal, 
+            P.PrecioCosto, 
+            SS.Impuestos AS Impuesto, 
+            SS.PrecioFinal
+            FROM Productos P
+            INNER JOIN Proveedores Pr ON P.idProveedores = Pr.idProveedores
+            INNER JOIN TipoProducto TP ON P.idTipoProducto = TP.idTipoProducto
+            INNER JOIN TipoCategoria TC ON P.idTipoCategoria = TC.idTipoCategoria
+            INNER JOIN TipoTamaño TT ON P.idTipoTamaño = TT.idTipoTamaño
+            INNER JOIN StockSucursales SS ON P.idProductos = SS.idProductos
+            WHERE P.idProductos = ?
+            ";
+            $stmt = $conn->prepare($sql);
+            $stmt->bind_param("i", $idProductos);
+            $stmt->execute();
+            $result = $stmt->get_result();
 
-        if ($result->num_rows > 0) {
-            // El proveedor fue encontrado, obtén sus datos
-            $producto = $result->fetch_assoc();
+            if ($result->num_rows > 0) {
+                // El proveedor fue encontrado, obtén sus datos
+                $producto = $result->fetch_assoc();
 
-            // Genera una respuesta JSON válida utilizando json_encode()
-            $response = json_encode($producto);
-        } else {
-            // No se encontró ningún proveedor con ese ID
-            $response = array(
-                "success" => false,
-                "message" => "Producto no encontrado"
-            );
+                // Genera una respuesta JSON válida utilizando json_encode()
+                $response = json_encode($producto);
+            } else {
+                // No se encontró ningún proveedor con ese ID
+                $response = array(
+                    "success" => false,
+                    "message" => "Producto no encontrado"
+                );
+            }
+        } catch (Exception $e) {
+            // Maneja el error, registra información de error si es necesario
+            // Devuelve una respuesta HTTP con un código de estado de error
+            http_response_code(500); // Código de estado para error interno del servidor
+            echo json_encode(array("error" => $e->getMessage()));
         }
-
         // Configura las cabeceras para indicar que se envía JSON
         header("Content-Type: application/json");
         echo $response;
@@ -502,96 +582,127 @@ function editarProductos($conn) {
             "message" => "Error en los datos JSON recibidos"
         );
     } else {
-        // Los datos JSON se decodificaron correctamente
-        // Ahora puedes acceder a los valores individualmente
-        // Extrae los datos individuales de $datosProd
-        $codigo = $datosProd["codigo"];
-        $nombre = $datosProd["nombre"];
-        $proveedor = $datosProd["proveedor"];
-        $tipoProducto = $datosProd["tipoProducto"];
-        $tipoCategoria = $datosProd["tipoCategoria"];
-        $tamaño = $datosProd["tamaño"];
-        $tipoTamaño = $datosProd["tipoTamaño"];
-        $precioBase = $datosProd["precioBase"];
-        $porcentajeAumento = $datosProd["porcentajeAumento"];
-        $proveedorID = obtenerProveedorID($conn, $proveedor);
-        $tipoProductoID = obtenerTipoProductoID($conn, $tipoProducto);
-        $tipoCategoriaID = obtenerTipoCategoriaID($conn, $tipoCategoria);
-        $tipoTamañoID = obtenerTipoTamañoID($conn, $tipoTamaño);
-        $precioFinal = precioFinal($conn, $precioBase, $porcentajeAumento);
+        try{
+            // Los datos JSON se decodificaron correctamente
+            // Ahora puedes acceder a los valores individualmente
+            // Extrae los datos individuales de $datosProd
+            $codigo = $datosProd["codigo"];
+            $nombre = $datosProd["nombre"];
+            $proveedor = $datosProd["proveedor"];
+            $tipoProducto = $datosProd["tipoProducto"];
+            $tipoCategoria = $datosProd["tipoCategoria"];
+            $tamaño = $datosProd["tamaño"];
+            $tipoTamaño = $datosProd["tipoTamaño"];
+            $precioBase = $datosProd["precioBase"];
+            $porcentajeAumento = $datosProd["porcentajeAumento"];
+            $proveedorID = obtenerProveedorID($conn, $proveedor);
+            $tipoProductoID = obtenerTipoProductoID($conn, $tipoProducto);
+            $tipoCategoriaID = obtenerTipoCategoriaID($conn, $tipoCategoria);
+            $tipoTamañoID = obtenerTipoTamañoID($conn, $tipoTamaño);
+            $precioFinal = precioFinal($conn, $precioBase, $porcentajeAumento);
 
-        // Consulta SQL para obtener los IDs de los productos que coinciden con el código
-        $sqlConsulta = "SELECT idProductos FROM Productos WHERE idProductos = ?";
-        $stmtConsulta = $conn->prepare($sqlConsulta);
-        $stmtConsulta->bind_param("s", $codigo);
-        $stmtConsulta->execute();
-        $stmtConsulta->bind_result($codigo);
+            // Consulta SQL para obtener los IDs de los productos que coinciden con el código
+            $sqlConsulta = "SELECT idProductos FROM Productos WHERE idProductos = ?";
+            $stmtConsulta = $conn->prepare($sqlConsulta);
+            $stmtConsulta->bind_param("s", $codigo);
+            $stmtConsulta->execute();
+            $stmtConsulta->bind_result($codigo);
 
-        // Almacena los IDs de los productos en un array
-        $idProductos = array();
-        while ($stmtConsulta->fetch()) {
-            $idProductos[] = $codigo;
+            // Almacena los IDs de los productos en un array
+            $idProductos = array();
+            while ($stmtConsulta->fetch()) {
+                $idProductos[] = $codigo;
+            }
+            $stmtConsulta->close();
+
+            $sqlProductos = "UPDATE Productos SET 
+                idProveedores = ?, 
+                idTipoProducto = ?, 
+                idTipoCategoria = ?, 
+                Nombre = ?, 
+                PrecioCosto = ?, 
+                idTipoTamaño = ?, 
+                Tamaño = ? 
+                WHERE idProductos = ?";
+            $stmtProductos = $conn->prepare($sqlProductos);
+            $stmtProductos->bind_param("ssssdssi", $proveedorID, $tipoProductoID, $tipoCategoriaID, $nombre, $precioBase, $tipoTamañoID, $tamaño, $codigo);
+
+            // Consulta SQL para actualizar los registros de StockSucursales
+            $sqlStock = "UPDATE StockSucursales SET 
+                Impuestos = ?, 
+                PrecioFinal = ? 
+                WHERE idProductos = ?";
+            $stmtStock = $conn->prepare($sqlStock);
+            $stmtStock->bind_param("ddi", $porcentajeAumento, $precioFinal, $codigo);
+
+            // Inicia una transacción
+            $conn->begin_transaction();
+
+            // Ejecuta las consultas SQL para actualizar los registros
+            $actualizacionProductos = $stmtProductos->execute();
+            $actualizacionStock = $stmtStock->execute();
+
+            if ($actualizacionProductos && $actualizacionStock) {
+                // Si ambas consultas se ejecutaron con éxito, confirma la transacción
+                $conn->commit();
+
+                $response = array(
+                    "success" => true,
+                    "message" => "Registro de producto actualizado correctamente"
+                );
+            } else {
+                // Si alguna consulta falló, realiza un rollback
+                $conn->rollback();
+
+                $response = array(
+                    "success" => false,
+                    "message" => "Error al actualizar el registro de producto"
+                );
+            }
+
+            // Cierra las consultas
+            $stmtProductos->close();
+            $stmtStock->close();
+        } catch (Exception $e) {
+            // Maneja el error, registra información de error si es necesario
+            // Devuelve una respuesta HTTP con un código de estado de error
+            http_response_code(500); // Código de estado para error interno del servidor
+            echo json_encode(array("error" => $e->getMessage()));
         }
-        $stmtConsulta->close();
-
-        // Consulta SQL para actualizar los registros de Productos
-        $sqlProductos = "UPDATE Productos SET 
-            idProveedores = ?, 
-            idTipoProducto = ?, 
-            idTipoCategoria = ?, 
-            Nombre = ?, 
-            PrecioCosto = ?, 
-            idTipoTamaño = ?, 
-            Tamaño = ? 
-            WHERE idProductos = ?";
-        $stmtProductos = $conn->prepare($sqlProductos);
-        $stmtProductos->bind_param("ssssdssi", $proveedorID, $tipoProductoID, $tipoCategoriaID, $nombre, $precioBase, $tipoTamañoID, $tamaño, $codigo);
-
-        // Consulta SQL para actualizar los registros de StockSucursales
-        $sqlStock = "UPDATE StockSucursales SET 
-            Impuestos = ?, 
-            PrecioFinal = ? 
-            WHERE idProductos = ?";
-        $stmtStock = $conn->prepare($sqlStock);
-        $stmtStock->bind_param("ddi", $porcentajeAumento, $precioFinal, $codigo);
-
-        // Inicia una transacción
-        $conn->begin_transaction();
-
-        // Ejecuta las consultas SQL para actualizar los registros
-        $actualizacionProductos = $stmtProductos->execute();
-        $actualizacionStock = $stmtStock->execute();
-
-        if ($actualizacionProductos && $actualizacionStock) {
-            // Si ambas consultas se ejecutaron con éxito, confirma la transacción
-            $conn->commit();
-
-            $response = array(
-                "success" => true,
-                "message" => "Registro de producto actualizado correctamente"
-            );
-        } else {
-            // Si alguna consulta falló, realiza un rollback
-            $conn->rollback();
-
-            $response = array(
-                "success" => false,
-                "message" => "Error al actualizar el registro de producto"
-            );
-        }
-
-        // Cierra las consultas
-        $stmtProductos->close();
-        $stmtStock->close();
     }
 
     // Devuelve la respuesta como JSON
     header("Content-Type: application/json");
     echo json_encode($response);
 }
+function obtenerCantStockPorSucursal($conn) {
+    $sql = "SELECT s.idSucursales, s.Descripcion, COUNT(ss.idProductos) as CantidadProductos 
+        FROM Sucursales s
+        LEFT JOIN StockSucursales ss ON s.idSucursales = ss.idSucursales
+        GROUP BY s.idSucursales, s.Descripcion";
+    $result = $conn->query($sql);
 
+    $sucursales = array();
 
+    if ($result->num_rows > 0) {
+        while ($row = $result->fetch_assoc()) {
+            $sucursal = array(
+                "idSucursales" => $row["idSucursales"],
+                "Descripcion" => $row["Descripcion"],
+                "CantidadProductos" => $row["CantidadProductos"]
+            );
+            $sucursales[] = $sucursal;
+        }
+    } else {
+        // No se encontraron sucursales
+    }
 
+    $conn->close();
+
+    // Devuelve el resultado como JSON
+    header("Content-Type: application/json");
+    echo json_encode($sucursales);
+}
 function obtenerIdSucursal($conn, $nombreSucursal) {
     $idSucursal = 0;
     $sql = "SELECT idSucursales FROM Sucursales WHERE Descripcion = ?";

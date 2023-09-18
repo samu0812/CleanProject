@@ -38,7 +38,7 @@ session_start();
     <script src="https://code.jquery.com/jquery-3.7.0.js" integrity="sha256-JlqSTELeR4TLqP0OG9dxM7yDPqX1ox/HfgiSLBj8+kM=" crossorigin="anonymous"></script>
 
     <!-- Incluir Bootstrap CSS -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css">
+    <!--<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css"> -->
 
     <!-- Incluir DataTables CSS -->
     <link href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css" rel="stylesheet">
@@ -61,82 +61,34 @@ session_start();
 
 <body>
     <div class="container-xxl position-relative bg-white d-flex p-0">
-        <!-- Spinner Start -->
         <div id="spinner" class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
             <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status">
                 <span class="sr-only">Loading...</span>
             </div>
         </div>
-        <!-- Spinner End -->
-        <!-- Sidebar Start -->
+
         <?php
         include "sidebar.php";
         ?>
-        <!-- Sidebar End -->
-        <!-- Content Start -->
+
         <div class="content">
-            <!-- Navbar Start -->
             <?php
             include "navbar.php";
             ?>
-            <!-- Navbar End -->
-            <!-- Contenido de la Página -->
+
             <div class="container-fluid pt-4 px-4">
                 <div class="row g-4">
                     <div class="col-12 col-md-6 col-lg-4 col-xl-3">
                         <div class="d-flex align-items-center justify-content-center p-4">
                             <button id="btnAgregarProd" type="button" style="background: #e77a34; color: white" class="btn btn-md" data-bs-toggle="modal" data-bs-target="#modalAgregarProducto">
-                            <i class="fas fa-plus"></i> Agregar Producto</button>    
-                        </div>
-                    </div>
-                    
-                    <div class="col-12 col-md-6 col-lg-4 col-xl-3">
-                        <div class="bg-personalizado rounded d-flex align-items-center justify-content-center p-4">
-                            <svg xmlns="http://www.w3.org/2000/svg" style="color: #e77a34" class="icon icon-tabler icon-tabler-forklift" width="55" height="55" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                                <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                                <path d="M5 17m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0"></path>
-                                <path d="M14 17m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0"></path>
-                                <path d="M7 17l5 0"></path>
-                                <path d="M3 17v-6h13v6"></path>
-                                <path d="M5 11v-4h4"></path>
-                                <path d="M9 11v-6h4l3 6"></path>
-                                <path d="M22 15h-3v-10"></path>
-                                <path d="M16 13l3 0"></path>
-                            </svg>
-                            <div class="text-center" style="margin-left: 30px">
-                                <p class="mb-2">Galpon</p>
-                                <h6 class="mb-0">1000</h6>
-                            </div>
+                                <i class="fas fa-plus"></i> Agregar Producto
+                            </button>
                         </div>
                     </div>
 
-                    <div class="col-12 col-md-6 col-lg-4 col-xl-3">
-                        <div class="bg-personalizado rounded d-flex align-items-center justify-content-center p-4">
-                            <svg xmlns="http://www.w3.org/2000/svg" style="color: #e77a34" class="icon icon-tabler icon-tabler-building-warehouse me-1" width="55" height="55" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                                <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                                <path d="M3 21v-13l9 -4l9 4v13"></path>
-                                <path d="M13 13h4v8h-10v-6h6"></path>
-                                <path d="M13 21v-9a1 1 0 0 0 -1 -1h-2a1 1 0 0 0 -1 1v3"></path>
-                            </svg>
-                            <div class="text-center" style="margin-left: 30px">
-                                <p class="mb-2">Kirchner</p>
-                                <h6 class="mb-0">600</h6>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-12 col-md-6 col-lg-4 col-xl-3">
-                        <div class="bg-personalizado rounded d-flex align-items-center justify-content-center p-4">
-                            <svg xmlns="http://www.w3.org/2000/svg" style="color: #e77a34" class="icon icon-tabler icon-tabler-building-warehouse" width="55" height="55" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                            <path d="M3 21v-13l9 -4l9 4v13"></path>
-                            <path d="M13 13h4v8h-10v-6h6"></path>
-                            <path d="M13 21v-9a1 1 0 0 0 -1 -1h-2a1 1 0 0 0 -1 1v3"></path>
-                            </svg>
-                            <div class="text-center" style="margin-left: 30px">
-                                <p class="mb-2">Centro</p>
-                                <h6 class="mb-0">600</h6>
-                            </div>
+                    <div class="col-12 col-md-6 col-lg-8 col-xl-9"> <!-- Contenedor para las cartas de sucursales -->
+                        <div class="row g-4" id="sucursalesContainer">
+                            <!-- Aquí se agregarán las cartas dinámicamente -->
                         </div>
                     </div>
                 </div>
@@ -255,7 +207,7 @@ session_start();
                                                 </div>
 
                                                 <div class="mr-4">
-                                                    <input style="width: 70px;" type="number" value="0.00" class="form-control" name="porcentajeAumento" id="porcentajeAumento" required>
+                                                    <input style="width: 70px;" type="number" value="0.00" class="form-control" name="porcentajeAumento" id="porcentajeAumento" required min="0">
                                                 </div>
                                             </div>
                                         </div>
@@ -304,18 +256,78 @@ session_start();
                 </div>
             </div>
 
-            <!-- Footer Start -->
             <?php
             include "footer.php";
             ?>
-            <!-- Footer End -->
 
         </div>
-        <!-- Content End -->
-
-        <!-- Back to Top -->
         <a href="#" class="btn btn-lg btn-lg-square back-to-top" style="background: #e77a34; color: white"><i class="bi bi-arrow-up"></i></a>
     </div>
+
+    <script>
+        // Función para cargar las cartas de sucursales y cantidad de productos
+        function cargarCartasSucursales() {
+        fetch('../controladores/nuevo_producto.php?action=listarcards')
+            .then(response => response.json())
+            .then(data => {
+                const sucursalesContainer = document.getElementById('sucursalesContainer');
+
+                // Limpia el contenedor antes de agregar las cartas
+                sucursalesContainer.innerHTML = '';
+
+                // Iterar a través de los datos de las sucursales
+                data.forEach(sucursal => {
+                    const carta = document.createElement('div');
+                    carta.classList.add('col-lg-4'); // Agrega clase para columnas de Bootstrap
+
+                    if (sucursal.Descripcion == "Galpon"){
+                        carta.innerHTML = `
+                        <div class="bg-personalizado rounded d-flex align-items-center justify-content-center p-4">
+                            <svg xmlns="http://www.w3.org/2000/svg" style="color: #e77a34" class="icon icon-tabler icon-tabler-forklift" width="55" height="55" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                <path d="M5 17m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0"></path>
+                                <path d="M14 17m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0"></path>
+                                <path d="M7 17l5 0"></path>
+                                <path d="M3 17v-6h13v6"></path>
+                                <path d="M5 11v-4h4"></path>
+                                <path d="M9 11v-6h4l3 6"></path>
+                                <path d="M22 15h-3v-10"></path>
+                                <path d="M16 13l3 0"></path>
+                            </svg>
+                            <div class="text-center" style="margin-left: 30px">
+                                <p class="mb-2">${sucursal.Descripcion}</p>
+                                <h6 class="mb-0">${sucursal.CantidadProductos}</h6>
+                            </div>
+                        </div>
+                    `;
+                    } else {
+                        carta.innerHTML = `
+                            <div class="bg-personalizado rounded d-flex align-items-center justify-content-center p-4">
+                                <svg xmlns="http://www.w3.org/2000/svg" style="color: #e77a34" class="icon icon-tabler icon-tabler-building-warehouse" width="55" height="55" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                <path d="M3 21v-13l9 -4l9 4v13"></path>
+                                <path d="M13 13h4v8h-10v-6h6"></path>
+                                <path d="M13 21v-9a1 1 0 0 0 -1 -1h-2a1 1 0 0 0 -1 1v3"></path>
+                                </svg>
+                                <div class="text-center" style="margin-left: 30px">
+                                    <p class="mb-2">${sucursal.Descripcion}</p>
+                                    <h6 class="mb-0">${sucursal.CantidadProductos}</h6>
+                                </div>
+                            </div>
+                        `;
+                    }
+                    sucursalesContainer.appendChild(carta);
+                });
+                obtenerProductos()
+            })
+            .catch(error => {
+                console.error('Error al obtener las sucursales: ', error);
+            });
+        }
+
+        // Llama a la función para cargar las cartas cuando se carga la página
+        window.addEventListener('load', cargarCartasSucursales);
+    </script>
 
     <script>
         // Obtener elementos relevantes
@@ -464,8 +476,18 @@ session_start();
                     },
                     searching: true,
                     lengthChange: true,
-                    ordering: false ,
+                    ordering: true, // Habilita el ordenamiento de columnas
+                    order: [[0, 'asc']], // Ordena la primera columna de forma ascendente (puedes cambiar '0' al índice de la columna que desees)
                     info: false,
+                    columnDefs: [{
+                        targets: -1, // Última columna (cambiar a la columna que desees)
+                        orderable: false, // Deshabilita el ordenamiento en esta columna
+                        },
+                        {
+                            targets: 1, // Índice de la columna "Nombre"
+                            className: 'nombre-negro', // Agrega una clase CSS personalizada
+                        }
+                    ],
                     language: {
                         search: "",
                         searchPlaceholder: "Filtrar Productos",
@@ -476,8 +498,8 @@ session_start();
                         infoFiltered: "(filtrado de _MAX_ registros en total)"
                     }
                 });
-            });
-
+                $('#tableProd tbody td').css('color', 'black');
+            });            
             // Realiza una solicitud Fetch para obtener los datos de los proveedores desde tu servidor
             fetch('../controladores/nuevo_producto.php?action=listar')
                 .then(response => response.json())
@@ -513,21 +535,20 @@ session_start();
                 });
         };
 
-        function addProducto(){
-            inputsActivos()
+        function addProducto() {
+            inputsActivos();
             const formularioProd = document.getElementById('formAgregarProducto');
             const datosFormularioProductos = new FormData(formularioProd);
-            let iva = $('#iva').prop('checked'); // Valor del checkbox Iva (true si está marcado, false si no)
-            let rentas = $('#rentas').prop('checked'); // Valor del checkbox Rentas (true si está marcado, false si no)
-            let impuesto = 0 // Si el valor de impuesto es 0, significa que no esta seleccionado ninguno, si es 1 son ambos impuestos, 
-            // si es 2 o 3 varia entre iva y rentas.
+            let iva = $('#iva').prop('checked');
+            let rentas = $('#rentas').prop('checked');
+            let impuesto = 0;
 
             if (iva && rentas) {
-                impuesto = 1
+                impuesto = 1;
             } else if (iva) {
-                impuesto = 2
+                impuesto = 2;
             } else if (rentas) {
-                impuesto = 3
+                impuesto = 3;
             }
 
             // Puedes acceder a los valores de cada campo por su nombre
@@ -542,65 +563,110 @@ session_start();
             const precioBase = datosFormularioProductos.get('precioBase');
             const porcentajeAumento = datosFormularioProductos.get('porcentajeAumento');
             const sucursal = datosFormularioProductos.get('sucursal');
-            if (codigo === "" || nombre === "" || proveedor === "" || tipoProducto === "" || tipoCategoria === "" || tamaño === "" 
-            || tipoTamaño === "" || cantidad === "" || precioBase === "" || porcentajeAumento === "" || sucursal === "") 
-            {
-                // Muestra un mensaje de error
-                alert("Todos los campos son requeridos. Por favor, completa todos los campos.");
-                return; // Detiene el flujo si falta algún campo
-            }
 
-            // Crea un objeto con los datos a enviar
-            const datosProd = {codigo, nombre, proveedor, tipoProducto, tipoCategoria, tamaño, tipoTamaño,
-                cantidad, precioBase, impuesto, porcentajeAumento, sucursal};
-            // hacemos el fetch al backend
-            fetch("../controladores/nuevo_producto.php?action=agregar", {
+            let contieneNumeros = /[0-9]/.test(nombre);
+            let camposIncompletos = codigo === "" || nombre === "" || proveedor === "" || tipoProducto === "" || tipoCategoria === "" || tamaño === "" || tipoTamaño === "" || cantidad === "" || precioBase === "" || porcentajeAumento === "" || sucursal === "";
+
+            // Verifica si debes mostrar el error por números en el nombre
+            if (contieneNumeros || camposIncompletos) {
+                Swal.fire({
+                    position: 'top-end',
+                    icon: 'error',
+                    title: contieneNumeros ? 'El nombre no debe contener números.' : 'Todos los campos son requeridos. Por favor, completa todos los campos.',
+                    showConfirmButton: true,
+                    timer: 2000,
+                    background: false,
+                    backdrop: false,
+                    customClass: {
+                        container: 'custom-container-class',
+                        popup: 'custom-popup-class',
+                        title: 'custom-title-class',
+                        icon: 'custom-icon-class',
+                    },
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        // El usuario hizo clic en el botón "Ok" de la alerta, permitir que modifiquen los datos
+                        inputsActivos();
+                        $('#btnGuardar').prop('disabled', false);
+                        return;
+                    }
+                });
+            } else {
+                // El formulario es válido, procede con el envío de datos al servidor
+
+                // Crea un objeto con los datos a enviar
+                const datosProd = { codigo, nombre, proveedor, tipoProducto, tipoCategoria, tamaño, tipoTamaño, cantidad, precioBase, impuesto, porcentajeAumento, sucursal };
+
+                // Hacer el fetch al backend
+                fetch("../controladores/nuevo_producto.php?action=agregar", {
                     method: "POST",
-                    headers: {"Content-Type": "application/json"},
+                    headers: { "Content-Type": "application/json" },
                     body: JSON.stringify(datosProd)
                 })
-                .then(response => response.text())
-                .then(data => {
-                    console.log(data)
-                    // recargamos la tabla
-                    obtenerProductos()
-                    // mostramos el mensaje
-                    Swal.fire({
-                        position: 'top-end',
-                        icon: 'success',
-                        title: 'Se ha añadido el producto correctamente',
-                        showConfirmButton: false,
-                        timer: 2000,
-                        background: false, // Desactiva el fondo oscurecido
-                        backdrop: false,
-                        customClass: {
-                            container: 'custom-container-class',
-                            popup: 'custom-popup-class', // Clase personalizada para ajustar el tamaño de la alerta
-                            title: 'custom-title-class', // Clase personalizada para ajustar el tamaño del título
-                            icon: 'custom-icon-class',
-                        },
+                    .then(response => response.json())
+                    .then(data => {
+                        if (!data.success) {
+                            Swal.fire({
+                                position: 'top-end',
+                                icon: 'error',
+                                title: 'Error, ' + data.message,
+                                showConfirmButton: false,
+                                timer: 2000,
+                                background: false,
+                                backdrop: false,
+                                customClass: {
+                                    container: 'custom-container-class',
+                                    popup: 'custom-popup-class',
+                                    title: 'custom-title-class',
+                                    icon: 'custom-icon-class',
+                                },
+                            });
+                        } else {
+                            Swal.fire({
+                                position: 'top-end',
+                                icon: 'success',
+                                title: 'Se ha añadido el producto correctamente',
+                                showConfirmButton: false,
+                                timer: 2000,
+                                background: false,
+                                backdrop: false,
+                                customClass: {
+                                    container: 'custom-container-class',
+                                    popup: 'custom-popup-class',
+                                    title: 'custom-title-class',
+                                    icon: 'custom-icon-class',
+                                }
+                            });
+                        }
+                        obtenerProductos();
+                        cargarCartasSucursales()
+                        btnOcultos("ocultos")
+                        $('#modalAgregarProducto').modal('hide');
+                        $('#btnAgregarProd').prop('disabled', false);
                     })
-                    btnOcultos("ocultos")
-                    $('#modalAgregarProducto').modal('hide');
-                    $('#btnAgregarProd').prop('disabled', false);
-                })
-                .catch(error => {
-                    Swal.fire({
-                        position: 'top-end',
-                        icon: 'error',
-                        title: 'Ocurrió un error',
-                        showConfirmButton: false,
-                        timer: 2000,
-                        background: false, // Desactiva el fondo oscurecido
-                        backdrop: false,
-                        customClass: {
-                            container: 'custom-container-class',
-                            popup: 'custom-popup-class', // Clase personalizada para ajustar el tamaño de la alerta
-                            title: 'custom-title-class', // Clase personalizada para ajustar el tamaño del título
-                            icon: 'custom-icon-class',
-                        },
+                    .catch(error => {
+                        Swal.fire({
+                            position: 'top-end',
+                            icon: 'error',
+                            title: 'Ocurrió un error inesperado',
+                            showConfirmButton: false,
+                            timer: 2000,
+                            background: false,
+                            backdrop: false,
+                            customClass: {
+                                container: 'custom-container-class',
+                                popup: 'custom-popup-class',
+                                title: 'custom-title-class',
+                                icon: 'custom-icon-class',
+                            },
+                        });
                     })
-                });
+                    .finally(() => {
+                        // Restablece el estado del botón "Guardar" después de un error
+                        $('#btnGuardar').prop('disabled', false);
+                        contextoActual = "agregarProducto";
+                    });
+            }
         }
 
         function addStock(){
@@ -628,6 +694,7 @@ session_start();
             .then(response => response.text())
             .then(data => {
                 obtenerProductos()
+                cargarCartasSucursales()
                 // Cierra el modal de confirmación
                 btnOcultos("ocultos")
                 $('#modalAgregarProducto').modal('hide');
@@ -668,84 +735,273 @@ session_start();
             });
         }
 
-        function editProducto(){
-            inputsActivos()
-            const valoresEditados = {
-                codigo: id,
-                nombre: document.getElementById('nombre').value,
-                proveedor: document.getElementById('proveedor').value,
-                tipoProducto: document.getElementById('tipoProducto').value,
-                tipoCategoria: document.getElementById('tipoCategoria').value,
-                tamaño: document.getElementById('tamaño').value,
-                tipoTamaño: document.getElementById('tipoTamaño').value,
-                cantidad: document.getElementById('cantidad').value,
-                precioBase: document.getElementById('precioBase').value,
-                porcentajeAumento: document.getElementById('porcentajeAumento').value,
-                precioVenta: document.getElementById('precioVenta').value,
-            };
-            fetch('../controladores/nuevo_producto.php?action=editar', {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify(valoresEditados)
-            } )
-            .then(response => {
-                if (!response.ok) {
-                    // El servidor devolvió un código de estado de error
-                    // Forzar que se vaya por el catch
-                    throw new Error("Error en la solicitud al servidor");
-                }
-                return response.text();
-            })
-            .then(data => {
-                obtenerProductos()
-                // Cierra el modal de confirmación
-                btnOcultos("ocultos")
-                $('#modalAgregarProducto').modal('hide');
-                $('#btnAgregarProd').prop('disabled', false);
-                Swal.fire({
-                    position: 'top-end',
-                    icon: 'success',
-                    title: 'Se ha actualizado el producto correctamente',
-                    showConfirmButton: false,
-                    timer: 2000,
-                    background: false, // Desactiva el fondo oscurecido
-                    backdrop: false,
-                    customClass: {
-                        container: 'custom-container-class',
-                        popup: 'custom-popup-class', // Clase personalizada para ajustar el tamaño de la alerta
-                        title: 'custom-title-class', // Clase personalizada para ajustar el tamaño del título
-                        icon: 'custom-icon-class',
-                    },
-                })
-            })
-            .catch(error => {
+        function editProducto() {
+            inputsActivos();
+
+            const codigoActual = document.getElementById('codigo').value.trim();
+            const codigoOriginal = id.trim(); // El código original del producto
+            let codigoOriginalPhp = id;
+
+            if (!codigoActual || codigoActual.length === 0) {
                 Swal.fire({
                     position: 'top-end',
                     icon: 'error',
-                    title: 'Ocurrió un error',
-                    showConfirmButton: false,
+                    title: 'Ingrese el código.',
+                    showConfirmButton: true,
                     timer: 2000,
-                    background: false, // Desactiva el fondo oscurecido
+                    background: false,
                     backdrop: false,
                     customClass: {
                         container: 'custom-container-class',
-                        popup: 'custom-popup-class', // Clase personalizada para ajustar el tamaño de la alerta
-                        title: 'custom-title-class', // Clase personalizada para ajustar el tamaño del título
+                        popup: 'custom-popup-class',
+                        title: 'custom-title-class',
                         icon: 'custom-icon-class',
                     },
-                })
-            });
+                });
+                return; // Sale de la función si el campo no es válido
+            }
 
-            // Función para comparar dos objetos y verificar si tienen los mismos valores
-            function sonIguales(objeto1, objeto2) {
-                for (let clave in objeto1) {
-                    if (objeto1[clave] !== objeto2[clave]) {
-                        return false;
+            let contieneNumeros = /[0-9]/.test(document.getElementById('nombre').value.trim());
+
+            if (contieneNumeros) {
+                Swal.fire({
+                    position: 'top-end',
+                    icon: 'error',
+                    title: 'El nombre no debe contener números.',
+                    showConfirmButton: true,
+                    timer: 2000,
+                    background: false,
+                    backdrop: false,
+                    customClass: {
+                        container: 'custom-container-class',
+                        popup: 'custom-popup-class',
+                        title: 'custom-title-class',
+                        icon: 'custom-icon-class',
+                    },
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        // El usuario hizo clic en el botón "Ok" de la alerta, permitir que modifiquen los datos
+                        inputsActivos();
+                        $('#btnGuardar').prop('disabled', false);
+                        return;
                     }
+                });
+            } else {
+                if (codigoActual !== codigoOriginal) {
+                    // Si el código ha cambiado, realizar la verificación en la base de datos
+                    const valoresEditados = {codigo: codigoActual,};
+                    fetch('../controladores/nuevo_producto.php?action=verificarcodigo', {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+                        body: JSON.stringify(valoresEditados)
+                    } )
+                    .then(response => {
+                        if (!response.ok) {
+                            // El servidor devolvió un código de estado de error
+                            throw new Error("Error en la solicitud al servidor");
+                        }
+                        return response.text();
+                    })
+                    .then(existe => {
+                        if (existe) {
+                            Swal.fire({
+                                position: 'top-end',
+                                icon: 'error',
+                                title: 'El código ya existe en la base de datos.',
+                                showConfirmButton: true,
+                                timer: 2000,
+                                background: false,
+                                backdrop: false,
+                                customClass: {
+                                    container: 'custom-container-class',
+                                    popup: 'custom-popup-class',
+                                    title: 'custom-title-class',
+                                    icon: 'custom-icon-class',
+                                },
+                            });
+                        } else {
+                            // El código no existe en la base de datos, podemos enviar los datos al servidor
+                            const valoresEditados = {
+                                codigo: codigoOriginalPhp, // Utilizamos el código original
+                                nombre: document.getElementById('nombre').value,
+                                proveedor: document.getElementById('proveedor').value,
+                                tipoProducto: document.getElementById('tipoProducto').value,
+                                tipoCategoria: document.getElementById('tipoCategoria').value,
+                                tamaño: document.getElementById('tamaño').value,
+                                tipoTamaño: document.getElementById('tipoTamaño').value,
+                                cantidad: document.getElementById('cantidad').value,
+                                precioBase: document.getElementById('precioBase').value,
+                                porcentajeAumento: document.getElementById('porcentajeAumento').value,
+                                precioVenta: document.getElementById('precioVenta').value,
+                            };
+
+                            fetch('../controladores/nuevo_producto.php?action=editar', {
+                                method: "POST",
+                                headers: {
+                                    "Content-Type": "application/json"
+                                },
+                                body: JSON.stringify(valoresEditados)
+                            })
+                            .then(response => {
+                                if (!response.ok) {
+                                    // El servidor devolvió un código de estado de error
+                                    // Forzar que se vaya por el catch
+                                    throw new Error("Error en la solicitud al servidor");
+                                }
+                                return response.json();
+                            })
+                            .then(data => {
+                                if (!data.success) {
+                                    Swal.fire({
+                                        position: 'top-end',
+                                        icon: 'error',
+                                        title: 'Error, ' + data.message,
+                                        showConfirmButton: false,
+                                        timer: 2000,
+                                        background: false,
+                                        backdrop: false,
+                                        customClass: {
+                                            container: 'custom-container-class',
+                                            popup: 'custom-popup-class',
+                                            title: 'custom-title-class',
+                                            icon: 'custom-icon-class',
+                                        },
+                                    });
+                                } else {
+                                    Swal.fire({
+                                        position: 'top-end',
+                                        icon: 'success',
+                                        title: 'Se ha actualizado el producto correctamente',
+                                        showConfirmButton: false,
+                                        timer: 2000,
+                                        background: false,
+                                        backdrop: false,
+                                        customClass: {
+                                            container: 'custom-container-class',
+                                            popup: 'custom-popup-class',
+                                            title: 'custom-title-class',
+                                            icon: 'custom-icon-class',
+                                        }
+                                    });
+                                    obtenerProductos()
+                                    cargarCartasSucursales()
+                                    // Cierra el modal de confirmación
+                                    btnOcultos("ocultos")
+                                    $('#modalAgregarProducto').modal('hide');
+                                    $('#btnAgregarProd').prop('disabled', false);
+                                }
+                            })
+                            .catch(error => {
+                                Swal.fire({
+                                    position: 'top-end',
+                                    icon: 'error',
+                                    title: 'Ocurrió un error',
+                                    showConfirmButton: false,
+                                    timer: 2000,
+                                    background: false, // Desactiva el fondo oscurecido
+                                    backdrop: false,
+                                    customClass: {
+                                        container: 'custom-container-class',
+                                        popup: 'custom-popup-class', // Clase personalizada para ajustar el tamaño de la alerta
+                                        title: 'custom-title-class', // Clase personalizada para ajustar el tamaño del título
+                                        icon: 'custom-icon-class',
+                                    },
+                                })
+                            });
+                        }
+                    });
+                } else {
+                    // Si el código no ha cambiado, enviar los datos al servidor sin verificar la base de datos
+                    const valoresEditados = {
+                        codigo: codigoOriginal, // Utilizamos el código original
+                        nombre: document.getElementById('nombre').value,
+                        proveedor: document.getElementById('proveedor').value,
+                        tipoProducto: document.getElementById('tipoProducto').value,
+                        tipoCategoria: document.getElementById('tipoCategoria').value,
+                        tamaño: document.getElementById('tamaño').value,
+                        tipoTamaño: document.getElementById('tipoTamaño').value,
+                        cantidad: document.getElementById('cantidad').value,
+                        precioBase: document.getElementById('precioBase').value,
+                        porcentajeAumento: document.getElementById('porcentajeAumento').value,
+                        precioVenta: document.getElementById('precioVenta').value,
+                    };
+
+                    fetch('../controladores/nuevo_producto.php?action=editar', {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+                        body: JSON.stringify(valoresEditados)
+                    })
+                        .then(response => {
+                            if (!response.ok) {
+                                // El servidor devolvió un código de estado de error
+                                // Forzar que se vaya por el catch
+                                throw new Error("Error en la solicitud al servidor");
+                            }
+                            return response.json();
+                        })
+                        .then(data => {
+                            if (!data.success) {
+                                Swal.fire({
+                                    position: 'top-end',
+                                    icon: 'error',
+                                    title: 'Error, ' + data.message,
+                                    showConfirmButton: false,
+                                    timer: 2000,
+                                    background: false,
+                                    backdrop: false,
+                                    customClass: {
+                                        container: 'custom-container-class',
+                                        popup: 'custom-popup-class',
+                                        title: 'custom-title-class',
+                                        icon: 'custom-icon-class',
+                                    },
+                                });
+                            } else {
+                                Swal.fire({
+                                    position: 'top-end',
+                                    icon: 'success',
+                                    title: 'Se ha actualizado el producto correctamente',
+                                    showConfirmButton: false,
+                                    timer: 2000,
+                                    background: false,
+                                    backdrop: false,
+                                    customClass: {
+                                        container: 'custom-container-class',
+                                        popup: 'custom-popup-class',
+                                        title: 'custom-title-class',
+                                        icon: 'custom-icon-class',
+                                    }
+                                });
+                                obtenerProductos()
+                                cargarCartasSucursales()
+                                // Cierra el modal de confirmación
+                                btnOcultos("ocultos")
+                                $('#modalAgregarProducto').modal('hide');
+                                $('#btnAgregarProd').prop('disabled', false);
+                            }
+                        })
+                        .catch(error => {
+                            Swal.fire({
+                                position: 'top-end',
+                                icon: 'error',
+                                title: 'Ocurrió un error',
+                                showConfirmButton: false,
+                                timer: 2000,
+                                background: false, // Desactiva el fondo oscurecido
+                                backdrop: false,
+                                customClass: {
+                                    container: 'custom-container-class',
+                                    popup: 'custom-popup-class', // Clase personalizada para ajustar el tamaño de la alerta
+                                    title: 'custom-title-class', // Clase personalizada para ajustar el tamaño del título
+                                    icon: 'custom-icon-class',
+                                },
+                            })
+                        });
                 }
-                return true;
             }
         }
 
@@ -753,6 +1009,7 @@ session_start();
         let table1;
         let contextoActual = null;
         obtenerProductos()
+        cargarCartasSucursales()
         let id;
         $('#btnAgregarProd').click(function() {
             limpiarModal()
@@ -881,6 +1138,7 @@ session_start();
                             $('#cantidad').prop('disabled', true);
                             // Mostrar el modal de edición
                             $('#modalEditarStock').modal('show');
+                            $('#btnAgregarProd').prop('disabled', false);
                         })
                         .catch(error => {
                             console.error('Error al obtener datos del producto: ', error);
@@ -905,8 +1163,10 @@ session_start();
                         .then(response => response.text())
                         .then(data => {
                             obtenerProductos()
+                            cargarCartasSucursales()
                             // Cierra el modal de confirmación
                             $('#modalEliminarStock').modal('hide');
+                            $('#btnAgregarProd').prop('disabled', false);
                             // mostramos el mensaje
                             Swal.fire({
                                 position: 'top-end',
@@ -954,7 +1214,7 @@ session_start();
             } else if (contextoActual === "editarTablaProducto") {
                 editProducto()
             }
-            contextoActual = null; // Restablece el contexto después de la acción
+            $('#btnGuardar').prop('disabled', false);
         });
     </script>
 

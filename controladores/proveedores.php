@@ -42,8 +42,6 @@ if (isset($_GET['action'])) {
     echo json_encode(array("message" => "Acción no válida"));
 }
 
-
-
 function listarProveedores($conn) {
     // Realiza tu consulta SQL para obtener la lista de proveedores
     $sql = "SELECT * FROM proveedores";
