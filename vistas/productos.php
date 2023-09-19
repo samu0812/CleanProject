@@ -267,47 +267,32 @@ session_start();
     <script>
         // Función para cargar las cartas de sucursales y cantidad de productos
         function cargarCartasSucursales() {
-        fetch('../controladores/nuevo_producto.php?action=listarcards')
-            .then(response => response.json())
-            .then(data => {
-                const sucursalesContainer = document.getElementById('sucursalesContainer');
+            fetch('../controladores/nuevo_producto.php?action=listarcards')
+                .then(response => response.json())
+                .then(data => {
+                    const sucursalesContainer = document.getElementById('sucursalesContainer');
 
-                // Limpia el contenedor antes de agregar las cartas
-                sucursalesContainer.innerHTML = '';
+                    // Limpia el contenedor antes de agregar las cartas
+                    sucursalesContainer.innerHTML = '';
 
-                // Iterar a través de los datos de las sucursales
-                data.forEach(sucursal => {
-                    const carta = document.createElement('div');
-                    carta.classList.add('col-lg-4'); // Agrega clase para columnas de Bootstrap
+                    // Iterar a través de los datos de las sucursales
+                    data.forEach(sucursal => {
+                        const carta = document.createElement('div');
+                        carta.classList.add('col-lg-4'); // Agrega clase para columnas de Bootstrap
 
-                    if (sucursal.Descripcion == "Galpon"){
-                        carta.innerHTML = `
-                        <div class="bg-personalizado rounded d-flex align-items-center justify-content-center p-4">
-                            <svg xmlns="http://www.w3.org/2000/svg" style="color: #e77a34" class="icon icon-tabler icon-tabler-forklift" width="55" height="55" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                                <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                                <path d="M5 17m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0"></path>
-                                <path d="M14 17m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0"></path>
-                                <path d="M7 17l5 0"></path>
-                                <path d="M3 17v-6h13v6"></path>
-                                <path d="M5 11v-4h4"></path>
-                                <path d="M9 11v-6h4l3 6"></path>
-                                <path d="M22 15h-3v-10"></path>
-                                <path d="M16 13l3 0"></path>
-                            </svg>
-                            <div class="text-center" style="margin-left: 30px">
-                                <p class="mb-2">${sucursal.Descripcion}</p>
-                                <h6 class="mb-0">${sucursal.CantidadProductos}</h6>
-                            </div>
-                        </div>
-                    `;
-                    } else {
-                        carta.innerHTML = `
+                        if (sucursal.Descripcion == "Galpon"){
+                            carta.innerHTML = `
                             <div class="bg-personalizado rounded d-flex align-items-center justify-content-center p-4">
-                                <svg xmlns="http://www.w3.org/2000/svg" style="color: #e77a34" class="icon icon-tabler icon-tabler-building-warehouse" width="55" height="55" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                                <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                                <path d="M3 21v-13l9 -4l9 4v13"></path>
-                                <path d="M13 13h4v8h-10v-6h6"></path>
-                                <path d="M13 21v-9a1 1 0 0 0 -1 -1h-2a1 1 0 0 0 -1 1v3"></path>
+                                <svg xmlns="http://www.w3.org/2000/svg" style="color: #e77a34" class="icon icon-tabler icon-tabler-forklift" width="55" height="55" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                    <path d="M5 17m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0"></path>
+                                    <path d="M14 17m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0"></path>
+                                    <path d="M7 17l5 0"></path>
+                                    <path d="M3 17v-6h13v6"></path>
+                                    <path d="M5 11v-4h4"></path>
+                                    <path d="M9 11v-6h4l3 6"></path>
+                                    <path d="M22 15h-3v-10"></path>
+                                    <path d="M16 13l3 0"></path>
                                 </svg>
                                 <div class="text-center" style="margin-left: 30px">
                                     <p class="mb-2">${sucursal.Descripcion}</p>
@@ -315,14 +300,29 @@ session_start();
                                 </div>
                             </div>
                         `;
-                    }
-                    sucursalesContainer.appendChild(carta);
+                        } else {
+                            carta.innerHTML = `
+                                <div class="bg-personalizado rounded d-flex align-items-center justify-content-center p-4">
+                                    <svg xmlns="http://www.w3.org/2000/svg" style="color: #e77a34" class="icon icon-tabler icon-tabler-building-warehouse" width="55" height="55" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                    <path d="M3 21v-13l9 -4l9 4v13"></path>
+                                    <path d="M13 13h4v8h-10v-6h6"></path>
+                                    <path d="M13 21v-9a1 1 0 0 0 -1 -1h-2a1 1 0 0 0 -1 1v3"></path>
+                                    </svg>
+                                    <div class="text-center" style="margin-left: 30px">
+                                        <p class="mb-2">${sucursal.Descripcion}</p>
+                                        <h6 class="mb-0">${sucursal.CantidadProductos}</h6>
+                                    </div>
+                                </div>
+                            `;
+                        }
+                        sucursalesContainer.appendChild(carta);
+                    });
+                    obtenerProductos()
+                })
+                .catch(error => {
+                    console.error('Error al obtener las sucursales: ', error);
                 });
-                obtenerProductos()
-            })
-            .catch(error => {
-                console.error('Error al obtener las sucursales: ', error);
-            });
         }
 
         // Llama a la función para cargar las cartas cuando se carga la página
@@ -1320,6 +1320,10 @@ session_start();
             border-color: #e77a34; /* Cambia el color del borde en el hover */
         }
     </style>
+<<<<<<< HEAD
+=======
+
+>>>>>>> 941de5e53b785c5c23854a0bf2b45ea3934b4ab0
     <script src="../js/main.js"></script>
 </body>
 </html>

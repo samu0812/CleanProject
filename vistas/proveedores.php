@@ -462,7 +462,6 @@ session_start();
         let table1
 
         function obtenerProveedores() {
-            // Inicializa DataTables al cargar la página
             $(document).ready(function () {
                 if (table1 !== undefined && $.fn.DataTable.isDataTable('#tableProveedores')) {
                     table1.destroy();
