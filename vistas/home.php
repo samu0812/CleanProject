@@ -190,12 +190,12 @@ $rol = isset($_SESSION['rol']) ? $_SESSION['rol'] : '';
                             </div>
                         </div>
                     </div>
-                    <div class="grafico-container">
+                    <div class="grafico-containerTorta">
                         <!-- Contenedor del segundo gráfico -->
                         <div class="bg-personalizado text-center rounded p-4 cursorPointer2 chart-container">
                             <div class="d-flex flex-column align-items-center justify-content-center chart-content">
-                                <h6 class="mb-0">Total de ventas por Sucursal</h6>
-                                <canvas id="ganancias" class="chart-canvas"></canvas>
+                                <h6 class="mb-0">Total recaudado por sucursal</h6>
+                                <canvas id="totalRecaudadoPorSucursal" class="chart-canvasTorta"></canvas>
                             </div>
                         </div>
                     </div>
@@ -248,6 +248,33 @@ $rol = isset($_SESSION['rol']) ? $_SESSION['rol'] : '';
         margin-top: 10px; /* Ajusta la cantidad de espacio hacia arriba que desees */
         padding-bottom: 30px; /* Añade espacio en la parte inferior */
     }
+
+
+
+    .grafico-containerTorta {
+        width: 60%; /* Ajusta el ancho del contenedor de la carta según tus preferencias */
+        max-width: 500px; /* Establece un ancho máximo si deseas limitar el tamaño máximo */
+        margin: 0 auto; /* Centra el contenedor horizontalmente */
+        padding: 20px; /* Agrega espaciado interno si es necesario */
+    }
+
+    .grafico-containerTorta .bg-personalizado {
+        /* Ajusta el tamaño de la carta (bg-personalizado) */
+        width: 100%; /* Ancho al 100% del contenedor */
+        max-width: 100%; /* Ancho máximo al 100% del contenedor */
+    }
+
+    .chart-canvasTorta {
+        /* Ajusta el tamaño del gráfico (canvas) */
+        width: 100%; /* Ancho al 100% del contenedor */
+        max-width: 100%; /* Ancho máximo al 100% del contenedor */
+        height: auto; /* Altura automática para mantener la proporción */
+    }
+
+
+
+
+
     </style>
 
     <script>
@@ -344,8 +371,11 @@ $rol = isset($_SESSION['rol']) ? $_SESSION['rol'] : '';
                             tooltip: {
                                 callbacks: {
                                     label: function (context) {
-                                        // Muestra el nombre completo del producto en el tooltip
-                                        return nombresProductos[context.dataIndex];
+                                        // // Muestra el nombre completo del producto en el tooltip
+                                        // return nombresProductos[context.dataIndex];
+                                        let label = nombresProductos[context.dataIndex];
+                                        let cantidad = cantidadesVendidas[context.dataIndex];
+                                        return label + ': ' + cantidad + ' unidades vendidas';
                                     },
                                 },
                             },
@@ -364,7 +394,6 @@ $rol = isset($_SESSION['rol']) ? $_SESSION['rol'] : '';
         function ObtenerGananciasPorMeses() {
             fetch('../controladores/funcionesHome.php?action=ObtenerGananciasPorMeses') 
             .then(response => {
-                console.log(response);
                 if (!response.ok) {
                     throw new Error("Error en la solicitud al servidor");
                 }
@@ -384,9 +413,6 @@ $rol = isset($_SESSION['rol']) ? $_SESSION['rol'] : '';
 
             const meses = mesesData.map(item => item.mes);
             const ganancias = mesesData.map(item => item.ganancia);
-
-            console.log(meses);
-            console.log(ganancias);
 
             var graficoGananciasPorMeses = document.getElementById('ganancias').getContext('2d');
         
@@ -442,11 +468,83 @@ $rol = isset($_SESSION['rol']) ? $_SESSION['rol'] : '';
             });
         }
 
-        
+        function totalRecaudadoPorSucursal() {
+            // Obtener el mes actual en formato de texto
+            const fechaActual = new Date();
+            const mesActual = fechaActual.toLocaleString('es-ES', { month: 'long' });
+
+            // Actualizar el título del gráfico con el mes actual
+            document.querySelector(".grafico-containerTorta h6").textContent = `Total recaudado por sucursal en ${mesActual}`;
+
+            fetch('../controladores/funcionesHome.php?action=totalRecaudadoPorSucursal')
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('La solicitud no fue exitosa');
+                }
+                return response.json();
+            })
+            .then(datos => {
+                // Procesar los datos recibidos del servidor y actualizar el gráfico
+                actualizarGraficoTorta(datos);
+            })
+            .catch(error => {
+                console.error('Error al obtener los datos:', error);
+            });
+
+
+        }
+
+        function actualizarGraficoTorta(datos) {
+
+            var contexto = document.getElementById("totalRecaudadoPorSucursal").getContext("2d");
+
+            let total = 0;
+            // Recorre los datos y suma los valores de TotalRecaudado
+            datos.forEach(dato => {
+                if (!isNaN(dato.TotalRecaudado)) {
+                    total += parseFloat(dato.TotalRecaudado);
+                }
+            });
+
+
+            // Calcula los porcentajes y crea etiquetas personalizadas con el total y el porcentaje
+            var etiquetas = datos.map(dato => {
+                var totalRecaudado = parseFloat(dato.TotalRecaudado); // Convierte a float
+                if (!isNaN(totalRecaudado)) {
+                    var porcentaje = ((totalRecaudado / total) * 100).toFixed(2); // Limita el porcentaje a 2 decimales
+                    return `${dato.Sucursal}: (${porcentaje}%)`;
+                } else {
+                    return `${dato.Sucursal}: $0.00 (0.00%)`; // Maneja el caso en que no haya un valor válido
+                }
+            });
+
+            var miGrafico = new Chart(contexto, {
+                type: "pie",
+                data: {
+                    labels: etiquetas,
+                    datasets: [{
+                        data: datos.map(dato => parseFloat(dato.TotalRecaudado)),
+                        backgroundColor: [
+                            'rgba(255, 81, 0, 0.5)',
+                            'rgba(214, 139, 0, 0.5)',
+                            'rgba(255, 209, 0, 0.5)'
+                        ],
+                        hoverOffset: 4
+                    }]
+                }
+                
+            });
+
+            // Actualiza el gráfico existente con los nuevos datos
+            miGrafico.update();
+        }
+
+
 
         document.addEventListener('DOMContentLoaded', function() {
             obtenerProductosMasVendidos();
             ObtenerGananciasPorMeses();
+            totalRecaudadoPorSucursal();
         });
 
         

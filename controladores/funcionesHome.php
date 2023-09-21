@@ -17,7 +17,11 @@ if (isset($_GET['action'])) {
             // Lógica para listar proveedores
             ObtenerGananciasPorMeses($conn); // Pasa la conexión como parámetro
             break;
-            
+
+        case 'totalRecaudadoPorSucursal':
+            // Lógica para listar proveedores
+            totalRecaudadoPorSucursal($conn); // Pasa la conexión como parámetro
+            break;            
         default:
             // Acción no válida
             echo json_encode(array("message" => "Acción no válida"));
@@ -151,7 +155,48 @@ function ObtenerGananciasPorMeses($conn) {
 
 }
 
+function totalRecaudadoPorSucursal($conn) {
+    try {
+        // Realiza la consulta SQL para obtener el total recaudado por sucursal en el mes actual
+        $sql = "SELECT
+            s.Descripcion AS Sucursal,
+            SUM(d.Total) AS TotalRecaudado
+        FROM
+            Ventas v
+        INNER JOIN
+            Sucursales s ON v.idSucursales = s.idSucursales
+        INNER JOIN
+            DetalleFactura d ON v.idDetalleFactura = d.idDetalleFactura
+        WHERE
+            YEAR(v.Fecha) = YEAR(CURDATE()) AND
+            MONTH(v.Fecha) = MONTH(CURDATE())  -- Obtener ventas del mes actual
+        GROUP BY
+            s.Descripcion;";
+        $stmt = $conn->prepare($sql);
 
+        if (!$stmt->execute()) {
+            throw new Exception("Error al ejecutar la consulta");
+        }
+
+        $result = $stmt->get_result();
+        $gananciasPorSucursal = array();
+
+        while ($row = $result->fetch_assoc()) {
+            // Almacena cada resultado en un arreglo
+            $gananciasPorSucursal[] = $row;
+        }
+
+        // Devuelve la respuesta en formato JSON
+        header("Content-Type: application/json");
+        echo json_encode($gananciasPorSucursal);
+    } catch (Exception $e) {
+        // Maneja el error, registra información de error si es necesario
+        // Devuelve una respuesta HTTP con un código de estado de error
+        http_response_code(500); // Código de estado para error interno del servidor
+        echo json_encode(array("error" => $e->getMessage()));
+    }
+
+}
 
 
 ?>

@@ -46,6 +46,8 @@ session_start();
     <!-- libreria toast -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
 
+    <!-- libreria tippy -->
+    <link rel="stylesheet" href="https://unpkg.com/tippy.js@6/animations/scale.css"/>
 
 </head>
 
@@ -104,12 +106,9 @@ session_start();
                                                     <div class="col-md-4 mb-3">
                                                         <label for="cuit" class="form-label">Cuit</label>
                                                         <div class="input-group">
-                                                            <span class="input-group-text"><i class="fa fa-id-card"></i></span>
+                                                            <span class="input-group-text" id="spanCuit"><i class="fa fa-id-card"  ></i></span>
                                                             <input name="cuit" type="text" class="form-control" id="cuit" maxlength="11">
                                                         </div>  
-                                                        <!-- <div id=""tooltip"-icon-cuit" class=""tooltip"-icon">
-                                                                <i class="fa fa-exclamation-circle" aria-hidden="true"></i>
-                                                        </div>  -->
                                                     </div>
                                                     
                                                     <div class="col-md-4 mb-3">
@@ -437,23 +436,34 @@ session_start();
             color: red;
             } */
 
-
-
-
+    .tippy-box[data-theme~='general'] {
+        background-color: rgba(231, 122, 52, 0.8); /* Cambia el valor de 1 según la transparencia que desees */
+        color: white;
+        font-size: 12px;
+    },
+    
     </style>
 
     <!-- Template Javascript -->
     <script src="../js/main.js"></script>
     <script>
+    // tippy.setDefaultProps({});   
 
-    tippy('#cuit', {
-        content: 'El CUIT',
+    tippy('#spanCuit', {   
+        content: 'El CUIT (Clave Única de Identificación Tributaria) es un número esencial en Argentina para identificar personas y empresas en asuntos fiscales. Tiene tres partes separadas por guiones, como "20-12345678-1". Por ejemplo, "20" es el prefijo para individuos, "12345678" es el número de documento y "1" es el dígito de verificación.',
         placement: 'top-start',
         animation: 'scale',
-
-      });
-
-
+        inertia: true,
+        delay: 200,
+        duration: [200, 100],
+        followCursor: 'horizontal',
+        inertia: true,
+        maxWidth: 650,
+        theme: 'general',
+        arrow: true,  
+        trigger: 'click', // Configura el tooltip para abrir al hacer clic
+        interactive: true, // Permite que el usuario cierre el tooltip haciendo clic fuera de él
+    });
 
         function limpiarModal() {
             $('#cuit').val('');
