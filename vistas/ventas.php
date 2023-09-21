@@ -154,12 +154,8 @@ if ($result->num_rows > 0) {
                                     </tbody>
                                 </table>
                                 </div>
-                                <!-- / table -->
                             </div>
-                            <!-- /.col -->
-
                         </div>
-
                     </div>
 
                     <div class="col-md-3">
@@ -329,7 +325,6 @@ if ($result->num_rows > 0) {
 
                         </div><!-- ./ CARD -->
                     </div>
-
                 </div>
             </div>
 
@@ -344,6 +339,7 @@ if ($result->num_rows > 0) {
         <!-- Back to Top -->
         <a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top"><i class="bi bi-arrow-up"></i></a>
     </div>
+
     <script>
     $(document).ready(function() {
         // Inicializa el autocompletado
@@ -928,32 +924,6 @@ if ($result->num_rows > 0) {
 
         .autocomplete-suggestion:hover {
             background-color: #f0f0f0;
-        }
-
-        .child-table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-        .info-row td {
-            width: 100%;
-        }
-        table {
-        border-collapse: collapse;
-        width: 100%;
-        }
-        th, td {
-        border: 1px solid black;
-        padding: 8px;
-        text-align: center;
-        }
-        tr:hover {
-        background-color: #f2f2f2;
-        }
-        .info {
-        display: none;
-        }
-        .wide-column {
-            width: 40%; /* Ajusta el ancho según tus necesidades */
         }
 
         /* Estilo para mover el lengthChange a la izquierda */

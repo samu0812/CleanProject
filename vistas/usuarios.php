@@ -6,55 +6,35 @@ session_start();
 <head>
     <meta charset="utf-8">
     <title>Clean</title>
+
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <meta content="" name="keywords">
     <meta content="" name="description">
 
     <!-- Favicon -->
     <link href="img/favicon.ico" rel="icon">
-
     <!-- Google Web Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;600;700&display=swap" rel="stylesheet">
-    
     <!-- Icon Font Stylesheet -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
-
     <!-- Libraries Stylesheet -->
     <link href="../lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
     <link href="../lib/tempusdominus/css/tempusdominus-bootstrap-4.min.css" rel="stylesheet" />
-
-    <!-- Customized Bootstrap Stylesheet -->
-    <link href="../css/bootstrap.min.css" rel="stylesheet">
-
-    <!-- Template Stylesheet -->
-    <link href="../css/style.css" rel="stylesheet">
-
-    <!-- Incluir jQuery -->
-    <script src="https://code.jquery.com/jquery-3.7.0.js"></script>
-    <script src="https://code.jquery.com/jquery-3.7.0.js" integrity="sha256-JlqSTELeR4TLqP0OG9dxM7yDPqX1ox/HfgiSLBj8+kM=" crossorigin="anonymous"></script>
-
-    <!-- Incluir Bootstrap CSS -->
-    <!--<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css"> -->
-
-    <!-- Incluir DataTables CSS -->
-    <link href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css" rel="stylesheet">
-
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
-    <!-- Incluir Bootstrap JS -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/js/bootstrap.min.js"></script>
-
-    <!-- Incluir DataTables JS -->
+    <!-- Agrega estos enlaces en el head de tu HTML -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.12.1/css/all.css" crossorigin="anonymous">
+    <!-- Table Libraries -->
     <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
-    <script src="https://cdn.datatables.net/select/1.7.0/js/dataTables.select.min.js"></script>
-
-    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-
-    <!-- Incluir tus estilos personalizados -->
+    <script src="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css"></script>
+    <!-- Customized Bootstrap Stylesheet -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <link href="../css/bootstrap.min.css" rel="stylesheet">
+    <!-- Template Stylesheet -->
     <link href="../css/style.css" rel="stylesheet">
 </head>
 
@@ -85,8 +65,8 @@ session_start();
                         <div class="bg-personalizado rounded d-flex align-items-center justify-content-center p-4 cursorPointer" onclick="redireccionar('usuarios.php')">
                             <i class="fas fa-people-carry fa-2x" style="color: #e77a34"></i>
                             <div class="text-center" style="margin-left: 30px">
-                                <p class="mb-2">Empleados Act.</p>
-                                <div id="sucursalesContainer">
+                                <p class="mb-2">Usuarios Activos</p>
+                                <div id="usuariosContainer">
                                 </div>
                             </div>
                         </div>
@@ -110,23 +90,21 @@ session_start();
                             <th>Fecha de Nacimiento</th>
                             <th>Rol</th>
                             <th>Sucursal</th>
-                            <th>Clave</th>
-                                <th>
-                                    <button id="btnEditarTableUsuario" style="background: #e77a34; color: white;" class="btn btn-sm" disabled><i class="far fa-edit"></i></button>
-                                    <button id="btnEliminarTableUsuario" style="background: #e77a34; color: white;" class="btn btn-sm" disabled><i class="fas fa-trash"></i></button>
-                                </th>
+                            <th>
+                                <button id="btnEditarTableUsuario" style="color: #e77a34;" class="btn btn-sm"><i class="far fa-edit"></i></button>
+                                <button id="btnEliminarTableUsuario" style="color: #e77a34;" class="btn btn-sm"><i class="fas fa-trash"></i></button>
+                            </th>
                             </tr>
                         </thead>
-                        <tbody id="usuarioesBody">
+                        <tbody id="usuariosBody">
                         </tbody>
                     </table>
                     </div>
                 </div>
             </div>
         
-            
             <div class="modal fade" id="modalAgregarUsuario" tabindex="-1" aria-labelledby="modalAgregarUsuario" aria-hidden="true">
-                <form class="form" action="" method="POST">
+                <form id="formAgregarUsuario">
                     <div class="modal-dialog modal-dialog-centered modal-lg">
                         <div class="modal-content" style="text-align: center;">
                             <div class="modal-header">
@@ -186,17 +164,13 @@ session_start();
                                 </div>
                             </div>
                             <div class="modal-footer">
-                                <!-- Cambio en el botón "Cerrar" del modal -->
-                                <button id="btnCerrar" type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-                                <!-- Cambio en el botón "Guardar" del modal -->
-                                <button type="submit" value="Guardar" id="btnGuardar" name="Guardar" type="button" class="btn btn-primary">Guardar</button>
-                            </div>
+                            <button id="btnCerrar" type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                            <button id="btnGuardar" type="button" class="btn btn-primary">Guardar</button>
+                        </div>
                         </div>
                     </div>
                 </form>
             </div>
-            <?php include("../controladores/usuarios.php");?>
-            <!-- Modal para eliminar registro -->
             <div class="modal fade" id="modalEliminarUsuario" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                 <div class="modal-dialog modal-dialog-centered">
                     <div class="modal-content">
@@ -205,15 +179,11 @@ session_start();
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
-                            ¿Está seguro de que desea eliminar este usuario?
+                            ¿Está seguro que quiere eliminar este usuario?
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                            <form action="../controladores/eliminarUsuario.php" method="POST">
-                            <input type="hidden" name="idPersonaEliminar" id="idPersonaEliminar">
-                            <button type="submit" value="eliminar" name="eliminar" id="eliminar" class="btn btn-danger">Eliminar</button>
-                            </form>
-
+                            <button id="btnEliminar" type="button" class="btn btn-primary">Eliminar</button>
                         </div>
                     </div>
                 </div>
@@ -266,16 +236,9 @@ session_start();
             fetch('../controladores/usuariosActions.php?action=cargarcard')
                 .then(response => response.json())
                 .then(data => {
-                    const sucursalesContainer = document.getElementById('sucursalesContainer');
-
-                    // Limpia el contenedor antes de agregar las cartas
-                    sucursalesContainer.innerHTML = '';
-
-                    // Iterar a través de los datos de las sucursales
-                    data.forEach(sucursal => {
-                        const carta = document.createElement('div');
-                        sucursalesContainer.appendChild(carta);
-                    });
+                    const numUsuarios = data;
+                    const usuariosContainer = document.getElementById('usuariosContainer');
+                    usuariosContainer.textContent = numUsuarios;
                     obtenerUsuarios()
                 })
                 .catch(error => {
@@ -330,7 +293,6 @@ session_start();
                             usuario.FechaNacimiento,
                             usuario.Rol,
                             usuario.Sucursal,
-                            claveMostrar,
                             Vacio
                         ];
                         table1.rows.add([row]).draw();
@@ -350,162 +312,103 @@ session_start();
         obtenerUsuarios()
         cargarCarta()
         let id;
-        $('#btnAgregarProd').click(function() {
+        let emailFila;
+        $('#btnAgregarUser').click(function() {
             limpiarModal()
-            contextoActual = "agregarProducto";
-            $('#labelAgregarStock').text('Agregar Producto');
-            $('#btnAgregarProd').prop('disabled', false);
+            contextoActual = "agregarUsuario";
+            $('#labelAgregarUsuario').text('Agregar Usuario');
+            $('#btnGuardar').prop('disabled', false);
         });
-        $('#tableProd tbody').on('click', 'tr', function() {
+        $('#tableUser tbody').on('click', 'tr', function() {
             if ($(this).hasClass('selected')) {
                 $(this).removeClass('selected');
-                $('#labelAgregarStock').text('Agregar Producto');
-                $('#btnAgregarProd').prop('disabled', false);
-                inputsActivos()
+                $('#labelAgregarUsuario').text('Agregar Usuario');
+                btnOn()
                 limpiarModal()
-                $('#btnAgregarProd').click(function() {
-                    contextoActual = "agregarProducto";
+                $('#btnAgregarUser').prop('disabled', false);
+                $('#btnAgregarUser').click(function() {
+                    limpiarModal()
+                    contextoActual = "agregarUsuario";
+                    $('#labelAgregarUsuario').text('Agregar Usuario');
+                    $('#btnGuardar').prop('disabled', false);
                 });
-                btnOcultos("ocultos")
+                $('#idPersona').prop('disabled', true);
+                $('#btnEditarTableUsuario').prop('disabled', true);
+                $('#btnEliminarTableUsuario').prop('disabled', true);
             } else {
                 table1.$('tr.selected').removeClass('selected');
                 $(this).addClass('selected');
-                $('#btnAgregarProd').prop('disabled', true);
-                btnOcultos("mostrar")
-                limpiarModal()
-                $('#btnAgregarTableProd').click(function() {
-                    contextoActual = "agregarTablaProducto";
-                    $('#labelAgregarStock').text('Agregar Cantidad de Stock');
-                    inputsOcultos()
-                    limpiarModal()
-                    $('#sucursalField2').val('');
-                    $('#modalAgregarProducto').modal('show');
+                $('#labelAgregarUsuario').text('Editar Usuario');
+                $('#btnAgregarUser').prop('disabled', true);
+                $('#idPersona').prop('disabled', true);
+                $('#btnEditarTableUsuario').prop('disabled', false);
+                $('#btnEliminarTableUsuario').prop('disabled', false);
+                $('#btnEditarTableUsuario').click(function() {
+                    $('#labelAgregarUsuario').text('Editar Usuario');
+                    btnOn();
+                    contextoActual = "editarUsuario";
+                    var filaSeleccionadaEmail = table1.rows('.selected').data()[0];
+                    emailFila = filaSeleccionadaEmail[2];
                     var filaSeleccionada = table1.rows('.selected').data()[0];
                     let valoresActuales = {};
                     id = filaSeleccionada[0];
-                    fetch('../controladores/nuevo_producto.php?action=obtener&id=' + id)
-                    .then(response => response.json())
-                    .then(data => {
-                        // Almacena los valores actuales antes de mostrar el modal
-                        valoresActuales = {
-                            codigo: String(data.idProductos),
-                            nombre: String(data.Nombre),
-                            proveedor: String(data.Proveedor),
-                            tipoProducto: String(data.TipoProd),
-                            tipoCategoria: String(data.TipoCat),
-                            tamaño: String(data.Medida),
-                            tipoTamaño: String(data.Tamaño),
-                            precioBase: String(data.PrecioCosto),
-                            porcentajeAumento: String(data.Impuesto)
-                        };
-
-                        // Llenar los campos del formulario de edición con los datos obtenidos
-                        document.getElementById('codigo').value = valoresActuales.codigo;
-                        document.getElementById('nombre').value = valoresActuales.nombre;
-                        document.getElementById('proveedor').value = valoresActuales.proveedor;
-                        document.getElementById('tipoProducto').value = valoresActuales.tipoProducto;
-                        document.getElementById('tipoCategoria').value = valoresActuales.tipoCategoria;
-                        document.getElementById('tamaño').value = valoresActuales.tamaño;
-                        document.getElementById('tipoTamaño').value = valoresActuales.tipoTamaño;
-                        document.getElementById('precioBase').value = valoresActuales.precioBase;
-                        document.getElementById('porcentajeAumento').value = valoresActuales.porcentajeAumento;
-                        $('#cantidad').prop('disabled', false);
-                        // Mostrar el modal de edición
-                        $('#modalAgregarProducto').modal('show');
-                    })
-                    .catch(error => {
-                        console.error('Error al obtener datos del producto: ', error);
-                    });
-                });
-                $('#btnEditarTableProd').click(function() {
-                    // Obtén los elementos relevantes
-                    const porcentajeAumentoInput = document.getElementById('porcentajeAumento');
-                    const precioFinalInput = document.getElementById('precioVenta');
-                    // Función para calcular y actualizar el precio final
-                    function calcularPrecioFinal() {
-                        const porcentajeAumento = parseFloat(porcentajeAumentoInput.value);
-                        const precioBase = parseFloat(document.getElementById('precioBase').value); // Asegúrate de tener el ID correcto para el precio base
-                        if (!isNaN(porcentajeAumento) && !isNaN(precioBase)) {
-                            const precioFinal = precioBase * (1 + porcentajeAumento / 100);
-                            precioFinalInput.value = precioFinal.toFixed(2); // Limita a dos decimales
-                        } else {
-                            precioFinalInput.value = '0.00';
-                        }
-                    }
-                    // Agrega un evento de cambio al input del porcentaje
-                    porcentajeAumentoInput.addEventListener('change', calcularPrecioFinal);
-                    // Calcula el precio final inicialmente
-                    calcularPrecioFinal();
-
-                    contextoActual = "editarTablaProducto";
-                    $('#labelAgregarStock').text('Editar Producto');
-                    inputsActivos()
-                    $('#modalAgregarProducto').modal('show');
-                    var filaSeleccionada = table1.rows('.selected').data()[0];
-                    let valoresActuales = {};
-                    id = filaSeleccionada[0];
-                    fetch('../controladores/nuevo_producto.php?action=obtener&id=' + id)
+                    fetch('../controladores/usuariosActions.php?action=obtener&id=' + id)
                         .then(response => response.json())
                         .then(data => {
-                            // Almacena los valores actuales antes de mostrar el modal
                             valoresActuales = {
-                                codigo: String(data.idProductos),
+                                codigo: String(data.idPersona),
                                 nombre: String(data.Nombre),
-                                proveedor: String(data.Proveedor),
-                                tipoProducto: String(data.TipoProd),
-                                tipoCategoria: String(data.TipoCat),
-                                tamaño: String(data.Medida),
-                                tipoTamaño: String(data.Tamaño),
-                                cantidad: String(data.CantidadTotal),
-                                precioBase: String(data.PrecioCosto),
-                                porcentajeAumento: String(data.Impuesto),
-                                precioFinal: String(data.PrecioFinal),
+                                email: String(data.Email),
+                                telefono: String(data.Telefono),
+                                direccion: String(data.Direccion),
+                                fechanacimiento: String(data.FechaNacimiento),
+                                rol: String(data.Rol),
+                                sucursal: String(data.Sucursal),
+                                clave: String(data.Clave)
                             };
-
+                            let vacio = "";
                             // Llenar los campos del formulario de edición con los datos obtenidos
-                            document.getElementById('codigo').value = valoresActuales.codigo;
-                            document.getElementById('nombre').value = valoresActuales.nombre;
-                            document.getElementById('proveedor').value = valoresActuales.proveedor;
-                            document.getElementById('tipoProducto').value = valoresActuales.tipoProducto;
-                            document.getElementById('tipoCategoria').value = valoresActuales.tipoCategoria;
-                            document.getElementById('tamaño').value = valoresActuales.tamaño;
-                            document.getElementById('tipoTamaño').value = valoresActuales.tipoTamaño;
-                            document.getElementById('cantidad').value = valoresActuales.cantidad;
-                            document.getElementById('precioBase').value = valoresActuales.precioBase;
-                            document.getElementById('porcentajeAumento').value = valoresActuales.porcentajeAumento;
-                            document.getElementById('precioVenta').value = valoresActuales.precioFinal;
-                            $('#cantidad').prop('disabled', true);
+                            document.getElementById('idPersona').value = valoresActuales.codigo;
+                            document.getElementById('Nombre').value = valoresActuales.nombre;
+                            document.getElementById('Email').value = valoresActuales.email;
+                            document.getElementById('Telefono').value = valoresActuales.telefono;
+                            document.getElementById('Direccion').value = valoresActuales.direccion;
+                            document.getElementById('FechaNacimiento').value = valoresActuales.fechanacimiento;
+                            document.getElementById('DescripcionRol').value = valoresActuales.rol;
+                            document.getElementById('DescripcionSucursal').value = valoresActuales.sucursal;
+                            document.getElementById('Clave').value = vacio;
                             // Mostrar el modal de edición
-                            $('#modalEditarStock').modal('show');
-                            $('#btnAgregarProd').prop('disabled', false);
+                            $('#modalAgregarUsuario').modal('show');
+                            $('#btnAgregarUser').prop('disabled', false);
                         })
                         .catch(error => {
                             console.error('Error al obtener datos del producto: ', error);
                         });
                 });
             
-                $('#btnEliminarTableProd').click(function() {
+                $('#btnEliminarTableUsuario').click(function() {
+                    // btnEliminar el boton que debe presionar
                     var filaSeleccionada = table1.rows('.selected').data()[0];
-                    id = filaSeleccionada[0];
-                    $('#modalEliminarStock').modal('show');
-                    const datosProducto = {
+                    id = parseInt(filaSeleccionada[0]);
+                    $('#modalEliminarUsuario').modal('show');
+                    const datosUsuarioEliminar = {
                         id : id,
                     };
                     $('#btnEliminar').click(function() {
-                        fetch("../controladores/nuevo_producto.php?action=eliminar", {
+                        fetch("../controladores/usuariosActions.php?action=eliminar", {
                             method: "POST",
                             headers: {
                                 "Content-Type": "application/json"
                             },
-                            body: JSON.stringify(datosProducto)
+                            body: JSON.stringify(datosUsuarioEliminar)
                         })
-                        .then(response => response.text())
+                        .then(response => response.json())
                         .then(data => {
-                            obtenerProductos()
-                            cargarCartasSucursales()
+                            obtenerUsuarios()
+                            cargarCarta()
                             // Cierra el modal de confirmación
-                            $('#modalEliminarStock').modal('hide');
-                            $('#btnAgregarProd').prop('disabled', false);
+                            $('#modalEliminarUsuario').modal('hide');
+                            $('#btnAgregarUser').prop('disabled', false);
                             // mostramos el mensaje
                             Swal.fire({
                                 position: 'top-end',
@@ -545,74 +448,499 @@ session_start();
             }
         });
 
+        function editUsuario() {
+            emailActual = document.getElementById('Email').value;
+            emailOriginal = emailFila; // El código original del producto
+            const formularioUsuarios = document.getElementById('formAgregarUsuario');
+            const datosFormularioUsuarios = new FormData(formularioUsuarios);
+            const codigo = datosFormularioUsuarios.get('idPersona');
+            const nombre = datosFormularioUsuarios.get('Nombre');
+            const email = datosFormularioUsuarios.get('Email');
+            const telefono = datosFormularioUsuarios.get('Telefono');
+            const direccion = datosFormularioUsuarios.get('Direccion');
+            const fechanacimiento = datosFormularioUsuarios.get('FechaNacimiento');
+            const rol = datosFormularioUsuarios.get('DescripcionRol');
+            const sucursal = datosFormularioUsuarios.get('DescripcionSucursal');
+            const clave = datosFormularioUsuarios.get('Clave');
+            let contieneNumeros = /[0-9]/.test(document.getElementById('Nombre').value.trim());
+            let camposIncompletos = nombre === "" || email === "" || telefono === "" || direccion === "" || fechanacimiento === "" || rol === "" || sucursal === "" || clave === "";
+
+            if (!emailActual || emailActual.length === 0) {
+                Swal.fire({
+                    position: 'top-end',
+                    icon: 'error',
+                    title: 'Ingrese el email.',
+                    showConfirmButton: true,
+                    timer: 2000,
+                    background: false,
+                    backdrop: false,
+                    customClass: {
+                        container: 'custom-container-class',
+                        popup: 'custom-popup-class',
+                        title: 'custom-title-class',
+                        icon: 'custom-icon-class',
+                    },
+                });
+                return; // Sale de la función si el campo no es válido
+            }
+            if (contieneNumeros) {
+                Swal.fire({
+                    position: 'top-end',
+                    icon: 'error',
+                    title: 'El nombre no debe contener números.',
+                    showConfirmButton: true,
+                    timer: 2000,
+                    background: false,
+                    backdrop: false,
+                    customClass: {
+                        container: 'custom-container-class',
+                        popup: 'custom-popup-class',
+                        title: 'custom-title-class',
+                        icon: 'custom-icon-class',
+                    },
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        // El usuario hizo clic en el botón "Ok" de la alerta, permitir que modifiquen los datos
+                        $('#btnGuardar').prop('disabled', false);
+                        return;
+                    }
+                });
+            } else {
+                if (emailActual !== emailOriginal) {
+                    // Si el código ha cambiado, realizar la verificación en la base de datos
+                    const valoresEditados = {email: emailActual};
+                    fetch('../controladores/usuariosActions.php?action=verificaremail', {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+                        body: JSON.stringify(valoresEditados)
+                    })
+                    .then(response => {
+                        if (!response.ok) {
+                            // El servidor devolvió un código de estado de error
+                            throw new Error("Error en la solicitud al servidor");
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                        if (!data.success) {
+                            Swal.fire({
+                                position: 'top-end',
+                                icon: 'error',
+                                title: 'El código ya existe en la base de datos.',
+                                showConfirmButton: true,
+                                timer: 2000,
+                                background: false,
+                                backdrop: false,
+                                customClass: {
+                                    container: 'custom-container-class',
+                                    popup: 'custom-popup-class',
+                                    title: 'custom-title-class',
+                                    icon: 'custom-icon-class',
+                                },
+                            });
+                        } else {
+                            // El código no existe en la base de datos, podemos enviar los datos al servidor
+                            const valoresEditados = {
+                                codigo: document.getElementById('idPersona').value, // Utilizamos el código original
+                                nombre: document.getElementById('Nombre').value,
+                                email: emailActual,
+                                telefono: document.getElementById('Telefono').value,
+                                direccion: document.getElementById('Direccion').value,
+                                fechanacimiento: document.getElementById('FechaNacimiento').value,
+                                rol: document.getElementById('DescripcionRol').value,
+                                sucursal: document.getElementById('DescripcionSucursal').value,
+                                clave: document.getElementById('Clave').value
+                            };
+                            fetch('../controladores/usuariosActions.php?action=editar', {
+                                method: "POST",
+                                headers: {
+                                    "Content-Type": "application/json"
+                                },
+                                body: JSON.stringify(valoresEditados)
+                            })
+                            .then(response => {
+                                if (!response.ok) {
+                                    // El servidor devolvió un código de estado de error
+                                    // Forzar que se vaya por el catch
+                                    throw new Error("Error en la solicitud al servidor");
+                                }
+                                return response.json();
+                            })
+                            .then(data => {
+                                if (!data.success) {
+                                    Swal.fire({
+                                        position: 'top-end',
+                                        icon: 'error',
+                                        title: 'Error, ' + data.message,
+                                        showConfirmButton: false,
+                                        timer: 2000,
+                                        background: false,
+                                        backdrop: false,
+                                        customClass: {
+                                            container: 'custom-container-class',
+                                            popup: 'custom-popup-class',
+                                            title: 'custom-title-class',
+                                            icon: 'custom-icon-class',
+                                        },
+                                    });
+                                } else {
+                                    Swal.fire({
+                                        position: 'top-end',
+                                        icon: 'success',
+                                        title: 'Se ha actualizado el producto correctamente',
+                                        showConfirmButton: false,
+                                        timer: 2000,
+                                        background: false,
+                                        backdrop: false,
+                                        customClass: {
+                                            container: 'custom-container-class',
+                                            popup: 'custom-popup-class',
+                                            title: 'custom-title-class',
+                                            icon: 'custom-icon-class',
+                                        }
+                                    });
+                                    obtenerUsuarios()
+                                    cargarCarta()
+                                    $('#modalAgregarUsuario').modal('hide');
+                                    $('#btnAgregarUser').prop('disabled', false);
+                                }
+                            })
+                            .catch(error => {
+                                Swal.fire({
+                                    position: 'top-end',
+                                    icon: 'error',
+                                    title: 'Ocurrió un error',
+                                    showConfirmButton: false,
+                                    timer: 2000,
+                                    background: false, // Desactiva el fondo oscurecido
+                                    backdrop: false,
+                                    customClass: {
+                                        container: 'custom-container-class',
+                                        popup: 'custom-popup-class', // Clase personalizada para ajustar el tamaño de la alerta
+                                        title: 'custom-title-class', // Clase personalizada para ajustar el tamaño del título
+                                        icon: 'custom-icon-class',
+                                    },
+                                })
+                            });
+                        }
+                    })
+                    .catch(error => {
+                        Swal.fire({
+                            position: 'top-end',
+                            icon: 'error',
+                            title: 'Ocurrió un error',
+                            showConfirmButton: false,
+                            timer: 2000,
+                            background: false, // Desactiva el fondo oscurecido
+                            backdrop: false,
+                            customClass: {
+                                container: 'custom-container-class',
+                                popup: 'custom-popup-class', // Clase personalizada para ajustar el tamaño de la alerta
+                                title: 'custom-title-class', // Clase personalizada para ajustar el tamaño del título
+                                icon: 'custom-icon-class',
+                            },
+                        })
+                    });
+                } else {
+                    // Si el código no ha cambiado, enviar los datos al servidor sin verificar la base de datos
+                    const valoresEditados = {
+                        codigo: document.getElementById('idPersona').value, // Utilizamos el código original
+                        nombre: document.getElementById('Nombre').value,
+                        email: emailOriginal,
+                        telefono: document.getElementById('Telefono').value,
+                        direccion: document.getElementById('Direccion').value,
+                        fechanacimiento: document.getElementById('FechaNacimiento').value,
+                        rol: document.getElementById('DescripcionRol').value,
+                        sucursal: document.getElementById('DescripcionSucursal').value,
+                        clave: document.getElementById('Clave').value,
+                    };
+                    fetch('../controladores/usuariosActions.php?action=editar', {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+                        body: JSON.stringify(valoresEditados)
+                    })
+                    .then(response => {
+                        if (!response.ok) {
+                            // El servidor devolvió un código de estado de error
+                            // Forzar que se vaya por el catch
+                            throw new Error("Error en la solicitud al servidor");
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                        if (!data.success) {
+                            Swal.fire({
+                                position: 'top-end',
+                                icon: 'error',
+                                title: 'Error, ' + data.message,
+                                showConfirmButton: false,
+                                timer: 2000,
+                                background: false,
+                                backdrop: false,
+                                customClass: {
+                                    container: 'custom-container-class',
+                                    popup: 'custom-popup-class',
+                                    title: 'custom-title-class',
+                                    icon: 'custom-icon-class',
+                                },
+                            });
+                        } else {
+                            Swal.fire({
+                                position: 'top-end',
+                                icon: 'success',
+                                title: 'Se ha actualizado el producto correctamente',
+                                showConfirmButton: false,
+                                timer: 2000,
+                                background: false,
+                                backdrop: false,
+                                customClass: {
+                                    container: 'custom-container-class',
+                                    popup: 'custom-popup-class',
+                                    title: 'custom-title-class',
+                                    icon: 'custom-icon-class',
+                                }
+                            });
+                            obtenerUsuarios()
+                            cargarCarta()
+                            $('#modalAgregarUsuario').modal('hide');
+                            $('#btnAgregarUser').prop('disabled', false);
+                        }
+                    })
+                    .catch(error => {
+                        Swal.fire({
+                            position: 'top-end',
+                            icon: 'error',
+                            title: 'Ocurrió un error',
+                            showConfirmButton: false,
+                            timer: 2000,
+                            background: false, // Desactiva el fondo oscurecido
+                            backdrop: false,
+                            customClass: {
+                                container: 'custom-container-class',
+                                popup: 'custom-popup-class', // Clase personalizada para ajustar el tamaño de la alerta
+                                title: 'custom-title-class', // Clase personalizada para ajustar el tamaño del título
+                                icon: 'custom-icon-class',
+                            },
+                        })
+                    });
+                }
+            }
+        }
+
+        function addUsuario() {
+            const formularioUsuarios = document.getElementById('formAgregarUsuario');
+            const datosFormularioUsuarios = new FormData(formularioUsuarios);
+            // Puedes acceder a los valores de cada campo por su nombre
+            const id = datosFormularioUsuarios.get('idPersona');
+            const nombre = datosFormularioUsuarios.get('Nombre');
+            const email = datosFormularioUsuarios.get('Email');
+            const telefono = datosFormularioUsuarios.get('Telefono');
+            const direccion = datosFormularioUsuarios.get('Direccion');
+            const fechanacimiento = datosFormularioUsuarios.get('FechaNacimiento');
+            const rol = datosFormularioUsuarios.get('DescripcionRol');
+            const sucursal = datosFormularioUsuarios.get('DescripcionSucursal');
+            const clave = datosFormularioUsuarios.get('Clave');
+            const regexNombre = /^[a-zA-Z\s'-]+$/; // Acepta letras, espacios, apóstrofes y guiones bajos
+            const regexEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            const regexTelefono = /^(?:\+\d{1,3})?(?:\d{1,4})?(?:[ -]?\d{1,4}){1,12}$/;
+            // let contieneNumeros = /[0-9]/.test(nombre);
+            let camposIncompletos = nombre === "" || email === "" || telefono === "" || direccion === "" || fechanacimiento === "" || rol === "" || sucursal === "" || clave === "";
+            console.log(telefono, !regexTelefono.test(telefono))
+            // Verifica si debes mostrar el error por números en el nombre
+            if (camposIncompletos) { 
+                Swal.fire({
+                    position: 'top-end',
+                    icon: 'error',
+                    title: 'Todos los campos son requeridos. Por favor, completa todos los campos.', 
+                    showConfirmButton: true,
+                    timer: 2000,
+                    background: false,
+                    backdrop: false,
+                    customClass: {
+                        container: 'custom-container-class',
+                        popup: 'custom-popup-class',
+                        title: 'custom-title-class',
+                        icon: 'custom-icon-class',
+                    },
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        $('#btnGuardar').prop('disabled', false);
+                        return;
+                    }
+                });
+            } else if (nombre.trim() === '' || !regexNombre.test(nombre)) {
+                Swal.fire({
+                    position: 'top-end',
+                    icon: 'error',
+                    title: 'Ha ingresado incorrectamente el nombre.',
+                    showConfirmButton: true,
+                    timer: 2000,
+                    background: false,
+                    backdrop: false,
+                    customClass: {
+                        container: 'custom-container-class',
+                        popup: 'custom-popup-class',
+                        title: 'custom-title-class',
+                        icon: 'custom-icon-class',
+                    },
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        $('#btnGuardar').prop('disabled', false);
+                        return;
+                    }
+                });
+            } else if (email.trim() === '' || !regexEmail.test(email)) {
+                Swal.fire({
+                    position: 'top-end',
+                    icon: 'error',
+                    title: 'Ha ingresado un mail incorrecto.',
+                    showConfirmButton: true,
+                    timer: 2000,
+                    background: false,
+                    backdrop: false,
+                    customClass: {
+                        container: 'custom-container-class',
+                        popup: 'custom-popup-class',
+                        title: 'custom-title-class',
+                        icon: 'custom-icon-class',
+                    },
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        $('#btnGuardar').prop('disabled', false);
+                        return;
+                    }
+                });
+            } else if (!regexTelefono.test(telefono) || telefono.length < 10 ) { // 3704 3362 64
+                console.log("entro")
+                Swal.fire({
+                    position: 'top-end',
+                    icon: 'error',
+                    title: 'Ha ingresado un telefono incorrecto. Recuerda que debe contener 10 caracteres.',
+                    showConfirmButton: true,
+                    timer: 2000,
+                    background: false,
+                    backdrop: false,
+                    customClass: {
+                        container: 'custom-container-class',
+                        popup: 'custom-popup-class',
+                        title: 'custom-title-class',
+                        icon: 'custom-icon-class',
+                    },
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        $('#btnGuardar').prop('disabled', false);
+                        return;
+                    }
+                });
+            } else {
+                const datosUsuarios = {nombre, email, telefono, direccion, fechanacimiento, rol, sucursal, clave};
+                // Hacer el fetch al backend
+                fetch("../controladores/usuariosActions.php?action=agregar", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(datosUsuarios)
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (!data.success) {
+                        Swal.fire({
+                            position: 'top-end',
+                            icon: 'error',
+                            title: 'Error, ' + data.message,
+                            showConfirmButton: false,
+                            timer: 2000,
+                            background: false,
+                            backdrop: false,
+                            customClass: {
+                                container: 'custom-container-class',
+                                popup: 'custom-popup-class',
+                                title: 'custom-title-class',
+                                icon: 'custom-icon-class',
+                            },
+                        });
+                    } else {
+                        Swal.fire({
+                            position: 'top-end',
+                            icon: 'success',
+                            title: 'Se ha añadido el usuario correctamente',
+                            showConfirmButton: false,
+                            timer: 2000,
+                            background: false,
+                            backdrop: false,
+                            customClass: {
+                                container: 'custom-container-class',
+                                popup: 'custom-popup-class',
+                                title: 'custom-title-class',
+                                icon: 'custom-icon-class',
+                            }
+                        });
+                        obtenerUsuarios();
+                        cargarCarta()
+                        $('#modalAgregarUsuario').modal('hide');
+                        $('#btnAgregarUser').prop('disabled', false);
+                    }
+                })
+                .catch(error => {
+                    Swal.fire({
+                        position: 'top-end',
+                        icon: 'error',
+                        title: 'Ocurrió un error inesperado',
+                        showConfirmButton: false,
+                        timer: 2000,
+                        background: false,
+                        backdrop: false,
+                        customClass: {
+                            container: 'custom-container-class',
+                            popup: 'custom-popup-class',
+                            title: 'custom-title-class',
+                            icon: 'custom-icon-class',
+                        },
+                    });
+                })
+                .finally(() => {
+                    // Restablece el estado del botón "Guardar" después de un error
+                    $('#btnGuardar').prop('disabled', false);
+                    contextoActual = "agregarUsuario";
+                });
+            }
+        }
+
         $('#btnGuardar').click('click', function() {
-            if (contextoActual === "agregarProducto") {
-                addProducto()
-            } else if (contextoActual === "agregarTablaProducto") {
-                addStock()
-            } else if (contextoActual === "editarTablaProducto") {
-                editProducto()
+            if (contextoActual === "agregarUsuario") {
+                addUsuario()
+            } else if (contextoActual === "editarUsuario") {
+                editUsuario()
+            } else if (contextoActual === "eliminarUsuario") {
+                deleteUsuario()
             }
             $('#btnGuardar').prop('disabled', false);
         });
-
-        $('#idPersona').prop('disabled', true);
-        $('#tableUser tbody').on('click', 'tr', function() {
-            if ($(this).hasClass('selected')) {
-                $(this).removeClass('selected');
-                $('#labelAgregarUsuario').text('Agregar Usuario');
-                $('#btnAgregarUser').prop('disabled', false);
-                $('#btnGuardar').prop('disabled', false);
-                btnOn()
-                limpiarModal()
-                $('#idPersona').prop('disabled', true);
-                $('#btnUpdateUsuario').prop('disabled', true);
-                $('#btnEditarTableUsuario').prop('disabled', true);
-                $('#btnEliminarTableUsuario').prop('disabled', true);
-                $('#idPersona').prop('disabled', true);
-            } else {
-                table1.$('tr.selected').removeClass('selected');
-                $(this).addClass('selected');
-                $('#btnAgregarUser').prop('disabled', true);
-                $('#btnGuardar').prop('disabled', true);
-                $('#idPersona').prop('disabled', true);
-                $('#btnUpdateUsuario').prop('disabled', false);
-                $('#btnEditarTableUsuario').prop('disabled', false);
-                $('#btnEliminarTableUsuario').prop('disabled', false);
-                var rowData = table1.row($(this)).data();
-                var idPersona = rowData[0]; 
-                $('#idPersonaEliminar').val(idPersona); // Asignar el ID al campo oculto
-                limpiarModal()
-                $('#idPersona').val(rowData[0]);
-                $('#Nombre').val(rowData[1]);
-                $('#Email').val(rowData[2]);
-                $('#Telefono').val(rowData[3]);
-                $('#Direccion').val(rowData[4]);
-                $('#FechaNacimiento').val(rowData[5]);
-                $('#DescripcionRol').val(rowData[6]);
-                $('#DescripcionSucursal').val(rowData[7]);
-                $('#btnEditarTableUsuario').click(function() {
-                    $('#labelAgregarUsuario').text('Editar Usuario');
-                    btnOn();
-                    $('#modalAgregarUsuario').modal('show');});
-                    $('#btnEliminarTableUsuario').click(function() {
-                    $('#modalEliminarUsuario').modal('show');
-                });
-
-                $('#btnUpdateUsuario').click(function() {
-                    <?php include("../controladores/updateUsuarios.php");?>
-                    $('#idPersona').prop('disabled', false);
-                });
-                $('#btnGuardar').click(function() {
-                    $('#idPersona').prop('disabled', false);
-                    $('#modalAgregarUsuario').modal('hide');
-                });
                 
-            }
-        });
     </script>
 
     <style>
+        .custom-popup-class {
+        width: 250px; /* Ajusta el ancho de la alerta según tus necesidades */
+        font-size: 10px; /* Ajusta el tamaño de fuente del contenido de la alerta */
+        padding: 2px 3px; /* Ajusta el relleno de la alerta para hacerla un poco más pequeña */
+        border-radius: 10px; /* Añade bordes redondeados a la alerta */
+        }
+
+        /* Estilo CSS para la clase personalizada del título */
+        .custom-title-class {
+            font-size: 13px; /* Ajusta el tamaño de fuente del título de la alerta */
+            padding: 6px 3px; 
+            }
+
+
+        /* Estilo CSS para la clase personalizada del icono */
+        .custom-icon-class {
+            font-size: 8px; /* Ajusta el tamaño del icono según tus necesidades */
+        }
         /* Estilo para mover el lengthChange a la izquierda */
         div.dataTables_wrapper .dataTables_length {
             text-align: left;
@@ -674,6 +1002,15 @@ session_start();
         }
 
     </style>
+    <!-- JavaScript Libraries -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="../lib/chart/chart.min.js"></script>
+    <script src="../lib/easing/easing.min.js"></script>
+    <script src="../lib/waypoints/waypoints.min.js"></script>
+    <script src="../lib/owlcarousel/owl.carousel.min.js"></script>
+    <script src="../lib/tempusdominus/js/moment.min.js"></script>
+    <script src="../lib/tempusdominus/js/moment-timezone.min.js"></script>
+    <script src="../lib/tempusdominus/js/tempusdominus-bootstrap-4.min.js"></script>
     <script src="../js/main.js"></script>
 </body>
 </html>
