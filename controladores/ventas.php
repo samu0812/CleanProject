@@ -17,12 +17,11 @@ $idSucursales= isset($_SESSION['idSucursales']) ? $_SESSION['idSucursales'] : ''
 
 
 $sql = "SELECT *
-        FROM VistaProductosStock
-        WHERE idProducto IN (SELECT idProductos FROM StockSucursales WHERE idSucursales = $idSucursales)
-        AND (NombreProducto LIKE '%$query%' OR idProducto LIKE '%$query%')
-        AND CantidadStock > 0"; 
-
-
+FROM VistaProductosStock
+WHERE idSucursales = $idSucursales 
+    AND CantidadStock > 0
+    AND (NombreProducto LIKE '%$query%' OR idProducto LIKE '%$query%')
+"; 
 // Establece la conexión a la base de datos (reemplaza con tus propios detalles de conexión)
 
 $result = $conn->query($sql);
@@ -41,7 +40,6 @@ if ($result->num_rows > 0) {
          ' / ' . $row['DescripcionTipoProducto'] .  ' / ' . $row['DescripcionTipoCategoria'] . ' / ' . $tamañoConAbreviatura . '</div>';
     }
 } 
-// ...
 
-// ...
+?>
 

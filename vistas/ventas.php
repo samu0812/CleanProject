@@ -21,14 +21,13 @@ if ($result->num_rows > 0) {
 <head>
     <meta charset="utf-8">
     <title>Clean</title>
-    
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <meta content="" name="keywords">
     <meta content="" name="description">
-
+    
     <!-- Favicon -->
     <link href="img/favicon.ico" rel="icon">
-
+    
     <!-- Google Web Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -37,32 +36,37 @@ if ($result->num_rows > 0) {
     <!-- Icon Font Stylesheet -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
-
+    
     <!-- Libraries Stylesheet -->
     <link href="../lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
     <link href="../lib/tempusdominus/css/tempusdominus-bootstrap-4.min.css" rel="stylesheet" />
-
+    
     <!-- Customized Bootstrap Stylesheet -->
     <link href="../css/bootstrap.min.css" rel="stylesheet">
-
+    
     <!-- Incluir jQuery -->
     <script src="https://code.jquery.com/jquery-3.7.0.js" integrity="sha256-JlqSTELeR4TLqP0OG9dxM7yDPqX1ox/HfgiSLBj8+kM=" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    
     <!-- Incluir DataTables CSS -->
     <link href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css" rel="stylesheet">
-
-
+    
     <!-- Incluir DataTables JS -->
     <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
     <script src="https://cdn.datatables.net/select/1.7.0/js/dataTables.select.min.js"></script>
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.68/pdfmake.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.68/vfs_fonts.js"></script>
+    
     <!-- toast -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
-
+    <script src="https://kit.fontawesome.com/8c68749bc1.js" crossorigin="anonymous"></script>
+    
     <!-- Incluir tus estilos personalizados -->
     <link href="../css/style.css" rel="stylesheet">
 </head>
+
 
 <body>
     <div class="container-xxl position-relative bg-white d-flex p-0">
@@ -100,7 +104,6 @@ if ($result->num_rows > 0) {
 
                             <!-- INPUT PARA INGRESO DEL CODIGO DE BARRAS O DESCRIPCION DEL PRODUCTO -->
                             <div class="col-md-12 mb-3">
-
                                 <div class="form-group mb-2">
                                     <label class="col-form-label" for="inputBusqueda">
                                         <i class="fas fa-barcode fs-6"></i>
@@ -111,10 +114,8 @@ if ($result->num_rows > 0) {
                                     <!-- Agrega un contenedor para las sugerencias -->
                                     <div id="suggestions" class="autocomplete-suggestions">
                                         <!-- Aquí se mostrarán las sugerencias -->
+                                    </div>
                                 </div>
-                            </div>
-
-
                             </div>
 
                             <!-- ETIQUETA QUE MUESTRA LA SUMA TOTAL DE LOS PRODUCTOS AGREGADOS AL LISTADO -->
@@ -123,31 +124,35 @@ if ($result->num_rows > 0) {
                             </div>
 
                             <!-- BOTONES PARA VACIAR LISTADO Y COMPLETAR LA VENTA -->
-                            <div class="col-md-6 text-right">
-                                <button class="btn btn-primary" id="btnRealizarVenta">
+                            <div class="col-md-6 text-right btn-group btn-group" role="group" aria-label="Basic example">
+                                <button class="btn btn-primary btn-sm" id="btnRealizarVenta">
                                     <i class="fas fa-shopping-cart"></i> Realizar Venta
                                 </button>
-                                <button class="btn btn-danger" id="btnVaciarListado">
+                                <button class="btn btn-danger btn-sm" id="btnVaciarListado">
                                     <i class="far fa-trash-alt"></i> Vaciar Listado
                                 </button>
+                                <button class="btn btn-danger btn-sm" id="btnExportToPDF" disabled> 
+                                    <i class="fa-regular fa-file-pdf" style="color: #ffffff;"></i> Comprobante
+                                </button>
                             </div>
+
 
                             <!-- LISTADO QUE CONTIENE LOS PRODUCTOS QUE SE VAN AGREGANDO PARA LA COMPRA -->
                             <div class="col-md-12">
                                <div class="table-responsive">
-                                <table id="lstProductosVenta" class="display nowrap table-striped w-100 shadow table-sm">
+                                <table id="lstProductosVenta" class="table table-striped">
                                     <thead class="bg-info text-left fs-6">
                                         <tr>
-                                            <th class="thVenta">Id Productos</th>
-                                            <th class="thVenta">Nombre</th>
-                                            <th class="thVenta">Tipo Producto</th>
-                                            <th class="thVenta">Tipo Categoria</th>
-                                            <th class="thVenta">Tipo Tamaño</th>
-                                            <th class="thVenta">Precio Unitario</th>
-                                            <th class="thVenta">Precio p/ Cant.</th>
-                                            <th class="thVenta">Cantidad</th>
-                                            <th class="thVenta">Descuento (Mayorista)</th>
-                                            <th class="thVenta text-center">Opciones</th>
+                                            <th scope="col" class="thVenta">Código</th>
+                                            <th scope="col" class="thVenta">Nombre</th>
+                                            <th scope="col" class="thVenta">Producto</th>
+                                            <th scope="col" class="thVenta">Categoria</th>
+                                            <th scope="col"class="thVenta">Tamaño</th>
+                                            <th scope="col" class="thVenta">Precio Unitario</th>
+                                            <th scope="col" class="thVenta">Precio p/ Cant.</th>
+                                            <th scope="col"class="thVenta">Cantidad</th>
+                                            <th scope="col"class="thVenta">Descuento (Mayorista)</th>
+                                            <th scope="col"class="thVenta text-center">Opciones</th>
                                         </tr>
                                     </thead>
                                     <tbody class="small text-left fs-6">
@@ -180,7 +185,7 @@ if ($result->num_rows > 0) {
                                     </label>
 
                                     <select class="form-select form-select-sm" aria-label=".form-select-sm example" id="selDocumentoVenta" name="documento">
-                                        <option value="0" required>Seleccione Documento</option>
+                                        <option value="0" selected disabled id="defaultOption">Seleccione Documento</option>
                                         <?php
                                         // Conexión a la base de datos (debes configurar tus datos de conexión)
                                         include("../bd/conexion.php");
@@ -201,7 +206,7 @@ if ($result->num_rows > 0) {
                                         // Generar las opciones del select
                                         if ($result->num_rows > 0) {
                                             while ($row = $result->fetch_assoc()) {
-                                                echo '<option value="' . $row["idTipoFactura"] . '">' . $row["Descripcion"] . '</option>';
+                                                echo '<option required value="' . $row["idTipoFactura"] . '">' . $row["Descripcion"] . '</option>';
                                             }
                                         }
 
@@ -225,12 +230,12 @@ if ($result->num_rows > 0) {
                                     </label>
 
                                     <select class="form-select form-select-sm" aria-label=".form-select-sm example" id="selTipoPago">
-                                        <option value="0">Seleccione Tipo Pago</option>
+                                        <option value="" selected disabled id="defaultOption">Seleccione Tipo Pago</option>
                                         <?php
                                         // Generar las opciones del select "Tipo Pago" desde la consulta SQL
                                         if ($resultTipoPago->num_rows > 0) {
                                             while ($rowTipoPago = $resultTipoPago->fetch_assoc()) {
-                                                echo '<option value="' . $rowTipoPago["idFormaDePago"] . '">' . $rowTipoPago["Descripcion"] . '</option>';
+                                                echo '<option required value="' . $rowTipoPago["idFormaDePago"] . '">' . $rowTipoPago["Descripcion"] . '</option>';
                                             }
                                         }
                                         ?>
@@ -341,11 +346,11 @@ if ($result->num_rows > 0) {
         </div>
         <!-- Content End -->
 
-        <!-- Back to Top -->
-        <a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top"><i class="bi bi-arrow-up"></i></a>
+
     </div>
     <script>
     $(document).ready(function() {
+        descuentoAgregado=0;
         // Inicializa el autocompletado
         $('#inputBusqueda').keyup(function() {
         var query = $(this).val();
@@ -385,7 +390,21 @@ if ($result->num_rows > 0) {
 
         // Verificar si el productoId ya ha sido agregado
             if (productoIdsAgregados.includes(productoId)) {
-                alert('Este producto ya ha sido agregado.');
+                Swal.fire({
+                        position: 'top-end',
+                        icon: 'error',
+                        title: 'Este Producto ya ha sido agregado',
+                        showConfirmButton: false,
+                        timer: 2000,
+                        background: false, // Desactiva el fondo oscurecido
+                        backdrop: false,
+                        customClass: {
+                            container: 'custom-container-class',
+                            popup: 'custom-popup-class', // Clase personalizada para ajustar el tamaño de la alerta
+                            title: 'custom-title-class', // Clase personalizada para ajustar el tamaño del título
+                            icon: 'custom-icon-class',
+                        },
+                    })
                 $('#inputBusqueda').val('');
                 $('#suggestions').html('');
                 return; // No hacer nada si ya está en la lista
@@ -406,8 +425,9 @@ if ($result->num_rows > 0) {
             var efectivo = 0;
             
             
+            
             // Crear una nueva fila para la tabla de ventas
-            var nuevaFila = '<tr>';
+            var nuevaFila = '<tr scope="row">';
             nuevaFila += '<td>' + productoId + '</td>';
             nuevaFila += '<td>' + nombre + '</td>';
             nuevaFila += '<td>' + tipoProducto + '</td>';
@@ -453,35 +473,52 @@ if ($result->num_rows > 0) {
         });
 
         // Manejar cambios en la cantidad de productos
+        // Manejar cambios en la cantidad de productos
         $('#lstProductosVenta').on('change', '.cantidad-input', function() {
             var productoId = $(this).closest('tr').find('td:eq(0)').text();
-            var cantidad = parseInt($('#cantidad_' + productoId).val());
+            var cantidadInput = $(this);
+            var cantidad = parseInt(cantidadInput.val());
             var precioUnitario = parseFloat($(this).closest('tr').find('td:eq(5)').text());
             var cantidadStock = parseFloat($(this).data('cantidad-stock'));
 
-
-            // Verificar si la cantidad ingresada es mayor que la cantidad en stock
-            if (cantidad > cantidadStock) {
-                cantidad = cantidadStock; // Establecer la cantidad en stock
-                $(this).val(cantidad); // Actualizar el valor en el campo de cantidad
-
+            // Validar si la cantidad ingresada es un número válido
+            if (isNaN(cantidad) || cantidad <= 0 || cantidad !== parseInt(cantidadInput.val())) {
+                cantidadInput.val(1); // Establecer la cantidad a 1 si no es un número válido
+                cantidad = 1; // Actualizar la cantidad
                 Swal.fire({
-                        position: 'top-end',
-                        icon: 'error',
-                        title: 'La cantidad no puede ser mayor que la cantidad en stock (' + cantidadStock + ').',
-                        showConfirmButton: false,
-                        timer: 4000,
-                        background: false, // Desactiva el fondo oscurecido
-                        backdrop: false,
-                        customClass: {
-                            container: 'custom-container-class',
-                            popup: 'custom-popup-class', // Clase personalizada para ajustar el tamaño de la alerta
-                            title: 'custom-title-class', // Clase personalizada para ajustar el tamaño del título
-                            icon: 'custom-icon-class',
-                        },
-                    })
+                    position: 'top-end',
+                    icon: 'error',
+                    title: 'La cantidad debe ser un número entero mayor que 0.',
+                    showConfirmButton: false,
+                    timer: 4000,
+                    background: false,
+                    backdrop: false,
+                    customClass: {
+                        container: 'custom-container-class',
+                        popup: 'custom-popup-class',
+                        title: 'custom-title-class',
+                        icon: 'custom-icon-class',
+                    },
+                });
+            } else if (cantidad > cantidadStock) {
+                cantidadInput.val(cantidadStock); // Establecer la cantidad al valor máximo de stock
+                cantidad = cantidadStock; // Actualizar la cantidad
+                Swal.fire({
+                    position: 'top-end',
+                    icon: 'error',
+                    title: 'La cantidad no puede ser mayor que la cantidad en stock (' + cantidadStock + ').',
+                    showConfirmButton: false,
+                    timer: 4000,
+                    background: false,
+                    backdrop: false,
+                    customClass: {
+                        container: 'custom-container-class',
+                        popup: 'custom-popup-class',
+                        title: 'custom-title-class',
+                        icon: 'custom-icon-class',
+                    },
+                });
             }
-
             if (cantidad <= 0) {
                 cantidad = 1; // Establecer la cantidad en stock
                 $(this).val(cantidad); // Actualizar el valor en el campo de cantidad
@@ -640,7 +677,7 @@ if ($result->num_rows > 0) {
         }
 
         // Llama a la función cuando se cambia el total de la venta
-        setInterval(observarCambioEnTotalVenta, 1000); // Se verifica cada segundo (ajusta el intervalo según tus necesidades)
+        setInterval(observarCambioEnTotalVenta, 0000); // Se verifica cada segundo (ajusta el intervalo según tus necesidades)
 
         // ...
 
@@ -671,8 +708,14 @@ if ($result->num_rows > 0) {
             var vuelto = efectivoRecibido - total;
 
             if (isNaN(efectivoRecibido)) {
-                efectivoRecibido = 0; // Establecer 0 como valor predeterminado
+                efectivoRecibido = 0;
+                 // Establecer 0 como valor predeterminado si es NaN o menor que total
             }
+            if (efectivoRecibido < total) {
+                vuelto = 0;
+                 // Establecer 0 como valor predeterminado si es NaN o menor que total
+            }
+
 
             if (isNaN(vuelto)) {
                 vuelto = 0; // Establecer 0 como valor predeterminado
@@ -763,6 +806,7 @@ if ($result->num_rows > 0) {
                         response = JSON.parse(response); // Parsear la respuesta JSON
 
                         if (response.success) {
+                            $('#btnExportToPDF').prop('disabled', false);
                             // Si la venta fue exitosa, muestra una notificación
                             Swal.fire({
                                 position: 'top-end',
@@ -783,7 +827,7 @@ if ($result->num_rows > 0) {
                             // Actualiza la página después de 4 segundos (4000 ms)
                             setTimeout(function() {
                                 location.reload();
-                            }, 2000);
+                            }, 10000);
                         } else {
                             // Si la venta no fue exitosa, muestra una notificación de error
                             Swal.fire({
@@ -849,6 +893,11 @@ if ($result->num_rows > 0) {
                 return false;
             }
 
+            var total = $('#boleta_total').text();
+            if (montoRecibido < total) {
+                return false;
+            }
+
             // Si todos los campos están completos y el monto recibido es válido, y hay productos en la tabla, retornar true
             return true;
         }
@@ -896,8 +945,174 @@ if ($result->num_rows > 0) {
             return datosCard;
         }
 
+// Función para cargar una imagen desde una URL y convertirla a base64
+function convertImageToBase64(url, callback) {
+    var img = new Image();
+    img.crossOrigin = 'Anonymous';
+    img.onload = function() {
+        var canvas = document.createElement('canvas');
+        canvas.width = img.width;
+        canvas.height = img.height;
+        var ctx = canvas.getContext('2d');
+        ctx.drawImage(img, 0, 0);
+        var base64 = canvas.toDataURL('image/png'); // Puedes cambiar 'image/png' al formato de imagen deseado
+        callback(base64);
+    };
+    img.src = url;
+}
 
-    
+// Función para exportar el PDF con la imagen
+function exportToPDF() {
+    // Definir la ruta de la imagen
+    var imagenUrl = '../img/logoCleanIco2.ico';
+
+    // Llama a la función para convertir la imagen y obtener su representación en base64
+    convertImageToBase64(imagenUrl, function(base64Image) {
+        // Obtener los demás datos que deseas incluir en el PDF
+        var tableHeaders = [
+            'Código Producto',
+            'Nombre',
+            'Tipo Producto',
+            'Categoría',
+            'Tamaño',
+            'Precio Unitario',
+            'Precio p/ Cantidad',
+            'Cantidad',
+            'Descuento'
+        ];
+
+        var tableData = [];
+        $('#lstProductosVenta tbody tr').each(function () {
+            var rowData = [];
+            $(this).find('td').each(function (index) {
+                if (index === 7) {
+                    rowData.push($(this).find('input').val());
+                } else {
+                    rowData.push($(this).text());
+                }
+            });
+
+            rowData.pop();
+
+            tableData.push(rowData);
+        });
+
+        // Obtener los datos del card
+        var totalVenta = $('#totalVentaRegistrar').text();
+        var documentoVenta = $('#selDocumentoVenta option:selected').text();
+        var tipoPago = $('#selTipoPago option:selected').text();
+        var nroVenta = $('#iptNroVenta').val();
+        var efectivoRecibido = $('#iptEfectivoRecibido').val();
+        var vuelto = $('#Vuelto').text();
+        var subtotal = $('#boleta_subtotal').text();
+        var descuentos = $('#boleta_descuentos').text();
+        var recargos = $('#boleta_recargos').text();
+        var total = $('#boleta_total').text();
+        var fechaActual = new Date().toLocaleDateString();
+        
+        // Definir la estructura del documento PDF
+        var docDefinition = {
+            content: [
+                {
+                    columns: [
+                        {
+                            // Agregar la imagen usando la representación en base64
+                            image: base64Image, // Utiliza la representación en base64 de la imagen
+                            width: 100, // Ancho de la imagen en puntos (ajusta según sea necesario)
+                            alignment: 'left',
+                            margin: [0, 10], // Márgenes (arriba, abajo)
+                        },
+                        {
+                            text: 'Factura Nro: ' + nroVenta,
+                            width: '*',
+                            fontSize: 12,
+                            bold: true,
+                            alignment: 'right',
+                        },
+                    ]
+                },
+                {
+                    text: 'Dirección de tu Empresa\nFormosa, Argentina\nTeléfono: (123) 456-7890\nEmail: cleanfsa@empresa.com\nFecha: ' + fechaActual + '\n' + documentoVenta,
+                    fontSize: 10,
+                    margin: [0, 0, 0, 15],
+                },
+                {
+                    table: {
+                        headerRows: 1,
+                        widths: ['auto', 'auto', 'auto', 'auto', 'auto', 'auto', 'auto', 'auto', 'auto'],
+                        body: [
+                            tableHeaders.map(header => {
+                                return {
+                                    text: header,
+                                    alignment: 'center',
+                                    fontSize: 10,
+                                    fillColor: '#FFA07A', // Color de fondo de encabezados
+                                    style: 'tableHeader',
+                                    color: 'white', // Color de texto en encabezados
+                                };
+                            }),
+                            ...tableData.map(row => row.map(cell => ({ text: cell, fontSize: 10 }))),
+                        ],
+                    },
+                    layout: 'lightHorizontalLines', // Líneas horizontales ligeras entre las filas
+                },
+                { text: 'Datos de la Compra', style: 'header', margin: [0, 15, 0, 5] },
+                {
+                    table: {
+                        widths: ['auto', '*'],
+                        body: [
+                            ['Tipo de Pago:', tipoPago],
+                            ['Dinero Recibido:', efectivoRecibido],
+                            ['Vuelto:', vuelto],
+                            ['Subtotal:', subtotal],
+                            ['Descuentos:', descuentos],
+                            ['Recargos:', recargos],
+                            ['Total:', total],
+                        ],
+                    },
+                    fontSize: 11,
+                    layout: 'noBorders', // Sin bordes entre las celdas
+                },
+            ],
+            styles: {
+                header: {
+                    fontSize: 12,
+                    bold: true,
+                    alignment: 'center',
+                },
+                tableHeader: {
+                    fontSize: 11,
+                    bold: true,
+                },
+            },
+        };
+
+            // Generar el PDF
+            var pdf = pdfMake.createPdf(docDefinition);
+            pdf.open();
+        });
+    }
+
+// Asignar la función al botón de exportar a PDF
+    $('#btnExportToPDF').click(function() {
+        exportToPDF();
+    });
+
+    document.getElementById("selTipoPago").addEventListener("change", function() {
+        var defaultOption = document.getElementById("defaultOption");
+        if (defaultOption) {
+            defaultOption.disabled = true;
+        }
+    });
+    document.getElementById("selDocumentoVenta").addEventListener("change", function() {
+        var defaultOption = document.getElementById("defaultOption");
+        if (defaultOption) {
+            defaultOption.disabled = true;
+        }
+    });
+
+
+
 
     </script>
 
@@ -905,17 +1120,21 @@ if ($result->num_rows > 0) {
     <style>
 /* Estilo para la lista de sugerencias */
         /* Estilo para las celdas de encabezado */
-        .thVenta {
-            background-color: #e77a34; /* Cambia el color de fondo a rojo */
+        th.thVenta {
+            background-color: #FFA07A; 
             color: #ffffff; /* Cambia el color del texto a blanco */
             font-weight: bold;   
+            padding: 0.1rem 1rem;
+            display: table-cell;
+            vertical-align: inherit;
+            font-weight: bold;
+            
         }
         .autocomplete-suggestions {
             position: absolute;
             z-index: 9999;
             max-height: 150px; /* Altura máxima de la lista desplegable */
             overflow-y: auto;
-            border: 1px solid #ccc;
             background-color: #fff;
             width: 58%; /* Ajusta el ancho de la lista al 100% del input */
             box-sizing: border-box; /* Incluye el padding y el borde en el ancho total */
@@ -930,31 +1149,6 @@ if ($result->num_rows > 0) {
             background-color: #f0f0f0;
         }
 
-        .child-table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-        .info-row td {
-            width: 100%;
-        }
-        table {
-        border-collapse: collapse;
-        width: 100%;
-        }
-        th, td {
-        border: 1px solid black;
-        padding: 8px;
-        text-align: center;
-        }
-        tr:hover {
-        background-color: #f2f2f2;
-        }
-        .info {
-        display: none;
-        }
-        .wide-column {
-            width: 40%; /* Ajusta el ancho según tus necesidades */
-        }
 
         /* Estilo para mover el lengthChange a la izquierda */
         div.dataTables_wrapper .dataTables_length {
@@ -1029,27 +1223,46 @@ if ($result->num_rows > 0) {
             font-size: 13px; /* Ajusta el tamaño de fuente del título de la alerta */
             padding: 6px 3px; 
             }
-
-
         /* Estilo CSS para la clase personalizada del icono */
         .custom-icon-class {
             font-size: 8px; /* Ajusta el tamaño del icono según tus necesidades */
         }
+        .bg-primary{
+            background-color: #FF6347 !important;
+        } 
+        .btn-group, .btn-group-vertical {
+            position: relative;
+            display: inline; 
+            vertical-align: middle;
+        }
+        #btnRealizarVenta{
+            background-color:#FF6347;
+            border-color: #FF6347;
+        }
+        #lstProductosVenta{
+            background-color:#FFFFFF !important;
+            color:#757575;
+            padding: 0.3rem 0.5rem;
+        }
+
+        
 
     </style>
 
-    <!-- Template Javascript -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="../lib/chart/chart.min.js"></script>
-    <script src="../lib/easing/easing.min.js"></script>
-    <script src="../lib/waypoints/waypoints.min.js"></script>
-    <script src="../lib/owlcarousel/owl.carousel.min.js"></script>
-    <script src="../lib/tempusdominus/js/moment.min.js"></script>
-    <script src="../lib/tempusdominus/js/moment-timezone.min.js"></script>
-    <script src="../lib/tempusdominus/js/tempusdominus-bootstrap-4.min.js"></script>
+<!-- Template Javascript -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="../lib/chart/chart.min.js"></script>
+<script src="../lib/easing/easing.min.js"></script>
+<script src="../lib/waypoints/waypoints.min.js"></script>
+<script src="../lib/owlcarousel/owl.carousel.min.js"></script>
+<script src="../lib/tempusdominus/js/moment.min.js"></script>
+<script src="../lib/tempusdominus/js/moment-timezone.min.js"></script>
+<script src="../lib/tempusdominus/js/tempusdominus-bootstrap-4.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 
-    <!-- Template Javascript -->
-    <script src="../js/main.js"></script>
+<!-- Template Javascript -->
+<script src="../js/main.js"></script>
 </body>
+
 
 </html>
