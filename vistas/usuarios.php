@@ -3,7 +3,6 @@ session_start();
 ?>
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="utf-8">
     <title>Clean</title>
@@ -31,31 +30,24 @@ session_start();
     <!-- Customized Bootstrap Stylesheet -->
     <link href="../css/bootstrap.min.css" rel="stylesheet">
 
-    <!-- Template Stylesheet -->
-    <link href="../css/style.css" rel="stylesheet">
-
     <!-- Incluir jQuery -->
     <script src="https://code.jquery.com/jquery-3.7.0.js"></script>
     <script src="https://code.jquery.com/jquery-3.7.0.js" integrity="sha256-JlqSTELeR4TLqP0OG9dxM7yDPqX1ox/HfgiSLBj8+kM=" crossorigin="anonymous"></script>
 
-    <!-- Incluir Bootstrap CSS -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css">
-
     <!-- Incluir DataTables CSS -->
     <link href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css" rel="stylesheet">
 
-    <!-- Incluir tus estilos personalizados -->
-    <link href="../css/style.css" rel="stylesheet">
-
-    <!-- Incluir Bootstrap JS -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/js/bootstrap.min.js"></script>
 
     <!-- Incluir DataTables JS -->
     <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
     <script src="https://cdn.datatables.net/select/1.7.0/js/dataTables.select.min.js"></script>
 
+    <!-- toast -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
 
+    <!-- Incluir tus estilos personalizados -->
+    <link href="../css/style.css" rel="stylesheet">
 </head>
 
 <body>
@@ -125,7 +117,7 @@ session_start();
                 <div class="bg-personalizado text-center rounded p-4">
                     <div class="table-responsive -xxl">
                     <table id="tableUser" class="table display" style="width:100%">
-                        <h5>Busqueda de usuarios</h5>
+                        <h5>Usuarios </h5>
                         <thead>
                             <tr>
                             <th>ID Persona</th>
@@ -151,7 +143,7 @@ session_start();
 
                     while ($row = mysqli_fetch_assoc($result)) {
                         echo "<tr>";
-                        echo "<td>" . $row['idPersona'] . "</td>";
+                        echo "<td data-idpersona='" . $row['idPersona'] . "'>" . $row['idPersona'] . "</td>";
                         echo "<td>" . $row['Nombre'] . "</td>";
                         echo "<td>" . $row['Email'] . "</td>";
                         echo "<td>" . $row['Telefono'] . "</td>";
@@ -209,9 +201,9 @@ session_start();
                                 <label for="DescripcionRol" class="form-label">Rol</label>
                                 <select class="form-select" name="DescripcionRol" id="DescripcionRol"  required>
                                     <option value="" selected disabled>Seleccione un Rol</option>
-                                    <option value="Administrador">Administrador</option>
-                                    <option value="Cajero">Cajero</option>
-                                    <option value="Repositor">Repositor</option>
+                                    <option value=1>Dueño</option>
+                                    <option value=2>Gerente</option>
+                                    <option value=3>Vendedor</option>
                                 </select>
                             </div>
                         </div>
@@ -220,9 +212,9 @@ session_start();
                                 <label for="DescripcionSucursal" class="form-label">Sucursal</label>
                                 <select class="form-select" name="DescripcionSucursal" id="DescripcionSucursal" required>
                                     <option value="" selected disabled>Seleccione una Sucursal</option>
-                                    <option value="Sucursal1">Sucursal 1</option>
-                                    <option value="Sucursal2">Sucursal 2</option>
-                                    <option value="Sucursal3">Sucursal 3</option>
+                                    <option value=1>Galpón</option>
+                                    <option value=2>Kirchner</option>
+                                    <option value=3>Centro</option>
                                 </select>
                             </div>
                             <div class="col-md-4 mb-3">
@@ -264,7 +256,11 @@ session_start();
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                            <button type="button" class="btn btn-danger">Eliminar</button>
+                            <form action="../controladores/eliminarUsuario.php" method="POST">
+                            <input type="hidden" name="idPersonaEliminar" id="idPersonaEliminar">
+                            <button type="submit" value="eliminar" name="eliminar" id="eliminar" class="btn btn-danger">Eliminar</button>
+                            </form>
+
                         </div>
                     </div>
                 </div>
@@ -334,14 +330,16 @@ session_start();
                 language: {
                     search: "",
                     searchPlaceholder: "Filtrar Nombre",
-                    lengthMenu: "Mostrar _MENU_ registros",
+                    lengthMenu: "Mostrar MENU registros",
                     zeroRecords: "No se encontraron resultados",
-                    info: "Mostrando _START_ a _END_ de _TOTAL_ registros",
+                    info: "Mostrando START a END de TOTAL registros",
                     infoEmpty: "Mostrando 0 a 0 de 0 registros",
-                    infoFiltered: "(filtrado de _MAX_ registros en total)"
+                    infoFiltered: "(filtrado de MAX registros en total)"
                 }
             });
             $('#idPersona').prop('disabled', true);
+            
+
 
 
             $('#tableUser tbody').on('click', 'tr', function() {
@@ -370,6 +368,9 @@ session_start();
                     $('#btnEliminarTableUsuario').prop('disabled', false);
                     // Obtener los datos del producto seleccionado
                     var rowData = tableUser.row($(this)).data();
+                    var idPersona = rowData[0]; 
+                    $('#idPersonaEliminar').val(idPersona); // Asignar el ID al campo oculto
+
 
                     // Limpiar los datos en el modal
                     limpiarModal()
@@ -401,9 +402,6 @@ session_start();
                         // ...
                         // Cerrar el modal después de guardar los datos (si es necesario)
                         $('#idPersona').prop('disabled', false);
-                        $('#modalAgregarUsuario').modal('hide');
-
-                        
                     });
                     $('#btnCrearUsuario').click(function() {
                         // Aquí puedes agregar el código para guardar los datos si es necesario
@@ -411,7 +409,6 @@ session_start();
                         // Cerrar el modal después de guardar los datos (si es necesario)
                         $('#idPersona').prop('disabled', false);
                         $('#modalAgregarUsuario').modal('hide');
-                        
                     });
                     
                 }
@@ -482,9 +479,20 @@ session_start();
         }
 
     </style>
+    
+<!-- JavaScript Libraries -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="../lib/chart/chart.min.js"></script>
+    <script src="../lib/easing/easing.min.js"></script>
+    <script src="../lib/waypoints/waypoints.min.js"></script>
+    <script src="../lib/owlcarousel/owl.carousel.min.js"></script>
+    <script src="../lib/tempusdominus/js/moment.min.js"></script>
+    <script src="../lib/tempusdominus/js/moment-timezone.min.js"></script>
+    <script src="../lib/tempusdominus/js/tempusdominus-bootstrap-4.min.js"></script>
 
     <!-- Template Javascript -->
     <script src="../js/main.js"></script>
+
     
 </body>
 

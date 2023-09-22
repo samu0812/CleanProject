@@ -45,13 +45,68 @@
             }
         }
 
+        function obtenerRolDescripcion($idPersona, $conn) {
+            $sql = "SELECT e.IdRol, r.Descripcion
+                    FROM Empleado e
+                    INNER JOIN Rol r ON e.IdRol = r.idRol
+                    WHERE e.idPersona = $idPersona";
+            
+            // Ejecutar la consulta
+            $resultado = mysqli_query($conn, $sql);
+            $fila = mysqli_fetch_assoc($resultado);
+            mysqli_free_result($resultado);
+            return $fila;
+        }    
+
+        function obtenerSucursalDescripcion($idPersona, $conn) {
+            $sql = "SELECT e.IdSucursales, r.Descripcion
+                    FROM Empleado e
+                    INNER JOIN Sucursales r ON e.IdSucursales = r.IdSucursales
+                    WHERE e.idPersona = $idPersona";
+            
+            // Ejecutar la consulta
+            $resultado = mysqli_query($conn, $sql);
+            $fila = mysqli_fetch_assoc($resultado);
+            mysqli_free_result($resultado);
+            return $fila;
+        }    
+
+
+        function obtnerIdEmpleado($idPersona, $conn){
+            $consultaId = "SELECT idEmpleado FROM Empleado WHERE idPersona = $idPersona";
+            $resultadoId = mysqli_query($conn, $consultaId);
+        
+            if ($resultadoId && mysqli_num_rows($resultadoId) === 1) {
+                $filaId = mysqli_fetch_assoc($resultadoId);
+                return $filaId['idEmpleado'];
+            } else {
+                return "id no encontrado";
+            }
+        }
+        function obtenerIdPersona($idPersona,$conn){
+            $consultaId = "SELECT idPersona from persona WHERE idPersona = $idPersona";
+            $resultadoId = mysqli_query($conn, $consultaId);
+
+            if ($resultadoId && mysqli_num_rows($resultadoId) === 1) {
+                $filaId = mysqli_fetch_assoc($resultadoId);
+                return $filaId['idPersona'];
+            } else {
+                return "id no encontrado";
+            }
+        }
+
+        
+
 
         if ($resultado && mysqli_num_rows($resultado) === 1) {
             // El usuario existe en la base de datos, verificar la contraseña
             $fila = mysqli_fetch_assoc($resultado);
             $hash = $fila['Clave']; 
             
-            if ($hash === $Clave){
+            
+
+            $password = password_verify($Clave, $hash);
+            if ($password === TRUE){
                 // La contraseña es correcta, iniciar la sesión
                 
                 $_SESSION['usuario'] = $fila['idPersona'];
@@ -64,8 +119,20 @@
                 $nombrePersona = obtenerNombrePersona($idPersona, $conn);
                 $_SESSION['nombrePersona'] = $nombrePersona;
 
-                $rol = obtnerRol($idPersona, $conn);
-                $_SESSION['rol'] = $rol;
+                $rol = obtenerRolDescripcion($idPersona, $conn);
+                $_SESSION['rol'] = $rol['Descripcion'];
+
+                $sucursal = obtenerSucursalDescripcion($idPersona, $conn);
+                $_SESSION['sucursal'] = $sucursal['Descripcion'];
+
+                $idSucursales = obtenerSucursalDescripcion($idPersona, $conn);
+                $_SESSION['idSucursales'] = $idSucursales['IdSucursales'];
+                
+                $idEmpleado = obtnerIdEmpleado($idPersona, $conn);
+                $_SESSION['idEmpleado'] = $idEmpleado;
+
+                $idPersona = obtenerIdPersona($idPersona, $conn);
+                $_SESSION['idPersona'] = $idPersona;
 
                 header("Location: vistas\home.php");
 
@@ -89,9 +156,5 @@
                         </div>
                     </div>
             <?php
-        }
-    }
-
-    ?>
-
-
+       }}
+?>
