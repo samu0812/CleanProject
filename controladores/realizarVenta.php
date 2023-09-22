@@ -20,17 +20,38 @@ try {
         $nroVenta = $ventaData['card']['nroVenta'];
         $efectivoRecibido = $ventaData['card']['efectivoRecibido'];
 
-        // Insertar Datos en tabla Facturas
-        $sql = "INSERT INTO Facturas (idTipoDestinatarioFactura, idTipoFactura, idFormaDePago, FechaEmision) VALUES (?, ?, ?, ?)";
+    // Insertar Datos en tabla Facturas
+    $sql = "INSERT INTO Facturas (idTipoDestinatarioFactura, idTipoFactura, idFormaDePago, FechaEmision) VALUES (?, ?, ?, ?)";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("iiis", $destinatario, $tipoDocumento, $tipoPago, $fecha);
+    $stmt->execute();
+    $idFactura = $stmt->insert_id;
+
+    // Insertar Datos en tabla DetalleFactura
+    $sql = "INSERT INTO DetalleFactura (idFacturas, SubTotal, Total, Descuentos, Recargos) VALUES (?, ?, ?, ?, ?)";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("idddd", $idFactura, $subtotal, $totalVenta, $descuentos, $recargos);
+    $stmt->execute();
+    $idDetalleFactura = $stmt->insert_id;
+
+    // Accede a los datos de la tabla de productos
+    $productos = $ventaData['productos'];
+    foreach ($productos as $producto) {
+        $idProducto = $producto['id'];
+        $nombreProducto = $producto['nombre'];
+        $cantidad = $producto['cantidad'];
+        $cantidadStock = $producto['cantidadStock'];
+        $actualizarStock = $cantidadStock - $cantidad;
+        $sql = "INSERT INTO Ventas (idEmpleado, idProductos, idDetalleFactura, idSucursales, Fecha, nroVenta, cantidad) VALUES (?, ?, ?, ?, ?, ?, ?)";
         $stmt = $conn->prepare($sql);
-        $stmt->bind_param("iiis", $destinatario, $tipoDocumento, $tipoPago, $fecha);
+        $stmt->bind_param("isiisid", $idEmpleado, $idProducto, $idDetalleFactura, $idSucursales, $fecha, $nroVenta, $cantidad);
         $stmt->execute();
         $idFactura = $stmt->insert_id;
 
         // Insertar Datos en tabla DetalleFactura
         $sql = "INSERT INTO DetalleFactura (idFacturas, SubTotal, Total, Descuentos, Recargos) VALUES (?, ?, ?, ?, ?)";
         $stmt = $conn->prepare($sql);
-        $stmt->bind_param("idddd", $idFactura, $subtotal, $totalVenta, $descuentos, $recargos);
+        $stmt->bind_param("ds", $actualizarStock, $idProducto); 
         $stmt->execute();
         $idDetalleFactura = $stmt->insert_id;
 
@@ -78,7 +99,4 @@ try {
         'message' => 'Error en el servidor: ' . $e->getMessage()
     ];
 }
-
-header('Content-Type: application/json');
-echo json_encode($response);
 ?>

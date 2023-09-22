@@ -40,5 +40,5 @@ if ($result->num_rows > 0) {
          ' / ' . $row['DescripcionTipoProducto'] .  ' / ' . $row['DescripcionTipoCategoria'] . ' / ' . $tamañoConAbreviatura . '</div>';
     }
 } 
-?>
 
+?>
