@@ -338,14 +338,10 @@ if ($result->num_rows > 0) {
                 </div>
             </div>
 
-            <!-- Footer Start -->
             <?php
             include "footer.php";
             ?>
-            <!-- Footer End -->
         </div>
-        <!-- Content End -->
-
 
     </div>
     <script>
@@ -376,12 +372,9 @@ if ($result->num_rows > 0) {
         });
     });
 
-    
     $(document).ready(function() {
-    // ...
         var productoIdsAgregados = [];
         $('#iptNroVenta').val('<?php echo $nroVenta; ?>');
-
 
         // Manejar la selección de un producto del autocompletado
         $('#suggestions').on('click', '.autocomplete-suggestion', function() {
@@ -410,9 +403,7 @@ if ($result->num_rows > 0) {
                 return; // No hacer nada si ya está en la lista
             }
 
-            // Agregar el productoId a la lista de productos agregados
             productoIdsAgregados.push(productoId);
-
 
             var nombre = $(this).data('nombre');
             var tipoProducto = $(this).data('tipo-producto')
@@ -424,8 +415,6 @@ if ($result->num_rows > 0) {
             var descuento = 0.00;
             var efectivo = 0;
             
-            
-            
             // Crear una nueva fila para la tabla de ventas
             var nuevaFila = '<tr scope="row">';
             nuevaFila += '<td>' + productoId + '</td>';
@@ -435,7 +424,13 @@ if ($result->num_rows > 0) {
             nuevaFila += '<td>' + tamaño + '</td>';
             nuevaFila += '<td>' + precioProducto + '</td>';
             nuevaFila += '<td>' +  precioFinal + '</td>';
-            nuevaFila += '<td><input type="number" min="1" max="' + cantidadStock + '" value="1" class="form-control form-control-sm cantidad-input" data-cantidad-stock="' + cantidadStock + '" id="cantidad_' + productoId + '"></td>';
+               // Verificar el tipo de producto
+            if (tipoProducto === 'suelto' || tipoProducto === 'Suelto' || tipoProducto === 'SUELTO') {
+                nuevaFila += '<td><input type="number" step="0.01" min="0.01" max="' + cantidadStock + '" value="1" class="form-control form-control-sm cantidad-input" data-cantidad-stock="' + cantidadStock + '" id="cantidad_' + productoId + '"></td>';
+            } else {
+                nuevaFila += '<td><input type="number" step="1" min="1" max="' + cantidadStock + '" value="1" class="form-control form-control-sm cantidad-input" data-cantidad-stock="' + cantidadStock + '" id="cantidad_' + productoId + '"></td>';
+            }
+
             nuevaFila += '<td>' +  descuento + '</td>';
             nuevaFila += '<td><button class="btn btn-danger btn-sm eliminar-producto" data-producto-id="' + productoId + '">Eliminar</button></td>';
             nuevaFila += '</tr>';
@@ -462,10 +457,10 @@ if ($result->num_rows > 0) {
             $('#boleta_descuentos').text('0.00');
             $('#boleta_total').text('0.00');
             // Resetear el campo "Agregar Descuento"
-            $('#iptagregarDescuento').val(0);
+            $('#iptagregarDescuento').val(0.00);
             // Resetear el campo "Monto Recibido"
-            $('#iptEfectivoRecibido').val(0);
-            $('#selTipoPago').val('0');
+            $('#iptEfectivoRecibido').val(0.00);
+            
             $('#chkEfectivoExacto').prop('checked', false);
 
             // Recalcular el total de la venta (que será 0 en este punto)
@@ -473,72 +468,77 @@ if ($result->num_rows > 0) {
         });
 
         // Manejar cambios en la cantidad de productos
-        // Manejar cambios en la cantidad de productos
         $('#lstProductosVenta').on('change', '.cantidad-input', function() {
             var productoId = $(this).closest('tr').find('td:eq(0)').text();
             var cantidadInput = $(this);
-            var cantidad = parseInt(cantidadInput.val());
+            var cantidad = parseFloat(cantidadInput.val());
             var precioUnitario = parseFloat($(this).closest('tr').find('td:eq(5)').text());
             var cantidadStock = parseFloat($(this).data('cantidad-stock'));
+            var tipoProducto = $(this).closest('tr').find('td:eq(2)').text().toLowerCase(); // Obtener el tipo de producto
 
-            // Validar si la cantidad ingresada es un número válido
-            if (isNaN(cantidad) || cantidad <= 0 || cantidad !== parseInt(cantidadInput.val())) {
-                cantidadInput.val(1); // Establecer la cantidad a 1 si no es un número válido
-                cantidad = 1; // Actualizar la cantidad
-                Swal.fire({
-                    position: 'top-end',
-                    icon: 'error',
-                    title: 'La cantidad debe ser un número entero mayor que 0.',
-                    showConfirmButton: false,
-                    timer: 4000,
-                    background: false,
-                    backdrop: false,
-                    customClass: {
-                        container: 'custom-container-class',
-                        popup: 'custom-popup-class',
-                        title: 'custom-title-class',
-                        icon: 'custom-icon-class',
-                    },
-                });
-            } else if (cantidad > cantidadStock) {
-                cantidadInput.val(cantidadStock); // Establecer la cantidad al valor máximo de stock
-                cantidad = cantidadStock; // Actualizar la cantidad
-                Swal.fire({
-                    position: 'top-end',
-                    icon: 'error',
-                    title: 'La cantidad no puede ser mayor que la cantidad en stock (' + cantidadStock + ').',
-                    showConfirmButton: false,
-                    timer: 4000,
-                    background: false,
-                    backdrop: false,
-                    customClass: {
-                        container: 'custom-container-class',
-                        popup: 'custom-popup-class',
-                        title: 'custom-title-class',
-                        icon: 'custom-icon-class',
-                    },
-                });
-            }
-            if (cantidad <= 0) {
-                cantidad = 1; // Establecer la cantidad en stock
-                $(this).val(cantidad); // Actualizar el valor en el campo de cantidad
-
-                Swal.fire({
+            // Validar si el tipo de producto es "suelto" o no
+            if (tipoProducto === "suelto") {
+                // Validar si la cantidad ingresada es un número válido para productos "suelto"
+                if (isNaN(cantidad) || cantidad <= 0) {
+                    cantidadInput.val(1); // Establecer la cantidad a 1 si no es un número válido
+                    cantidad = 1; // Actualizar la cantidad
+                    Swal.fire({
                         position: 'top-end',
                         icon: 'error',
-                        title: 'La cantidad no puede ser Menor o Igual a 0.',
+                        title: 'La cantidad debe ser un número mayor a 0.',
                         showConfirmButton: false,
                         timer: 4000,
-                        background: false, // Desactiva el fondo oscurecido
+                        background: false,
                         backdrop: false,
                         customClass: {
                             container: 'custom-container-class',
-                            popup: 'custom-popup-class', // Clase personalizada para ajustar el tamaño de la alerta
-                            title: 'custom-title-class', // Clase personalizada para ajustar el tamaño del título
+                            popup: 'custom-popup-class',
+                            title: 'custom-title-class',
                             icon: 'custom-icon-class',
                         },
-                    })
+                    });
+                }            
+            } else {
+                // Validar si la cantidad ingresada es un número válido para otros tipos de productos
+                if (isNaN(cantidad) || cantidad <= 0 || !Number.isInteger(cantidad)) {
+                    cantidadInput.val(1); // Establecer la cantidad a 1 si no es un número válido
+                    cantidad = 1; // Actualizar la cantidad
+                    Swal.fire({
+                        position: 'top-end',
+                        icon: 'error',
+                        title: 'La cantidad debe ser un número mayor a 0.',
+                        showConfirmButton: false,
+                        timer: 4000,
+                        background: false,
+                        backdrop: false,
+                        customClass: {
+                            container: 'custom-container-class',
+                            popup: 'custom-popup-class',
+                            title: 'custom-title-class',
+                            icon: 'custom-icon-class',
+                        },
+                    });
+                }
             }
+            if (cantidad > cantidadStock) {
+                    cantidadInput.val(cantidadStock); // Establecer la cantidad al valor máximo de stock
+                    cantidad = cantidadStock; // Actualizar la cantidad
+                    Swal.fire({
+                        position: 'top-end',
+                        icon: 'error',
+                        title: 'La cantidad no puede ser mayor que la cantidad en stock (' + cantidadStock + ').',
+                        showConfirmButton: false,
+                        timer: 4000,
+                        background: false,
+                        backdrop: false,
+                        customClass: {
+                            container: 'custom-container-class',
+                            popup: 'custom-popup-class',
+                            title: 'custom-title-class',
+                            icon: 'custom-icon-class',
+                        },
+                    });
+                }
             // Aplicar descuento del 10% si es una venta mayorista (cantidad >= 6)
             if (cantidad >= 6) {
                 //precioUnitario *= 0.9; // Aplicar descuento del 10%
@@ -572,33 +572,21 @@ if ($result->num_rows > 0) {
             var descuentoPorcentaje = parseFloat($(this).val()) / 100; // Divide por 100 para obtener el valor en porcentaje
             var subtotal = parseFloat($('#boleta_subtotal').text()); // Obtener el subtotal actual
             // Calcula el descuento en base al porcentaje y al subtotal
-
             var descuentos = 0;
             $('#lstProductosVenta tbody tr').each(function() {
                 var descuentoProducto = parseFloat($(this).find('td:eq(8)').text()); // Obtener el descuento del producto
                 descuentos = descuentoProducto + descuentoAgregado;
                 total=subtotal+descuentos;
-                
             });
 
             if (isNaN(descuentoPorcentaje)) {
                 descuentos = calcularDescuentos(); // Establecer 0 como valor predeterminado
             }
-
-
-            
-            console.log('Evento de entrada input activado.', descuentos);
-
             // Actualiza el valor de los descuentos en la tarjeta
             $('#boleta_descuentos').text(descuentos.toFixed(2));
-          
-
             // Recalcula el total de la venta
             calcularTotalVenta();
         });
-
-
-
 
         // Manejar clics en el botón "Eliminar" de un producto en la tabla
         $('#lstProductosVenta').on('click', '.eliminar-producto', function() {
@@ -635,7 +623,6 @@ if ($result->num_rows > 0) {
         $('#chkEfectivoExacto').change(function() {
             var isChecked = $(this).is(":checked");
             var totalVenta = parseFloat($('#boleta_total').text());
-
             if (isChecked) {
                 // Si está marcado, establece el monto efectivo igual al total
                 $('#iptEfectivoRecibido').val(totalVenta.toFixed(2));
@@ -646,7 +633,6 @@ if ($result->num_rows > 0) {
                 $('#iptEfectivoRecibido').val('');
                 $('#EfectivoEntregado').text('0.00'); // Reinicia el campo "Monto Efectivo"
             }
-
             // Vuelve a calcular el vuelto y actualizar los totales
             calcularTotalVenta();
             habilitarEfectivoRecibido();
@@ -656,7 +642,6 @@ if ($result->num_rows > 0) {
             var isChecked = $('#chkEfectivoExacto').is(":checked");
             $('#iptEfectivoRecibido').prop('disabled', isChecked);
         }
-
             // Escuchar cambios en el total de la venta
         function observarCambioEnTotalVenta() {
             // Obtiene el total actualizado
@@ -670,16 +655,12 @@ if ($result->num_rows > 0) {
                 $('#iptEfectivoRecibido').val(totalVenta.toFixed(2));
                 $('#EfectivoEntregado').text(totalVenta.toFixed(2));
             }
-
             // Vuelve a calcular el vuelto y actualizar los totales
             calcularTotalVenta();
             habilitarEfectivoRecibido();
         }
-
         // Llama a la función cuando se cambia el total de la venta
         setInterval(observarCambioEnTotalVenta, 0000); // Se verifica cada segundo (ajusta el intervalo según tus necesidades)
-
-        // ...
 
         // Función para calcular el total de la venta
         function calcularTotalVenta() {
@@ -796,7 +777,7 @@ if ($result->num_rows > 0) {
                     productos: datosProductos,
                     card: datosCard
                 };
-
+                console.log(datosVenta);
                 // Envía los datos al archivo PHP utilizando AJAX
                 $.ajax({
                     url: '../controladores/realizarVenta.php',
@@ -804,7 +785,7 @@ if ($result->num_rows > 0) {
                     data: { ventaData: JSON.stringify(datosVenta) },
                     success: function(response) {
                         response = JSON.parse(response); // Parsear la respuesta JSON
-
+                        console.log(datosVenta);
                         if (response.success) {
                             $('#btnExportToPDF').prop('disabled', false);
                             // Si la venta fue exitosa, muestra una notificación
@@ -871,7 +852,6 @@ if ($result->num_rows > 0) {
                             });
             }
         });
-
         function validarCampos() {
             var documentoVenta = $('#selDocumentoVenta').val();
             var tipoPago = $('#selTipoPago').val();
@@ -907,7 +887,7 @@ if ($result->num_rows > 0) {
             $('#lstProductosVenta tbody tr').each(function() {
                 var idProducto = $(this).find('td:eq(0)').text();
                 var nombreProducto = $(this).find('td:eq(1)').text();
-                var cantidad = parseInt($('#cantidad_' + idProducto).val());
+                var cantidad = parseFloat($('#cantidad_' + idProducto).val());
                 var cantidadStock = parseFloat($(this).find('td:eq(7) input').data('cantidad-stock'));
                 console.log(cantidadStock);
                 datos.push({
@@ -1086,8 +1066,6 @@ function exportToPDF() {
                 },
             },
         };
-
-            // Generar el PDF
             var pdf = pdfMake.createPdf(docDefinition);
             pdf.open();
         });

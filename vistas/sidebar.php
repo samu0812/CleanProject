@@ -1,18 +1,16 @@
 <!-- Sidebar Start -->
 <?php
+
 $nombrePersona = isset($_SESSION['nombrePersona']) ? $_SESSION['nombrePersona'] : '';
 $rol = isset($_SESSION['rol']) ? $_SESSION['rol'] : '';
-
 ?>
 
 <!-- Sidebar Start -->
-
 <div class="sidebar pe-4 pb-3">
     <nav class="navbar bg-light navbar-light">
         <a href="home.php" class="navbar-brand mx-4 mb-3">
             <h3 style="color: #e77a34"><i class="fa fa-hashtag me-2"></i>Clean</h3>
         </a>
-        
         <div class="d-flex align-items-center ms-4 mb-4">
             <div class="position-relative">
                 <i class="fa fa-street-view fa-3x" style="color: #e77a34"></i>

@@ -40,18 +40,17 @@ if (isset($_POST['ventaData'])) {
         $nombreProducto = $producto['nombre'];
         $cantidad = $producto['cantidad'];
         $cantidadStock = $producto['cantidadStock'];
-        $actualizarStock = $cantidadStock - $cantidad; // Resta la cantidad vendida al stock actual
-    
+        $actualizarStock = $cantidadStock - $cantidad;
         $sql = "INSERT INTO Ventas (idEmpleado, idProductos, idDetalleFactura, idSucursales, Fecha, nroVenta, cantidad) VALUES (?, ?, ?, ?, ?, ?, ?)";
         $stmt = $conn->prepare($sql);
-        $stmt->bind_param("iiiisii", $idEmpleado, $idProducto, $idDetalleFactura, $idSucursales, $fecha, $nroVenta, $cantidad);
+        $stmt->bind_param("isiisid", $idEmpleado, $idProducto, $idDetalleFactura, $idSucursales, $fecha, $nroVenta, $cantidad);
         $stmt->execute();
         $stmt->close();
     
         // Actualizar el stock en StockSucursales
         $sql = "UPDATE StockSucursales SET Cantidad = ? WHERE idProductos = ?";
         $stmt = $conn->prepare($sql);
-        $stmt->bind_param("is", $actualizarStock, $idProducto); 
+        $stmt->bind_param("ds", $actualizarStock, $idProducto); 
         $stmt->execute();
         $stmt->close();
     }

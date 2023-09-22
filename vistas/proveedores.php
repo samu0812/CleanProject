@@ -1,4 +1,4 @@
-<?php 
+<?php
 session_start();
 ?>
 
@@ -8,7 +8,7 @@ session_start();
 <head>
     <meta charset="utf-8">
     <title>Clean</title>
-    
+
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <meta content="" name="keywords">
     <meta content="" name="description">
@@ -20,7 +20,7 @@ session_start();
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;600;700&display=swap" rel="stylesheet">
-    
+
     <!-- Icon Font Stylesheet -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
@@ -46,13 +46,16 @@ session_start();
     <!-- libreria toast -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
 
-    
+    <!-- libreria tippy -->
+    <link rel="stylesheet" href="https://unpkg.com/tippy.js@6/animations/scale.css"/>
+
 </head>
 
 <body>
     <div class="container-xxl position-relative bg-white d-flex p-0">
         <!-- Spinner Start -->
-        <div id="spinner" class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
+        <div id="spinner"
+            class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
             <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status">
                 <span class="sr-only">Loading...</span>
             </div>
@@ -79,58 +82,64 @@ session_start();
             <div class="container-fluid pt-4 px-0">
                 <div class="row g-4">
                     <div class="col-sm-6 col-xl-3 custom-button-div">
-                        <div class="d-flex align-items-center justify-content-center p-3">
-                            <button class="botonAgregarProveedor" data-bs-toggle="modal" data-bs-target="#modalAgregarProducto"><i class="fa fa-truck me-1"></i>  Agregar Proveedor </button>
+                        <div id="myButton" class="d-flex align-items-center justify-content-center p-3">
+                            <button class="botonAgregarProveedor" data-bs-toggle="modal"
+                                data-bs-target="#modalAgregarProducto"><i class="fa fa-truck me-1"></i> Agregar
+                                Proveedor </button>
                         </div>
                     </div>
 
                     <!-- Modal Agregar Producto-->
-                    <div class="modal fade" id="modalAgregarProducto" tabindex="-1" aria-labelledby="modalAgregarProducto" aria-hidden="true">
+                    <div class="modal fade" id="modalAgregarProducto" tabindex="-1"
+                        aria-labelledby="modalAgregarProducto" aria-hidden="true">
                         <div class="modal-dialog modal-dialog-centered modal-lg">
                             <div class="modal-content" style="text-align: center;">
                                 <div class="modal-header">
                                     <h5 class="modal-title" id="modalAgregarProducto">Agregar Proveedor</h5>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                        aria-label="Close"></button>
                                 </div>
                                 <div class="modal-body">
                                     <div class="container">
-                                        <div class="row">
                                         <form id="formAgregarProveedor">
-                                                <div class="col-md-4 mb-3">
-                                                    <label for="cuit" class="form-label">Cuit</label>
-                                                    <div class="input-group">
-                                                        <span class="input-group-text"><i class="fa fa-id-card"></i></span>
-                                                        <input name="cuit" type="number" class="form-control" id="cuit" required>
-                                                    </div>   
-                                                </div>
-                                                <div class="col-md-4 mb-3">
-                                                    <label for="nombre" class="form-label">Nombre</label>              
-                                                    <div class="input-group">
-                                                        <span class="input-group-text"><i class="fa fa-building"></i></span>
-                                                        <input name="nombre" type="text" class="form-control" id="nombre" required>
-                                                    </div>   
-                                                </div>
-                                                <div class="col-md-4 mb-3">
-                                                    <label for="domicilio" class="form-label">Domicilio</label>
-                                                    <div class="input-group">
-                                                        <span class="input-group-text"><i class="fa fa-location-arrow"></i></span>
-                                                        <input name="domicilio" type="text" class="form-control" id="domicilio" required>
-                                                    </div>    
-                                                </div>
+                                            <div class="row">
+                                                    <div class="col-md-4 mb-3">
+                                                        <label for="cuit" class="form-label">Cuit</label>
+                                                        <div class="input-group">
+                                                            <span class="input-group-text" id="spanCuit"><i class="fa fa-id-card"  ></i></span>
+                                                            <input name="cuit" type="text" class="form-control" id="cuit" maxlength="11">
+                                                        </div>  
+                                                    </div>
+                                                    
+                                                    <div class="col-md-4 mb-3">
+                                                        <label for="nombre" class="form-label">Nombre</label>              
+                                                        <div class="input-group">
+                                                            <span class="input-group-text"><i class="fa fa-building"></i></span>
+                                                            <input name="nombre" type="text" class="form-control" id="nombre" required>
+                                                        </div>   
+                                                    </div>
+                                                    <div class="col-md-4 mb-3">
+                                                        <label for="domicilio" class="form-label">Domicilio</label>
+                                                        <div class="input-group">
+                                                            <span class="input-group-text"><i class="fa fa-location-arrow"></i></span>
+                                                            <input name="domicilio" type="text" class="form-control" id="domicilio" required>
+                                                        </div>    
+                                                    </div>
                                             </div>
+
                                             <div class="row">
                                                 <div class="col-md-4 mb-3">
                                                     <label for="telefono" class="form-label">Telefono</label>
                                                     <div class="input-group">
                                                         <span class="input-group-text"><i class="fa fa-phone"></i></span>
-                                                        <input name="telefono" type="number" class="form-control" id="telefono" required>
+                                                        <input name="telefono" type="text"  class="form-control" id="telefono" maxlength="15" required>
                                                     </div>     
                                                 </div>
                                                 <div class="col-md-4 mb-3">
                                                     <label for="email" class="form-label">Email</label>              
                                                     <div class="input-group">
                                                         <span class="input-group-text"><i class="fa fa-envelope"></i></span>
-                                                        <input name="email" type="text" class="form-control" id="email" required>
+                                                        <input name="email" type="email" class="form-control" id="email" required>
                                                     </div>       
                                                 </div>
                                                 <div class="col-md-4 mb-3">
@@ -164,7 +173,8 @@ session_start();
             </div>
 
             <!-- Modal de edición -->
-            <div class="modal fade" id="modalEditarStock" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal fade" id="modalEditarStock" tabindex="-1" aria-labelledby="exampleModalLabel"
+                aria-hidden="true">
                 <div class="modal-dialog modal-dialog-centered modal-lg">
                     <div class="modal-content">
                         <div class="modal-header">
@@ -172,13 +182,13 @@ session_start();
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
-                            <!-- Campos de edición con identificadores únicos -->                 
+                            <!-- Campos de edición con identificadores únicos -->
                             <div class="container">
                                         <div class="row">
                                             <div class="col-md-4 mb-3">
                                                 <div class="input-group">
                                                     <span class="input-group-text"><i class="fa fa-id-card"></i></span>
-                                                    <input  type="text" id="editCuit" class="form-control" placeholder="Cuit">
+                                                    <input  type="number" id="editCuit" class="form-control" placeholder="Cuit">
                                                 </div>   
                                             </div>
                                             <div class="col-md-4 mb-3">
@@ -201,7 +211,7 @@ session_start();
     
                                                 <div class="input-group">
                                                     <span class="input-group-text"><i class="fa fa-phone"></i></span>
-                                                    <input type="text" id="editTelefono" class="form-control"  placeholder="Telefono">
+                                                    <input type="number" id="editTelefono" class="form-control"  placeholder="Telefono" maxlength="10">
                                                 </div>     
                                             </div>
                                             <div class="col-md-4 mb-3">            
@@ -230,18 +240,18 @@ session_start();
                                     </div>
                         </div>
                         <div class="modal-footer">
-                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cerrar</button>
-                                    <button type="button" class="btn btn-secondary">Guardar</button>
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                            <button type="button" class="btn btn-primary" id="btnGuardarEdicion">Guardar</button>
                         </div>
                     </div>
                 </div>
             </div>
 
-          <!-- Tabla de Proveedores -->
+            <!-- Tabla de Proveedores -->
             <div class="container-fluid pt-4 px-4">
                 <div class="bg-personalizado text-center rounded p-4">
                     <div class="table-responsive -xxl">
-                    <table id="tableProveedores" class="table table-striped" style="width:100%">
+                        <table id="tableProveedores" class="table table-striped" style="width:100%">
                             <h5>Busqueda De Proveedores</h5>
                             <thead>
                                 <tr>
@@ -258,7 +268,6 @@ session_start();
                                 </tr>
                             </thead>
                             <tbody id="proveedoresBody">
-
                             </tbody>
                             <tfoot>
                             </tfoot>
@@ -269,7 +278,8 @@ session_start();
 
 
             <!-- Modal para eliminar registro -->
-            <div class="modal fade" id="modalEliminarStock" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal fade" id="modalEliminarStock" tabindex="-1" aria-labelledby="exampleModalLabel"
+                aria-hidden="true">
                 <div class="modal-dialog modal-dialog-centered">
                     <div class="modal-content">
                         <div class="modal-header">
@@ -281,13 +291,13 @@ session_start();
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                            <button id="confirmarEliminar" type="button" class="btn btn-danger">Eliminar</button>
+                            <button id="confirmarEliminar" type="button" class="btn btn-primary">Eliminar</button>
                         </div>
                     </div>
                 </div>
             </div>
                 
-            <!-- Modal de eliminacion exitosa -->
+            <!-- Modal de eliminacion exitosa
             <div class="modal fade" id="modalExitoEliminar" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                 <div class="modal-dialog modal-dialog-centered">
                     <div class="modal-content">
@@ -303,7 +313,7 @@ session_start();
                         </div>
                     </div>
                 </div>
-            </div>
+            </div> -->
 
 
             
@@ -321,7 +331,8 @@ session_start();
 
 
         <!-- Back to Top -->
-        <a href="#" class="btn btn-lg btn-lg-square back-to-top" style="background: #e77a34; color: white"><i class="bi bi-arrow-up"></i></a>
+        <a href="#" class="btn btn-lg btn-lg-square back-to-top" style="background: #e77a34; color: white"><i
+                class="bi bi-arrow-up"></i></a>
     </div>
 
     <!-- JavaScript Libraries -->
@@ -345,6 +356,10 @@ session_start();
     <!-- libreria toast -->
     
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+
+    <!-- libreria typpy.js -->
+    <script src="https://unpkg.com/@popperjs/core@2/dist/umd/popper.min.js"></script>
+    <script src="https://unpkg.com/tippy.js@6/dist/tippy-bundle.umd.js"></script>
 
     <style>
         /* Estilo para mover el lengthChange a la izquierda */
@@ -370,8 +385,9 @@ session_start();
         }
 
         div.dataTables_wrapper .dataTables_length label {
-        display: inline-block;
-        margin-right: 20px; /* Espacio entre los elementos */
+            display: inline-block;
+            margin-right: 20px;
+            /* Espacio entre los elementos */
         }
 
         div.dataTables_wrapper .dataTables_length select {
@@ -383,36 +399,73 @@ session_start();
         #porcentajeAumento,
         #precioBase,
         #precioVenta {
-            width: 70%; /* Ajusta el valor según tus preferencias */
+            width: 70%;
+            /* Ajusta el valor según tus preferencias */
             margin: auto;
         }
 
         /* Estilo para el cuerpo del modal */
         .modal-body {
-            padding: 10px; /* Ajusta el valor según tus preferencias */
+            padding: 10px;
+            /* Ajusta el valor según tus preferencias */
             display: flex;
             justify-content: center;
             align-items: center;
-            flex-direction: column;;
+            flex-direction: column;
+            ;
         }
 
         /* Estilo para el botón Guardar */
         .modal-footer .btn-primary {
-            background-color: #007bff; /* Cambia el color de fondo */
-            border-color: #007bff; /* Cambia el color del borde */
+            background-color: #007bff;
+            /* Cambia el color de fondo */
+            border-color: #007bff;
+            /* Cambia el color del borde */
         }
 
         .modal-footer .btn-primary:hover {
-            background-color: #5a104c; /* Cambia el color de fondo en el hover */
-            border-color: #0056b3; /* Cambia el color del borde en el hover */
+            background-color: #5a104c;
+            /* Cambia el color de fondo en el hover */
+            border-color: #0056b3;
+            /* Cambia el color del borde en el hover */
         }
+        
 
+
+        /* ."tooltip"-icon i {
+            color: red;
+            } */
+
+    .tippy-box[data-theme~='general'] {
+        background-color: rgba(231, 122, 52, 0.8); /* Cambia el valor de 1 según la transparencia que desees */
+        color: white;
+        font-size: 12px;
+    },
+    
     </style>
 
     <!-- Template Javascript -->
     <script src="../js/main.js"></script>
     <script>
-        function limpiarModal () {
+    // tippy.setDefaultProps({});   
+
+    tippy('#spanCuit', {   
+        content: 'El CUIT (Clave Única de Identificación Tributaria) es un número esencial en Argentina para identificar personas y empresas en asuntos fiscales. Tiene tres partes separadas por guiones, como "20-12345678-1". Por ejemplo, "20" es el prefijo para individuos, "12345678" es el número de documento y "1" es el dígito de verificación.',
+        placement: 'top-start',
+        animation: 'scale',
+        inertia: true,
+        delay: 200,
+        duration: [200, 100],
+        followCursor: 'horizontal',
+        inertia: true,
+        maxWidth: 650,
+        theme: 'general',
+        arrow: true,  
+        trigger: 'click', // Configura el tooltip para abrir al hacer clic
+        interactive: true, // Permite que el usuario cierre el tooltip haciendo clic fuera de él
+    });
+
+        function limpiarModal() {
             $('#cuit').val('');
             $('#nombre').val('');
             $('#domicilio').val('');
@@ -422,7 +475,7 @@ session_start();
             $('#razonSocial').val('');
         }
 
-        function btnOn () {
+        function btnOn() {
             $('#cuit').prop('disabled', false);
             $('#nombre').prop('disabled', false);
             $('#domicilio').prop('disabled', false);
@@ -432,7 +485,7 @@ session_start();
             $('#razonSocial').prop('disabled', false);
         }
 
-        function btnDisabled () {
+        function btnDisabled() {
             $('#cuit').prop('disabled', true);
             $('#nombre').prop('disabled', true);
             $('#domicilio').prop('disabled', true);
@@ -442,81 +495,11 @@ session_start();
             $('#razonSocial').prop('disabled', true);
         }
 
-    //-----------------funcion que obtiene datos del registro y los inserta en los inputs-----------------//
-    document.addEventListener("DOMContentLoaded", function() {
-    const btnEditarTableProveedores = document.querySelectorAll("#btnEditarTableProveedores");
-
-    btnEditarTableProveedores.forEach(button => {
-        button.addEventListener("click", function() {
-            const row = this.closest("tr"); // Obtenemos la fila más cercana al botón clickeado
-            const cuit = row.cells[1].textContent;
-            const nombre = row.cells[2].textContent;
-            const domicilio = row.cells[3].textContent;
-            const telefono = row.cells[4].textContent;
-            const email = row.cells[5].textContent;
-            const ciudad = row.cells[6].textContent;
-            const razonSocial = row.cells[7].textContent;
-
-            // Ahora tienes los valores de la fila en las variables correspondientes
-            // Puedes usarlos para llenar el formulario de edición u otro propósito
-
-
-            // Insertar los valores en los inputs de edición
-            document.getElementById("editCuit").value = cuit;
-            document.getElementById("editNombre").value = nombre;
-            document.getElementById("editDomicilio").value = domicilio;
-            document.getElementById("editTelefono").value = telefono;
-            document.getElementById("editEmail").value = email;
-            document.getElementById("editCiudad").value = ciudad;
-            document.getElementById("editRazonSocial").value = razonSocial;
-
-        });
-    });
-});
-
-//-----------------funcion que obtiene el id del registro que quiere eliminarr-----------------//
-document.addEventListener("DOMContentLoaded", function() {
-    const btnEliminarTableProveedores = document.querySelectorAll("#btnEliminarTableProveedores");
-    const confirmarEliminarButton = document.getElementById("confirmarEliminar");
-    const modalExitoEliminar = new bootstrap.Modal(document.getElementById("modalExitoEliminar"));
-    const modalEliminarStock = new bootstrap.Modal(document.getElementById("modalEliminarStock"));
-    let selectedId = null;
-
-    btnEliminarTableProveedores.forEach(button => {
-        button.addEventListener("click", function() {
-            selectedId = this.getAttribute("data-id");
-        });
-    });
-
-    confirmarEliminarButton.addEventListener("click", function() {
-        if (selectedId) {
-            // Aquí puedes enviar el ID al backend para eliminar el registro
-            console.log("Eliminar registro con ID:", selectedId);
-            selectedId = null; // Reiniciar el valor para futuras acciones
-
-            // Cerrar el modal de confirmación
-
-            modalEliminarStock.hide();
-
-            // Abrir el modal de éxito de eliminación
-            modalExitoEliminar.show();
-
-            // Cerrar el modal de éxito después de 3 segundos
-            setTimeout(() => {
-                modalExitoEliminar.hide();
-            }, 3000);
-        }
-    });
-});
-
-//-----------------funcion obtener los datos del nuevo proveedor a agregar-----------------//
-document.addEventListener("DOMContentLoaded", function() {
-    const tableProveedores = document.getElementById("tableProveedores");
+        const tableProveedores = document.getElementById("tableProveedores");
         let table1
 
         function obtenerProveedores() {
-            // Inicializa DataTables al cargar la página
-            $(document).ready(function() {
+            $(document).ready(function () {
                 if (table1 !== undefined && $.fn.DataTable.isDataTable('#tableProveedores')) {
                     table1.destroy();
                 }
@@ -525,7 +508,7 @@ document.addEventListener("DOMContentLoaded", function() {
                     lengthChange: true,
                     ordering: true,
                     info: true,
-                    lengthMenu: [ 5, 10, 15, 20 ], // Personaliza las opciones disponibles
+                    lengthMenu: [5, 10, 15, 20], // Personaliza las opciones disponibles
                     language: {
                         search: "",
                         searchPlaceholder: "Filtrar proveedores",
@@ -543,13 +526,12 @@ document.addEventListener("DOMContentLoaded", function() {
                 .then(data => {
                     //inicializo la tabla despues de cargar los datos
                     const tbody = tableProveedores.querySelector("tbody");
-                    console.log(data);
                     let proveedores = data
-                // Limpia el contenido actual de la tabla
-                table1.clear().draw();
+                    // Limpia el contenido actual de la tabla
+                    table1.clear().draw();
 
-                // Recorre los datos de los proveedores y crea filas para cada uno
-                proveedores.forEach(proveedor => {
+                    // Recorre los datos de los proveedores y crea filas para cada uno
+                    proveedores.forEach(proveedor => {
                         const row = [
                             proveedor.idProveedores,
                             proveedor.Cuit,
@@ -560,9 +542,11 @@ document.addEventListener("DOMContentLoaded", function() {
                             proveedor.Ciudad,
                             proveedor.RazonSocial,
                             `
-                            <button id="btnEditarTableProveedores" data-id=${proveedor.idProveedores} style="background: #e77a34; color: white;" class="btn btn-sm d-inline-block" data-bs-toggle="modal" data-bs-target="#modalEditarStock"><i class="far fa-edit"></i></button>
-                            <button id="btnEliminarTableProveedores" data-id=${proveedor.idProveedores} style="background: #e77a34; color: white;" class="btn btn-sm d-inline-block" data-bs-toggle="modal" data-bs-target="#modalEliminarStock"><i class="fas fa-trash"></i></button>
-                            `
+                            <div class="button-group">
+                                <button id="btnEditarTableProveedores" data-id=${proveedor.idProveedores} class="btn btn-sm" data-bs-toggle="modal" data-bs-target="#modalEditarStock"><i class="far fa-edit"></i></button>
+                                <button id="btnEliminarTableProveedores" data-id=${proveedor.idProveedores} class="btn btn-sm" data-bs-toggle="modal" data-bs-target="#modalEliminarStock"><i class="fas fa-trash"></i></button>
+                            </div>
+                        `
                         ];
                         table1.rows.add([row]).draw();
                         //table1.clear().rows.add(row).draw();
@@ -572,9 +556,290 @@ document.addEventListener("DOMContentLoaded", function() {
                     console.error('Error al obtener los proveedores: ', error);
                 });
         }
-    
-    //llamamos a listar los proveedores
-    obtenerProveedores()
+
+        //llamamos a listar los proveedores
+        obtenerProveedores()
+
+        //-----------------funcion que obtiene datos del registro y los inserta en los inputs-----------------//
+        // Variables para almacenar los valores actuales
+        let valoresActuales = {};
+        let proveedorId;
+        // Cuando se hace clic en el botón de editar
+        $('#tableProveedores tbody').on('click', '#btnEditarTableProveedores', function () {
+            proveedorId = $(this).data('id');
+
+            // Realizar una solicitud Fetch para obtener los detalles del proveedor por su ID
+            fetch('../controladores/proveedores.php?action=obtener&id=' + proveedorId)
+                .then(response => response.json())
+                .then(data => {
+                    // Almacena los valores actuales antes de mostrar el modal
+                    valoresActuales = {
+                        Cuit: String(data.Cuit),
+                        Nombre: String(data.Nombre),
+                        Domicilio: String(data.Domicilio),
+                        Telefono: String(data.Telefono),
+                        Email: String(data.Email),
+                        Ciudad: String(data.Ciudad),
+                        RazonSocial: String(data.RazonSocial)
+                    };
+
+                    // Llenar los campos del formulario de edición con los datos obtenidos
+                    document.getElementById('editCuit').value = valoresActuales.Cuit;
+                    document.getElementById('editNombre').value = valoresActuales.Nombre;
+                    document.getElementById('editDomicilio').value = valoresActuales.Domicilio;
+                    document.getElementById('editTelefono').value = valoresActuales.Telefono;
+                    document.getElementById('editEmail').value = valoresActuales.Email;
+                    document.getElementById('editCiudad').value = valoresActuales.Ciudad;
+                    document.getElementById('editRazonSocial').value = valoresActuales.RazonSocial;
+
+                    // Mostrar el modal de edición
+                    $('#modalEditarStock').modal('show');
+                })
+                .catch(error => {
+                    console.error('Error al obtener datos del proveedor: ', error);
+                });
+
+            $('#btnGuardarEdicion').on('click', function() {
+                console.log(proveedorId, "id prov")
+                // Obtén los valores editados del formulario
+                const valoresEditados = {
+                    ProveedorId: proveedorId,
+                    Cuit: document.getElementById('editCuit').value,
+                    Nombre: document.getElementById('editNombre').value,
+                    Domicilio: document.getElementById('editDomicilio').value,
+                    Telefono: document.getElementById('editTelefono').value,
+                    Email: document.getElementById('editEmail').value,
+                    Ciudad: document.getElementById('editCiudad').value,
+                    RazonSocial: document.getElementById('editRazonSocial').value
+                };
+
+                
+
+                if (!verificarCamposLlenos(valoresEditados)) {
+                Swal.fire({
+                        position: 'top-end',
+                        icon: 'warning',
+                        title: 'Por favor completa todos los campos',
+                        showConfirmButton: false,
+                        timer: 2000,
+                        background: false, // Desactiva el fondo oscurecido
+                        backdrop: false,
+                        customClass: {
+                            container: 'custom-container-class',
+                            popup: 'custom-popup-class', // Clase personalizada para ajustar el tamaño de la alerta
+                            title: 'custom-title-class', // Clase personalizada para ajustar el tamaño del título
+                            icon: 'custom-icon-class',
+                        },
+                        })
+                return; // Detiene el flujo si falta algún campo
+            }
+            if (!validarCUIT(valoresEditados.Cuit) ) {
+                Swal.fire({
+                    position: 'top-end',
+                    icon: 'error',
+                    title: 'El cuit debe contener 11 caracteres numericos',
+                    showConfirmButton: false,
+                    timer: 2000,
+                    background: false, // Desactiva el fondo oscurecido
+                    backdrop: false,
+                    customClass: {
+                        container: 'custom-container-class',
+                        popup: 'custom-popup-class', // Clase personalizada para ajustar el tamaño de la alerta
+                        title: 'custom-title-class', // Clase personalizada para ajustar el tamaño del título
+                        icon: 'custom-icon-class',
+                    },
+                })
+                return; // Detiene el flujo si falta algún campo
+            }
+
+            if (!validarTelefono(valoresEditados.Telefono) ) {
+                Swal.fire({
+                    position: 'top-end',
+                    icon: 'error',
+                    title: 'El telefono debe contener solo numeros',
+                    showConfirmButton: false,
+                    timer: 2000,
+                    background: false, // Desactiva el fondo oscurecido
+                    backdrop: false,
+                    customClass: {
+                        container: 'custom-container-class',
+                        popup: 'custom-popup-class', // Clase personalizada para ajustar el tamaño de la alerta
+                        title: 'custom-title-class', // Clase personalizada para ajustar el tamaño del título
+                        icon: 'custom-icon-class',
+                    },
+                })
+                return; // Detiene el flujo si falta algún campo
+            }
+
+            if (!validarEmail(valoresEditados.Email)) {
+                Swal.fire({
+                        position: 'top-end',
+                        icon: 'warning',
+                        title: 'El email no es valido',
+                        showConfirmButton: false,
+                        timer: 2000,
+                        background: false, // Desactiva el fondo oscurecido
+                        backdrop: false,
+                        customClass: {
+                            container: 'custom-container-class',
+                            popup: 'custom-popup-class', // Clase personalizada para ajustar el tamaño de la alerta
+                            title: 'custom-title-class', // Clase personalizada para ajustar el tamaño del título
+                            icon: 'custom-icon-class',
+                        },
+                        })
+                return; // Detiene el flujo si falta algún campo
+            }
+                // Verifica si se han realizado cambios
+                if (sonIguales(valoresActuales, valoresEditados)) {
+                    // No se realizaron cambios, muestra un mensaje al usuario
+                    Swal.fire({
+                                position: 'top-end',
+                                icon: 'info',
+                                title: 'No se ha realizado ningun cambio',
+                                showConfirmButton: false,
+                                timer: 2000,
+                                background: false, // Desactiva el fondo oscurecido
+                                backdrop: false,
+                                customClass: {
+                                    container: 'custom-container-class',
+                                    popup: 'custom-popup-class', // Clase personalizada para ajustar el tamaño de la alerta
+                                    title: 'custom-title-class', // Clase personalizada para ajustar el tamaño del título
+                                    icon: 'custom-icon-class',
+                                },
+                        })
+                } else {
+                    fetch('../controladores/proveedores.php?action=editar', {
+                            method: "POST",
+                            headers: {
+                                "Content-Type": "application/json"
+                            },
+                            body: JSON.stringify(valoresEditados)
+                        } )
+                        .then(response => response.text())
+                        .then(data => {
+                            obtenerProveedores()
+                            // Cierra el modal de confirmación
+                            $('#modalEditarStock').modal('hide');
+                            // mostramos el mensaje
+                            toastr.success("Se ha actualizado los datos del proveedor correctamente en la base de datos", "Proveedor Actualizado!" , {
+                                "closeButton": true,
+                                "positionClass": "toast-bottom-right",
+                                "preventDuplicates": true,
+                                "onclick": null,
+                                "showDuration": "300",
+                                "hideDuration": "1000",
+                                "timeOut": "4000",
+                                "extendedTimeOut": "1000",
+                                "showEasing": "swing",
+                                "hideEasing": "linear",
+                                "showMethod": "fadeIn",
+                                "hideMethod": "fadeOut"
+                            })
+                        })
+                        .catch(error => {
+                            console.log(error);
+                            toastr.error("Sucedio un error al actualizar el proveedor", "Error al actualizar!" , {
+                                "closeButton": true,
+                                "positionClass": "toast-bottom-right",
+                                "preventDuplicates": true,
+                                "onclick": null,
+                                "showDuration": "300",
+                                "hideDuration": "1000",
+                                "timeOut": "4000",
+                                "extendedTimeOut": "1000",
+                                "showEasing": "swing",
+                                "hideEasing": "linear",
+                                "showMethod": "fadeIn",
+                                "hideMethod": "fadeOut"
+                            });
+                        });
+                }
+            });
+
+            // Función para comparar dos objetos y verificar si tienen los mismos valores
+            function sonIguales(objeto1, objeto2) {
+                for (let clave in objeto1) {
+                    if (objeto1[clave] !== objeto2[clave]) {
+                        return false;
+                    }
+                }
+                return true;
+            }
+    });
+
+// Cuando se hace clic en el botón de guardar edición
+
+
+
+//-----------------funcion que obtiene el id del registro que quiere eliminarr-----------------//
+    $('#tableProveedores tbody').on('click', '#btnEliminarTableProveedores', function() {
+        const proveedorId = $(this).data('id');
+
+        // Cuando se hace clic en el botón de eliminar, actualiza el valor del botón de confirmación en el modal
+        $('#confirmarEliminar').data('id', proveedorId);
+    });
+        // Manejador de eventos para el botón "Eliminar" en el modal de confirmación
+        $('#confirmarEliminar').on('click', function () {
+            const proveedorId = $(this).data('id');
+            const datosProveedor = {
+                idDelProveedor: proveedorId,
+            };
+
+            fetch("../controladores/proveedores.php?action=eliminar", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(datosProveedor)
+            })
+            .then(response => response.text())
+            .then(data => {
+                console.log(data);
+                // recargamos la tabla
+                obtenerProveedores()
+                // Cierra el modal de confirmación
+                $('#modalEliminarStock').modal('hide');
+                // mostramos el mensaje
+                toastr.success("Se ha eliminado el Proveedor correctamente de la base de datos", "Proveedor Eliminado!" , {
+                    "closeButton": true,
+                    "positionClass": "toast-bottom-right",
+                    "preventDuplicates": true,
+                    "onclick": null,
+                    "showDuration": "300",
+                    "hideDuration": "1000",
+                    "timeOut": "4000",
+                    "extendedTimeOut": "1000",
+                    "showEasing": "swing",
+                    "hideEasing": "linear",
+                    "showMethod": "fadeIn",
+                    "hideMethod": "fadeOut"
+                })
+            })
+            .catch(error => {
+                console.log(error);
+                toastr.error("Sucedio un error al eliminar el proveedor", "Error al Eliminar!" , {
+                    "closeButton": true,
+                    "positionClass": "toast-bottom-right",
+                    "preventDuplicates": true,
+                    "onclick": null,
+                    "showDuration": "300",
+                    "hideDuration": "1000",
+                    "timeOut": "4000",
+                    "extendedTimeOut": "1000",
+                    "showEasing": "swing",
+                    "hideEasing": "linear",
+                    "showMethod": "fadeIn",
+                    "hideMethod": "fadeOut"
+                });
+            });
+
+
+        });
+
+
+//-----------------funcion obtener los datos del nuevo proveedor a agregar-----------------//
+document.addEventListener("DOMContentLoaded", function() {
+
 
         //obtenemos el boton de agregar y el formulario
         const modalAgregarProveedor= new bootstrap.Modal(document.getElementById("modalAgregarProducto"));
@@ -582,12 +847,11 @@ document.addEventListener("DOMContentLoaded", function() {
         const guardarProveedorBtn = document.querySelector("#guardarProveedorBtn");
         const formularioProveedor = document.getElementById('formAgregarProveedor');
 
-        //capturamos cuando hace click al boton guardar
-        guardarProveedorBtn.addEventListener("click", function(evento) {
-
-            evento.preventDefault();
-            // Crea un objeto FormData a partir del formulario
-            const datosFormularioProveedor = new FormData(formularioProveedor);
+            //capturamos cuando hace click al boton guardar
+            guardarProveedorBtn.addEventListener("click", function (evento) {
+                evento.preventDefault();
+                // Crea un objeto FormData a partir del formulario
+                const datosFormularioProveedor = new FormData(formularioProveedor);
 
             // Puedes acceder a los valores de cada campo por su nombre
             const cuit = datosFormularioProveedor.get('cuit');
@@ -637,7 +901,7 @@ document.addEventListener("DOMContentLoaded", function() {
                     // recargamos la tabla
                     obtenerProveedores()
                     // mostramos el mensaje
-                    toastr.warning("Se ha añadido el usuario correctamente a la base de datos", "Usuario Registrado!" , {
+                    toastr.warning("Se ha añadido el Proveedor correctamente a la base de datos", "Proveedor Registrado!" , {
                         "closeButton": true,
                         "positionClass": "toast-bottom-right",
                         "preventDuplicates": true,
@@ -656,7 +920,21 @@ document.addEventListener("DOMContentLoaded", function() {
 
                 })
                 .catch(error => {
-                    console.error("Error al enviar los datos: ", error);
+                    console.log(error);
+                    toastr.error("Sucedio un error al agregar el proveedor", "Error al Agregar!" , {
+                    "closeButton": true,
+                    "positionClass": "toast-bottom-right",
+                    "preventDuplicates": true,
+                    "onclick": null,
+                    "showDuration": "300",
+                    "hideDuration": "1000",
+                    "timeOut": "4000",
+                    "extendedTimeOut": "1000",
+                    "showEasing": "swing",
+                    "hideEasing": "linear",
+                    "showMethod": "fadeIn",
+                    "hideMethod": "fadeOut"
+                });
                 });
 
             
@@ -708,7 +986,5 @@ document.addEventListener("DOMContentLoaded", function() {
     });
 
     </script>
-    
 </body>
-
 </html>

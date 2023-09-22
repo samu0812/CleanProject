@@ -18,7 +18,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=PT+Sans:ital@1&family=Work+Sans:wght@300&display=swap" rel="stylesheet">
-    <!-- Template Stylesheet -->    
+    <!-- Template Stylesheet -->
     <link href="css/styleLogin.css" rel="stylesheet">
     <link href="img/logoClean.css" rel="stylesheet">
 </head>

@@ -60,7 +60,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     $stmtRol->close();
                     $stmtSucursal->close();
                     $stmtEmpleado->close();}
-                    
             }
 }
 }}
