@@ -11,7 +11,7 @@ session_start();
     <meta content="" name="keywords">
     <meta content="" name="description">
     <!-- Favicon -->
-    <link href="img/favicon.ico" rel="icon">
+    <link rel="shortcut icon" href="../img/cleaning2.ico">
 
     <!-- Google Web Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -268,34 +268,34 @@ session_start();
                         const carta = document.createElement('div');
                         carta.classList.add('col-lg-4'); // Agrega clase para columnas de Bootstrap
 
-                        if (sucursal.Descripcion == "Galpon"){
+                        if (sucursal.Descripcion == "Deposito") {
                             carta.innerHTML = `
-                            <div class="bg-personalizado rounded d-flex align-items-center justify-content-center p-4">
-                                <svg xmlns="http://www.w3.org/2000/svg" style="color: #e77a34" class="icon icon-tabler icon-tabler-forklift" width="55" height="55" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                                    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                                    <path d="M5 17m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0"></path>
-                                    <path d="M14 17m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0"></path>
-                                    <path d="M7 17l5 0"></path>
-                                    <path d="M3 17v-6h13v6"></path>
-                                    <path d="M5 11v-4h4"></path>
-                                    <path d="M9 11v-6h4l3 6"></path>
-                                    <path d="M22 15h-3v-10"></path>
-                                    <path d="M16 13l3 0"></path>
-                                </svg>
-                                <div class="text-center" style="margin-left: 30px">
-                                    <p class="mb-2">${sucursal.Descripcion}</p>
-                                    <h6 class="mb-0">${sucursal.CantidadProductos}</h6>
+                                <div class="bg-personalizado rounded d-flex align-items-center justify-content-center p-4" style="min-width: 100px;">
+                                    <svg xmlns="http://www.w3.org/2000/svg" style="color: #e77a34; width: 55px; height: 55px; min-width: 30px; min-height: 30px;" class="icon icon-tabler icon-tabler-forklift" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                        <path d="M5 17m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0"></path>
+                                        <path d="M14 17m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0"></path>
+                                        <path d="M7 17l5 0"></path>
+                                        <path d="M3 17v-6h13v6"></path>
+                                        <path d="M5 11v-4h4"></path>
+                                        <path d="M9 11v-6h4l3 6"></path>
+                                        <path d="M22 15h-3v-10"></path>
+                                        <path d="M16 13l3 0"></path>
+                                    </svg>
+                                    <div class="text-center" style="margin-left: 30px">
+                                        <p class="mb-2">${sucursal.Descripcion}</p>
+                                        <h6 class="mb-0">${sucursal.CantidadProductos}</h6>
+                                    </div>
                                 </div>
-                            </div>
-                        `;
+                            `;
                         } else {
                             carta.innerHTML = `
-                                <div class="bg-personalizado rounded d-flex align-items-center justify-content-center p-4">
-                                    <svg xmlns="http://www.w3.org/2000/svg" style="color: #e77a34" class="icon icon-tabler icon-tabler-building-warehouse" width="55" height="55" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                                    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                                    <path d="M3 21v-13l9 -4l9 4v13"></path>
-                                    <path d="M13 13h4v8h-10v-6h6"></path>
-                                    <path d="M13 21v-9a1 1 0 0 0 -1 -1h-2a1 1 0 0 0 -1 1v3"></path>
+                                <div class="bg-personalizado rounded d-flex align-items-center justify-content-center p-4" style="min-width: 100px;">
+                                    <svg xmlns="http://www.w3.org/2000/svg" style="color: #e77a34; width: 55px; height: 55px; min-width: 30px; min-height: 30px;" class="icon icon-tabler icon-tabler-building-warehouse" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                        <path d="M3 21v-13l9 -4l9 4v13"></path>
+                                        <path d="M13 13h4v8h-10v-6h6"></path>
+                                        <path d="M13 21v-9a1 1 0 0 0 -1 -1h-2a1 1 0 0 0 -1 1v3"></path>
                                     </svg>
                                     <div class="text-center" style="margin-left: 30px">
                                         <p class="mb-2">${sucursal.Descripcion}</p>
@@ -304,6 +304,8 @@ session_start();
                                 </div>
                             `;
                         }
+
+
                         sucursalesContainer.appendChild(carta);
                     });
                     obtenerProductos()
@@ -577,7 +579,6 @@ session_start();
                 });
             } else {
                 // El formulario es válido, procede con el envío de datos al servidor
-
                 // Crea un objeto con los datos a enviar
                 const datosProd = { codigo, nombre, proveedor, tipoProducto, tipoCategoria, tamaño, tipoTamaño, cantidad, precioBase, impuesto, porcentajeAumento, sucursal };
 
@@ -587,52 +588,13 @@ session_start();
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify(datosProd)
                 })
-                    .then(response => response.json())
-                    .then(data => {
-                        if (!data.success) {
-                            Swal.fire({
-                                position: 'top-end',
-                                icon: 'error',
-                                title: 'Error, ' + data.message,
-                                showConfirmButton: false,
-                                timer: 2000,
-                                background: false,
-                                backdrop: false,
-                                customClass: {
-                                    container: 'custom-container-class',
-                                    popup: 'custom-popup-class',
-                                    title: 'custom-title-class',
-                                    icon: 'custom-icon-class',
-                                },
-                            });
-                        } else {
-                            Swal.fire({
-                                position: 'top-end',
-                                icon: 'success',
-                                title: 'Se ha añadido el producto correctamente',
-                                showConfirmButton: false,
-                                timer: 2000,
-                                background: false,
-                                backdrop: false,
-                                customClass: {
-                                    container: 'custom-container-class',
-                                    popup: 'custom-popup-class',
-                                    title: 'custom-title-class',
-                                    icon: 'custom-icon-class',
-                                }
-                            });
-                        }
-                        obtenerProductos();
-                        cargarCartasSucursales()
-                        btnOcultos("ocultos")
-                        $('#modalAgregarProducto').modal('hide');
-                        $('#btnAgregarProd').prop('disabled', false);
-                    })
-                    .catch(error => {
+                .then(response => response.json())
+                .then(data => {
+                    if (!data.success) {
                         Swal.fire({
                             position: 'top-end',
                             icon: 'error',
-                            title: 'Ocurrió un error inesperado',
+                            title: 'Error, ' + data.message,
                             showConfirmButton: false,
                             timer: 2000,
                             background: false,
@@ -644,12 +606,51 @@ session_start();
                                 icon: 'custom-icon-class',
                             },
                         });
-                    })
-                    .finally(() => {
-                        // Restablece el estado del botón "Guardar" después de un error
-                        $('#btnGuardar').prop('disabled', false);
-                        contextoActual = "agregarProducto";
+                    } else {
+                        Swal.fire({
+                            position: 'top-end',
+                            icon: 'success',
+                            title: 'Se ha añadido el producto correctamente',
+                            showConfirmButton: false,
+                            timer: 2000,
+                            background: false,
+                            backdrop: false,
+                            customClass: {
+                                container: 'custom-container-class',
+                                popup: 'custom-popup-class',
+                                title: 'custom-title-class',
+                                icon: 'custom-icon-class',
+                            }
+                        });
+                        obtenerProductos();
+                        cargarCartasSucursales()
+                        btnOcultos("ocultos")
+                        $('#modalAgregarProducto').modal('hide');
+                        $('#btnAgregarProd').prop('disabled', false);
+                    }
+                })
+                .catch(error => {
+                    Swal.fire({
+                        position: 'top-end',
+                        icon: 'error',
+                        title: 'Ocurrió un error inesperado',
+                        showConfirmButton: false,
+                        timer: 2000,
+                        background: false,
+                        backdrop: false,
+                        customClass: {
+                            container: 'custom-container-class',
+                            popup: 'custom-popup-class',
+                            title: 'custom-title-class',
+                            icon: 'custom-icon-class',
+                        },
                     });
+                })
+                .finally(() => {
+                    // Restablece el estado del botón "Guardar" después de un error
+                    $('#btnGuardar').prop('disabled', false);
+                    contextoActual = "agregarProducto";
+                });
             }
         }
 
@@ -1203,6 +1204,11 @@ session_start();
     </script>
 
     <style>
+        .icon {
+            /* Define el tamaño deseado para los iconos */
+            width: 55px;
+            height: 55px;
+        }
         /* Estilo personalizado para los checkboxes */
         .custom-checkbox {
             padding-left: 0; /* Elimina el espacio a la izquierda del checkbox */

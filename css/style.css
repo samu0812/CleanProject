@@ -231,6 +231,7 @@
     justify-content: center;
     background: #FFFFFF;
     border-radius: 40px;
+    color: #e77a34;
 }
 
 .content .navbar .dropdown-toggle::after {
@@ -525,6 +526,9 @@
 /********** cambios al color de la tabla**********/
 .bg-personalizado {
     background-color: white;
+    display: flex;
+    align-items: center; /* Centra verticalmente el contenido */
+    justify-content: center; /* Centra horizontalmente el contenido */
 }
 
 .table-responsive h5 {
@@ -539,4 +543,12 @@
 table.dataTable>tbody>tr.selected>* {
     box-shadow: inset 0 0 0 9999px var(--dt-row-selected);
     color: var(--dt-row-selected-text);
+}
+
+.bg-personalizadoNavbar {
+    background-color: white;
+}
+
+.bg-personalizadoSidebar {
+    background-color: white;
 }
