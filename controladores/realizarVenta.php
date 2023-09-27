@@ -18,6 +18,7 @@ if (isset($_POST['ventaData'])) {
     $destinatario = 1;
     $nroVenta = $ventaData['card']['nroVenta'];
     $efectivoRecibido = $ventaData['card']['efectivoRecibido'];
+    $vuelto = $ventaData['card']['vuelto'];
 
     // Insertar Datos en tabla Facturas
     $sql = "INSERT INTO Facturas (idTipoDestinatarioFactura, idTipoFactura, idFormaDePago, FechaEmision) VALUES (?, ?, ?, ?)";
@@ -27,9 +28,9 @@ if (isset($_POST['ventaData'])) {
     $idFactura = $stmt->insert_id;
 
     // Insertar Datos en tabla DetalleFactura
-    $sql = "INSERT INTO DetalleFactura (idFacturas, SubTotal, Total, Descuentos, Recargos) VALUES (?, ?, ?, ?, ?)";
+    $sql = "INSERT INTO DetalleFactura (idFacturas, SubTotal, Total, Descuentos, Recargos, dineroRecibido, Vuelto) VALUES (?, ?, ?, ?, ?, ?, ?)";
     $stmt = $conn->prepare($sql);
-    $stmt->bind_param("idddd", $idFactura, $subtotal, $totalVenta, $descuentos, $recargos);
+    $stmt->bind_param("idddddd", $idFactura, $subtotal, $totalVenta, $descuentos, $recargos, $efectivoRecibido, $vuelto);
     $stmt->execute();
     $idDetalleFactura = $stmt->insert_id;
 
@@ -40,10 +41,12 @@ if (isset($_POST['ventaData'])) {
         $nombreProducto = $producto['nombre'];
         $cantidad = $producto['cantidad'];
         $cantidadStock = $producto['cantidadStock'];
+        $precioProducto = $producto['precioUnitario'];
+        $descuentoProducto = $producto['descuentoProducto'];
         $actualizarStock = $cantidadStock - $cantidad;
-        $sql = "INSERT INTO Ventas (idEmpleado, idProductos, idDetalleFactura, idSucursales, Fecha, nroVenta, cantidad) VALUES (?, ?, ?, ?, ?, ?, ?)";
+        $sql = "INSERT INTO Ventas (idEmpleado, idProductos, idDetalleFactura, idSucursales, Fecha, nroVenta, cantidad, PrecioProducto, nombreProducto, descuentoProducto) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         $stmt = $conn->prepare($sql);
-        $stmt->bind_param("isiisid", $idEmpleado, $idProducto, $idDetalleFactura, $idSucursales, $fecha, $nroVenta, $cantidad);
+        $stmt->bind_param("isiisiddsd", $idEmpleado, $idProducto, $idDetalleFactura, $idSucursales, $fecha, $nroVenta, $cantidad, $precioProducto, $nombreProducto, $descuentoProducto);
         $stmt->execute();
         $stmt->close();
     

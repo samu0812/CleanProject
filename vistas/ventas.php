@@ -131,36 +131,35 @@ if ($result->num_rows > 0) {
                                 <button class="btn btn-danger btn-sm" id="btnVaciarListado">
                                     <i class="far fa-trash-alt"></i> Vaciar Listado
                                 </button>
-                                <button class="btn btn-danger btn-sm" id="btnExportToPDF" disabled> 
-                                    <i class="fa-regular fa-file-pdf" style="color: #ffffff;"></i> Comprobante
-                                </button>
                             </div>
 
 
                             <!-- LISTADO QUE CONTIENE LOS PRODUCTOS QUE SE VAN AGREGANDO PARA LA COMPRA -->
-                            <div class="col-md-12">
-                               <div class="table-responsive">
-                                <table id="lstProductosVenta" class="table table-striped">
-                                    <thead class="bg-info text-left fs-6">
-                                        <tr>
-                                            <th scope="col" class="thVenta">Código</th>
-                                            <th scope="col" class="thVenta">Nombre</th>
-                                            <th scope="col" class="thVenta">Producto</th>
-                                            <th scope="col" class="thVenta">Categoria</th>
-                                            <th scope="col"class="thVenta">Tamaño</th>
-                                            <th scope="col" class="thVenta">Precio Unitario</th>
-                                            <th scope="col" class="thVenta">Precio p/ Cant.</th>
-                                            <th scope="col"class="thVenta">Cantidad</th>
-                                            <th scope="col"class="thVenta">Descuento (Mayorista)</th>
-                                            <th scope="col"class="thVenta text-center">Opciones</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody class="small text-left fs-6">
-                                    </tbody>
-                                </table>
+                            <div class="container-fluid pt-4 px-4">
+                                <div class="bg-personalizado text-center rounded p-4">
+                                    <div class="table-responsive -xxl">
+                                        <table id="lstProductosVenta" class="table display" style="width:100%">
+                                            <thead>
+                                                <tr>
+                                                    <th>Código</th>
+                                                    <th>Nombre</th>
+                                                    <th>Producto</th>
+                                                    <th>Categoria</th>
+                                                    <th>Tamaño</th>
+                                                    <th>Precio Unitario</th>
+                                                    <th>Precio p/ Cant.</th>
+                                                    <th>Cantidad</th>
+                                                    <th>Descuento (Mayorista)</th>
+                                                    <th class="text-center">Opciones</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                            </tbody>
+                                        </table>
+                                    </div>
                                 </div>
-                                <!-- / table -->
                             </div>
+
                             <!-- /.col -->
 
                         </div>
@@ -172,7 +171,7 @@ if ($result->num_rows > 0) {
                         <div class="card shadow">
 
                             <h5 class="card-header py-1 bg-primary text-white text-center">
-                                Total Venta: S./ <span id="totalVentaRegistrar">0.00</span>
+                                Datos de Venta<span id="totalVentaRegistrar"></span>
                             </h5>
 
                             <div class="card-body p-2">
@@ -201,6 +200,7 @@ if ($result->num_rows > 0) {
                                         // Consulta SQL para obtener las opciones del select "Tipo Pago" desde la tabla "FormaDePago"
                                         $sqlTipoPago = "SELECT idFormaDePago, Descripcion FROM FormaDePago";
                                         $resultTipoPago = $conn->query($sqlTipoPago);
+                                
 
 
                                         // Generar las opciones del select
@@ -334,10 +334,66 @@ if ($result->num_rows > 0) {
 
                         </div><!-- ./ CARD -->
                     </div>
-
                 </div>
             </div>
+            <div class="container-fluid pt-4 px-4">
+                <div class="bg-personalizado text-center rounded p-4">
+                    <div class="table-responsive -xxl">
+                        <table id="ventaDiaria" class="table display" style="width:100%">
+                            <h5>Ventas</h5>
+                            <thead>
+                                <tr>
+                                    <th>Código de Venta</th>
+                                    <th>Código de Factura</th>
+                                    <th>Nro de Venta</th>
+                                    <th>Fecha</th>
+                                    <th>Total</th>
+                                    <th>Comprobante</th>
+                                    <th>Opción</th>
+                                </tr>
+                            </thead>
+                            <tbody id="ventaBody">
+                                <?php
+                                include('../bd/conexion.php');
+                                // Consulta SQL para obtener todas las ventas
+                                $sqlVenta = "SELECT v.idVentas, v.nroVenta, v.Fecha, df.idDetalleFactura, df.Total, df.idFacturas
+                                                    FROM ventas v
+                                                    INNER JOIN detallefactura df ON v.idDetalleFactura = df.idDetalleFactura";
+                                $resultVenta = $conn->query($sqlVenta);
+                                $previousIdDetalleFactura = null; // Variable para realizar un seguimiento del ID previo
 
+                                if ($resultVenta->num_rows > 0) {
+                                    while ($rowVenta = $resultVenta->fetch_assoc()) {
+                                        $fechaVenta = strtotime($rowVenta['Fecha']);
+                                        $fechaActual = strtotime('now');
+                                        $diferencia = ($fechaActual - $fechaVenta) / 60; // Diferencia en minutos
+                                        // Comprueba si el ID de detalle de factura ha cambiado
+                                        if ($rowVenta['idDetalleFactura'] !== $previousIdDetalleFactura) {
+                                            echo '<tr>';
+                                            echo '<td>' . $rowVenta['idDetalleFactura'] . '</td>';
+                                            echo '<td>' . $rowVenta['idFacturas'] . '</td>';
+                                            echo '<td>' . $rowVenta['nroVenta'] . '</td>';
+                                            echo '<td>' . $rowVenta['Fecha'] . '</td>';
+                                            echo '<td>' . $rowVenta['Total'] . '</td>';
+                                            echo '<td><button class="btn btn-danger btn-sm comprobante-btn" data-id="' . $rowVenta['idDetalleFactura'] . '"> 
+                                                <i class="fa-regular fa-file-pdf" style="color: #ffffff;"></i> Comprobante
+                                                </button> </td>'; 
+                                            if ($diferencia >= 15) {
+                                                echo '<td><button class="btn btn-danger btn-sm cancelar-venta-btn" disabled>Cancelar Venta</button></td>';
+                                            } else {
+                                                echo '<td><button class="btn btn-danger btn-sm cancelar-venta-btn" data-id="' . $rowVenta['idDetalleFactura'] . '">Cancelar Venta</button></td>';
+                                            }
+                                        }
+
+                                        $previousIdDetalleFactura = $rowVenta['idDetalleFactura'];
+                                    }
+                                }
+                                ?>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
             <?php
             include "footer.php";
             ?>
@@ -345,6 +401,94 @@ if ($result->num_rows > 0) {
 
     </div>
     <script>
+        $(document).ready(function() {
+            // Inicializa DataTables
+            var table = $('#ventaDiaria').DataTable({
+                "order": [], // Elimina la ordenación predeterminada de la primera columna
+                "searching": true // Habilita la función de búsqueda
+            });
+            // Obtiene la fecha actual (sin hora)
+            var fechaActual = new Date();
+
+            // Obtiene el año, mes y día
+            var año = fechaActual.getFullYear();
+            var mes = fechaActual.getMonth() + 1; // Ten en cuenta que los meses comienzan desde 0 (enero) hasta 11 (diciembre)
+            var dia = fechaActual.getDate();
+
+            // Formatea la fecha como una cadena (por ejemplo, "2023-09-26")
+            var fechaFormateada = año + '-' + (mes < 10 ? '0' : '') + mes + '-' + (dia < 10 ? '0' : '') + dia;
+
+            console.log(fechaFormateada); // Muestra la fecha formateada en la consola
+
+            table.search(fechaFormateada).draw();
+        });
+
+        $(document).ready(function() {
+    var productoIdsAgregados = [];
+
+    // Escucha un evento cuando se presiona una tecla en el campo de búsqueda
+    $('#inputBusqueda').keydown(function(event) {
+        // Verificar si se presionó la tecla "Enter"
+        if (event.keyCode === 13) {
+            var productoId = $(this).val();
+
+            // Verificar si el productoId ya ha sido agregado
+            if (productoIdsAgregados.includes(productoId)) {
+                Swal.fire({
+                    position: 'top-end',
+                    icon: 'error',
+                    title: 'Este Producto ya ha sido agregado',
+                    showConfirmButton: false,
+                    timer: 2000,
+                    background: false,
+                    backdrop: false,
+                    customClass: {
+                        container: 'custom-container-class',
+                        popup: 'custom-popup-class',
+                        title: 'custom-title-class',
+                        icon: 'custom-icon-class',
+                    },
+                });
+                return; // No hacer nada si ya está en la lista
+            }
+
+            // Agregar el productoId a la lista de productos agregados
+            productoIdsAgregados.push(productoId);
+
+            // Aquí puedes obtener los detalles del producto usando el productoId
+            // y luego crear la fila de la tabla con los detalles del producto.
+            // Reemplaza esto con tu lógica para obtener los detalles del producto.
+
+            var nombre = "Nombre del producto"; // Reemplaza con el nombre real
+            var tipoProducto = "Tipo del producto"; // Reemplaza con el tipo real
+            var tipoCategoria = "Categoría del producto"; // Reemplaza con la categoría real
+            var tamaño = "Tamaño del producto"; // Reemplaza con el tamaño real
+            var precioProducto = 10.99; // Reemplaza con el precio real
+
+            // Crear una nueva fila para la tabla de ventas
+            var nuevaFila = '<tr scope="row">';
+            nuevaFila += '<td>' + productoId + '</td>';
+            nuevaFila += '<td>' + nombre + '</td>';
+            nuevaFila += '<td>' + tipoProducto + '</td>';
+            nuevaFila += '<td>' + tipoCategoria + '</td>';
+            nuevaFila += '<td>' + tamaño + '</td>';
+            nuevaFila += '<td>' + precioProducto + '</td>';
+            // Agrega más campos según los detalles del producto
+
+            nuevaFila += '</tr>';
+
+            // Agregar la nueva fila a la tabla
+            $('#lstProductosVenta tbody').append(nuevaFila);
+
+            // Calcular el total de la venta
+            calcularTotalVenta();
+
+            // Limpiar el campo de búsqueda
+            $(this).val('');
+        }
+    });
+});
+
     $(document).ready(function() {
         descuentoAgregado=0;
         // Inicializa el autocompletado
@@ -787,7 +931,6 @@ if ($result->num_rows > 0) {
                         response = JSON.parse(response); // Parsear la respuesta JSON
                         console.log(datosVenta);
                         if (response.success) {
-                            $('#btnExportToPDF').prop('disabled', false);
                             // Si la venta fue exitosa, muestra una notificación
                             Swal.fire({
                                 position: 'top-end',
@@ -808,7 +951,7 @@ if ($result->num_rows > 0) {
                             // Actualiza la página después de 4 segundos (4000 ms)
                             setTimeout(function() {
                                 location.reload();
-                            }, 10000);
+                            }, 2000);
                         } else {
                             // Si la venta no fue exitosa, muestra una notificación de error
                             Swal.fire({
@@ -889,12 +1032,18 @@ if ($result->num_rows > 0) {
                 var nombreProducto = $(this).find('td:eq(1)').text();
                 var cantidad = parseFloat($('#cantidad_' + idProducto).val());
                 var cantidadStock = parseFloat($(this).find('td:eq(7) input').data('cantidad-stock'));
-                console.log(cantidadStock);
+                var precioUnitario = parseFloat($(this).find('td:eq(5)').text());
+                var tipoProducto = $(this).find('td:eq(2)').text();
+                var tipoCategoria = $(this).find('td:eq(3)').text();
+                var tamaño = $(this).find('td:eq(4)').text();
+                var descuentoProducto = $(this).find('td:eq(8)').text();
                 datos.push({
                     id: idProducto,
-                    nombre: nombreProducto,
+                    nombre: nombreProducto + ' - ' + tipoProducto + ' - ' + tipoCategoria + ' - ' + tamaño,
                     cantidad: cantidad,
-                    cantidadStock: cantidadStock
+                    cantidadStock: cantidadStock,
+                    precioUnitario: precioUnitario,
+                    descuentoProducto:descuentoProducto
                 });
             });
             return datos;
@@ -904,12 +1053,13 @@ if ($result->num_rows > 0) {
         function obtenerDatosCard() {
             var subtotal = parseFloat($('#boleta_subtotal').text()); // Obtiene el subtotal
             var descuentos = parseFloat($('#boleta_descuentos').text()); // Obtiene los descuentos
-            var totalVenta = $('#totalVentaRegistrar').text();
+            var totalVenta = $('#boleta_total').text();
             var tipoDocumento = $('#selDocumentoVenta').val();
             var recargos = parseFloat($('#boleta_recargos').text());
             var tipoPago = $('#selTipoPago').val();
             var nroVenta = $('#iptNroVenta').val();
             var efectivoRecibido = $('#iptEfectivoRecibido').val();
+            var vuelto = $('#Vuelto').val();
             // Agrega más campos según sea necesario
             var datosCard = {
                 subtotal: subtotal,
@@ -919,162 +1069,159 @@ if ($result->num_rows > 0) {
                 recargos: recargos,
                 tipoPago: tipoPago,
                 nroVenta: nroVenta,
-                efectivoRecibido: efectivoRecibido
+                efectivoRecibido: efectivoRecibido,
+                vuelto: vuelto
                 // Agrega más campos aquí
             };
             return datosCard;
         }
 
-// Función para cargar una imagen desde una URL y convertirla a base64
-function convertImageToBase64(url, callback) {
-    var img = new Image();
-    img.crossOrigin = 'Anonymous';
-    img.onload = function() {
-        var canvas = document.createElement('canvas');
-        canvas.width = img.width;
-        canvas.height = img.height;
-        var ctx = canvas.getContext('2d');
-        ctx.drawImage(img, 0, 0);
-        var base64 = canvas.toDataURL('image/png'); // Puedes cambiar 'image/png' al formato de imagen deseado
-        callback(base64);
-    };
-    img.src = url;
-}
+        // Función para cargar una imagen desde una URL y convertirla a base64
+        function convertImageToBase64(url, callback) {
+            var img = new Image();
+            img.crossOrigin = 'Anonymous';
+            img.onload = function() {
+                var canvas = document.createElement('canvas');
+                canvas.width = img.width;
+                canvas.height = img.height;
+                var ctx = canvas.getContext('2d');
+                ctx.drawImage(img, 0, 0);
+                var base64 = canvas.toDataURL('image/png'); // Puedes cambiar 'image/png' al formato de imagen deseado
+                callback(base64);
+            };
+            img.src = url;
+        }
 
-// Función para exportar el PDF con la imagen
-function exportToPDF() {
-    // Definir la ruta de la imagen
-    var imagenUrl = '../img/logoCleanIco2.ico';
 
-    // Llama a la función para convertir la imagen y obtener su representación en base64
-    convertImageToBase64(imagenUrl, function(base64Image) {
-        // Obtener los demás datos que deseas incluir en el PDF
-        var tableHeaders = [
-            'Código Producto',
-            'Nombre',
-            'Tipo Producto',
-            'Categoría',
-            'Tamaño',
-            'Precio Unitario',
-            'Precio p/ Cantidad',
-            'Cantidad',
-            'Descuento'
-        ];
-
-        var tableData = [];
-        $('#lstProductosVenta tbody tr').each(function () {
-            var rowData = [];
-            $(this).find('td').each(function (index) {
-                if (index === 7) {
-                    rowData.push($(this).find('input').val());
-                } else {
-                    rowData.push($(this).text());
-                }
-            });
-
-            rowData.pop();
-
-            tableData.push(rowData);
-        });
-
-        // Obtener los datos del card
-        var totalVenta = $('#totalVentaRegistrar').text();
-        var documentoVenta = $('#selDocumentoVenta option:selected').text();
-        var tipoPago = $('#selTipoPago option:selected').text();
-        var nroVenta = $('#iptNroVenta').val();
-        var efectivoRecibido = $('#iptEfectivoRecibido').val();
-        var vuelto = $('#Vuelto').text();
-        var subtotal = $('#boleta_subtotal').text();
-        var descuentos = $('#boleta_descuentos').text();
-        var recargos = $('#boleta_recargos').text();
-        var total = $('#boleta_total').text();
+document.querySelectorAll('.comprobante-btn').forEach(button => {
+    button.addEventListener('click', function() {
+        const idDetalleFactura = this.getAttribute('data-id');
+        // Definir la ruta de la imagen
+        var imagenUrl = '../img/logoCleanIco2.ico';
         var fechaActual = new Date().toLocaleDateString();
-        
-        // Definir la estructura del documento PDF
-        var docDefinition = {
-            content: [
-                {
-                    columns: [
-                        {
-                            // Agregar la imagen usando la representación en base64
-                            image: base64Image, // Utiliza la representación en base64 de la imagen
-                            width: 100, // Ancho de la imagen en puntos (ajusta según sea necesario)
-                            alignment: 'left',
-                            margin: [0, 10], // Márgenes (arriba, abajo)
-                        },
-                        {
-                            text: 'Factura Nro: ' + nroVenta,
-                            width: '*',
-                            fontSize: 12,
-                            bold: true,
-                            alignment: 'right',
-                        },
-                    ]
-                },
-                {
-                    text: 'Dirección de tu Empresa\nFormosa, Argentina\nTeléfono: (123) 456-7890\nEmail: cleanfsa@empresa.com\nFecha: ' + fechaActual + '\n' + documentoVenta,
-                    fontSize: 10,
-                    margin: [0, 0, 0, 15],
-                },
-                {
-                    table: {
-                        headerRows: 1,
-                        widths: ['auto', 'auto', 'auto', 'auto', 'auto', 'auto', 'auto', 'auto', 'auto'],
-                        body: [
-                            tableHeaders.map(header => {
-                                return {
-                                    text: header,
-                                    alignment: 'center',
-                                    fontSize: 10,
-                                    fillColor: '#FFA07A', // Color de fondo de encabezados
-                                    style: 'tableHeader',
-                                    color: 'white', // Color de texto en encabezados
-                                };
-                            }),
-                            ...tableData.map(row => row.map(cell => ({ text: cell, fontSize: 10 }))),
-                        ],
-                    },
-                    layout: 'lightHorizontalLines', // Líneas horizontales ligeras entre las filas
-                },
-                { text: 'Datos de la Compra', style: 'header', margin: [0, 15, 0, 5] },
-                {
-                    table: {
-                        widths: ['auto', '*'],
-                        body: [
-                            ['Tipo de Pago:', tipoPago],
-                            ['Dinero Recibido:', efectivoRecibido],
-                            ['Vuelto:', vuelto],
-                            ['Subtotal:', subtotal],
-                            ['Descuentos:', descuentos],
-                            ['Recargos:', recargos],
-                            ['Total:', total],
-                        ],
-                    },
-                    fontSize: 11,
-                    layout: 'noBorders', // Sin bordes entre las celdas
-                },
-            ],
-            styles: {
-                header: {
-                    fontSize: 12,
-                    bold: true,
-                    alignment: 'center',
-                },
-                tableHeader: {
-                    fontSize: 11,
-                    bold: true,
-                },
-            },
-        };
-            var pdf = pdfMake.createPdf(docDefinition);
-            pdf.open();
-        });
-    }
 
-// Asignar la función al botón de exportar a PDF
-    $('#btnExportToPDF').click(function() {
-        exportToPDF();
+        // Llama a la función para convertir la imagen y obtener su representación en base64
+        convertImageToBase64(imagenUrl, function(base64Image) {
+
+            // Realizar una solicitud AJAX para obtener los datos del detalle de factura
+            const xhr = new XMLHttpRequest();
+            xhr.open('POST', '../controladores/comprobanteVenta.php', true);
+            xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState === 4 && xhr.status === 200) {
+                    const response = JSON.parse(xhr.responseText);
+
+                    // Crear un arreglo de filas de la tabla para los productos
+                    const tablaProductos = [];
+                    var tableHeaders = [
+                        'Código Producto',
+                        'Producto',
+                        'Precio Unitario',
+                        'Cantidad',
+                        'Precio por Cantidad',
+                        'Descuentos'
+                    ];
+
+                    // Agregar cada producto como una fila en la tabla
+                    response.datos.forEach(producto => {
+                        const filaProducto = [
+                            producto.idProducto,
+                            producto.nombreProducto,
+                            producto.precioProducto,
+                            producto.cantidad,
+                            producto.precioCantidad,
+                            producto.descuentoProducto,
+                        ];
+
+                        tablaProductos.push(filaProducto);
+                    });
+
+                    // Definir la estructura del documento PDF con los estilos
+                    const pdfDefinition = {
+                        content: [
+                            {
+                                columns: [
+                                    {
+                                        // Agregar la imagen usando la representación en base64
+                                        image: base64Image, // Utiliza la representación en base64 de la imagen
+                                        width: 100, // Ancho de la imagen en puntos (ajusta según sea necesario)
+                                        alignment: 'left',
+                                        margin: [0, 10], // Márgenes (arriba, abajo)
+                                    },
+                                    {
+                                        text: 'Factura Nro: ' + response.datos[0].idFacturas,
+                                        width: '*',
+                                        fontSize: 12,
+                                        bold: true,
+                                        alignment: 'right',
+                                    },
+                                ]
+                            },
+                            {
+                                text: 'Formosa Argentina\nTeléfono: (123) 456-7890\nEmail: cleanfsa@empresa.com\nFecha: ' 
+                                + fechaActual + '\nFecha de Venta: ' + response.datos[0].FechaEmision + '\nDocumento: ' + response.datos[0].tipoFacturaDescripcion,
+                                fontSize: 10,
+                                margin: [0, 0, 0, 15],
+                            },
+                            { text: 'Datos del Producto:', style: 'subheader' },
+                            {
+                                table: {
+                                    headerRows: 1,
+                                    widths: ['auto', 'auto', 'auto', 'auto', 'auto', 'auto'],
+                                    body: [
+                                        tableHeaders.map(header => ({
+                                            text: header,
+                                            fontSize: 10,
+                                            fillColor: '#FFA07A', // Color de fondo de las celdas de encabezado
+                                            color: 'white', // Color de texto en las celdas de encabezado
+                                        })),
+                                        ...tablaProductos.map(row => row.map(cell => ({
+                                            text: cell,
+                                            fontSize: 10,
+                                        }))),
+                                    ],
+                                },
+                                layout: {
+                                    fillColor: function (rowIndex, node, columnIndex) {
+                                        // Color de fondo para las filas alternas (opcional)
+                                        return (rowIndex % 2 === 0) ? '#F5F5F5' : null;
+                                    },
+                                },
+                            },
+                            { text: '\n\n' }, // Espacio adicional entre la tabla y los elementos siguientes
+                            { text: `SubTotal: ${response.datos[0].subTotal}`, bold: true, fontSize: 10 },
+                            { text: `Total: ${response.datos[0].total}`, bold: true, fontSize: 10 },
+                            { text: `Descuentos: ${response.datos[0].descuentos}`, bold: true, fontSize: 10 },
+                            { text: `Recargos: ${response.datos[0].recargos}` ,bold: true, fontSize: 10 },
+                            { text: `Forma de Pago: ${response.datos[0].formaDePagoDescripcion}`, bold: true, fontSize: 10 },
+                            { text: `Dinero Recibido: ${response.datos[0].dineroRecibido}`, bold: true, fontSize: 10 },
+                            { text: `Vuelto: ${response.datos[0].vuelto}`, bold: true, fontSize: 10 },
+                        ],
+                        styles: {
+                            header: {
+                                fontSize: 18,
+                                bold: true,
+                                alignment: 'center'
+                            },
+                            subheader: {
+                                fontSize: 14,
+                                bold: true,
+                                margin: [0, 10, 0, 5]
+                            }
+                        }
+                    };
+
+                    // Crear el PDF
+                    pdfMake.createPdf(pdfDefinition).open();
+                }
+            };
+
+            xhr.send('idDetalleFactura=' + idDetalleFactura);
+        });
     });
+});
+
 
     document.getElementById("selTipoPago").addEventListener("change", function() {
         var defaultOption = document.getElementById("defaultOption");
@@ -1090,7 +1237,43 @@ function exportToPDF() {
     });
 
 
+    $(document).ready(function () {
+        $(".cancelar-venta-btn").click(function () {
+            var idDetalleFactura = $(this).data("id");
 
+            $.ajax({
+                type: "POST",
+                url: "../controladores/cancelarVenta.php",
+                data: { idDetalleFactura: idDetalleFactura },
+                success: function (response) {
+                    // Maneja la respuesta del servidor, por ejemplo, mostrar un mensaje al usuario
+                    Swal.fire({
+                                position: 'top-end',
+                                icon: 'error',
+                                title: 'La venta se ha cancelado con éxito.',
+                                showConfirmButton: false,
+                                timer: 4000,
+                                background: false,
+                                backdrop: false,
+                                customClass: {
+                                    container: 'custom-container-class',
+                                    popup: 'custom-popup-class',
+                                    title: 'custom-title-class',
+                                    icon: 'custom-icon-class',
+                                }
+                            });
+                    // Recarga la página o realiza otras acciones según tus necesidades
+                    setTimeout(function() {
+                                location.reload();
+                            }, 2000);
+                },
+                error: function () {
+                    alert("Error al cancelar la venta.");
+                }
+            });
+        });
+    });
+</script>
 
     </script>
 
@@ -1221,6 +1404,19 @@ function exportToPDF() {
             background-color:#FFFFFF !important;
             color:#757575;
             padding: 0.3rem 0.5rem;
+        }
+        #ventaDiaria{
+            background-color:#FFFFFF !important;
+            color:#757575;
+            padding: 0.3rem 0.5rem;
+        }
+        div.bg-personalizado{
+            max-height: 450px; /* Ajusta la altura máxima según tus necesidades */
+            overflow-y: auto;
+        }
+        div.dataTables_wrapper .dataTables_length label {
+        display: inline-block;
+        margin-right: 20px; /* Espacio entre los elementos */
         }
 
         
