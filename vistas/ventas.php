@@ -2,7 +2,7 @@
 session_start();
 include("../bd/conexion.php");
 $fechaActual = date("Y-m-d");
-
+$idSucursal = isset($_SESSION['idSucursales']) ? $_SESSION['idSucursales'] : '';
 // Buscar el registro de número de venta para la fecha actual
 $sql = "SELECT nroVenta FROM Ventas WHERE date(fecha) = '$fechaActual' ORDER BY nroVenta DESC LIMIT 1";
 $result = $conn->query($sql);
@@ -355,10 +355,12 @@ if ($result->num_rows > 0) {
                             <tbody id="ventaBody">
                                 <?php
                                 include('../bd/conexion.php');
+                                $idSucursal = isset($_SESSION['idSucursales']) ? $_SESSION['idSucursales'] : '';
                                 // Consulta SQL para obtener todas las ventas
                                 $sqlVenta = "SELECT v.idVentas, v.nroVenta, v.Fecha, df.idDetalleFactura, df.Total, df.idFacturas
                                                     FROM ventas v
-                                                    INNER JOIN detallefactura df ON v.idDetalleFactura = df.idDetalleFactura";
+                                                    INNER JOIN detallefactura df ON v.idDetalleFactura = df.idDetalleFactura
+                                                    WHERE v.idSucursales = $idSucursal";
                                 $resultVenta = $conn->query($sqlVenta);
                                 $previousIdDetalleFactura = null; // Variable para realizar un seguimiento del ID previo
 
@@ -378,7 +380,7 @@ if ($result->num_rows > 0) {
                                             echo '<td><button class="btn btn-danger btn-sm comprobante-btn" data-id="' . $rowVenta['idDetalleFactura'] . '"> 
                                                 <i class="fa-regular fa-file-pdf" style="color: #ffffff;"></i> Comprobante
                                                 </button> </td>'; 
-                                            if ($diferencia >= 15) {
+                                            if ($diferencia >= 1440) {
                                                 echo '<td><button class="btn btn-danger btn-sm cancelar-venta-btn" disabled>Cancelar Venta</button></td>';
                                             } else {
                                                 echo '<td><button class="btn btn-danger btn-sm cancelar-venta-btn" data-id="' . $rowVenta['idDetalleFactura'] . '">Cancelar Venta</button></td>';
@@ -684,7 +686,11 @@ if ($result->num_rows > 0) {
                     });
                 }
             // Aplicar descuento del 10% si es una venta mayorista (cantidad >= 6)
-            if (cantidad >= 6) {
+            var idSucursal = <?php echo json_encode($idSucursal); ?>;
+
+            // Asegúrate de que idSucursal sea un número para comparar correctamente con el número 1
+            idSucursal = parseInt(idSucursal);
+            if (cantidad >= 6  && idSucursal === 1) {
                 //precioUnitario *= 0.9; // Aplicar descuento del 10%
                 var descuento = (cantidad * precioUnitario) *0.1;
             }else{
