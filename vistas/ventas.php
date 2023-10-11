@@ -4,7 +4,7 @@ include("../bd/conexion.php");
 $fechaActual = date("Y-m-d");
 $idSucursal = isset($_SESSION['idSucursales']) ? $_SESSION['idSucursales'] : '';
 // Buscar el registro de número de venta para la fecha actual
-$sql = "SELECT nroVenta FROM Ventas WHERE date(fecha) = '$fechaActual' ORDER BY nroVenta DESC LIMIT 1";
+$sql = "SELECT nroVenta FROM Ventas WHERE date(fecha) = '$fechaActual' AND idSucursales = '$idSucursal' ORDER BY nroVenta DESC LIMIT 1";
 $result = $conn->query($sql);
 
 if ($result->num_rows > 0) {
@@ -102,21 +102,29 @@ if ($result->num_rows > 0) {
 
                         <div class="row">
 
-                            <!-- INPUT PARA INGRESO DEL CODIGO DE BARRAS O DESCRIPCION DEL PRODUCTO -->
-                            <div class="col-md-12 mb-3">
-                                <div class="form-group mb-2">
-                                    <label class="col-form-label" for="inputBusqueda">
-                                        <i class="fas fa-barcode fs-6"></i>
-                                        <span class="small">Productos</span>
-                                    </label>
-                                    <input type="text" class="form-control form-control-sm" id="inputBusqueda"
-                                        placeholder="Ingrese el código de barras o el nombre del producto">
-                                    <!-- Agrega un contenedor para las sugerencias -->
-                                    <div id="suggestions" class="autocomplete-suggestions">
-                                        <!-- Aquí se mostrarán las sugerencias -->
+                        <div class="col-md-12 mb-3">
+                            <div class="form-group mb-2">
+                                <label class="col-form-label" for="inputBusqueda">
+                                    <i class="fas fa-barcode fs-6"></i>
+                                    <span class="small">Productos</span>
+                                </label>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <input type="text" class="form-control form-control-sm" id="inputBarra"
+                                            placeholder="Ingrese el código de barras">
+                                    </div>
+                                    <div class="col-md-6">
+                                        <input type="text" class="form-control form-control-sm" id="inputBusqueda"
+                                            placeholder="Busqueda Manual">
                                     </div>
                                 </div>
+                                <!-- Agrega un contenedor para las sugerencias -->
+                                <div id="suggestions" class="autocomplete-suggestions">
+                                    <!-- Aquí se mostrarán las sugerencias -->
+                                </div>
                             </div>
+                        </div>
+
 
                             <!-- ETIQUETA QUE MUESTRA LA SUMA TOTAL DE LOS PRODUCTOS AGREGADOS AL LISTADO -->
                             <div class="col-md-6 mb-3">
@@ -425,71 +433,6 @@ if ($result->num_rows > 0) {
             table.search(fechaFormateada).draw();
         });
 
-        $(document).ready(function() {
-    var productoIdsAgregados = [];
-
-    // Escucha un evento cuando se presiona una tecla en el campo de búsqueda
-    $('#inputBusqueda').keydown(function(event) {
-        // Verificar si se presionó la tecla "Enter"
-        if (event.keyCode === 13) {
-            var productoId = $(this).val();
-
-            // Verificar si el productoId ya ha sido agregado
-            if (productoIdsAgregados.includes(productoId)) {
-                Swal.fire({
-                    position: 'top-end',
-                    icon: 'error',
-                    title: 'Este Producto ya ha sido agregado',
-                    showConfirmButton: false,
-                    timer: 2000,
-                    background: false,
-                    backdrop: false,
-                    customClass: {
-                        container: 'custom-container-class',
-                        popup: 'custom-popup-class',
-                        title: 'custom-title-class',
-                        icon: 'custom-icon-class',
-                    },
-                });
-                return; // No hacer nada si ya está en la lista
-            }
-
-            // Agregar el productoId a la lista de productos agregados
-            productoIdsAgregados.push(productoId);
-
-            // Aquí puedes obtener los detalles del producto usando el productoId
-            // y luego crear la fila de la tabla con los detalles del producto.
-            // Reemplaza esto con tu lógica para obtener los detalles del producto.
-
-            var nombre = "Nombre del producto"; // Reemplaza con el nombre real
-            var tipoProducto = "Tipo del producto"; // Reemplaza con el tipo real
-            var tipoCategoria = "Categoría del producto"; // Reemplaza con la categoría real
-            var tamaño = "Tamaño del producto"; // Reemplaza con el tamaño real
-            var precioProducto = 10.99; // Reemplaza con el precio real
-
-            // Crear una nueva fila para la tabla de ventas
-            var nuevaFila = '<tr scope="row">';
-            nuevaFila += '<td>' + productoId + '</td>';
-            nuevaFila += '<td>' + nombre + '</td>';
-            nuevaFila += '<td>' + tipoProducto + '</td>';
-            nuevaFila += '<td>' + tipoCategoria + '</td>';
-            nuevaFila += '<td>' + tamaño + '</td>';
-            nuevaFila += '<td>' + precioProducto + '</td>';
-            // Agrega más campos según los detalles del producto
-
-            nuevaFila += '</tr>';
-
-            // Agregar la nueva fila a la tabla
-            $('#lstProductosVenta tbody').append(nuevaFila);
-
-            // Calcular el total de la venta
-            calcularTotalVenta();
-
-            // Limpiar el campo de búsqueda
-            $(this).val('');
-        }
-    });
-});
 
     $(document).ready(function() {
         descuentoAgregado=0;
@@ -545,6 +488,7 @@ if ($result->num_rows > 0) {
                         },
                     })
                 $('#inputBusqueda').val('');
+                $('#inputBarra').val('');
                 $('#suggestions').html('');
                 return; // No hacer nada si ya está en la lista
             }
@@ -592,6 +536,67 @@ if ($result->num_rows > 0) {
             $('#inputBusqueda').val('');
             $('#suggestions').html('');
         });
+
+        $(document).ready(function() {
+            var productoIdsAgregados = [];
+            $('#iptNroVenta').val('<?php echo $nroVenta; ?>');
+
+            // Manejar la selección de un producto del autocompletado
+            $('#suggestions').on('click', '.autocomplete-suggestion', function() {
+                var productoSeleccionado = $(this).text();
+                var productoId = $(this).data('producto-id');
+                // Resto del código para agregar el producto y limpiar la lista de sugerencias
+            });
+
+            $('#inputBarra').keyup(function(event) {
+                var query = $(this).val();
+                if (query !== '') {
+                    $.ajax({
+                        url: '../controladores/ventas.php',
+                        method: 'POST',
+                        data: { query: query },
+                        success: function(data) {
+                            $('#suggestions').html(data);
+                            var suggestionItems = $('#suggestions .autocomplete-suggestion');
+                            if (suggestionItems.length === 1) {
+                                // Si hay una sola sugerencia, hacer clic automáticamente en ella
+                                setTimeout(function() {
+                                    suggestionItems.click();
+                                }, 100); // Espera 100 ms antes de hacer clic
+                            }
+                            $('#inputBarra').val(''); // Limpiar el campo de entrada
+                        },
+                        error: function(xhr, status, error) {
+                            // Maneja errores de AJAX aquí
+                            console.error(error);
+                        }
+                    });
+                } else {
+                    $('#suggestions').html('');
+                }
+            });
+
+            // Resto de tu código
+        });
+
+
+        // Agrega un evento keyup al input de búsqueda
+        $('#inputBusqueda').on('keyup', function() {
+            // Verifica si el campo de búsqueda no está vacío
+            if ($(this).val().trim() !== '') {
+                // Muestra el elemento #suggestions
+                $('#suggestions').show();
+            } else {
+                // Oculta el elemento #suggestions si el campo está vacío
+                $('#suggestions').hide();
+            }
+        });
+        $('#inputBarra').on('keyup', function() {
+            // Verifica si el campo de búsqueda no está vacío
+
+                $('#suggestions').hide();
+        });
+
      
         $('#btnVaciarListado').click(function() {
             // Limpiar la lista de productos agregados
@@ -1297,13 +1302,29 @@ document.querySelectorAll('.comprobante-btn').forEach(button => {
             font-weight: bold;
             
         }
+        /* Estilos para el segundo input */
+#inputBusqueda {
+    /* Estilos específicos para el segundo input, por ejemplo, el ancho y otros estilos */
+    width: 100%;
+}
+
+/* Estilos para el elemento de autocompletado */
+#inputBusqueda ~ #suggestions {
+    display: none;
+    width: 100%; /* Ancho igual al input */
+    position: absolute;
+    top: 100%; /* Coloca el elemento debajo del input */
+    left: 0;
+    box-sizing: border-box;
+}
+
         .autocomplete-suggestions {
             position: absolute;
             z-index: 9999;
             max-height: 150px; /* Altura máxima de la lista desplegable */
             overflow-y: auto;
             background-color: #fff;
-            width: 58%; /* Ajusta el ancho de la lista al 100% del input */
+            width: 40%; /* Ajusta el ancho de la lista al 100% del input */
             box-sizing: border-box; /* Incluye el padding y el borde en el ancho total */
         }
 
@@ -1424,6 +1445,12 @@ document.querySelectorAll('.comprobante-btn').forEach(button => {
         display: inline-block;
         margin-right: 20px; /* Espacio entre los elementos */
         }
+        #suggestions {
+            display: none;
+        }
+        
+
+
 
         
 

@@ -440,7 +440,7 @@ session_start();
         background-color: rgba(231, 122, 52, 0.8); /* Cambia el valor de 1 según la transparencia que desees */
         color: white;
         font-size: 12px;
-    },
+    }
     
     </style>
 
