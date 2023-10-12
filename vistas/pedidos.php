@@ -4,6 +4,7 @@ include ('../controladores/pedidoStock.php');
 
 $idPersona = $_SESSION['idPersona'];
 $idEmpleado= $_SESSION['idEmpleado'];
+$idSucursal = $_SESSION['idSucursales'];
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -157,10 +158,11 @@ $idEmpleado= $_SESSION['idEmpleado'];
 
             <div class="container-fluid pt-4 px-4">
                 <div class="bg-personalizado text-center rounded p-4">
+                <div class="table-responsive -xxl">
                     <div class="d-flex justify-content-center align-items-center mb-3">
                         <h5 class="mb-0">Pedido realizado</h5>
                     </div>
-                    <button type="button" style="position:relative;" class="btn btn-warning" onclick="obtenerDatos()">Finalizar Pedido</button>
+                    <button id="btnFinPedido" style="position:relative;" class="btn btn-warning"  onclick="obtenerDatos()">Finalizar Pedido</button>
                     <div class="table-responsive -xxl position-relative">
                         <table id="tableSucursal" class="table display" style="width:100%">
                             <thead>
@@ -172,7 +174,6 @@ $idEmpleado= $_SESSION['idEmpleado'];
                                     <th>Medida</th>
                                     <th>Cantidad</th>
                                     <th>
-                                    <button id="btnEditarTableSucu" style="background: #e77a34; color: white;" class="btn btn-sm" onclick="editarPedido()" disabled><i class="far fa-edit"></i></button>
                                     <button id="btnEliminarTableSucu" style="background: #e77a34; color: white;" class="btn btn-sm" disabled><i class="fas fa-trash"></i></button>
                                     </th>
                                 </tr>
@@ -182,6 +183,67 @@ $idEmpleado= $_SESSION['idEmpleado'];
                             </tbody>
                         </table>
                     </div>
+                </div>   
+                </div>
+            </div>
+                    <!-- tabla TU PEDIDO -->
+            <div class="container-fluid pt-4 px-4">
+                <div class="bg-personalizado text-center rounded p-4">
+                <div class="table-responsive -xxl">
+                    <div class="d-flex justify-content-center align-items-center mb-3">
+                        <h5 class="mb-0">Tu pedido</h5>
+                    </div>
+                    <button id="btnEntregar" type="button" style="position:relative;" class="btn btn-warning" onclick="obtenerDatosPedido()">Entregado</button>
+                    <div class="table-responsive -xxl position-relative">
+                        <table id="tablePedido" class="table display" style="width:100%">
+                            <thead>
+                                <tr>
+                                    <th>idPedido</th>
+                                    <th>Codigo</th>
+                                    <th>fecha</th>
+                                    <th>Nombre</th>
+                                    <th>Tamaño</th>
+                                    <th>Medida</th>
+                                    <th>Cantidad</th>
+                                    <th>Estado</th>
+                                    <th>Sucursal</th>
+                                    <th>
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php
+                                    $idSucursal= $_SESSION['idSucursales'];
+                                    $query = "SELECT
+                                    idPedidosSucursales,
+                                    codigoProducto,
+                                    DATE_FORMAT(fecha, '%Y-%m-%d %H:%i:%s')AS fechaYHora,
+                                    nombreProducto,
+                                    tamaño,
+                                    medida,
+                                    cantidad,
+                                    estado,
+                                    sucursales.Descripcion
+                                    FROM pedidosSucursales join sucursales on sucursales.idSucursales= pedidosSucursales.idSucursales
+                                    WHERE  DATE(fecha) = CURDATE() and pedidosSucursales.idSucursales=$idSucursal and estado != 'Entregado';";
+                                    $result = $conn->query($query);
+                                    while ($row = $result->fetch_assoc()) {
+                                        echo '<td>' . $row['idPedidosSucursales'] . '</td>';
+                                        echo '<td>' . $row['codigoProducto'] . '</td>';
+                                        echo '<td>' . $row['fechaYHora'] . '</td>';
+                                        echo '<td>' . $row['nombreProducto'] . '</td>';
+                                        echo '<td>' . $row['tamaño'] . '</td>';
+                                        echo '<td>' . $row['medida'] . '</td>';
+                                        echo '<td>' . $row['cantidad'] . '</td>';
+                                        echo '<td>' . $row['estado'] . '</td>';
+                                        echo '<td>' . $row['Descripcion'] . '</td>';
+                                        echo '</tr>';
+                                         }
+                                ?>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>   
                 </div>
             </div>
             <div class="modal fade" id="modalSucursal" tabindex="-1" aria-labelledby="modalSucursal" aria-hidden="true">
@@ -232,8 +294,6 @@ $idEmpleado= $_SESSION['idEmpleado'];
                             </div>
                         </div>
                         <div class="modal-footer">
-                            <!-- Cambio en el botón "Guardar" del modal -->
-                            <button id="btnGuardar" onclick="editarTabla()" type="button" class="btn btn-primary" >Editar</button>
                             <!-- Cambio en el botón "Cerrar" del modal -->
                             <button id="btnCerrar" type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
                             
@@ -255,8 +315,7 @@ $idEmpleado= $_SESSION['idEmpleado'];
                                 <div class="row">
                                     <div class="col-md-4 mb-3">
                                         <label for="codigo" class="form-label">Código</label>
-                                        <input type="text" class="form-control" id="codigo">
-                                    </div>
+                                        <input type="text" class="form-control" id="codigo" name= "idProducto">                                    </div>
                                     <div class="col-md-4 mb-3">
                                         <label for="nombre" class="form-label">Nombre</label>
                                         <input type="text" class="form-control" id="nombre">
@@ -294,18 +353,26 @@ $idEmpleado= $_SESSION['idEmpleado'];
                             <!-- Cambio en el botón "Cerrar" del modal -->
                             <button id="btnCerrar" type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
                             <!-- Cambio en el botón "Guardar" del modal -->
-                            <button id="btnGuardar" type="button" class="btn btn-primary" onclick="agregarProducto()">Guardar</button>
+                            <button id="btnGuardar" type="button" class="btn btn-primary" data-stock="<?php echo $stock_disponible;?>" onclick="agregarProducto()">Guardar</button>
                         </div>
                     </div>
                 </div>
                 <?php
-                    $cantidad = $_POST['cantidadPedido']; // Supongamos que obtuviste esto del formulario
-                    $sql = "SELECT cantidad from stocksucursales WHERE cantidad >= '$cantidad';";
+                    $sql = "SELECT idProductos, cantidad from stockSucursales where idSucursales=1;";
                     $result = $conn->query($sql);
                     if ($result->num_rows > 0) {
-                        $row = $result->fetch_assoc();
-                        $stock_disponible = $row['cantidad'];
+                        $productos = array();
+                        while ($row = $result->fetch_assoc()) {
+                            // Agrega cada fila de proveedor a un array
+                            $productos[] = $row;
+                        }
                     }
+                    $response = json_encode($productos);
+
+                    // Configura las cabeceras para indicar que se envía JSON
+                    header("Content-Type: application/json");
+                    // Envía la respuesta JSON
+                    echo $response;
                 ?>
             </div>
 
@@ -341,7 +408,112 @@ $idEmpleado= $_SESSION['idEmpleado'];
         <a href="#" class="btn btn-lg btn-lg-square back-to-top" style="background: #e77a34; color: white"><i class="bi bi-arrow-up"></i></a>
     </div>
     <script>
+         document.addEventListener("DOMContentLoaded", function() {
+        var tablePedido = document.getElementById("tablePedido");
+        var btnEntregar = document.getElementById("btnEntregar");
+        // Verificar si la tabla tiene filas de datos (excluyendo la fila del encabezado)
+            if (tablePedido.rows.length <= 1) { // Si la tabla está vacía o solo contiene el encabezado
+                btnEntregar.disabled = true;
+            }
+        });
+        var datosPedido;
+        function pedidoEntregado(datosPedido) {
+            console.log(datosPedido,"hola");
+            // URL a tu archivo PHP
+            var url = '../controladores/llegaPedido.php';
+
+            // Configuración de la solicitud
+            var requestOptions = {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ datosPedido: datosPedido }) // Asegúrate de que 'datos' corresponda a la clave que estás utilizando en PHP
+            };
+
+            // Realizar la solicitud Fetch
+            fetch(url, requestOptions)
+                .then(response =>{
+                    console.log(response);
+                    return response.json();
+                } ) // Si esperas una respuesta JSON del servidor
+                .then(data => {
+                    // Maneja la respuesta del servidor aquí (data)
+                    console.log(data);
+                })
+                .catch(error => {
+                    // Maneja cualquier error aquí
+                    console.error('Error:', error);
+                });
+            if (fetch()){
+                Swal.fire({
+                        position: 'top-end',
+                        icon: 'success',
+                        title: 'Se ha actualizado tu stock',
+                        showConfirmButton: false,
+                        timer: 2000,
+                        background: false, // Desactiva el fondo oscurecido
+                        backdrop: false,
+                        customClass: {
+                            container: 'custom-container-class',
+                            popup: 'custom-popup-class', // Clase personalizada para ajustar el tamaño de la alerta
+                            title: 'custom-title-class', // Clase personalizada para ajustar el tamaño del título
+                            icon: 'custom-icon-class',
+                        },
+                    })
+            }
+        }
+
+        function obtenerDatosPedido() {
+            // Obtén una referencia a la tabla por su ID
+            var tabla = document.getElementById("tablePedido");
+
+            if (!tabla) {
+                console.error("La tabla con el ID 'tablePedido' no se encontró en el DOM.");
+                return;
+            }
+
+            // Accede a la fila de encabezado para obtener los nombres de las columnas
+            var encabezado = tabla.getElementsByTagName("thead")[0];
+            var columnas = [];
+            if (encabezado) {
+                for (var i = 0; i < encabezado.rows[0].cells.length; i++) {
+                columnas.push(encabezado.rows[0].cells[i].textContent);
+                }
+            } else {
+                console.error("No se encontró la fila de encabezado en la tabla.");
+                return;
+            }
+
+            // Accede a las filas de datos
+            var filas = tabla.getElementsByTagName("tbody")[0].rows;
+            var datosPedido = [];
+
+            // Recorre las filas y obtén los datos
+            for (var i = 0; i < filas.length; i++) {
+                var fila = filas[i];
+                var registro = {};
+
+                for (var j = 0; j < columnas.length; j++) {
+                    var celda = fila.cells[j];
+                    if (celda) {
+                        registro[columnas[j]] = celda.textContent;
+                    } else {
+                        registro[columnas[j]] = ""; // O puedes asignar otro valor predeterminado si es necesario
+                    }
+                }
+
+                datosPedido.push(registro);
+            }
+
+            // Crea y agrega el nuevo botón después del botón existente.
+
+            // Ahora tienes todos los datos de la tabla en el arreglo 'datos'
+            pedidoEntregado(datosPedido);
+            return datosPedido;
+            }
         var datos;
+        var hayDatosEnTabla = false;
         function enviarDatosAlServidor(datos) {
             console.log(datos,"hola");
             // URL a tu archivo PHP
@@ -389,9 +561,34 @@ $idEmpleado= $_SESSION['idEmpleado'];
             }
         }
 
-        function obtenerDatos(){
+        function obtenerDatos() {
             // Obtén una referencia a la tabla por su ID
             var tabla = document.getElementById("tableSucursal");
+
+            // Accede a las filas de datos
+            var filas = tabla.getElementsByTagName("tbody")[0].rows;
+
+            // Verifica si hay datos en la tabla
+            if (filas.length === 0) {
+                // Muestra un mensaje de error
+                Swal.fire({
+                    position: 'top-end',
+                    icon: 'error',
+                    title: 'No hay pedidos',
+                    text: 'no hay pedidos por finalizar.',
+                    showConfirmButton: false,
+                    timer: 1500,
+                    background: false,
+                    backdrop: false,
+                    customClass: {
+                        container: 'custom-container-class',
+                        popup: 'custom-popup-class',
+                        title: 'custom-title-class',
+                        icon: 'custom-icon-class',
+                    },
+                });
+                return;
+            }
 
             // Accede a la fila de encabezado para obtener los nombres de las columnas
             var encabezado = tabla.getElementsByTagName("thead")[0];
@@ -401,53 +598,85 @@ $idEmpleado= $_SESSION['idEmpleado'];
             }
 
             // Accede a las filas de datos
-            var filas = tabla.getElementsByTagName("tbody")[0].rows;
             var datos = [];
 
             // Recorre las filas y obtén los datos
             for (var i = 0; i < filas.length; i++) {
                 var fila = filas[i];
                 var registro = {};
-                
+
                 for (var j = 0; j < columnas.length; j++) {
                     var celda = fila.cells[j];
                     registro[columnas[j]] = celda.textContent;
                 }
-                
+
                 datos.push(registro);
             }
-            while (tabla.rows.length > 0){
-                tabla.deleteRow(0);
-            }
 
-            // Ahora tienes todos los datos de la tabla en el arreglo 'datos'
-            console.log(datos);
+            // Actualiza la variable global para indicar que hay datos en la tabla
+            hayDatosEnTabla = true;
+
+            // Envía los datos al servidor
             enviarDatosAlServidor(datos);
-            return datos;
-
         }
-            function validarCantidad(){
-                var cantidadPedido= parseInt(document.getElementById("cantidad").value);
-                if (cantidadPedido > <?php echo $stock_disponible; ?>){
-                    Swal.fire({
-                        position: 'top-end',
-                        icon: 'error',
-                        title: 'No hay stock del producto',
-                        showConfirmButton: false,
-                        timer: 1500,
-                        background: false, // Desactiva el fondo oscurecido
-                        backdrop: false,
-                        customClass: {
-                            container: 'custom-container-class',
-                            popup: 'custom-popup-class', // Clase personalizada para ajustar el tamaño de la alerta
-                            title: 'custom-title-class', // Clase personalizada para ajustar el tamaño del título
-                            icon: 'custom-icon-class',
-                        },
-                        })
-                    return false; // Evitar que el formulario se envíe
-                }
-                return true; 
+
+        function validarCantidad() {
+            var cantidadPedido = document.getElementById("cantidad").value;
+
+            // Verifica si la cantidad es un número válido y no es negativa
+            if (isNaN(cantidadPedido) || parseInt(cantidadPedido) < 0) {
+                Swal.fire({
+                    position: 'top-end',
+                    icon: 'error',
+                    title: 'La cantidad no es válida',
+                    text: 'Por favor, ingrese una cantidad válida mayor o igual a cero.',
+                    showConfirmButton: false,
+                    timer: 1500,
+                    background: false,
+                    backdrop: false,
+                    customClass: {
+                        container: 'custom-container-class',
+                        popup: 'custom-popup-class',
+                        title: 'custom-title-class',
+                        icon: 'custom-icon-class',
+                    },
+                });
+                return false; // Evitar que el formulario se envíe
             }
+
+            let cantStockExistente = 0;
+            var valorDesdePHP = <?php echo json_encode($productos); ?>;
+            var codigo = document.getElementById("codigo").value;
+
+            for (var i = 0; i < valorDesdePHP.length; i++) {
+                if (valorDesdePHP[i]["idProductos"] === codigo) {
+                    cantStockExistente = valorDesdePHP[i]["cantidad"];
+                    break;
+                }
+            }
+
+            if (parseInt(cantidadPedido) > parseInt(cantStockExistente)) {
+                Swal.fire({
+                    position: 'top-end',
+                    icon: 'error',
+                    title: 'No hay suficiente stock del producto',
+                    showConfirmButton: false,
+                    timer: 1500,
+                    background: false,
+                    backdrop: false,
+                    customClass: {
+                        container: 'custom-container-class',
+                        popup: 'custom-popup-class',
+                        title: 'custom-title-class',
+                        icon: 'custom-icon-class',
+                    },
+                });
+                return false; // Evitar que el formulario se envíe
+            }
+
+            return true;
+        }
+
 
 
             function eliminarFila() {
@@ -458,97 +687,73 @@ $idEmpleado= $_SESSION['idEmpleado'];
             $('#modalEliminarProducto').modal('hide');
         }
 
-            function editarPedido() {
-                var filaSeleccionada = tableSucursal.row('.selected').data();
-                if (filaSeleccionada) {
-                // Aquí debes completar tu modal con los datos de la fila seleccionada
-                // Puedes acceder a los valores de la fila con filaSeleccionada[0], filaSeleccionada[1], etc.
-                // Luego, puedes establecer esos valores en los campos del modal
-                // Por ejemplo:
-                    $('#modalSucursal #codigoSucursal').val(filaSeleccionada[0]);
-                    $('#modalSucursal #nombreSucursal').val(filaSeleccionada[1]);
-                    $('#modalSucursal #tipoProductoSucursal').val(filaSeleccionada[2]);
-                    $('#modalSucursal #tamañoSucursal').val(filaSeleccionada[3]);
-                    $('#modalSucursal #medidaSucursal').val(filaSeleccionada[4]);
-                    $('#modalSucursal #cantidadSucursal').val(filaSeleccionada[5]);
-
-                    $('#modalSucursal #codigoSucursal').prop('disabled', true);
-                    $('#modalSucursal #nombreSucursal').prop('disabled', true);
-                    $('#modalSucursal #tipoProductoSucursal').prop('disabled', true);
-                    $('#modalSucursal #tamañoSucursal').prop('disabled', true);
-                    $('#modalSucursal #medidaSucursal').prop('disabled', true);
-                    
-
-                    
-                    console.log(filaSeleccionada)
-                    // Finalmente, muestra el modal de edición
-                    $('#modalSucursal').modal('show');
-                } else {
-                // Muestra un mensaje o realiza alguna acción si no hay fila seleccionada
-            }
-        }
     </script>
-
     <script>
+        
         // Declarar tableSucursal en el ámbito global
-       function editarTabla(){
-        var nuevoCodigo = $('#codigoSucursal').val();
-        var nuevoNombre = $('#nombreSucursal').val();
-        var nuevaCantidad = $('#cantidadSucursal').val();
-        var nuevoTipoProducto = $('#tipoProductoSucursal').val();
-        var nuevoTamaño = $('#tamañoSucursal').val();
-        var nuevaMedida = $('#medidaSucursal').val();
-
-        var filaSeleccionada = tableSucursal.row('.selected');
-        if (filaSeleccionada.any()) {
-            filaSeleccionada.data([
-                nuevoCodigo,
-                nuevoNombre,
-                nuevoTipoProducto,
-                nuevoTamaño,
-                nuevaMedida,
-                nuevaCantidad,
-                ""
-                ]).draw();
-                $('#modalSucursal').modal('hide');
-        }}
-
         var tableSucursal;
         function agregarProducto() {
-            if (!validarCantidad()){
+            if (!validarCantidad()) {
                 return;
-            }else{
+            } else {
                 // Obtener los valores de los campos del modal
                 var codigo = document.getElementById("codigo").value;
                 var nombre = document.getElementById("nombre").value;
-                var cantidad = document.getElementById("cantidad").value;
+                var cantidad = parseInt(document.getElementById("cantidad").value); // Convertir a entero
                 var tipoProducto = document.getElementById("tipoProducto").value;
                 var tamaño = document.getElementById("tamaño").value;
                 var medida = document.getElementById("medida").value;
-                
 
                 // Verificar si tableSucursal está definida
                 if (tableSucursal) {
-                    // Crear una nueva fila en la segunda tabla con los datos del producto
-                    var filaNueva = 
-                    '<tr>' +
-                        '<td>' + codigo + '</td>' +
-                        '<td>' + nombre + '</td>' +
-                        '<td>' + tipoProducto + '</td>' +
-                        '<td>' + tamaño + '</td>' +
-                        '<td>' + medida + '</td>' +
-                        '<td>' + cantidad + '</td>' +
-                        '<td>' + "" + '</td>' 
-                    '</tr>';
-                    
-                    // Agregar la fila a la segunda tabla
-                    
-                    tableSucursal.row.add($(filaNueva)).draw(); // Nota el uso de $() alrededor de filaNueva
+                    // Verificar si el producto ya existe en la segunda tabla
+                    var filaExistente = encontrarFilaExistente(codigo);
+
+                    if (filaExistente) {
+                        // El producto ya existe, actualiza la cantidad
+                        var cantidadExistente = parseInt(filaExistente.cells[5].textContent);
+                        filaExistente.cells[5].textContent = cantidadExistente + cantidad;
+                    } else {
+                        // El producto no existe, crea una nueva fila
+                        var filaNueva =
+                            '<tr>' +
+                            '<td>' + codigo + '</td>' +
+                            '<td>' + nombre + '</td>' +
+                            '<td>' + tipoProducto + '</td>' +
+                            '<td>' + tamaño + '</td>' +
+                            '<td>' + medida + '</td>' +
+                            '<td>' + cantidad + '</td>' +
+                            '<td>' + "" + '</td>' +
+                            '</tr>';
+
+                        // Agregar la fila a la segunda tabla
+                        tableSucursal.row.add($(filaNueva)).draw();
+                    }
 
                     // Cerrar el modal
                     $('#modalAgregarProducto').modal('hide');
                 }
             }
+        }
+
+        function encontrarFilaExistente(codigo) {
+            // Obtener una referencia a la tabla por su ID
+            var tabla = document.getElementById("tableSucursal");
+
+            // Accede a las filas de datos
+            var filas = tabla.getElementsByTagName("tbody")[0].rows;
+
+            // Recorre las filas y busca una con el mismo código
+            for (var i = 0; i < filas.length; i++) {
+                var fila = filas[i];
+                var codigoFila = fila.cells[0].textContent;
+
+                if (codigoFila === codigo) {
+                    return fila; // Devuelve la fila existente
+                }
+            }
+
+            return null; // Si no se encuentra ninguna fila existente
         }
             
 
@@ -599,18 +804,22 @@ $idEmpleado= $_SESSION['idEmpleado'];
             });
 
             $('#tableSucursal tbody').on('click', 'tr', function() {
+                if (tableSucursal.rows().count() === 0) {
+                    // Si no hay datos en la tabla, no permitir la selección
+                    return;
+                }
+
                 if ($(this).hasClass('selected')) {
                     $(this).removeClass('selected');
                     $('#btnEditarTableSucu').prop('disabled', true);
                     $('#btnEliminarTableSucu').prop('disabled', true);
-                    console.log("ceci2")
+                    console.log("ceci2");
                 } else {
                     tableSucursal.$('tr.selected').removeClass('selected');
                     $(this).addClass('selected');
                     $('#btnEditarTableSucu').prop('disabled', false);
                     $('#btnEliminarTableSucu').prop('disabled', false);
                     var rowData = tableProd.row($(this)).data();
-
 
                     $('#btnEditarTableSucu').click(function() {
                         $('#labelAgregarStock').text('Editar Pedido');
@@ -619,7 +828,6 @@ $idEmpleado= $_SESSION['idEmpleado'];
                     $('#btnEliminarTableSucu').click(function() {
                         $('#modalEliminarProducto').modal('show');
                     });
-
                 }
             });
 
@@ -679,6 +887,7 @@ $idEmpleado= $_SESSION['idEmpleado'];
                         $('#labelAgregarStock').text('Agregar Pedido');
                         btnDisabled()
                         $('#modalAgregarProducto').modal('show');
+                        
                     });
                     
 
@@ -691,6 +900,13 @@ $idEmpleado= $_SESSION['idEmpleado'];
 
 
     <style>
+        #llegaPedido {
+            margin-left: 350px; /* Espacio entre el botón y el borde derecho de la celda */
+            float: none; /* Elimina la propiedad "float" para que el botón no flote */
+            bottom: 345px; /* Espacio entre el botón y el borde inferior de la celda */
+            position: fixed;
+            
+        }
       /* Estilo CSS para la clase personalizada de la alerta */
       .custom-popup-class {
         width: 300px; /* Ajusta el ancho de la alerta según tus necesidades */

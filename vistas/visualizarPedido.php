@@ -3,6 +3,8 @@ session_Start();
 include ('../bd/conexion.php');
 $idPersona = $_SESSION['idPersona'];
 $idEmpleado= $_SESSION['idEmpleado'];
+
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -40,7 +42,6 @@ $idEmpleado= $_SESSION['idEmpleado'];
     <!-- Incluir jQuery -->
     <script src="https://code.jquery.com/jquery-3.7.0.js"></script>
     <script src="https://code.jquery.com/jquery-3.7.0.js" integrity="sha256-JlqSTELeR4TLqP0OG9dxM7yDPqX1ox/HfgiSLBj8+kM=" crossorigin="anonymous"></script>
-
     <!-- Incluir Bootstrap CSS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css">
 
@@ -62,6 +63,15 @@ $idEmpleado= $_SESSION['idEmpleado'];
     <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
     <script src="https://cdn.datatables.net/select/1.7.0/js/dataTables.select.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.68/pdfmake.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.68/vfs_fonts.js"></script>
+
+    <!-- Incluir Waypoints -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/waypoints/4.0.1/jquery.waypoints.min.js"></script>
+
+    <!-- Incluir tu archivo main.js después de cargar jQuery y Waypoints -->
+    <script src="ruta-a-tu-main.js"></script>
 
 
 
@@ -96,6 +106,8 @@ $idEmpleado= $_SESSION['idEmpleado'];
             <!-- Sale & Revenue Start -->
 
             <div class="container-fluid pt-4 px-4">
+            <button id="btnAbrirModal" class="btn btn-primary">Cambiar Estado</button>
+            <button id="btnGenerarPDF" type="button" class="btn btn-danger">Comprobante</button>
                 <div class="bg-personalizado text-center rounded p-4">
                     <div class="d-flex justify-content-center align-items-center mb-3">
                         <h5 class="mb-0">Pedidos</h5>
@@ -103,46 +115,90 @@ $idEmpleado= $_SESSION['idEmpleado'];
                     <div class="d-flex justify-content-center align-items-center text-center">
                         <select id="filtroSucursal" class="form-select form-select-sm" style="width: 150px;">
                             <option value="">Sucursales</option>
-                            <option value="Kirchner">Nestor Kirchner</option>
-                            <option value="Centro">Eva Peron</option>
+                            <option value="Nestor Kirchner">Nestor Kirchner</option>
+                            <option value="Eva Peron">Eva Peron</option>
                         </select>
+                       
                     </div>
                     <div class="table-responsive -xxl position-relative">
                         <table id="tablePedido" class="table display" style="width:100%">
                             <thead>
                                 <tr>
-                                    <th>Código</th>
-                                    <th>Nombre</th>
-                                    <th>Tipo</th>
+                                    <th>idPedido</th>
+                                    <th>fecha</th>
+                                    <th>Nombre Producto</th>
                                     <th>Tamaño</th>
                                     <th>Medida</th>
                                     <th>Cantidad</th>
+                                    <th>Estado</th>
+                                    <th>Descripcion</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <?php
-                                    $fechaActual= date('Y-m-d');
-                                    $query = "SELECT codigoProducto,nombreProducto,tipoProducto,tamaño,medida,cantidad FROM PedidosSucursales WHERE fecha = '$fechaActual'";
-                                    $result = mysqli_query($conn, $query);
-                                    
-                                    // Verifica si se obtuvieron resultados
-                                    if ($result->num_rows > 0) {
-                                        while ($row = $result->fetch_assoc()) {
-                                        echo "<tr>";
-                                        echo "<td>" . $row["codigoProducto"] . "</td>";
-                                        echo "<td>" . $row["nombreProducto"] . "</td>";
-                                        echo "<td>" . $row["tipoProducto"] . "</td>";
-                                        echo "<td>" . $row["tamaño"] . "</td>";
-                                        echo "<td>" . $row["medida"] . "</td>";
-                                        echo "<td>" . $row["cantidad"] . "</td>";
-                                        echo "</tr>";
+                                    $query = "SELECT
+                                    idPedidosSucursales,
+                                    fecha,
+                                    nombreProducto,
+                                    tamaño,
+                                    medida,
+                                    cantidad,
+                                    estado,
+                                    sucursales.Descripcion
+                                    FROM pedidosSucursales join sucursales on sucursales.idSucursales= pedidosSucursales.idSucursales
+                                    WHERE pedidosSucursales.estado = 'En aprobacion' or pedidosSucursales.estado = 'aprobado' or pedidosSucursales.estado = 'despachado' and DATE(fecha) = CURDATE() ;";
+                                    $result = $conn->query($query);
+                                    while ($row = $result->fetch_assoc()) {
+                                        echo '<tr>';
+                                        echo '<td>' . $row['idPedidosSucursales'] . '</td>';
+                                        echo '<td>' . $row['fecha'] . '</td>';
+                                        echo '<td>' . $row['nombreProducto'] . '</td>';
+                                        echo '<td>' . $row['tamaño'] . '</td>';
+                                        echo '<td>' . $row['medida'] . '</td>';
+                                        echo '<td>' . $row['cantidad'] . '</td>';
+                                        echo '<td>' . $row['estado'] . '</td>';
+                                        echo '<td>' . $row['Descripcion'] . '</td>';
+                                        echo '</tr>';
                                     }
-                                } else {
-                                    echo "<tr><td colspan='7'>No se encontraron productos.</td></tr>";
-                            }
-                                ?>
+                                    ?>
                             </tbody>
                         </table>
+                    </div>
+                </div>
+            </div>
+            <div class="modal fade" id="cambiarEstadoModal" tabindex="-1" role="dialog" aria-labelledby="cambiarEstadoModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="cambiarEstadoModalLabel">Pedido Sucursal</h5>
+                        </div>
+                        <div class="modal-body">
+                            <!-- Agrega un formulario dentro del modal -->
+                            <form id="cambiarEstadoForm">
+                                <div class="form-group">
+                                    <label for="sucursalSelect">Pedido Sucursal:</label>
+                                    <select class="form-control" id="sucursalSelect">
+                                        <option value="Eva Peron">Eva Peron</option>
+                                        <option value="Nestor Kirchner">Nestor Kirchner</option>
+                                        <!-- Agrega más opciones si es necesario -->
+                                    </select>
+                                    
+                                </div>
+                                <div class="form-group">
+                                    <label for="estadoSelect">Estado:</label>
+                                    <select class="form-control" id="estadoSelect">
+                                        <option value="aprobado">Aprobado</option>
+                                        <option value="despachado">Despachado</option>
+                                        <!-- Agrega más opciones si es necesario -->
+                                    </select>
+                                    
+                                </div>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="cerrarModal()">Cerrar</button>
+                            <button type="button" class="btn btn-primary" id="btnCambiarEstadoModal" onclick="cambiarEstado()">Aceptar</button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -150,36 +206,170 @@ $idEmpleado= $_SESSION['idEmpleado'];
     </div>
     <script>
         document.addEventListener("DOMContentLoaded", function() {
-            // Inicializar la tabla DataTable
-            var tableSucursal = $('#tablePedido').DataTable({
-                select: {
-                    style: 'single'
-                },
-                searching: true,
-                lengthChange: true,
-                ordering: false ,
-                info: false,
-                language: {
-                    search: "",
-                    searchPlaceholder: "Filtrar Productos",
-                    lengthMenu: "Mostrar _MENU_ registros",
-                    zeroRecords: "No se encontraron resultados",
-                    info: "Mostrando _START_ a _END_ de _TOTAL_ registros",
-                    infoEmpty: "Mostrando 0 a 0 de 0 registros",
-                    infoFiltered: "(filtrado de _MAX_ registros en total)"
-                }
-            });
+        var tablePedido = document.getElementById("tablePedido");
+        var btnCambiarEstado = document.getElementById("btnAbrirModal");
+        var btnComprobante = document.getElementById("btnGenerarPDF");
 
-            // Capturar el evento de cambio del select y aplicar el filtro a la tabla
-            $("#filtroSucursal").on("change", function() {
-                var filtro = $(this).val();
-                tablePedido.column(2).search(filtro).draw();
-            });
+        // Verificar si la tabla tiene filas de datos (excluyendo la fila del encabezado)
+            if (tablePedido.rows.length <= 1) { // Si la tabla está vacía o solo contiene el encabezado
+                btnCambiarEstado.disabled = true;
+                btnComprobante.disabled = true;
+            }
+        });
+        $(document).ready(function () {
+        var tablePedido = $('#tablePedido').DataTable({
+            select: {
+                style: 'single'
+            },
+            searching: true,
+            lengthChange: true,
+            ordering: false,
+            info: false,
+            language: {
+                search: "",
+                searchPlaceholder: "Filtrar Productos",
+                lengthMenu: "Mostrar _MENU_ registros",
+                zeroRecords: "No tienes pedidos por preparar",
+                info: "Mostrando _START_ a _END_ de _TOTAL_ registros",
+                infoEmpty: "Mostrando 0 a 0 de 0 registros",
+                infoFiltered: "(filtrado de _MAX_ registros en total)"
+            }
         });
 
+        // Capturar el evento de cambio del select de sucursal y aplicar el filtro a la tabla
+        $("#filtroSucursal").on("change", function () {
+            var filtroSucursal = $(this).val();
+            tablePedido.column(7).search(filtroSucursal).draw();
+        });
 
+        // Capturar el evento de cambio del select de descripción y aplicar el filtro a la tabla
+        $("#filtroDescripcion").on("change", function () {
+            var filtroDescripcion = $(this).val();
+            tablePedido.column(8).search(filtroDescripcion).draw();
+        });
+    });
+        
+        function cambiarEstado(){
+            const sucursalSeleccionada = sucursalSelect.value;
+            const nuevoEstado = estadoSelect.value;
 
-    </script>
+            console.log(sucursalSeleccionada);
+            console.log(nuevoEstado);
+
+            const data = {
+                sucursal: sucursalSeleccionada,
+                nuevoEstado: nuevoEstado
+            };
+
+            console.log(data);
+
+            // Convierte el objeto 'data' en una cadena JSON
+            const jsonData = JSON.stringify(data);
+            console.log(jsonData);
+
+            // Realiza una solicitud fetch para actualizar el estado en la base de datos
+            fetch("../controladores/pedidoEncargado.php", {
+                method: "POST",
+                body: jsonData, // Utiliza la cadena JSON como cuerpo de la solicitud
+                headers: {
+                    'Content-Type':'application/json' // Especifica el tipo de contenido como JSON
+                }
+            })
+            .then(response => {
+                    console.log(response);
+                    return response.json();
+                }) // Parsea la respuesta JSON
+            .then(data => {
+                // Cierra el modal
+                console.log(data);
+                $("#cambiarEstadoModal").modal("hide");
+
+                // Recarga la tabla PedidosSucursales para reflejar los cambios
+                $("#tablePedido").DataTable().ajax.reload();
+            })
+            .catch(error => {
+                console.error(response);
+            });
+            if (fetch()){
+                Swal.fire({
+                        position: 'top-end',
+                        icon: 'success',
+                        title: 'Se ha actualizado el estado',
+                        showConfirmButton: false,
+                        timer: 1500,
+                        background: false, // Desactiva el fondo oscurecido
+                        backdrop: false,
+                        customClass: {
+                            container: 'custom-container-class',
+                            popup: 'custom-popup-class', // Clase personalizada para ajustar el tamaño de la alerta
+                            title: 'custom-title-class', // Clase personalizada para ajustar el tamaño del título
+                            icon: 'custom-icon-class',
+                        },
+                        })
+            }
+            cerrarModal()
+        }
+        
+    function cerrarModal() {
+        $('#cambiarEstadoModal').modal('hide');
+    }
+    $(document).ready(function() {
+        // Manejar el clic en el botón para abrir el modal
+        $("#btnAbrirModal").click(function() {
+            $("#cambiarEstadoModal").modal("show"); // Mostrar el modal
+        });
+    })
+    document.getElementById('btnGenerarPDF').addEventListener('click', function () {
+    // Obtener la referencia a la tabla
+    var table = document.getElementById('tablePedido');
+
+    // Obtener el contenido de las celdas de la tabla y los títulos de las columnas
+    var tableData = [];
+    var tableHeaders = [];
+    
+    // Obtener los títulos de las columnas desde la primera fila (thead)
+    var headerRow = table.rows[0];
+    for (var i = 0; i < headerRow.cells.length; i++) {
+        tableHeaders.push(headerRow.cells[i].textContent);
+    }
+
+    // Recorrer las filas de datos (tbody) y obtener el contenido de las celdas
+    for (var i = 1; i < table.rows.length; i++) {
+        var rowData = [];
+        var row = table.rows[i];
+        for (var j = 0; j < row.cells.length; j++) {
+            rowData.push(row.cells[j].textContent);
+        }
+        tableData.push(rowData);
+    }
+
+    // Definir la estructura del documento PDF
+    var docDefinition = {
+        content: [
+            { text: 'Tabla de Pedidos', style: 'header' },
+            {
+                table: {
+                    headerRows: 1,
+                    widths: 'auto',
+                    body: [tableHeaders].concat(tableData)
+                },
+                layout: 'lightHorizontalLines'
+            }
+        ],
+        styles: {
+            header: {
+                fontSize: 18,
+                bold: true,
+                alignment: 'center',
+                margin: [0, 10]
+            }
+        }
+    };
+
+    // Genera el PDF
+    pdfMake.createPdf(docDefinition).open();
+});
+</script>
     <style>
       /* Estilo CSS para la clase personalizada de la alerta */
       .custom-popup-class {
