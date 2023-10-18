@@ -277,6 +277,7 @@ session_start();
             
             fetch('../controladores/funcionesHome.php?action=obtenerProductosMasVendidos') 
             .then(response => {
+                console.log(response);
                 if (!response.ok) {
                     throw new Error("Error en la solicitud al servidor");
                 }
@@ -289,6 +290,7 @@ session_start();
                 let nombresProductos = data.map(item => item.NombreProducto);
                 let cantidadesVendidas = data.map(item => item.CantidadVendida);
 
+                console.log(nombresProductos);
 
                 // Función para abreviar un nombre
                 function abreviarNombre(nombre) {
@@ -365,6 +367,9 @@ session_start();
                                         let cantidad = cantidadesVendidas[context.dataIndex];
                                         return label + ': ' + cantidad + ' unidades vendidas';
                                     },
+                                    title: function (context) {
+                                        return ''; // Esto hace que el título esté vacío
+                                    },
                                 },
                             },
                         },
@@ -375,6 +380,7 @@ session_start();
             })
             .catch(error => {
                 console.error("Ocurrió un error:", error);
+                console.log("errorr");
             });
         }
 
@@ -428,7 +434,11 @@ session_start();
                 options: {
                     scales: {
                         y: {
-                            beginAtZero: true
+                            beginAtZero: true,
+                            // Configura el prefijo "$" para el eje Y
+                            callback: function (value, index, values) {
+                                return '$' + value;
+                            }
                         },
                         x: {
                             ticks: {
@@ -445,10 +455,21 @@ session_start();
                                 boxWidth: 20,
                                 fontColor: 'orange'
                             }
-                        }
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function (context) {
+                                    // Agrega el signo de "$" al valor de ganancia en el tooltip
+                                    let label = context.dataset.label || '';
+                                    let value = context.parsed.y || 0;
+                                    return label + ': $' + value.toFixed(2);
+                                },
+                            },
+                        },
                     },
                 }
             });
+
 
 
 
@@ -475,7 +496,6 @@ session_start();
             })
             .then(datos => {
                 // Procesar los datos recibidos del servidor y actualizar el gráfico
-                console.log(datos, "mes")
                 actualizarGraficoTortaPorMes(datos);
                 
             })
@@ -487,9 +507,7 @@ session_start();
         }
 
         function actualizarGraficoTortaPorMes(datos) {
-            
             var graficoGananciasPorSucursal = document.getElementById("totalRecaudadoPorSucursal").getContext("2d");
-
 
             let total = 0;
             // Recorre los datos y suma los valores de TotalRecaudado
@@ -499,6 +517,12 @@ session_start();
                 }
             });
 
+            // Verifica si hay datos de ventas
+            if (total === 0) {
+                // Si el total es igual a cero, significa que no hay ventas.
+                document.querySelector(".grafico-containerTorta").textContent = "No se han realizado ventas en el mes actual";
+                return; // Sal del proceso
+            }
 
             // Calcula los porcentajes y crea etiquetas personalizadas con el total y el porcentaje
             var etiquetas = datos.map(dato => {
@@ -525,7 +549,6 @@ session_start();
                         hoverOffset: 4
                     }]
                 }
-                
             });
 
             // Actualiza el gráfico existente con los nuevos datos
@@ -550,7 +573,6 @@ session_start();
             })
             .then(datos => {
                 // Procesar los datos recibidos del servidor y actualizar el gráfico
-                console.log(datos, "anio")
                 actualizarGraficoTortaAnual(datos)
             })
             .catch(error => {

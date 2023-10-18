@@ -1,9 +1,7 @@
 <?php 
 include '../bd/conexion.php'; // Incluye el archivo de conexión
-
 if (isset($_GET['action'])) {
     $action = $_GET['action'];
-
     switch ($action) {
         case 'listar':
             // Lógica para listar proveedores
@@ -41,12 +39,10 @@ if (isset($_GET['action'])) {
     // No se proporcionó ninguna acción válida en la solicitud
     echo json_encode(array("message" => "Acción no válida"));
 }
-
 function listarProveedores($conn) {
     // Realiza tu consulta SQL para obtener la lista de proveedores
     $sql = "SELECT * FROM proveedores";
     $result = $conn->query($sql);
-
     if ($result->num_rows > 0) {
         $proveedores = array();
         while ($row = $result->fetch_assoc()) {
@@ -55,10 +51,8 @@ function listarProveedores($conn) {
         }
         // Genera una respuesta JSON válida utilizando json_encode()
         $response = json_encode($proveedores);
-
         // Configura las cabeceras para indicar que se envía JSON
         header("Content-Type: application/json");
-
         // Envía la respuesta JSON
         echo $response;
     } else {
@@ -68,15 +62,11 @@ function listarProveedores($conn) {
         echo $response;
     }
 }
-
 function agregarProveedores($conn) {
-
     // Obtiene el cuerpo de la solicitud
     $data = file_get_contents("php://input");
-
     // Decodifica los datos JSON en un array asociativo
     $datosProveedor = json_decode($data, true);
-
     // Verifica si se pudo decodificar correctamente
     if ($datosProveedor === null) {
         // Hubo un error al decodificar los datos JSON
@@ -134,12 +124,9 @@ function agregarProveedores($conn) {
     // Envía la respuesta como JSON
     header("Content-Type: application/json");
     echo json_encode($response);
-
 }
-
 function eliminarProveedores($conn) {
     $data = file_get_contents("php://input");
-
     // Decodifica los datos JSON en un array asociativo
     $datosProveedor = json_decode($data, true);
 
@@ -151,9 +138,7 @@ function eliminarProveedores($conn) {
     $sql = "DELETE FROM proveedores WHERE idProveedores = ?";
     $stmt = $conn->prepare($sql);
     $stmt->bind_param("i", $idProveedor);
-
     $response = array();
-
     if ($stmt->execute()) {
         // Eliminación exitosa
         $response = array(
@@ -182,7 +167,6 @@ function eliminarProveedores($conn) {
     echo json_encode($response);
     
 }
-
 function obtenerProveedor($conn) {
     // Verifica si se proporcionó un ID válido en la solicitud
     if (!isset($_GET['id']) || !is_numeric($_GET['id'])) {
@@ -230,14 +214,11 @@ function obtenerProveedor($conn) {
         echo $response;
     }
 }
-
 function editarProveedor($conn){
     // Obtiene el cuerpo de la solicitud
     $data = file_get_contents("php://input");
-
     // Decodifica los datos JSON en un array asociativo
     $datosProveedor = json_decode($data, true);
-
     // Verifica si se pudo decodificar correctamente
     if ($datosProveedor === null) {
         // Hubo un error al decodificar los datos JSON
@@ -309,21 +290,21 @@ function cuitExiste($conn) {
         $sql = "SELECT Cuit FROM proveedores WHERE Cuit = ?";
         $stmt = $conn->prepare($sql);
         $stmt->bind_param("s", $cuit);
-    
+
         if (!$stmt->execute()) {
             $response = array(
                 "success" => false,
                 "message" => "Error al hacer la consulta"
             ); // Hubo un error al ejecutar la consulta
         }
-    
+
         $stmt->store_result();
-    
+
         if ($stmt->num_rows > 0) {
             $stmt->fetch();
             $stmt->close();
             $response = true; // El código existe en la base de datos
-            
+
         } else {
             $stmt->fetch();
             $stmt->close();
@@ -352,21 +333,21 @@ function emailExiste($conn) {
         $sql = "SELECT Email FROM proveedores WHERE Email = ?";
         $stmt = $conn->prepare($sql);
         $stmt->bind_param("s", $email);
-    
+
         if (!$stmt->execute()) {
             $response = array(
                 "success" => false,
                 "message" => "Error al hacer la consulta"
             ); // Hubo un error al ejecutar la consulta
         }
-    
+
         $stmt->store_result();
-    
+
         if ($stmt->num_rows > 0) {
             $stmt->fetch();
             $stmt->close();
             $response = true; // El código existe en la base de datos
-            
+
         } else {
             $stmt->fetch();
             $stmt->close();
