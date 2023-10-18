@@ -21,7 +21,12 @@ if (isset($_GET['action'])) {
         case 'totalRecaudadoPorSucursal':
             // Lógica para listar proveedores
             totalRecaudadoPorSucursal($conn); // Pasa la conexión como parámetro
-            break;            
+            break;    
+            
+        case 'actualizarGraficoTortaAnual':
+            // Lógica para listar proveedores
+            actualizarGraficoTortaAnual($conn); // Pasa la conexión como parámetro
+            break;   
         default:
             // Acción no válida
             echo json_encode(array("message" => "Acción no válida"));
@@ -66,42 +71,53 @@ function obtenerCantidadProductos($conn) {
 function obtenerProductosMasVendidos($conn) {
     try {
         // Realiza la consulta SQL para obtener los 10 productos más vendidos
-        $sql = "SELECT P.Nombre AS NombreProducto, SUM(1) AS CantidadVendida
-                FROM Ventas AS V
-                JOIN Productos AS P ON V.idProductos = P.idProductos
-                GROUP BY P.Nombre
-                ORDER BY CantidadVendida DESC
-                LIMIT 10";
+        $sql = "SELECT
+            P.Nombre AS NombreProducto,
+            CAST(SUM(V.cantidad) AS SIGNED) AS CantidadVendida
+        FROM
+            ventas V
+        INNER JOIN
+            productos P ON V.idProductos = P.idProductos
+        GROUP BY
+            P.idProductos, P.Nombre
+        ORDER BY
+            CantidadVendida DESC
+        LIMIT
+            7;";
         $stmt = $conn->prepare($sql);
-
+    
         if (!$stmt->execute()) {
             throw new Exception("Error al ejecutar la consulta");
         }
-
+    
         $result = $stmt->get_result();
         $productosMasVendidos = array();
-
+    
         while ($row = $result->fetch_assoc()) {
             // Almacena cada producto más vendido en un arreglo
             $productosMasVendidos[] = $row;
         }
-
-        // Devuelve la respuesta en formato JSON
+    
+        // Devuelve la respuesta en formato JSON con un código de estado 200 (OK)
         header("Content-Type: application/json");
         echo json_encode($productosMasVendidos);
     } catch (Exception $e) {
-        // Maneja el error, registra información de error si es necesario
-        // Devuelve una respuesta HTTP con un código de estado de error
-        http_response_code(500); // Código de estado para error interno del servidor
+        // Maneja el error y devuelve una respuesta JSON con un código de estado 500 (Error interno del servidor)
+        http_response_code(500);
         echo json_encode(array("error" => $e->getMessage()));
     }
+    
+
+        // $productosMasVendidos = "sadasd";
+        // header("Content-Type: application/json");
+        // echo json_encode($productosMasVendidos);
 }
 
 
 function ObtenerGananciasPorMeses($conn) {
     try {
         // Realiza la consulta SQL para obtener los 10 productos más vendidos
-        $sql = "SELECT
+        $sql = " SELECT
         Anio,
         CASE
             WHEN Mes = 1 THEN 'Enero'
@@ -125,7 +141,7 @@ function ObtenerGananciasPorMeses($conn) {
             SUM(df.Total) AS TotalRecaudado
         FROM Ventas AS v
         INNER JOIN DetalleFactura AS df ON v.idDetalleFactura = df.idDetalleFactura
-        WHERE Fecha >= DATE_SUB(CURRENT_DATE, INTERVAL 5 MONTH) -- Filtra los últimos 5 meses
+        WHERE Fecha >= DATE_SUB(CURRENT_DATE, INTERVAL 4 MONTH) 
         GROUP BY Anio, Mes
     ) AS Subconsulta
     ORDER BY Anio DESC, Mes DESC;";
@@ -196,6 +212,47 @@ function totalRecaudadoPorSucursal($conn) {
         echo json_encode(array("error" => $e->getMessage()));
     }
 
+}
+
+function actualizarGraficoTortaAnual($conn) {
+    try {
+        // Realiza la consulta SQL para obtener el total recaudado por sucursal en el mes actual
+        $sql = "SELECT
+        s.Descripcion AS Sucursal,
+        SUM(d.Total) AS TotalRecaudado
+    FROM
+        Ventas v
+    INNER JOIN
+        Sucursales s ON v.idSucursales = s.idSucursales
+    INNER JOIN
+        DetalleFactura d ON v.idDetalleFactura = d.idDetalleFactura
+    WHERE
+        YEAR(v.Fecha) = YEAR(CURDATE())  -- Obtener ventas del año actual
+    GROUP BY
+        s.Descripcion, YEAR(v.Fecha);";
+        $stmt = $conn->prepare($sql);
+
+        if (!$stmt->execute()) {
+            throw new Exception("Error al ejecutar la consulta");
+        }
+
+        $result = $stmt->get_result();
+        $gananciasPorSucursal = array();
+
+        while ($row = $result->fetch_assoc()) {
+            // Almacena cada resultado en un arreglo
+            $gananciasPorSucursal[] = $row;
+        }
+
+        // Devuelve la respuesta en formato JSON
+        header("Content-Type: application/json");
+        echo json_encode($gananciasPorSucursal);
+    } catch (Exception $e) {
+        // Maneja el error, registra información de error si es necesario
+        // Devuelve una respuesta HTTP con un código de estado de error
+        http_response_code(500); // Código de estado para error interno del servidor
+        echo json_encode(array("error" => $e->getMessage()));
+    }
 }
 
 

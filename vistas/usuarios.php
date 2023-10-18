@@ -262,11 +262,11 @@ session_start();
                 language: {
                     search: "",
                     searchPlaceholder: "Filtrar Nombre",
-                    lengthMenu: "Mostrar _MENU_ registros",
+                    lengthMenu: "Mostrar MENU registros",
                     zeroRecords: "No se encontraron resultados",
-                    info: "Mostrando _START_ a _END_ de _TOTAL_ registros",
+                    info: "Mostrando START a END de TOTAL registros",
                     infoEmpty: "Mostrando 0 a 0 de 0 registros",
-                    infoFiltered: "(filtrado de _MAX_ registros en total)"
+                    infoFiltered: "(filtrado de MAX registros en total)"
                 }
             });
 

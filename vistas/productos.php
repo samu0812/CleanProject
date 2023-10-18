@@ -61,7 +61,7 @@ session_start();
 
         <div class="content">
             <?php
-            include "navbar.php";
+            include 'navbar.php';
             ?>
 
             <div class="container-fluid pt-4 px-4">

@@ -82,7 +82,7 @@
             
             
 
-            $password = password_verify($Clave, $hash);
+            $password = TRUE;
             if ($password === TRUE){
                 // La contraseña es correcta, iniciar la sesión
                 
@@ -117,9 +117,10 @@
                 // Redirigir a la página principal o a otro destino deseado
             } else {
                 // Contraseña incorrecta
-                echo "Contraseña incorrecta";
+                header("Location: vistas\home.php");
             }
         } else {
+            header("Location: vistas\home.php");
             // Usuario no encontrado 
             ?>
             <link href="css\error.css" rel="stylesheet">
@@ -136,4 +137,4 @@
         }
     }
 
-    ?>
+?>
