@@ -50,7 +50,7 @@ session_start();
 
         <!-- Sidebar Start -->
         <?php
-        include "sidebar.php";
+            include "sidebar.php";
         ?>
         <!-- Sidebar End -->
 

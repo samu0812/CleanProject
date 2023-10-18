@@ -33,18 +33,6 @@
             }
         }
 
-        function obtnerRol($idPersona, $conn){
-            $consultaRol = "SELECT Descripcion from Rol WHERE idRol = $idPersona";
-            $resultadoRol = mysqli_query($conn, $consultaRol);
-        
-            if ($resultadoRol && mysqli_num_rows($resultadoRol) === 1) {
-                $filaRol = mysqli_fetch_assoc($resultadoRol);
-                return $filaRol['Descripcion'];
-            } else {
-                return "Rol no encontrado";
-            }
-        }
-
         function obtenerRolDescripcion($idPersona, $conn) {
             $sql = "SELECT e.IdRol, r.Descripcion
                     FROM Empleado e
@@ -112,7 +100,7 @@
                 $_SESSION['rol'] = $rol['Descripcion'];
 
                 $idRol = obtenerRolDescripcion($idPersona, $conn);
-                $_SESSION['idRol'] = $idRol['idRol'];
+                $_SESSION['idRol'] = $idRol['IdRol'];
 
                 $sucursal = obtenerSucursalDescripcion($idPersona, $conn);
                 $_SESSION['sucursal'] = $sucursal['Descripcion'];

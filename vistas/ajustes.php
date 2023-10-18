@@ -275,20 +275,19 @@ session_start();
                 });
             });
 // Agregar un evento 'click' a las filas de la tabla
-// Agregar un evento 'click' a las filas de datos en la tabla
-$(document).ready(function() {
-    $('#miDataTable').on('click', 'tbody tr', function() {
-        // Desmarca todas las filas previamente seleccionadas
-        $('#miDataTable tbody tr').removeClass('selected');
+        $(document).ready(function() {
+            $('#miDataTable').on('click', 'tbody tr', function() {
+                // Desmarca todas las filas previamente seleccionadas
+                $('#miDataTable tbody tr').removeClass('selected');
 
-        // Marca la fila clicada como seleccionada
-        $(this).addClass('selected');
+                // Marca la fila clicada como seleccionada
+                $(this).addClass('selected');
 
-        // Habilitar o deshabilitar los botones de editar y eliminar según si hay una fila seleccionada
-        var hayFilaSeleccionada = $('#miDataTable tbody tr.selected').length > 0;
-        $('#btnEditar, #btnEliminar').prop('disabled', !hayFilaSeleccionada);
-    });
-});
+                // Habilitar o deshabilitar los botones de editar y eliminar según si hay una fila seleccionada
+                var hayFilaSeleccionada = $('#miDataTable tbody tr.selected').length > 0;
+                $('#btnEditar, #btnEliminar').prop('disabled', !hayFilaSeleccionada);
+            });
+        });
             
 
         document.getElementById('seleccionarDato').addEventListener('change', function() {
@@ -416,6 +415,7 @@ switch (selectedOption) {
         for (var key in row) {
         newRow.innerHTML += '<td>' + row[key] + '</td>';
         }
+        newRow.innerHTML += '<td></td>'
         tableBody.appendChild(newRow);
     });
     },

@@ -101,7 +101,6 @@ if ($result->num_rows > 0) {
                     <div class="col-md-9">
 
                         <div class="row">
-
                         <div class="col-md-12 mb-3">
                             <div class="form-group mb-2">
                                 <label class="col-form-label" for="inputBusqueda">
@@ -109,13 +108,13 @@ if ($result->num_rows > 0) {
                                     <span class="small">Productos</span>
                                 </label>
                                 <div class="row">
+                                <div class="col-md-6">
+                                        <input type="text" class="form-control form-control-sm" id="inputBusqueda"
+                                            placeholder="Busqueda Manual">
+                                    </div>
                                     <div class="col-md-6">
                                         <input type="text" class="form-control form-control-sm" id="inputBarra"
                                             placeholder="Ingrese el código de barras">
-                                    </div>
-                                    <div class="col-md-6">
-                                        <input type="text" class="form-control form-control-sm" id="inputBusqueda"
-                                            placeholder="Busqueda Manual">
                                     </div>
                                 </div>
                                 <!-- Agrega un contenedor para las sugerencias -->
@@ -1305,7 +1304,8 @@ document.querySelectorAll('.comprobante-btn').forEach(button => {
         /* Estilos para el segundo input */
 #inputBusqueda {
     /* Estilos específicos para el segundo input, por ejemplo, el ancho y otros estilos */
-    width: 100%;
+    width: 120%;
+
 }
 
 /* Estilos para el elemento de autocompletado */
@@ -1317,7 +1317,11 @@ document.querySelectorAll('.comprobante-btn').forEach(button => {
     left: 0;
     box-sizing: border-box;
 }
+#inputBarra {
+    width:55%; /* Ajusta el valor según tus necesidades */
+    margin-left: 80px;
 
+  }
         .autocomplete-suggestions {
             position: absolute;
             z-index: 9999;

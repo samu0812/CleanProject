@@ -2,6 +2,8 @@
 include '../bd/conexion.php';
 
 $response = array();
+$sucursalConectada = isset($_SESSION['idSucursales']) ? $_SESSION['idSucursales'] : '';
+$rolConectado = isset($_SESSION['idRol']) ? $_SESSION['idRol'] : '';
 
 if (isset($_POST['id']) && isset($_POST['opcion'])) {
     $id = $_POST['id'];
@@ -12,23 +14,30 @@ if (isset($_POST['id']) && isset($_POST['opcion'])) {
 
     switch ($opcion) {
         case 'rol':
-            if($id != 1){
-            $query = "DELETE FROM rol WHERE idRol = $id";
-            break;
-        }else{
-            $response['success'] = false;
-        };
+            if($id === 1){
+                $response['success'] = false;
+            }
+            if($id === $rolConectado){
+                $response['success'] = false;
+            }
+            else{
+                $query = "DELETE FROM rol WHERE idRol = $id";
+                break;
+            };
         case 'sucursal':
-            if($id != 1){
-            $query = "DELETE FROM sucursales WHERE idSucursales = $id";
-            break;
+            if($id === 1){
+                $response['success'] = false;
+
+            if ($id === $sucursalConectada){
+                $response['success'] = false;
+            }
             }else{
-                $response['success'] = false;  
+                $query = "DELETE FROM rol WHERE idRol = $id";
+                break;
             };
         case 'tipoproducto':
             $query = "DELETE FROM tipoproducto WHERE idTipoProducto = $id";
             break;
-        // Agrega casos para otras opciones según tu estructura de base de datos
         case 'tipocategoria':
             $query = "DELETE FROM tipocategoria WHERE idTipocategoria = $id";
             break;

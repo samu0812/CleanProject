@@ -1,9 +1,7 @@
 <!-- Navbar Start -->
 <?php
-
 $nombrePersona = isset($_SESSION['nombrePersona']) ? $_SESSION['nombrePersona'] : '';
-
-
+$idRol = isset($_SESSION['idRol']) ? $_SESSION['idRol'] : '';
 ?>
 <nav class="navbar navbar-expand bg-light navbar-light sticky-top px-4 py-0">
     <a href="index.html" class="navbar-brand d-flex d-lg-none me-4">
@@ -20,7 +18,11 @@ $nombrePersona = isset($_SESSION['nombrePersona']) ? $_SESSION['nombrePersona'] 
                 <span class="d-none d-lg-inline-flex"><?php echo $nombrePersona?></span>
             </a>
             <div class="dropdown-menu dropdown-menu-end bg-light border-0 rounded-0 rounded-bottom m-0">
-                <a href="../vistas/ajustes.php" class="dropdown-item">Ajustes</a>
+            <?php
+                if ((int)$idRol === 1) {
+                    echo '<a href="../vistas/ajustes.php" class="dropdown-item">Ajustes</a>';
+                }
+            ?>
                 <a href="logout.php" class="dropdown-item">Cerrar Sesión</a>
             </div>
         </div>

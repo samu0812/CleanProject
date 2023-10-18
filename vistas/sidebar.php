@@ -1,8 +1,8 @@
 <!-- Sidebar Start -->
 <?php
-
-$nombrePersona = isset($_SESSION['nombrePersona']) ? $_SESSION['nombrePersona'] : '';
-$rol = isset($_SESSION['rol']) ? $_SESSION['rol'] : '';
+    $nombrePersona = isset($_SESSION['nombrePersona']) ? $_SESSION['nombrePersona'] : '';
+    $rol = isset($_SESSION['rol']) ? $_SESSION['rol'] : '';
+    $idRol = isset($_SESSION['idRol']) ? $_SESSION['idRol'] : '';
 ?>
 
 <!-- Sidebar Start -->
@@ -29,7 +29,12 @@ $rol = isset($_SESSION['rol']) ? $_SESSION['rol'] : '';
             <a href="pedidos.php" class="nav-item nav-link active mb-2"><i class="fab fa-elementor me-2"></i>Pedidos</a>
             <a href="ventas.php" class="nav-item nav-link active mb-2"><i class="fa fa-shopping-bag me-2"></i>Ventas</a>
             <a href="reportes.php" class="nav-item nav-link active mb-2"><i class="fas fa-paste me-2"></i>Reportes</a>
-            <a href="usuarios.php" class="nav-item nav-link active mb-2"><i class="fa fa-users me-2"></i>Admin Usuarios</a>
+            <?php
+                if ((int)$idRol === 1) {
+                    echo '<a href="usuarios.php" class="nav-item nav-link active mb-2"><i class="fa fa-users me-2"></i>Admin Usuarios</a>';
+                }
+            ?>
+
         </div>
         
     </nav>
