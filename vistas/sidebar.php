@@ -27,6 +27,7 @@
             <a href="productos.php" class="nav-item nav-link active mb-2"><i class="fas fa-warehouse me-2"></i>Productos</a>
             <a href="proveedores.php" class="nav-item nav-link active mb-2"><i class="fa fa-truck me-2"></i>Proveedores</a>
             <a href="pedidos.php" class="nav-item nav-link active mb-2"><i class="fab fa-elementor me-2"></i>Pedidos</a>
+            <a href="visualizarPedido.php" class="nav-item nav-link active mb-2"><i class="fab fa-elementor me-2"></i>Mis pedidos</a>
             <a href="ventas.php" class="nav-item nav-link active mb-2"><i class="fa fa-shopping-bag me-2"></i>Ventas</a>
             <a href="reportes.php" class="nav-item nav-link active mb-2"><i class="fas fa-paste me-2"></i>Reportes</a>
             <?php
