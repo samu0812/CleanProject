@@ -157,7 +157,6 @@
 }
 
 
-/*** Navbar ***/
 .sidebar .navbar .navbar-nav .nav-link {
     padding: 7px 20px;
     color: var(--dark);
@@ -526,9 +525,6 @@
 /********** cambios al color de la tabla**********/
 .bg-personalizado {
     background-color: white;
-    display: flex;
-    align-items: center; /* Centra verticalmente el contenido */
-    justify-content: center; /* Centra horizontalmente el contenido */
 }
 
 .table-responsive h5 {

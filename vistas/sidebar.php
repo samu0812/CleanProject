@@ -5,13 +5,13 @@
         </a>
 
         <div class="navbar-nav w-100 mt-2">
-            <a href="home.php" class="nav-item nav-link active mb-2"><i class="fa fa-home me-2"></i>Home</a>
-            <a href="productos.php" class="nav-item nav-link active mb-2"><i class="fas fa-warehouse me-2"></i>Productos</a>
-            <a href="proveedores.php" class="nav-item nav-link active mb-2"><i class="fa fa-truck me-2"></i>Proveedores</a>
-            <a href="ventas.php" class="nav-item nav-link active mb-2"><i class="fa fa-shopping-bag me-2"></i>Ventas</a>
-            <a href="facturacion.php" class="nav-item nav-link active mb-2"><i class="fab fa-elementor me-2"></i>Facturación</a>
-            <a href="reportes.php" class="nav-item nav-link active mb-2"><i class="fas fa-paste me-2"></i>Reportes</a>
-            <a href="usuarios.php" class="nav-item nav-link active mb-2"><i class="fa fa-users me-2"></i>Admin Usuarios</a>
+            <a href="home.php" class="nav-item nav-link active mb-3"><i class="fa fa-home me-2"></i>Home</a>
+            <a href="productos.php" class="nav-item nav-link active mb-3"><i class="fas fa-warehouse me-2"></i>Productos</a>
+            <a href="proveedores.php" class="nav-item nav-link active mb-3"><i class="fa fa-truck me-2"></i>Proveedores</a>
+            <a href="ventas.php" class="nav-item nav-link active mb-3"><i class="fa fa-shopping-bag me-2"></i>Ventas</a>
+            <a href="facturacion.php" class="nav-item nav-link active mb-3"><i class="fab fa-elementor me-2"></i>Facturación</a>
+            <a href="reportes.php" class="nav-item nav-link active mb-3"><i class="fas fa-paste me-2"></i>Reportes</a>
+            <a href="usuarios.php" class="nav-item nav-link active mb-3"><i class="fa fa-users me-2"></i>Admin Usuarios</a>
         </div>
     </nav>
 </div>

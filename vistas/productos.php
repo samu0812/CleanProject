@@ -114,6 +114,32 @@ session_start();
                 </div>
             </div>
 
+            <div class="container-fluid pt-4 px-4">
+                <div class="bg-personalizado text-center rounded p-4">
+                    <div class="table-responsive -xxl">
+                    <table id="tableSucursal" class="table display" style="width:100%">
+                        <h5>Stock por Sucursal</h5>
+                        <select class="form-select" id="selectSucursales" name="selectSucursales" style="width: 200px; height: 40px; display: inline;">
+                            <?php include '../controladores/obtener_sucursales.php'; ?>
+                        </select>
+                        <thead>
+                            <tr>
+                                <th>Código</th>
+                                <th>Nombre</th>
+                                <th>Tipo Prod</th>
+                                <th>Tamaño</th>
+                                <th>Medida</th>
+                                <th>Cantidad</th>
+                                <th>P. Venta</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tableSucursalBody">
+                        </tbody>
+                    </table>
+                    </div>
+                </div>
+            </div>
+
             <!-- Modal Agregar Producto-->
             <div class="modal fade" id="modalAgregarProducto" tabindex="-1" aria-labelledby="modalAgregarProducto" aria-hidden="true">
                 <div class="modal-dialog modal-dialog-centered modal-lg">
@@ -485,7 +511,35 @@ session_start();
                     }
                 });
                 $('#tableProd tbody td').css('color', 'black');
-            });            
+            });  
+            
+            $(document).ready(function() {
+                if (table2 !== undefined && $.fn.DataTable.isDataTable('#tableSucursal')) {
+                    table2.destroy();
+                }
+                table2 = $('#tableSucursal').DataTable({
+                    searching: true,
+                    lengthChange: true,
+                    ordering: true, // Habilita el ordenamiento de columnas
+                    order: [[0, 'asc']], // Ordena la primera columna de forma ascendente (puedes cambiar '0' al índice de la columna que desees)
+                    info: false,
+                    columnDefs: [
+                        { targets: '_all', className: 'text-center' }, // Centra el texto en todas las columnas
+                        { targets: -1, orderable: false }
+                    ],
+                    language: {
+                        search: "",
+                        searchPlaceholder: "Filtrar Productos",
+                        lengthMenu: "Mostrar _MENU_ registros",
+                        zeroRecords: "No se encontraron resultados",
+                        info: "Mostrando _START_ a _END_ de _TOTAL_ registros",
+                        infoEmpty: "Mostrando 0 a 0 de 0 registros",
+                        infoFiltered: "(filtrado de _MAX_ registros en total)"
+                    }
+                });
+                $('#tableSucursal tbody td').css('color', 'black');
+            }); 
+
             // Realiza una solicitud Fetch para obtener los datos de los proveedores desde tu servidor
             fetch('../controladores/nuevo_producto.php?action=listar')
                 .then(response => response.json())
@@ -498,33 +552,118 @@ session_start();
                     let Vacio = "";
                     // Recorre los datos de los proveedores y crea filas para cada uno
                     productos.forEach(producto => {
-                            const row = [
-                                producto.idProductos,
-                                producto.Nombre,
-                                producto.Proveedor,
-                                producto.TipoProd,
-                                producto.TipoCat,
-                                producto.Tamaño,
-                                producto.Medida,
-                                producto.CantidadTotal,
-                                producto.PrecioCosto,
-                                producto.Impuesto,
-                                producto.PrecioFinal,
-                                Vacio
-                            ];
+                        const row = [
+                            producto.idProductos,
+                            producto.Nombre,
+                            producto.Proveedor,
+                            producto.TipoProd,
+                            producto.TipoCat,
+                            producto.Tamaño,
+                            producto.Medida,
+                            producto.CantidadTotal,
+                            producto.PrecioCosto,
+                            producto.Impuesto,
+                            producto.PrecioFinal,
+                            Vacio
+                        ];
+                        if (producto.CantidadTotal > 30) {
+                            // Si es mayor a 30, agrega la fila normalmente
                             table1.rows.add([row]).draw();
-                            //table1.clear().rows.add(row).draw();
-                        });
+                        } else {
+                            // Si no es mayor a 30, agrega la fila con estilo rojo
+                            const redRow = row.map(item => `<span style="color: red">${item}</span>`);
+                            table1.rows.add([redRow]).draw();
+                        }
+                    });
+                })
+                .catch(error => {
+                    console.error('Error al obtener los productos: ', error);
+                });
+
+                var selectSucursales = document.getElementById('selectSucursales');
+                var selectedSucursal = parseInt(selectSucursales.value);
+                var datosProd = {selectedSucursal};
+                fetch("../controladores/nuevo_producto.php?action=listarporsucursal", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(datosProd)
+                })
+                .then(response => response.json())
+                .then(data => {
+                    //inicializo la tabla despues de cargar los datos
+                    const tbody = tableSucursal.querySelector("tbody");
+                    let productos = data;
+                    // Limpia el contenido actual de la tabla
+                    table2.clear().draw();
+                    // Recorre los datos de los proveedores y crea filas para cada uno
+                    productos.forEach(producto => {
+                        const row = [
+                            producto.idProductos,
+                            producto.Nombre,
+                            producto.TipoProd,
+                            producto.Tamaño,
+                            producto.Medida,
+                            producto.CantidadTotal,
+                            producto.PrecioFinal,
+                        ];
+                        if (producto.CantidadTotal > 30) {
+                            // Si es mayor a 30, agrega la fila normalmente
+                            table2.rows.add([row]).draw();
+                        } else {
+                            // Si no es mayor a 30, agrega la fila con estilo rojo
+                            const redRow = row.map(item => `<span style="color: red">${item}</span>`);
+                            table2.rows.add([redRow]).draw();
+                        }
+                    });
                 })
                 .catch(error => {
                     console.error('Error al obtener los productos: ', error);
                 });
         };
 
+        selectSucursales.addEventListener('change', function() {
+            // Obtener el valor seleccionado del select
+            var selectedSucursal = parseInt(selectSucursales.value);
+            var datosProd = { selectedSucursal };
+
+            // Realizar la petición fetch al servidor
+            fetch("../controladores/nuevo_producto.php?action=listarporsucursal", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(datosProd)
+            })
+            .then(response => response.json())
+            .then(data => {
+                //inicializo la tabla después de cargar los datos
+                const tbody = tableSucursal.querySelector("tbody");
+                let productos = data;
+                // Limpia el contenido actual de la tabla
+                table2.clear().draw();
+                // Recorre los datos de los productos y crea filas para cada uno
+                productos.forEach(producto => {
+                    const row = [
+                        producto.idProductos,
+                        producto.Nombre,
+                        producto.TipoProd,
+                        producto.Tamaño,
+                        producto.Medida,
+                        producto.CantidadTotal,
+                        producto.PrecioFinal,
+                    ];
+                    table2.rows.add([row]).draw();
+                });
+            })
+            .catch(error => {
+                console.error('Error al obtener los productos: ', error);
+            });
+        });
+
         function addProducto() {
             inputsActivos();
+            $('#sucursalField2').prop('disabled', false);
             const formularioProd = document.getElementById('formAgregarProducto');
             const datosFormularioProductos = new FormData(formularioProd);
+            console.log(datosFormularioProductos)
             let iva = $('#iva').prop('checked');
             let rentas = $('#rentas').prop('checked');
             let impuesto = 0;
@@ -581,7 +720,6 @@ session_start();
                 // El formulario es válido, procede con el envío de datos al servidor
                 // Crea un objeto con los datos a enviar
                 const datosProd = { codigo, nombre, proveedor, tipoProducto, tipoCategoria, tamaño, tipoTamaño, cantidad, precioBase, impuesto, porcentajeAumento, sucursal };
-
                 // Hacer el fetch al backend
                 fetch("../controladores/nuevo_producto.php?action=agregar", {
                     method: "POST",
@@ -722,7 +860,6 @@ session_start();
 
         function editProducto() {
             inputsActivos();
-
             const codigoActual = document.getElementById('codigo').value.trim();
             const codigoOriginal = id.trim(); // El código original del producto
             let codigoOriginalPhp = id;
@@ -991,7 +1128,9 @@ session_start();
         }
 
         const tableProd = document.getElementById("tableProd");
+        const tableSucursal = document.getElementById("tableSucursal");
         let table1;
+        let table2;
         let contextoActual = null;
         obtenerProductos()
         cargarCartasSucursales()
@@ -999,8 +1138,9 @@ session_start();
         $('#btnAgregarProd').click(function() {
             limpiarModal()
             contextoActual = "agregarProducto";
+            $('#sucursalField2').val(1);
+            $('#sucursalField2').prop('disabled', true);
             $('#labelAgregarStock').text('Agregar Producto');
-            $('#btnAgregarProd').prop('disabled', false);
         });
         $('#tableProd tbody').on('click', 'tr', function() {
             if ($(this).hasClass('selected')) {
@@ -1024,7 +1164,8 @@ session_start();
                     $('#labelAgregarStock').text('Agregar Cantidad de Stock');
                     inputsOcultos()
                     limpiarModal()
-                    $('#sucursalField2').val('');
+                    $('#sucursalField2').val(1);
+                    $('#sucursalField2').prop('disabled', true);
                     $('#modalAgregarProducto').modal('show');
                     var filaSeleccionada = table1.rows('.selected').data()[0];
                     let valoresActuales = {};
@@ -1123,7 +1264,6 @@ session_start();
                             $('#cantidad').prop('disabled', true);
                             // Mostrar el modal de edición
                             $('#modalEditarStock').modal('show');
-                            $('#btnAgregarProd').prop('disabled', false);
                         })
                         .catch(error => {
                             console.error('Error al obtener datos del producto: ', error);
@@ -1204,6 +1344,10 @@ session_start();
     </script>
 
     <style>
+        .text-center {
+            text-align: center;
+        }
+
         .icon {
             /* Define el tamaño deseado para los iconos */
             width: 55px;
@@ -1247,6 +1391,11 @@ session_start();
         .custom-icon-class {
             font-size: 8px; /* Ajusta el tamaño del icono según tus necesidades */
         }
+
+        #tableProd thead th {
+            text-align: center;
+        }
+
         #tableProd tr.selected {
             background-color: #e77a34 !important;
             color: #fff !important;
