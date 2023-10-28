@@ -11,7 +11,7 @@ session_start();
     <meta content="" name="keywords">
     <meta content="" name="description">
     <!-- Favicon -->
-    <link href="img/favicon.ico" rel="icon">
+    <link rel="shortcut icon" href="../img/cleaning2.ico">
 
     <!-- Google Web Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -108,6 +108,32 @@ session_start();
                             </tr>
                         </thead>
                         <tbody id="tableProdBody">
+                        </tbody>
+                    </table>
+                    </div>
+                </div>
+            </div>
+
+            <div class="container-fluid pt-4 px-4">
+                <div class="bg-personalizado text-center rounded p-4">
+                    <div class="table-responsive -xxl">
+                    <table id="tableSucursal" class="table display" style="width:100%">
+                        <h5>Stock por Sucursal</h5>
+                        <select class="form-select" id="selectSucursales" name="selectSucursales" style="width: 200px; height: 40px; display: inline;">
+                            <?php include '../controladores/obtener_sucursales.php'; ?>
+                        </select>
+                        <thead>
+                            <tr>
+                                <th>Código</th>
+                                <th>Nombre</th>
+                                <th>Tipo Prod</th>
+                                <th>Tamaño</th>
+                                <th>Medida</th>
+                                <th>Cantidad</th>
+                                <th>P. Venta</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tableSucursalBody">
                         </tbody>
                     </table>
                     </div>
@@ -268,34 +294,34 @@ session_start();
                         const carta = document.createElement('div');
                         carta.classList.add('col-lg-4'); // Agrega clase para columnas de Bootstrap
 
-                        if (sucursal.Descripcion == "Galpon"){
+                        if (sucursal.Descripcion == "Deposito") {
                             carta.innerHTML = `
-                            <div class="bg-personalizado rounded d-flex align-items-center justify-content-center p-4">
-                                <svg xmlns="http://www.w3.org/2000/svg" style="color: #e77a34" class="icon icon-tabler icon-tabler-forklift" width="55" height="55" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                                    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                                    <path d="M5 17m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0"></path>
-                                    <path d="M14 17m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0"></path>
-                                    <path d="M7 17l5 0"></path>
-                                    <path d="M3 17v-6h13v6"></path>
-                                    <path d="M5 11v-4h4"></path>
-                                    <path d="M9 11v-6h4l3 6"></path>
-                                    <path d="M22 15h-3v-10"></path>
-                                    <path d="M16 13l3 0"></path>
-                                </svg>
-                                <div class="text-center" style="margin-left: 30px">
-                                    <p class="mb-2">${sucursal.Descripcion}</p>
-                                    <h6 class="mb-0">${sucursal.CantidadProductos}</h6>
+                                <div class="bg-personalizado rounded d-flex align-items-center justify-content-center p-4" style="min-width: 100px;">
+                                    <svg xmlns="http://www.w3.org/2000/svg" style="color: #e77a34; width: 55px; height: 55px; min-width: 30px; min-height: 30px;" class="icon icon-tabler icon-tabler-forklift" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                        <path d="M5 17m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0"></path>
+                                        <path d="M14 17m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0"></path>
+                                        <path d="M7 17l5 0"></path>
+                                        <path d="M3 17v-6h13v6"></path>
+                                        <path d="M5 11v-4h4"></path>
+                                        <path d="M9 11v-6h4l3 6"></path>
+                                        <path d="M22 15h-3v-10"></path>
+                                        <path d="M16 13l3 0"></path>
+                                    </svg>
+                                    <div class="text-center" style="margin-left: 30px">
+                                        <p class="mb-2">${sucursal.Descripcion}</p>
+                                        <h6 class="mb-0">${sucursal.CantidadProductos}</h6>
+                                    </div>
                                 </div>
-                            </div>
-                        `;
+                            `;
                         } else {
                             carta.innerHTML = `
-                                <div class="bg-personalizado rounded d-flex align-items-center justify-content-center p-4">
-                                    <svg xmlns="http://www.w3.org/2000/svg" style="color: #e77a34" class="icon icon-tabler icon-tabler-building-warehouse" width="55" height="55" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                                    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                                    <path d="M3 21v-13l9 -4l9 4v13"></path>
-                                    <path d="M13 13h4v8h-10v-6h6"></path>
-                                    <path d="M13 21v-9a1 1 0 0 0 -1 -1h-2a1 1 0 0 0 -1 1v3"></path>
+                                <div class="bg-personalizado rounded d-flex align-items-center justify-content-center p-4" style="min-width: 100px;">
+                                    <svg xmlns="http://www.w3.org/2000/svg" style="color: #e77a34; width: 55px; height: 55px; min-width: 30px; min-height: 30px;" class="icon icon-tabler icon-tabler-building-warehouse" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                        <path d="M3 21v-13l9 -4l9 4v13"></path>
+                                        <path d="M13 13h4v8h-10v-6h6"></path>
+                                        <path d="M13 21v-9a1 1 0 0 0 -1 -1h-2a1 1 0 0 0 -1 1v3"></path>
                                     </svg>
                                     <div class="text-center" style="margin-left: 30px">
                                         <p class="mb-2">${sucursal.Descripcion}</p>
@@ -304,6 +330,8 @@ session_start();
                                 </div>
                             `;
                         }
+
+
                         sucursalesContainer.appendChild(carta);
                     });
                     obtenerProductos()
@@ -483,7 +511,35 @@ session_start();
                     }
                 });
                 $('#tableProd tbody td').css('color', 'black');
-            });            
+            });  
+            
+            $(document).ready(function() {
+                if (table2 !== undefined && $.fn.DataTable.isDataTable('#tableSucursal')) {
+                    table2.destroy();
+                }
+                table2 = $('#tableSucursal').DataTable({
+                    searching: true,
+                    lengthChange: true,
+                    ordering: true, // Habilita el ordenamiento de columnas
+                    order: [[0, 'asc']], // Ordena la primera columna de forma ascendente (puedes cambiar '0' al índice de la columna que desees)
+                    info: false,
+                    columnDefs: [
+                        { targets: '_all', className: 'text-center' }, // Centra el texto en todas las columnas
+                        { targets: -1, orderable: false }
+                    ],
+                    language: {
+                        search: "",
+                        searchPlaceholder: "Filtrar Productos",
+                        lengthMenu: "Mostrar _MENU_ registros",
+                        zeroRecords: "No se encontraron resultados",
+                        info: "Mostrando _START_ a _END_ de _TOTAL_ registros",
+                        infoEmpty: "Mostrando 0 a 0 de 0 registros",
+                        infoFiltered: "(filtrado de _MAX_ registros en total)"
+                    }
+                });
+                $('#tableSucursal tbody td').css('color', 'black');
+            }); 
+
             // Realiza una solicitud Fetch para obtener los datos de los proveedores desde tu servidor
             fetch('../controladores/nuevo_producto.php?action=listar')
                 .then(response => response.json())
@@ -496,33 +552,118 @@ session_start();
                     let Vacio = "";
                     // Recorre los datos de los proveedores y crea filas para cada uno
                     productos.forEach(producto => {
-                            const row = [
-                                producto.idProductos,
-                                producto.Nombre,
-                                producto.Proveedor,
-                                producto.TipoProd,
-                                producto.TipoCat,
-                                producto.Tamaño,
-                                producto.Medida,
-                                producto.CantidadTotal,
-                                producto.PrecioCosto,
-                                producto.Impuesto,
-                                producto.PrecioFinal,
-                                Vacio
-                            ];
+                        const row = [
+                            producto.idProductos,
+                            producto.Nombre,
+                            producto.Proveedor,
+                            producto.TipoProd,
+                            producto.TipoCat,
+                            producto.Tamaño,
+                            producto.Medida,
+                            producto.CantidadTotal,
+                            producto.PrecioCosto,
+                            producto.Impuesto,
+                            producto.PrecioFinal,
+                            Vacio
+                        ];
+                        if (producto.CantidadTotal > 30) {
+                            // Si es mayor a 30, agrega la fila normalmente
                             table1.rows.add([row]).draw();
-                            //table1.clear().rows.add(row).draw();
-                        });
+                        } else {
+                            // Si no es mayor a 30, agrega la fila con estilo rojo
+                            const redRow = row.map(item => `<span style="color: red">${item}</span>`);
+                            table1.rows.add([redRow]).draw();
+                        }
+                    });
+                })
+                .catch(error => {
+                    console.error('Error al obtener los productos: ', error);
+                });
+
+                var selectSucursales = document.getElementById('selectSucursales');
+                var selectedSucursal = parseInt(selectSucursales.value);
+                var datosProd = {selectedSucursal};
+                fetch("../controladores/nuevo_producto.php?action=listarporsucursal", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(datosProd)
+                })
+                .then(response => response.json())
+                .then(data => {
+                    //inicializo la tabla despues de cargar los datos
+                    const tbody = tableSucursal.querySelector("tbody");
+                    let productos = data;
+                    // Limpia el contenido actual de la tabla
+                    table2.clear().draw();
+                    // Recorre los datos de los proveedores y crea filas para cada uno
+                    productos.forEach(producto => {
+                        const row = [
+                            producto.idProductos,
+                            producto.Nombre,
+                            producto.TipoProd,
+                            producto.Tamaño,
+                            producto.Medida,
+                            producto.CantidadTotal,
+                            producto.PrecioFinal,
+                        ];
+                        if (producto.CantidadTotal > 30) {
+                            // Si es mayor a 30, agrega la fila normalmente
+                            table2.rows.add([row]).draw();
+                        } else {
+                            // Si no es mayor a 30, agrega la fila con estilo rojo
+                            const redRow = row.map(item => `<span style="color: red">${item}</span>`);
+                            table2.rows.add([redRow]).draw();
+                        }
+                    });
                 })
                 .catch(error => {
                     console.error('Error al obtener los productos: ', error);
                 });
         };
 
+        selectSucursales.addEventListener('change', function() {
+            // Obtener el valor seleccionado del select
+            var selectedSucursal = parseInt(selectSucursales.value);
+            var datosProd = { selectedSucursal };
+
+            // Realizar la petición fetch al servidor
+            fetch("../controladores/nuevo_producto.php?action=listarporsucursal", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(datosProd)
+            })
+            .then(response => response.json())
+            .then(data => {
+                //inicializo la tabla después de cargar los datos
+                const tbody = tableSucursal.querySelector("tbody");
+                let productos = data;
+                // Limpia el contenido actual de la tabla
+                table2.clear().draw();
+                // Recorre los datos de los productos y crea filas para cada uno
+                productos.forEach(producto => {
+                    const row = [
+                        producto.idProductos,
+                        producto.Nombre,
+                        producto.TipoProd,
+                        producto.Tamaño,
+                        producto.Medida,
+                        producto.CantidadTotal,
+                        producto.PrecioFinal,
+                    ];
+                    table2.rows.add([row]).draw();
+                });
+            })
+            .catch(error => {
+                console.error('Error al obtener los productos: ', error);
+            });
+        });
+
         function addProducto() {
             inputsActivos();
+            $('#sucursalField2').prop('disabled', false);
             const formularioProd = document.getElementById('formAgregarProducto');
             const datosFormularioProductos = new FormData(formularioProd);
+            console.log(datosFormularioProductos)
             let iva = $('#iva').prop('checked');
             let rentas = $('#rentas').prop('checked');
             let impuesto = 0;
@@ -577,62 +718,21 @@ session_start();
                 });
             } else {
                 // El formulario es válido, procede con el envío de datos al servidor
-
                 // Crea un objeto con los datos a enviar
                 const datosProd = { codigo, nombre, proveedor, tipoProducto, tipoCategoria, tamaño, tipoTamaño, cantidad, precioBase, impuesto, porcentajeAumento, sucursal };
-
                 // Hacer el fetch al backend
                 fetch("../controladores/nuevo_producto.php?action=agregar", {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify(datosProd)
                 })
-                    .then(response => response.json())
-                    .then(data => {
-                        if (!data.success) {
-                            Swal.fire({
-                                position: 'top-end',
-                                icon: 'error',
-                                title: 'Error, ' + data.message,
-                                showConfirmButton: false,
-                                timer: 2000,
-                                background: false,
-                                backdrop: false,
-                                customClass: {
-                                    container: 'custom-container-class',
-                                    popup: 'custom-popup-class',
-                                    title: 'custom-title-class',
-                                    icon: 'custom-icon-class',
-                                },
-                            });
-                        } else {
-                            Swal.fire({
-                                position: 'top-end',
-                                icon: 'success',
-                                title: 'Se ha añadido el producto correctamente',
-                                showConfirmButton: false,
-                                timer: 2000,
-                                background: false,
-                                backdrop: false,
-                                customClass: {
-                                    container: 'custom-container-class',
-                                    popup: 'custom-popup-class',
-                                    title: 'custom-title-class',
-                                    icon: 'custom-icon-class',
-                                }
-                            });
-                        }
-                        obtenerProductos();
-                        cargarCartasSucursales()
-                        btnOcultos("ocultos")
-                        $('#modalAgregarProducto').modal('hide');
-                        $('#btnAgregarProd').prop('disabled', false);
-                    })
-                    .catch(error => {
+                .then(response => response.json())
+                .then(data => {
+                    if (!data.success) {
                         Swal.fire({
                             position: 'top-end',
                             icon: 'error',
-                            title: 'Ocurrió un error inesperado',
+                            title: 'Error, ' + data.message,
                             showConfirmButton: false,
                             timer: 2000,
                             background: false,
@@ -644,12 +744,51 @@ session_start();
                                 icon: 'custom-icon-class',
                             },
                         });
-                    })
-                    .finally(() => {
-                        // Restablece el estado del botón "Guardar" después de un error
-                        $('#btnGuardar').prop('disabled', false);
-                        contextoActual = "agregarProducto";
+                    } else {
+                        Swal.fire({
+                            position: 'top-end',
+                            icon: 'success',
+                            title: 'Se ha añadido el producto correctamente',
+                            showConfirmButton: false,
+                            timer: 2000,
+                            background: false,
+                            backdrop: false,
+                            customClass: {
+                                container: 'custom-container-class',
+                                popup: 'custom-popup-class',
+                                title: 'custom-title-class',
+                                icon: 'custom-icon-class',
+                            }
+                        });
+                        obtenerProductos();
+                        cargarCartasSucursales()
+                        btnOcultos("ocultos")
+                        $('#modalAgregarProducto').modal('hide');
+                        $('#btnAgregarProd').prop('disabled', false);
+                    }
+                })
+                .catch(error => {
+                    Swal.fire({
+                        position: 'top-end',
+                        icon: 'error',
+                        title: 'Ocurrió un error inesperado',
+                        showConfirmButton: false,
+                        timer: 2000,
+                        background: false,
+                        backdrop: false,
+                        customClass: {
+                            container: 'custom-container-class',
+                            popup: 'custom-popup-class',
+                            title: 'custom-title-class',
+                            icon: 'custom-icon-class',
+                        },
                     });
+                })
+                .finally(() => {
+                    // Restablece el estado del botón "Guardar" después de un error
+                    $('#btnGuardar').prop('disabled', false);
+                    contextoActual = "agregarProducto";
+                });
             }
         }
 
@@ -721,7 +860,6 @@ session_start();
 
         function editProducto() {
             inputsActivos();
-
             const codigoActual = document.getElementById('codigo').value.trim();
             const codigoOriginal = id.trim(); // El código original del producto
             let codigoOriginalPhp = id;
@@ -990,7 +1128,9 @@ session_start();
         }
 
         const tableProd = document.getElementById("tableProd");
+        const tableSucursal = document.getElementById("tableSucursal");
         let table1;
+        let table2;
         let contextoActual = null;
         obtenerProductos()
         cargarCartasSucursales()
@@ -998,8 +1138,9 @@ session_start();
         $('#btnAgregarProd').click(function() {
             limpiarModal()
             contextoActual = "agregarProducto";
+            $('#sucursalField2').val(1);
+            $('#sucursalField2').prop('disabled', true);
             $('#labelAgregarStock').text('Agregar Producto');
-            $('#btnAgregarProd').prop('disabled', false);
         });
         $('#tableProd tbody').on('click', 'tr', function() {
             if ($(this).hasClass('selected')) {
@@ -1023,7 +1164,8 @@ session_start();
                     $('#labelAgregarStock').text('Agregar Cantidad de Stock');
                     inputsOcultos()
                     limpiarModal()
-                    $('#sucursalField2').val('');
+                    $('#sucursalField2').val(1);
+                    $('#sucursalField2').prop('disabled', true);
                     $('#modalAgregarProducto').modal('show');
                     var filaSeleccionada = table1.rows('.selected').data()[0];
                     let valoresActuales = {};
@@ -1122,7 +1264,6 @@ session_start();
                             $('#cantidad').prop('disabled', true);
                             // Mostrar el modal de edición
                             $('#modalEditarStock').modal('show');
-                            $('#btnAgregarProd').prop('disabled', false);
                         })
                         .catch(error => {
                             console.error('Error al obtener datos del producto: ', error);
@@ -1203,6 +1344,15 @@ session_start();
     </script>
 
     <style>
+        .text-center {
+            text-align: center;
+        }
+
+        .icon {
+            /* Define el tamaño deseado para los iconos */
+            width: 55px;
+            height: 55px;
+        }
         /* Estilo personalizado para los checkboxes */
         .custom-checkbox {
             padding-left: 0; /* Elimina el espacio a la izquierda del checkbox */
@@ -1241,6 +1391,11 @@ session_start();
         .custom-icon-class {
             font-size: 8px; /* Ajusta el tamaño del icono según tus necesidades */
         }
+
+        #tableProd thead th {
+            text-align: center;
+        }
+
         #tableProd tr.selected {
             background-color: #e77a34 !important;
             color: #fff !important;

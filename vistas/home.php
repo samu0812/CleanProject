@@ -9,7 +9,7 @@ session_start();
 <head>
     <meta charset="utf-8">
     <title>Clean</title>
-    <link rel="shortcut icon" href="../img/logoCleanIco.ico"> 
+    <link rel="shortcut icon" href="../img/cleaning2.ico"> 
     
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <meta content="" name="keywords">

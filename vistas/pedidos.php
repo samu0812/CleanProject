@@ -2,7 +2,7 @@
 include ('../bd/conexion.php');
 include ('../controladores/pedidoStock.php');
 
-$idPersona = $_SESSION['idPersona'];
+$idPersona = $_SESSION['usuario'];
 $idEmpleado= $_SESSION['idEmpleado'];
 $idSucursal = $_SESSION['idSucursales'];
 ?>

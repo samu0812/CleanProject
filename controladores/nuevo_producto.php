@@ -9,6 +9,10 @@ if (isset($_GET['action'])) {
             // Lógica para listar proveedores
             listarProductos($conn); // Pasa la conexión como parámetro
             break;
+        case 'listarporsucursal':
+            // Lógica para listar proveedores
+            listarProductosporSucursal($conn); // Pasa la conexión como parámetro
+            break;
         case 'listarcards':
             // Lógica para listar proveedores
             obtenerCantStockPorSucursal($conn); // Pasa la conexión como parámetro
@@ -137,6 +141,69 @@ function listarProductos($conn) {
         echo $response;
     }
 }
+
+function listarProductosporSucursal($conn) {
+    // Obtiene el cuerpo de la solicitud
+    $data = file_get_contents("php://input");
+    // Decodifica los datos JSON en un array asociativo
+    $datosProd = json_decode($data, true);
+
+    // Verifica si se pudo decodificar correctamente
+    if ($datosProd === null) {
+        // Hubo un error al decodificar los datos JSON
+        $response = array(
+            "success" => false,
+            "message" => "Error en los datos JSON recibidos"
+        );
+        http_response_code(400);  // Código de estado para solicitud incorrecta
+    } else {
+        try {
+            $idSucursal = $datosProd["selectedSucursal"];
+            $sql = "SELECT P.idProductos, P.Nombre, Pr.Nombre AS Proveedor, TP.Descripcion AS TipoProd, TC.Descripcion AS TipoCat, TT.Abreviatura AS Tamaño, P.Tamaño AS Medida, SUM(SS.Cantidad) AS CantidadTotal, P.PrecioCosto, SS.Impuestos AS Impuesto, SS.PrecioFinal
+            FROM Productos P
+            INNER JOIN Proveedores Pr ON P.idProveedores = Pr.idProveedores
+            INNER JOIN TipoProducto TP ON P.idTipoProducto = TP.idTipoProducto
+            INNER JOIN TipoCategoria TC ON P.idTipoCategoria = TC.idTipoCategoria
+            INNER JOIN TipoTamaño TT ON P.idTipoTamaño = TT.idTipoTamaño
+            INNER JOIN StockSucursales SS ON P.idProductos = SS.idProductos
+            WHERE SS.idSucursales = ?
+            GROUP BY P.idProductos, P.Nombre, Pr.Nombre, TP.Descripcion, TC.Descripcion, TT.Abreviatura, P.Tamaño, P.PrecioCosto, SS.Impuestos, SS.PrecioFinal;";
+            
+            // Uso de una consulta preparada para prevenir SQL injection
+            $stmt = $conn->prepare($sql);
+            $stmt->bind_param("i", $idSucursal);
+            $stmt->execute();
+            
+            // Obtiene el resultado de la consulta
+            $result = $stmt->get_result();
+
+            if ($result->num_rows > 0) {
+                $productos = array();
+                while ($row = $result->fetch_assoc()) {
+                    // Agrega cada fila de proveedor a un array
+                    $productos[] = $row;
+                }
+                $response = json_encode($productos);
+            } else {
+                $response = json_encode(array("message" => "No se encontraron productos"));
+            }
+            
+        } catch (Exception $e) {
+            // Maneja el error, registra información de error si es necesario
+            // Devuelve una respuesta HTTP con un código de estado de error
+            $response = json_encode(array("error" => $e->getMessage()));
+            http_response_code(500);  // Código de estado para error interno del servidor
+        }
+    }
+
+    // Configura las cabeceras para indicar que se envía JSON
+    header("Content-Type: application/json");
+
+    // Envía la respuesta JSON
+    echo $response;
+}
+
+
 function codigoExiste($conn, $codigo) {
     $sql = "SELECT idProductos FROM Productos WHERE idProductos = ?";
     $stmt = $conn->prepare($sql);
@@ -391,7 +458,7 @@ function agregarProductos($conn) {
             $cantidad = $datosProd["cantidad"];
             $precioBase = $datosProd["precioBase"];
             $porcentajeAumento = $datosProd["porcentajeAumento"];
-            $sucursal = $datosProd["sucursal"];
+            $sucursalID = intval($datosProd["sucursal"]);
             $impuesto = $datosProd["impuesto"]; // Si el valor de impuesto es 0, significa que no esta seleccionado ninguno, 
             // si es 1 son ambos impuestos, si es 2 o 3 varia entre iva y rentas.
             $precioFinal = 0;
@@ -407,7 +474,6 @@ function agregarProductos($conn) {
                 $tipoProductoID = obtenerTipoProductoID($conn, $tipoProducto);
                 $tipoCategoriaID = obtenerTipoCategoriaID($conn, $tipoCategoria);
                 $tipoTamañoID = obtenerTipoTamañoID($conn, $tipoTamaño);
-                $sucursalID = obtenerSucursalID($conn, $sucursal);
                 $porcentajeAumentoTotal = validarImpuesto($conn, $impuesto, $porcentajeAumento);
                 $precioFinal = precioFinal($conn, $precioBase, $porcentajeAumentoTotal);
         
@@ -761,11 +827,8 @@ function editarStock($conn) {
             $cantidad = $datosProd["cantidad"];
             $precioBase = $datosProd["precioBase"];
             $porcentajeAumento = $datosProd["porcentajeAumento"];
-            $sucursalNombre = $datosProd["sucursal"]; // Obtiene el nombre de la sucursal desde los datos JSON
+            $sucursalID = $datosProd["sucursal"]; 
             $precioFinal = precioFinal($conn, $precioBase, $porcentajeAumento);
-
-            // Consulta la base de datos para obtener el idSucursales correspondiente al nombre de la sucursal
-            $sucursalID = obtenerIdSucursal($conn, $sucursalNombre);
 
             if ($sucursalID !== false) {
                 // Verifica si el producto ya existe en la sucursal

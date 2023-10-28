@@ -157,7 +157,6 @@
 }
 
 
-/*** Navbar ***/
 .sidebar .navbar .navbar-nav .nav-link {
     padding: 7px 20px;
     color: var(--dark);
@@ -231,6 +230,7 @@
     justify-content: center;
     background: #FFFFFF;
     border-radius: 40px;
+    color: #e77a34;
 }
 
 .content .navbar .dropdown-toggle::after {
@@ -539,4 +539,12 @@
 table.dataTable>tbody>tr.selected>* {
     box-shadow: inset 0 0 0 9999px var(--dt-row-selected);
     color: var(--dt-row-selected-text);
+}
+
+.bg-personalizadoNavbar {
+    background-color: white;
+}
+
+.bg-personalizadoSidebar {
+    background-color: white;
 }
