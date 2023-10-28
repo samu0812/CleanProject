@@ -71,6 +71,17 @@
                 return "Rol no encontrado";
             }
         }
+        function obtenerIdPersona($idPersona,$conn){
+            $consultaId = "SELECT idPersona from persona WHERE idPersona = $idPersona";
+            $resultadoId = mysqli_query($conn, $consultaId);
+
+            if ($resultadoId && mysqli_num_rows($resultadoId) === 1) {
+                $filaId = mysqli_fetch_assoc($resultadoId);
+                return $filaId['idPersona'];
+            } else {
+                return "id no encontrado";
+        }
+        }
 
         
 
@@ -110,6 +121,9 @@
                 
                 $idEmpleado = obtnerIdEmpleado($idPersona, $conn);
                 $_SESSION['idEmpleado'] = $idEmpleado;
+
+                $idPersona = obtenerIdPersona($idPersona, $conn);
+                $_SESSION['idPersona']= $idPersona;
 
                 header("Location: vistas\home.php");
 
