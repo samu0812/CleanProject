@@ -114,7 +114,6 @@ function agregarUsuarios($conn) {
             $clave = $datosUsuarios["clave"];
             $hashedClave = password_hash($clave, PASSWORD_DEFAULT);
             $rolId = obtenerRol($conn, $rol);
-            $sucursalId = obtenerSurcusal($conn, $sucursal);
 
             // Realiza una consulta SQL para verificar si el email ya existe en la base de datos
             $sql = "SELECT COUNT(*) AS count FROM Persona WHERE Email = ?";
@@ -140,7 +139,7 @@ function agregarUsuarios($conn) {
                         $idPersona = mysqli_insert_id($conn);
                         $sqlEmpleado = "INSERT INTO Empleado (idSucursales, idPersona, idRol, Clave) VALUES (?, ?, ?, ?)";
                         $stmtEmpleado = $conn->prepare($sqlEmpleado);
-                        $stmtEmpleado->bind_param("iiis", $sucursalId, $idPersona, $rolId, $hashedClave);
+                        $stmtEmpleado->bind_param("iiis", $sucursal, $idPersona, $rolId, $hashedClave);
                         
                         if ($stmtEmpleado->execute()) {
                             $response = array(
@@ -292,7 +291,6 @@ function editarUsuarios($conn) {
             $clave = $datosUsuario["clave"];
             $hashedClave = password_hash($clave, PASSWORD_DEFAULT);
             $rolId = obtenerRol($conn, $rol);
-            $sucursalId = obtenerSurcusal($conn, $sucursal);
 
             $sqlUpdatePersona = "UPDATE Persona SET Nombre = ?, Email = ?, Telefono = ?, Direccion = ?, FechaNacimiento = ? WHERE idPersona = ?";
             $stmtUpdatePersona = $conn->prepare($sqlUpdatePersona);
@@ -302,7 +300,7 @@ function editarUsuarios($conn) {
                 // Actualización de Persona exitosa, ahora actualiza Empleado (si es necesario)
                 $sqlUpdateEmpleado = "UPDATE Empleado SET idSucursales = ?, idRol = ?, Clave = ? WHERE idPersona = ?";
                 $stmtUpdateEmpleado = $conn->prepare($sqlUpdateEmpleado);
-                $stmtUpdateEmpleado->bind_param("iisi", $sucursalId, $rolId, $hashedClave, $idPersona);
+                $stmtUpdateEmpleado->bind_param("iisi", $sucursal, $rolId, $hashedClave, $idPersona);
 
                 if ($stmtUpdateEmpleado->execute()) {
                     $response = array(
