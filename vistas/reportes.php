@@ -114,18 +114,39 @@ session_start();
                             </div>
                             
                             <div class="col-md-2 filter-group">
-                                <label for="filterProducto">Producto:</label>
+                                <label for="filterProducto" id="labelFiltroProducto">Producto:</label>
                                 <div>
                                     <button id="btnFiltrarProductos" class="btn btn-primary">Ver Productos</button>
                                 </div>
                             </div>
+
+                            <!-- Filtro por Vendedor -->
+                            <div class="col-md-2 filter-group">
+                                <label for="filterVendedor" id="labelFiltroVendedor">Vendedor:</label>
+                                <input type="text" id="filtroVendedor" class="form-control" placeholder="Buscar por vendedor">
+                            </div>
                               
                             <!-- Filtro por Sucursal -->
-                            <div class="col-md-3 filter-group" id="sucursalFilterGroup">
-                                <!-- Aquí se agregarán las casillas de verificación de sucursales -->
+                            <div class="col-md-2 filter-group" id="sucursalFilterGroup">
                                 <label for="filterSucursal">Sucursal:</label>
+                                <div id="sucursalCheckboxes" class="text-center">
+                                    <!-- Aquí se agregarán las casillas de verificación de sucursales uno debajo del otro. -->
+                                </div>
                             </div>
-                            <button type="button" class="btn btn-primary" data-bs-dismiss="modal" onclick="aplicarFiltros()">Aplicar Filtros</button>
+
+
+
+                            <div class="col-md-2 filter-group">
+                                <label for="filterSucursal" id="labelFiltroRangoPrecio">Rango de Precio:</label>
+                                <div class="d-flex align-items-center justify-content-center">
+                                    <input type="number" id="filtroPrecioMin" class="form-control form-control" placeholder="Mínimo">
+                                    <label for="">-</label>
+                                    <input type="number" id ="filtroPrecioMax" class="form-control form-control" placeholder="Máximo">
+                                </div>
+                            </div>
+
+
+                            <button type="button" class="btn btn-primary" id ="btnAplicarFiltros" data-bs-dismiss="modal" onclick="aplicarFiltros()">Aplicar Filtros</button>
                             <!-- Agrega más filtros según sea necesario -->
                         </div>
                     </div>
@@ -461,6 +482,81 @@ session_start();
             .form-check-label input {
                 margin-right: 5px;
             }
+
+            #sucursalCheckboxes {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            #sucursalCheckboxes .form-check {
+                display: flex;
+                align-items: center;
+            }
+
+            .form-check .form-check-input {
+                margin-right: 10px;
+            }
+            .divFiltroVendedor {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                height: 100%; /* Esto asegura que ocupe todo el espacio vertical */
+            }
+
+
+            #filtroVendedor {
+                width: 95%; /* Ajusta el ancho según tus necesidades */
+                padding: 0.25rem 0.5rem;
+                font-size: 1rem;
+                border: 1px solid #ccc;
+                border-radius: 0.25rem;
+                transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+            }
+
+            #filtroVendedor:focus {
+                outline: none;
+                border-color: #007bff;
+                box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+            }
+
+            #labelFiltroVendedor {
+                margin-bottom: 10px;
+            }
+
+            #labelFiltroProducto{
+                margin-bottom: 10px;
+            }
+
+            #filtroPrecioMin{
+                width: 80px; /* Ajusta el ancho según tus necesidades */
+                height: 30px; /* Ajusta la altura según tus necesidades */
+                margin: 0 5px; /* Espaciado entre los inputs */
+                padding: 5px; /* Espaciado interno del input */
+                font-size: 14px; /* Tamaño de fuente */
+                border-radius: 8%;
+            }
+            #filtroPrecioMax{
+                width: 80px; /* Ajusta el ancho según tus necesidades */
+                height: 30px; /* Ajusta la altura según tus necesidades */
+                margin: 0 5px; /* Espaciado entre los inputs */
+                padding: 5px; /* Espaciado interno del input */
+                font-size: 14px; /* Tamaño de fuente */
+                border-radius: 8%;
+            }
+
+            .custom-filter-div label {
+                margin: 0 5px; /* Aplicar espaciado al label dentro del div */
+            }
+
+            #labelFiltroRangoPrecio{
+                margin-bottom: 10px;
+            }
+
+            #btnAplicarFiltros {
+                margin-top: 10px;
+            }
+
     </style>
 
     <script>
@@ -839,12 +935,12 @@ session_start();
         }
 
         function agregarCasillasDeVerificacionSucursales(sucursales) {
-            limpiarCasillasDeVerificacionSucursales()
-            const contenedor = document.getElementById('sucursalFilterGroup');
+            limpiarCasillasDeVerificacionSucursales();
+            const contenedor = document.getElementById('sucursalCheckboxes');
 
             sucursales.forEach(sucursal => {
                 const div = document.createElement('div');
-                div.classList.add('form-check');
+                div.classList.add('form-check'); // Agrega la clase "form-check" para mantener el estilo del checkbox
 
                 const checkbox = document.createElement('input');
                 checkbox.type = 'checkbox';
@@ -856,23 +952,20 @@ session_start();
                 label.htmlFor = `checkbox-sucursal-${sucursal}`;
                 label.textContent = sucursal;
                 label.classList.add('form-check-label');
-
-                // Centra las casillas y los nombres de las sucursales
-                const centerDiv = document.createElement('div');
-                centerDiv.classList.add('text-center');
-
-                centerDiv.appendChild(checkbox);
-                centerDiv.appendChild(label);
-
-                div.appendChild(centerDiv);
+                div.appendChild(checkbox);
+                div.appendChild(label);
 
                 contenedor.appendChild(div);
             });
         }
 
+
+
+
         // --------------------------------------FIN---------------------------------------------------//
 
         function aplicarFiltros() {
+            const filtroVendedor = document.getElementById('filtroVendedor').value.toLowerCase(); // Obtener el valor del campo de búsqueda en minúsculas
             // Limpia los datos filtrados antes de aplicar nuevos filtros
             datosFiltrados = datosOriginales;
 
@@ -889,12 +982,71 @@ session_start();
                 return productosSeleccionados.size === 0 || productosSeleccionados.has(venta.Producto);
             });
 
-            // Si no se ha seleccionado ningún producto ni fecha, mostrar todos los registros
-            if (!filtros.fechaDesde && !filtros.fechaHasta && productosSeleccionados.size === 0) {
+            // Obtiene los checkbox de sucursales seleccionadas
+            const sucursalCheckboxes = document.querySelectorAll('#sucursalFilterGroup input[type="checkbox"]:checked');
+            const sucursalesSeleccionadas = new Set();
+
+            sucursalCheckboxes.forEach(checkbox => {
+                sucursalesSeleccionadas.add(checkbox.value);
+            });
+
+            // Aplica el filtro por sucursales
+            datosFiltrados = datosFiltrados.filter(venta => {
+                return sucursalesSeleccionadas.size === 0 || sucursalesSeleccionadas.has(venta.Sucursal);
+            });
+
+
+            // Aplica el filtro por vendedor
+            datosFiltrados = datosFiltrados.filter(venta => {
+                const nombreVendedor = venta.Vendedor.toLowerCase(); // Obtener el nombre del vendedor en minúsculas
+                return nombreVendedor.includes(filtroVendedor); // Comprobar si el nombre del vendedor incluye el filtro
+            });
+
+            
+            // Aplica el filtro por rango de precio
+            const minPrecio = parseFloat(document.getElementById('filtroPrecioMin').value);
+            const maxPrecio = parseFloat(document.getElementById('filtroPrecioMax').value);
+
+
+            if (minPrecio > maxPrecio) {
+                Swal.fire({
+                    position: 'top-end',
+                    icon: 'error',
+                    title: 'Error Rango de Precio',
+                    text: 'El precio mínimo no puede ser mayor que el precio máximo',
+                    showConfirmButton: false,
+                    timer: 3000,
+                    background: false,
+                    backdrop: false,
+                    customClass: {
+                        container: 'custom-container-class',
+                        popup: 'custom-popup-class',
+                        title: 'custom-title-class',
+                        icon: 'custom-icon-class',
+                    },
+                });
+                return;
+            }
+
+            // Filtra los datos por rango de precio
+            datosFiltrados = datosFiltrados.filter(venta => {
+                const precioVenta = parseFloat(venta.Total);
+                console.log(precioVenta, "precioVenta");
+                console.log(typeof (precioVenta));
+                console.log(typeof (minPrecio));
+                console.log(typeof (maxPrecio));
+                
+                return precioVenta >= minPrecio && precioVenta <= maxPrecio;
+            });
+
+
+            // Verifica si no se ha seleccionado ningún filtro y muestra todos los registros
+            if (!filtros.fechaDesde && !filtros.fechaHasta && productosSeleccionados.size === 0 && sucursalesSeleccionadas.size === 0 && filtroVendedor === '' && (isNaN(minPrecio) || isNaN(maxPrecio) || minPrecio > maxPrecio)) {
                 datosFiltrados = datosOriginales;
             }
 
-            console.log(datosFiltrados); // Muestra los datos filtrados por fecha y productos.
+            console.log(datosFiltrados); // Muestra los datos filtrados por fecha, productos y sucursales.
+
 
             // Después de aplicar todos los filtros, actualiza la tabla con los datos filtrados
             actualizarTabla(datosFiltrados);
