@@ -14,7 +14,10 @@ if (isset($_POST['id']) && isset($_POST['opcion'])) {
 
     switch ($opcion) {
         case 'rol':
-            if($id === 1){
+            if($id === 1){ //dueño
+                $response['success'] = false;
+            }
+            if($id === 4){//repositor
                 $response['success'] = false;
             }
             if($id === $rolConectado){
@@ -36,8 +39,13 @@ if (isset($_POST['id']) && isset($_POST['opcion'])) {
                 break;
             };
         case 'tipoproducto':
-            $query = "DELETE FROM tipoproducto WHERE idTipoProducto = $id";
-            break;
+            if($id === 1){//SUELTO
+                $response['success'] = false;
+            }
+            else{
+                $query = "DELETE FROM rol WHERE idRol = $id";
+                break;
+            };
         case 'tipocategoria':
             $query = "DELETE FROM tipocategoria WHERE idTipocategoria = $id";
             break;
@@ -45,8 +53,14 @@ if (isset($_POST['id']) && isset($_POST['opcion'])) {
             $query = "DELETE FROM tipotamaño WHERE idTipotamaño = $id";
             break;
         case 'formadepago':
-            $query = "DELETE FROM formadepago WHERE idFormaDePago = $id";
-            break;
+            if ($id === 2){ //Tarjeta de Credito
+                $response['success'] = false;
+            }
+            else{
+                $query = "DELETE FROM rol WHERE idRol = $id";
+                break;
+            };
+
         case 'tipodedocumento':
             $query = "DELETE FROM tipoFactura WHERE idTipoFactura = $id";
             break;    

@@ -71,17 +71,6 @@
                 return "Rol no encontrado";
             }
         }
-        function obtenerIdPersona($idPersona,$conn){
-            $consultaId = "SELECT idPersona from persona WHERE idPersona = $idPersona";
-            $resultadoId = mysqli_query($conn, $consultaId);
-
-            if ($resultadoId && mysqli_num_rows($resultadoId) === 1) {
-                $filaId = mysqli_fetch_assoc($resultadoId);
-                return $filaId['idPersona'];
-            } else {
-                return "id no encontrado";
-        }
-        }
 
         
 
@@ -93,7 +82,7 @@
             
             
 
-            $password = TRUE;
+            $password = password_verify($Clave, $hash);
             if ($password === TRUE){
                 // La contraseña es correcta, iniciar la sesión
                 
@@ -122,19 +111,15 @@
                 $idEmpleado = obtnerIdEmpleado($idPersona, $conn);
                 $_SESSION['idEmpleado'] = $idEmpleado;
 
-                $idPersona = obtenerIdPersona($idPersona, $conn);
-                $_SESSION['idPersona']= $idPersona;
-
                 header("Location: vistas\home.php");
 
 
                 // Redirigir a la página principal o a otro destino deseado
             } else {
                 // Contraseña incorrecta
-                header("Location: vistas\home.php");
+                echo "Contraseña incorrecta";
             }
         } else {
-            header("Location: vistas\home.php");
             // Usuario no encontrado 
             ?>
             <link href="css\error.css" rel="stylesheet">
@@ -151,4 +136,4 @@
         }
     }
 
-?>
+    ?>

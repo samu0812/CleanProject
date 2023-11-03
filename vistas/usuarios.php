@@ -394,7 +394,9 @@ session_start();
                     const datosUsuarioEliminar = {
                         id : id,
                     };
+                    console.log(datosUsuarioEliminar);
                     $('#btnEliminar').click(function() {
+                        console.log("a");
                         fetch("../controladores/usuariosActions.php?action=eliminar", {
                             method: "POST",
                             headers: {
@@ -404,6 +406,7 @@ session_start();
                         })
                         .then(response => response.json())
                         .then(data => {
+                            console.log(data);
                             obtenerUsuarios()
                             cargarCarta()
                             // Cierra el modal de confirmación
@@ -528,7 +531,7 @@ session_start();
                             Swal.fire({
                                 position: 'top-end',
                                 icon: 'error',
-                                title: 'El código ya existe en la base de datos.',
+                                title: 'El correo ya existe en la base de datos.',
                                 showConfirmButton: true,
                                 timer: 2000,
                                 background: false,
@@ -656,6 +659,7 @@ session_start();
                         sucursal: document.getElementById('DescripcionSucursal').value,
                         clave: document.getElementById('Clave').value,
                     };
+                    console.log(valoresEditados)
                     fetch('../controladores/usuariosActions.php?action=editar', {
                         method: "POST",
                         headers: {
@@ -692,7 +696,7 @@ session_start();
                             Swal.fire({
                                 position: 'top-end',
                                 icon: 'success',
-                                title: 'Se ha actualizado el producto correctamente',
+                                title: 'Se ha actualizado el usuario correctamente',
                                 showConfirmButton: false,
                                 timer: 2000,
                                 background: false,
@@ -749,7 +753,6 @@ session_start();
             const regexTelefono = /^(?:\+\d{1,3})?(?:\d{1,4})?(?:[ -]?\d{1,4}){1,12}$/;
             // let contieneNumeros = /[0-9]/.test(nombre);
             let camposIncompletos = nombre === "" || email === "" || telefono === "" || direccion === "" || fechanacimiento === "" || rol === "" || sucursal === "" || clave === "";
-            console.log(telefono, !regexTelefono.test(telefono))
             // Verifica si debes mostrar el error por números en el nombre
             if (camposIncompletos) { 
                 Swal.fire({
@@ -815,7 +818,6 @@ session_start();
                     }
                 });
             } else if (!regexTelefono.test(telefono) || telefono.length < 10 ) { // 3704 3362 64
-                console.log("entro")
                 Swal.fire({
                     position: 'top-end',
                     icon: 'error',
@@ -838,6 +840,7 @@ session_start();
                 });
             } else {
                 const datosUsuarios = {nombre, email, telefono, direccion, fechanacimiento, rol, sucursal, clave};
+                console.log(datosUsuarios)
                 // Hacer el fetch al backend
                 fetch("../controladores/usuariosActions.php?action=agregar", {
                     method: "POST",
@@ -846,6 +849,7 @@ session_start();
                 })
                 .then(response => response.json())
                 .then(data => {
+                    console.log(data)
                     if (!data.success) {
                         Swal.fire({
                             position: 'top-end',
