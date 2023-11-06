@@ -427,7 +427,7 @@ if ($result->num_rows > 0) {
             // Formatea la fecha como una cadena (por ejemplo, "2023-09-26")
             var fechaFormateada = año + '-' + (mes < 10 ? '0' : '') + mes + '-' + (dia < 10 ? '0' : '') + dia;
 
-            console.log(fechaFormateada); // Muestra la fecha formateada en la consola
+            
 
             table.search(fechaFormateada).draw();
         });
@@ -895,7 +895,7 @@ if ($result->num_rows > 0) {
         $('#selTipoPago').change(function() {
             // Obtener el valor seleccionado
             var tipoPagoSeleccionado = $(this).val();
-            console.log(tipoPagoSeleccionado);
+            
             // Calcular el recargo solo si el tipo de pago es "tarjeta de crédito"
             if (tipoPagoSeleccionado === '2') {
                 // Calcular el recargo como el 10% del subtotal de la venta
@@ -1132,6 +1132,7 @@ document.querySelectorAll('.comprobante-btn').forEach(button => {
                         'Precio por Cantidad',
                         'Descuentos'
                     ];
+                    console.log(response.datos);
 
                     // Agregar cada producto como una fila en la tabla
                     response.datos.forEach(producto => {

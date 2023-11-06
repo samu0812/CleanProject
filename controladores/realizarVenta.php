@@ -28,7 +28,7 @@ if (isset($_POST['ventaData'])) {
     $idFactura = $stmt->insert_id;
 
     // Insertar Datos en tabla DetalleFactura
-    $sql = "INSERT INTO DetalleFactura (idFacturas, SubTotal, Total, Descuentos, Recargos, dineroRecibido, Vuelto) VALUES (?, ?, ?, ?, ?, ?, ?)";
+    $sql = "INSERT INTO DetalleFactura (idFacturas, SubTotal, Total, Descuentos, Recargos, dineroRecibido, vuelto) VALUES (?, ?, ?, ?, ?, ?, ?)";
     $stmt = $conn->prepare($sql);
     $stmt->bind_param("idddddd", $idFactura, $subtotal, $totalVenta, $descuentos, $recargos, $efectivoRecibido, $vuelto);
     $stmt->execute();

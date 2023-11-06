@@ -11,11 +11,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["idDetalleFactura"])) {
 
     // Consulta SQL para obtener los datos
     $sql = "SELECT v.idProductos, v.nroVenta, v.cantidad, v.PrecioProducto, v.nombreProducto, v.descuentoProducto, df.*, f.*
-FROM ventas v
-INNER JOIN detallefactura df ON v.idDetalleFactura = df.idDetalleFactura
-INNER JOIN facturas f ON df.idFacturas = f.idFacturas
-WHERE v.idDetalleFactura = $idDetalleFactura;
-";
+        FROM ventas v
+        INNER JOIN detallefactura df ON v.idDetalleFactura = df.idDetalleFactura
+        INNER JOIN facturas f ON df.idFacturas = f.idFacturas
+        WHERE v.idDetalleFactura = $idDetalleFactura;";
 
     $result = $conn->query($sql);
 
