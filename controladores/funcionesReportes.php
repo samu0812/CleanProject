@@ -8,6 +8,9 @@ if (isset($_GET['action'])) {
         case 'generarTablaVentas':
             generarTablaVentas($conn); // Pasa la conexión como parámetro
             break; 
+        case 'generarTablaProductos':
+            generarTablaProductos($conn); // Pasa la conexión como parámetro
+            break;
         default:
             // Acción no válida
             echo json_encode(array("message" => "Acción no válida"));
@@ -55,5 +58,40 @@ function generarTablaVentas($conn) {
     }
 }
 
+function generarTablaProductos($conn) {
+    try {
+        // Realiza la consulta SQL para obtener el total recaudado por sucursal en el mes actual
+        $sql = "SELECT P.idProductos, P.Nombre, Pr.Nombre AS Proveedor, TP.Descripcion AS TipoProd, TC.Descripcion AS TipoCat, TT.Abreviatura AS Tamaño, P.Tamaño AS Medida, SUM(SS.Cantidad) AS CantidadTotal, P.PrecioCosto
+        FROM Productos P
+        INNER JOIN Proveedores Pr ON P.idProveedores = Pr.idProveedores
+        INNER JOIN TipoProducto TP ON P.idTipoProducto = TP.idTipoProducto
+        INNER JOIN TipoCategoria TC ON P.idTipoCategoria = TC.idTipoCategoria
+        INNER JOIN TipoTamaño TT ON P.idTipoTamaño = TT.idTipoTamaño
+        INNER JOIN StockSucursales SS ON P.idProductos = SS.idProductos
+        GROUP BY P.idProductos, P.Nombre, Pr.Nombre, TP.Descripcion, TC.Descripcion, TT.Abreviatura, P.Tamaño, P.PrecioCosto, SS.Impuestos, SS.PrecioFinal;";
+        $stmt = $conn->prepare($sql);
+
+        if (!$stmt->execute()) {
+            throw new Exception("Error al ejecutar la consulta");
+        }
+
+        $result = $stmt->get_result();
+        $gananciasPorSucursal = array();
+
+        while ($row = $result->fetch_assoc()) {
+            // Almacena cada resultado en un arreglo
+            $gananciasPorSucursal[] = $row;
+        }
+
+        // Devuelve la respuesta en formato JSON
+        header("Content-Type: application/json");
+        echo json_encode($gananciasPorSucursal);
+    } catch (Exception $e) {
+        // Maneja el error, registra información de error si es necesario
+        // Devuelve una respuesta HTTP con un código de estado de error
+        http_response_code(500); // Código de estado para error interno del servidor
+        echo json_encode(array("error" => $e->getMessage()));
+    }
+}
 
 ?>

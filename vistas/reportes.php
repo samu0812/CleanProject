@@ -93,6 +93,101 @@ session_start();
             <!-- Sale & Revenue End -->
 
 
+            <!-- tabla de productos -->
+            <div class="container-fluid pt-4 px-4" id="productosTableContent" style="display: none;">
+                <div class="bg-personalizado text-center rounded p-4">
+                    <h4>Productos</h4>
+                    <div class="filters mb-3">
+                        <div class="row">
+
+                            <!-- Filtro por Nombre del Producto -->
+                            <div class="col-md-2 filter-group">
+                                <label for="filterProducto" id="labelFiltroProducto">Nombre del Producto:</label>
+                                <input type="text" id="filtroProducto" class="form-control" placeholder="Buscar por Producto">
+                            </div>
+
+                            <!-- Filtro por Proveedor -->
+                            <div class="col-md-2 filter-group">
+                                <label for="filterProveedor" id="labelFiltroProveedor">Proveedor:</label>
+                                <input type="text" id="filtroProveedor" class="form-control" placeholder="Buscar por Proveedor">
+                            </div>
+                            
+                            <!-- Filtro por Tipo Prodcuto -->
+                            <div class="col-md-2 filter-group">
+                            <label for="filterTipoProdcuto">Tipo Prodcuto:</label>
+                                <div id="TipoProductoCheckboxes" class="text-center">
+                                </div>
+                            </div>
+
+                            <!-- Filtro por Tipo Categoria -->
+                            <div class="col-md-2 filter-group">
+                            <label for="filterCategoria">Categoria:</label>
+                                <div id="categoriaCheckboxes" class="text-center">
+                                </div>
+                            </div>
+                              
+                            <!-- Filtro por Rango de Precio -->
+                            <div class="col-md-2 filter-group">
+                                <label for="filterRangoPrecioProducto" id="labelFiltroRangoPrecioProducto">Rango de Precio:</label>
+                                <div class="d-flex align-items-center justify-content-center">
+                                    <input type="number" id="filtroPrecioMinProducto" class="form-control form-control" placeholder="Mínimo">
+                                    <label for="">-</label>
+                                    <input type="number" id ="filtroPrecioMaxProducto" class="form-control form-control" placeholder="Máximo">
+                                </div>
+                            </div>
+
+
+
+                            <div class="col-md-2 filter-group">
+                            </div>
+
+                            <div id="contenedorBotones">
+                                <button type="button" class="btn btn-primary btn-sm btn-block" id="btnResetFiltros" data-bs-dismiss="modal" onclick="resetFiltrosProductos()" >Resetear Filtros</button>
+                                <button type="button" class="btn btn-primary btn-sm btn-block" id="btnAplicarFiltros" data-bs-dismiss="modal" onclick="aplicarFiltrosProductos()">Aplicar Filtros</button>
+                            </div>
+
+                            
+                            <div id="pdfContainerProductos">
+                                <button class="download-button" >
+                                        <div class="docs"><svg class="css-i6dzq1" stroke-linejoin="round" stroke-linecap="round" fill="none" stroke-width="2" stroke="currentColor" height="20" width="20" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line y2="13" x2="8" y1="13" x1="16"></line><line y2="17" x2="8" y1="17" x1="16"></line><polyline points="10 9 9 9 8 9"></polyline></svg> PDF</div>
+                                        <div class="download" id="generarPDFProductos" onclick="generarPDFVentasProductos()">
+                                            <svg class="css-i6dzq1" stroke-linejoin="round" stroke-linecap="round" fill="none" stroke-width="2" stroke="currentColor" height="24" width="24" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line y2="3" x2="12" y1="15" x1="12"></line></svg>
+                                        </div>
+                                </button>
+                            </div>
+                            
+                            
+                            
+                        </div>
+
+                    </div>
+
+                    <div class="table-responsive -xxl">
+                        <table id="tablaProductos" class="table table-striped" style="width:100%">
+                            <thead>
+                                <tr class="text-dark">
+                                    <th scope="col">Codigo</th>
+                                    <th scope="col">Nombre</th>
+                                    <th scope="col">Proveedor</th>
+                                    <th scope="col">Tipo Producto</th>
+                                    <th scope="col">Categoria</th>
+                                    <th scope="col">Tamaño</th>
+                                    <th scope="col">Medida</th>
+                                    <th scope="col">Cantidad Total</th>
+                                    <th scope="col">Precio Costo</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- Aquí se mostrarán los datos filtrados dinámicamente -->
+                            </tbody>
+                            <tfoot>
+                            </tfoot>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- tabla de ventas -->
             <div class="container-fluid pt-4 px-4" id="ventasTable" style="display: none;">
                 <div class="bg-personalizado text-center rounded p-4">
                     <h4>Ventas</h4>
@@ -112,12 +207,11 @@ session_start();
                                     </div>
                                 </div>
                             </div>
-                            
+
+                            <!-- Filtro por nombre del producto -->
                             <div class="col-md-2 filter-group">
-                                <label for="filterProducto" id="labelFiltroProducto">Producto:</label>
-                                <div>
-                                    <button id="btnFiltrarProductos" class="btn btn-primary">Ver Productos</button>
-                                </div>
+                                <label for="filterProducto" id="labelFiltroNombreProducto">Producto:</label>
+                                <input type="text" id="filtroNombreProducto" class="form-control" placeholder="Buscar por Producto">
                             </div>
 
                             <!-- Filtro por Vendedor -->
@@ -135,7 +229,7 @@ session_start();
                             </div>
 
 
-
+                            <!-- Filtro por Rango de Precio -->
                             <div class="col-md-2 filter-group">
                                 <label for="filterSucursal" id="labelFiltroRangoPrecio">Rango de Precio:</label>
                                 <div class="d-flex align-items-center justify-content-center">
@@ -145,12 +239,19 @@ session_start();
                                 </div>
                             </div>
 
-
-                            <button type="button" class="btn btn-primary" id ="btnAplicarFiltros" data-bs-dismiss="modal" onclick="aplicarFiltros()">Aplicar Filtros</button>
-                            <!-- Agrega más filtros según sea necesario -->
-                        </div>
+                            <div id="contenedorBotones">
+                                <button type="button" class="btn btn-primary btn-sm btn-block" id="btnResetFiltros" data-bs-dismiss="modal"  onclick="resetFiltrosVentas()">Resetear Filtros</button>
+                                <button type="button" class="btn btn-primary btn-sm btn-block" id="btnAplicarFiltros" data-bs-dismiss="modal" onclick="aplicarFiltros()">Aplicar Filtros</button>
+                            </div>
+                            <div id="pdfContainer">
+                                <button class="download-button" >
+                                        <div class="docs"><svg class="css-i6dzq1" stroke-linejoin="round" stroke-linecap="round" fill="none" stroke-width="2" stroke="currentColor" height="20" width="20" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line y2="13" x2="8" y1="13" x1="16"></line><line y2="17" x2="8" y1="17" x1="16"></line><polyline points="10 9 9 9 8 9"></polyline></svg> PDF</div>
+                                        <div class="download" id="generarPDFVentas" onclick="generarPDFVentas()">
+                                            <svg class="css-i6dzq1" stroke-linejoin="round" stroke-linecap="round" fill="none" stroke-width="2" stroke="currentColor" height="24" width="24" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line y2="3" x2="12" y1="15" x1="12"></line></svg>
+                                        </div>
+                                </button>
+                            </div>
                     </div>
-
                     <div class="table-responsive -xxl">
                         <table id="tablaVentas" class="table table-striped" style="width:100%">
                             <thead>
@@ -172,105 +273,6 @@ session_start();
                     </div>
                 </div>
             </div>
-
-
-            
-            <div class="modal fade" id="modalListaProductos" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                <div class="modal-dialog modal-dialog-centered modal-lg">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="exampleModalLabel">Seleccione los Productos a Filtrar</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body">
-                            <div id="productosCheckboxes"> <!-- Aquí se agregarán las casillas de verificación -->
-
-                            </div>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-primary" data-bs-dismiss="modal" id="btnAplicarFiltroProductos">Confirmar</button>
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="btnCerrarModal">Cancelar</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-
-
-
-
-            <!-- tabla de productos -->
-            <div class="container-fluid pt-4 px-4" id="productosTable" style="display: none;">
-                <div class="bg-light text-center rounded p-4">
-                    <div class="d-flex align-items-center justify-content-between mb-4">
-                        <h6 class="mb-0">Productos</h6>
-                        <a href="">Show All</a>
-                    </div>
-                    <div class="table-responsive">
-                        <table class="table text-start align-middle table-bordered table-hover mb-0">
-                            <thead>
-                                <tr class="text-dark">
-                                    <th scope="col"><input class="form-check-input" type="checkbox"></th>
-                                    <th scope="col">Date</th>
-                                    <th scope="col">Invoice</th>
-                                    <th scope="col">Customer</th>
-                                    <th scope="col">Amount</th>
-                                    <th scope="col">Status</th>
-                                    <th scope="col">Action</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td><input class="form-check-input" type="checkbox"></td>
-                                    <td>01 Jan 2045</td>
-                                    <td>INV-0123</td>
-                                    <td>Jhon Doe</td>
-                                    <td>$123</td>
-                                    <td>Paid</td>
-                                    <td><a class="btn btn-sm btn-primary" href="">Detail</a></td>
-                                </tr>
-                                <tr>
-                                    <td><input class="form-check-input" type="checkbox"></td>
-                                    <td>01 Jan 2045</td>
-                                    <td>INV-0123</td>
-                                    <td>Jhon Doe</td>
-                                    <td>$123</td>
-                                    <td>Paid</td>
-                                    <td><a class="btn btn-sm btn-primary" href="">Detail</a></td>
-                                </tr>
-                                <tr>
-                                    <td><input class="form-check-input" type="checkbox"></td>
-                                    <td>01 Jan 2045</td>
-                                    <td>INV-0123</td>
-                                    <td>Jhon Doe</td>
-                                    <td>$123</td>
-                                    <td>Paid</td>
-                                    <td><a class="btn btn-sm btn-primary" href="">Detail</a></td>
-                                </tr>
-                                <tr>
-                                    <td><input class="form-check-input" type="checkbox"></td>
-                                    <td>01 Jan 2045</td>
-                                    <td>INV-0123</td>
-                                    <td>Jhon Doe</td>
-                                    <td>$123</td>
-                                    <td>Paid</td>
-                                    <td><a class="btn btn-sm btn-primary" href="">Detail</a></td>
-                                </tr>
-                                <tr>
-                                    <td><input class="form-check-input" type="checkbox"></td>
-                                    <td>01 Jan 2045</td>
-                                    <td>INV-0123</td>
-                                    <td>Jhon Doe</td>
-                                    <td>$123</td>
-                                    <td>Paid</td>
-                                    <td><a class="btn btn-sm btn-primary" href="">Detail</a></td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-
 
 
             <!-- Footer Start -->
@@ -302,6 +304,9 @@ session_start();
     <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css"></script>
     <script src="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css"></script>
 
+    <!-- Libreria PDF make -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js" integrity="sha512-a9NgEEK7tsCvABL7KqtUTQjl69z7091EVPpw5KxPlZ93T141ffe1woLtbXTX+r2/8TtTvRX/v4zTL2UlMUPgwg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.66/vfs_fonts.js"></script>
     <!-- libreria sweetAlert -->
 
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
@@ -454,7 +459,7 @@ session_start();
 
             /* Estilo CSS para la clase personalizada del título */
             .custom-title-class {
-                font-size: 13px; /* Ajusta el tamaño de fuente del título de la alerta */
+                font-size: 15px; /* Ajusta el tamaño de fuente del título de la alerta */
                 padding: 10px 3px; 
                 }
 
@@ -505,8 +510,8 @@ session_start();
             }
 
 
-            #filtroVendedor {
-                width: 95%; /* Ajusta el ancho según tus necesidades */
+            #filtroVendedor , #filtroNombreProducto {
+                width: 100%; /* Ajusta el ancho según tus necesidades */
                 padding: 0.25rem 0.5rem;
                 font-size: 1rem;
                 border: 1px solid #ccc;
@@ -514,21 +519,12 @@ session_start();
                 transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
             }
 
-            #filtroVendedor:focus {
-                outline: none;
-                border-color: #007bff;
-                box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
-            }
-
-            #labelFiltroVendedor {
+            #labelFiltroVendedor , #labelFiltroNombreProducto {
                 margin-bottom: 10px;
             }
 
-            #labelFiltroProducto{
-                margin-bottom: 10px;
-            }
 
-            #filtroPrecioMin{
+            #filtroPrecioMin , #filtroPrecioMinProducto{
                 width: 80px; /* Ajusta el ancho según tus necesidades */
                 height: 30px; /* Ajusta la altura según tus necesidades */
                 margin: 0 5px; /* Espaciado entre los inputs */
@@ -536,7 +532,7 @@ session_start();
                 font-size: 14px; /* Tamaño de fuente */
                 border-radius: 8%;
             }
-            #filtroPrecioMax{
+            #filtroPrecioMax , #filtroPrecioMaxProducto{
                 width: 80px; /* Ajusta el ancho según tus necesidades */
                 height: 30px; /* Ajusta la altura según tus necesidades */
                 margin: 0 5px; /* Espaciado entre los inputs */
@@ -549,7 +545,7 @@ session_start();
                 margin: 0 5px; /* Aplicar espaciado al label dentro del div */
             }
 
-            #labelFiltroRangoPrecio{
+            #labelFiltroRangoPrecio, #labelFiltroProducto , #labelFiltroRangoPrecioProducto{
                 margin-bottom: 10px;
             }
 
@@ -557,11 +553,212 @@ session_start();
                 margin-top: 10px;
             }
 
+            .col-md-2.filter-group {
+                margin: 0 19px;
+            }
+
+            .filters.mb-3 {
+                margin: 20px;
+            }
+
+            #btnResetFiltros{               
+                height: 65%;
+                border-radius: 10px;
+                background: #ABABAB;
+                border-color: #ABABAB;
+                margin: 10px 5px;
+                padding: 2px;
+                font-size: 14px;
+                width: 140px;
+            }
+
+            #btnAplicarFiltros {
+                height: 65%;
+                border-radius: 10px;
+                background: #e77a34;
+                border-color: #e77a34;
+                margin: 10px 5px;
+                padding: 2px;
+                font-size: 14px;
+                width: 140px;
+            }
+
+            #btnFiltrarProductos {
+                background: #e77a34;
+                font-size: 10px;
+                border-radius: 10px;
+                border-color: #e77a34;
+            }
+
+            .btn-primary:visited {
+                text-transform: uppercase;
+                text-decoration: none;
+                color: rgb(27, 27, 27);
+                padding: 10px 30px;
+                border: 1px solid;
+                border-radius: 1000px;
+                display: inline-block;
+                transition: all .2s;
+                position: relative;
+            }
+            
+            .btn-primary:hover {
+                transform: translateY(-5px);
+                box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+            }
+            
+            .btn-primary:active {
+                transform: translateY(-3px);
+            }
+            
+            .btn-primary::after {
+                content: "";
+                display: inline-block;
+                height: 100%;
+                width: 100%;
+                border-radius: 100px;
+                top: 0;
+                left: 0;
+                position: absolute;
+                z-index: -1;
+                transition: all .3s;
+            }
+            
+            .btn-primary:hover::after {
+                background-color: rgba(0, 0, 0, 0.2);
+                transform: scaleX(0.6) scaleY(0.8);
+                opacity: 0;
+            }
+
+            .btn-primary:hover::after {
+                background-color: rgba(0, 0, 0, 0.2);
+                transform: scaleX(0.6) scaleY(0.8);
+                opacity: 0;
+            }
+
+            .btn-primary:hover::after {
+                background-color: rgba(0, 0, 0, 0.2);
+                transform: scaleX(0.6) scaleY(0.8);
+                opacity: 0;
+            }
+
+            #tablaProductos_length {
+                float: left;
+                padding: 5px 15px;
+                background-color: #dee2e626;
+                border-radius: 10px;
+            }
+
+            #tablaProductos_filter {
+                float: right;
+            }
+
+            #filtroProveedor , #filtroProducto{
+                width: 180px;
+            }
+
+            #labelFiltroProveedor {
+                margin-bottom: 10px;
+            }
+
+            #contenedorBotones {
+                margin-top: 5px;
+            }
+
+            #ventasTable {
+                display: none;
+                position: relative; /* Asegura que el contenedor sea el contexto relativo */
+
+                /* Agrega cualquier otro estilo que desees */
+            }
+
+            /* Estilos para el contenedor del botón PDF */
+            #pdfContainer {
+                position: absolute;
+                top: 37px;
+                left: 565px;
+            }
+
+            #pdfContainerProductos {
+                position: absolute;
+                top: 190px;
+                left: 690px;
+            }    
+
+
+            .download-button {
+                width: 80px; /* Ajusta el ancho según tus necesidades */
+                height: 40px; /* Ajusta el alto según tus necesidades */
+                background: #ffffff96;
+                position: relative;
+                border-width: 0;
+                color: white;
+                font-size: 15px;
+                font-weight: 600;
+                border-radius: 4px;
+                z-index: 1;
+                }
+
+                .download-button .docs {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                gap: 10px;
+                min-height: 40px;
+                padding: 0 5px;
+                border-radius: 4px;
+                z-index: 1;
+                background-color: #F83631;;
+                border: solid 1px #F83631;
+                transition: all .5s cubic-bezier(0.77, 0, 0.175, 1);
+                }
+
+                .download {
+                position: absolute;
+                inset: 0;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                max-width: 80%;
+                margin: 0 auto;
+                z-index: -1;
+                border-radius: 4px;
+                transform: translateY(0%);
+                background-color: #F86561;
+                border: solid 1px #F86561;
+                transition: all .7s cubic-bezier(0.77, 0, 0.175, 1);
+                }
+
+
+                .download-button:hover .download {
+                transform: translateY(100%)
+                }
+
+                .download svg polyline,.download svg line {
+                animation: docs 1s infinite;
+                }
+
+                @keyframes docs {
+                0% {
+                transform: translateY(0%);
+                }
+
+                50% {
+                transform: translateY(-15%);
+                }
+
+                100% {
+                transform: translateY(0%);
+                }
+                }
+
     </style>
 
     <script>
+        //variables tabla Ventas
         let tablaVentas;
         let datosOriginales = [];
+        let datosFiltrados = [];
         // Estructura para rastrear las selecciones del usuario
         const filtros = {
             fechaDesde: '',
@@ -571,6 +768,11 @@ session_start();
             sucursales: new Set(),
             // Agrega más categorías de filtro según tus necesidades
         };
+        
+        //variables tabla Prodcutos
+        let datosOriginalesProductos = [];
+        let tablaProductos;
+        let datosFiltradosProductos = [];
 
         
         document.addEventListener("DOMContentLoaded", function () {
@@ -592,22 +794,23 @@ session_start();
             });
         });
 
-
-
         // Obtenemos los elementos de los radio buttons
         const radioVentas = document.getElementById("radio2");
         const radioProductos = document.getElementById("radio3");
 
+        console.log(radioVentas.checked);
+        console.log(radioProductos.checked);
+
         // Obtenemos las tablas de Ventas y Productos
         const ventasTable = document.getElementById("ventasTable");
-        const productosTable = document.getElementById("productosTable");
+        const productosTableContent = document.getElementById("productosTableContent");
 
         // Manejamos el cambio en la selección de los radio buttons
         radioVentas.addEventListener("change", function() {
             if (radioVentas.checked) {
                 // Mostrar la tabla de Ventas y ocultar la de Productos
                 ventasTable.style.display = "block";
-                productosTable.style.display = "none";
+                productosTableContent.style.display = "none";
                 
                 // Aquí puedes llamar a una función que genere la tabla de Ventas y aplique los filtros.
                 generarTablaVentas();
@@ -618,7 +821,9 @@ session_start();
         radioProductos.addEventListener("change", function() {
             if (radioProductos.checked) {
                 // Mostrar la tabla de Productos y ocultar la de Ventas
-                productosTable.style.display = "block";
+                // ...
+
+                productosTableContent.style.display = "block";
                 ventasTable.style.display = "none";
                 
                 // Aquí puedes llamar a una función que genere la tabla de Productos y aplique los filtros.
@@ -626,7 +831,276 @@ session_start();
             }
         });
 
+        function generarTablaProductos() {
+            // Realiza una solicitud GET para obtener los datos de productos desde el servidor
+            fetch('../controladores/funcionesReportes.php?action=generarTablaProductos')
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('La solicitud no fue exitosa');
+                }
+                return response.json(); // Convierte la respuesta a JSON
+            })
+            .then(data => {
+                // Aquí puedes procesar los datos y crear la tabla dinámicamente
+                datosOriginalesProductos = data;
+                crearTablaProdcutos(datosOriginalesProductos);
+            })
+            .catch(error => {
+                console.error('Error al obtener los datos de ventas:', error);
+            });
 
+        }
+
+        function crearTablaProdcutos(datosOriginalesProductos) {
+            //agrega los checks de los tiposProductos
+            const tipoProductos = obtenerTipoProductos(datosOriginalesProductos);
+            agregarCasillasDeVerificacionTipoProductos(tipoProductos);
+
+            //agrega los checks de las categorias
+            const tipoCategorias = obtenerCategoria(datosOriginalesProductos);
+            agregarCasillasDeVerificaciontipoCategoria(tipoCategorias);
+
+            const tabla = document.querySelector('#productosTableContent table tbody');
+            tabla.innerHTML = ''; // Limpia cualquier contenido previo en la tabla
+
+            datosOriginalesProductos.forEach(producto => {
+                const fila = document.createElement('tr');
+
+                const propiedades = ['idProductos','Nombre', 'Proveedor', 'TipoProd', 'TipoCat', 'Tamaño', 'Medida', 'CantidadTotal' , 'PrecioCosto'];
+
+                propiedades.forEach(propiedad => {
+                    const celda = document.createElement('td');
+                    celda.textContent = producto[propiedad];
+                    fila.appendChild(celda);
+                });
+
+                tabla.appendChild(fila);
+            });
+
+
+            if (tablaProductos) {
+                // Si ya existe una instancia de DataTable, actualiza los datos y el orden sin destruirla
+                tablaProductos.clear().rows.add(datosOriginalesProductos).draw();
+            } else {
+                // Si no existe una instancia de DataTable, crea una nueva
+                tablaProductos = $('#tablaProductos').DataTable({
+                    searching: false,
+                    lengthChange: true,
+                    order: [[0, 'desc']],
+                    columns: [
+                            { data: 'idProductos' },
+                            { data: 'Nombre' },
+                            { data: 'Proveedor' },
+                            { data: 'TipoProd' },
+                            { data: 'TipoCat' },
+                            { data: 'Tamaño' },
+                            { data: 'Medida' },
+                            { data: 'CantidadTotal' },
+                            { data: 'PrecioCosto' }
+                        ],
+                    info: true,
+                    lengthMenu: [10, 20, 40, 60],
+                    language: {
+                        search: "",
+                        searchPlaceholder: "Filtrar proveedores",
+                        zeroRecords: "No se encontraron resultados",
+                        info: "Mostrando _START_ a _END_ de _TOTAL_ registros",
+                        infoEmpty: "Mostrando 0 a 0 de 0 registros",
+                        infoFiltered: "(filtrado de MAX registros en total)"
+                    }
+                });
+            }
+        }
+
+        function obtenerTipoProductos(datosOriginalesProductos) {
+            const tipoProductosUnicos = new Set();
+            datosOriginalesProductos.forEach(producto => {
+                tipoProductosUnicos.add(producto.TipoProd);
+            });
+            return Array.from(tipoProductosUnicos);
+        }
+
+        function agregarCasillasDeVerificacionTipoProductos(tipoProductos) {
+            limpiarCasillasDeVerificacionTipoProductos();
+
+            const contenedor = document.getElementById('TipoProductoCheckboxes');
+
+            tipoProductos.forEach(tipoProducto => {
+                const div = document.createElement('div');
+                div.classList.add('form-check'); // Agrega la clase "form-check" para mantener el estilo del checkbox
+
+                const checkbox = document.createElement('input');
+                checkbox.type = 'checkbox';
+                checkbox.value = tipoProducto;
+                checkbox.id = `checkbox-tipoProducto-${tipoProducto}`;
+                checkbox.classList.add('form-check-input');
+
+                const label = document.createElement('label');
+                label.htmlFor = `checkbox-tipoProducto-${tipoProducto}`;
+                label.textContent = tipoProducto;
+                label.classList.add('form-check-label');
+                div.appendChild(checkbox);
+                div.appendChild(label);
+
+                contenedor.appendChild(div);
+            });
+        }
+
+        function limpiarCasillasDeVerificacionTipoProductos() {
+            const contenedor = document.getElementById('TipoProductoCheckboxes');
+            contenedor.innerHTML = ''; // Borra todo el contenido anterior
+        }
+
+        function obtenerCategoria(datosOriginalesProductos) {
+            const tipoCategoriaUnicos = new Set();
+            datosOriginalesProductos.forEach(producto => {
+                tipoCategoriaUnicos.add(producto.TipoCat);
+            });
+            return Array.from(tipoCategoriaUnicos);
+        }
+
+        function agregarCasillasDeVerificaciontipoCategoria(tipoCategorias) {
+            limpiarCasillasDeVerificacionTipoCategoria();
+
+            const contenedor = document.getElementById('categoriaCheckboxes');
+
+            tipoCategorias.forEach(tipoCategoria => {
+                const div = document.createElement('div');
+                div.classList.add('form-check'); // Agrega la clase "form-check" para mantener el estilo del checkbox
+
+                const checkbox = document.createElement('input');
+                checkbox.type = 'checkbox';
+                checkbox.value = tipoCategoria;
+                checkbox.id = `checkbox-tipoCategoria-${tipoCategoria}`;
+                checkbox.classList.add('form-check-input');
+
+                const label = document.createElement('label');
+                label.htmlFor = `checkbox-tipoCategoria-${tipoCategoria}`;
+                label.textContent = tipoCategoria;
+                label.classList.add('form-check-label');
+                div.appendChild(checkbox);
+                div.appendChild(label);
+
+                contenedor.appendChild(div);
+            });
+        }
+
+        function limpiarCasillasDeVerificacionTipoCategoria() {
+            const contenedor = document.getElementById('categoriaCheckboxes');
+            contenedor.innerHTML = ''; // Borra todo el contenido anterior
+        }
+
+        function aplicarFiltrosProductos() {
+            datosFiltradosProductos = datosOriginalesProductos;
+            console.log(datosFiltradosProductos);
+            const filtroProducto = document.getElementById('filtroProducto').value.toLowerCase().trim(); 
+            const filtroProveedor = document.getElementById('filtroProveedor').value.toLowerCase().trim(); // Obtener el valor del campo de búsqueda en minúsculas y eliminar espacios en blanco
+
+
+            // Aplica el filtro por producto
+            datosFiltradosProductos = datosFiltradosProductos.filter(producto => {
+                const nombreProducto = producto.Nombre.toLowerCase().trim(); // Obtener el nombre del proveedor en minúsculas y eliminar espacios en blanco
+                return nombreProducto.includes(filtroProducto); // Comprobar si el nombre del proveedor incluye el filtro
+            });
+
+            // Aplica el filtro por proveedor
+            datosFiltradosProductos = datosFiltradosProductos.filter(producto => {
+                const nombreProveedor = producto.Proveedor.toLowerCase().trim(); // Obtener el nombre del proveedor en minúsculas y eliminar espacios en blanco
+                return nombreProveedor.includes(filtroProveedor); // Comprobar si el nombre del proveedor incluye el filtro
+            });
+
+
+            // Obtiene los checkbox de los tipos productos seleccionadas
+            const tipoProductosCheckboxes = document.querySelectorAll('#TipoProductoCheckboxes input[type="checkbox"]:checked');
+            const tipoProductosSeleccionados = new Set();
+
+            tipoProductosCheckboxes.forEach(checkbox => {
+                tipoProductosSeleccionados.add(checkbox.value);
+            });
+
+            console.log(tipoProductosSeleccionados);
+
+            // Aplica el filtro por tipos productos
+            datosFiltradosProductos = datosFiltradosProductos.filter(producto => {
+                console.log(producto.TipoProd);
+                return tipoProductosSeleccionados.size === 0 || tipoProductosSeleccionados.has(producto.TipoProd);
+            });
+
+
+            // Obtiene los checkbox de los tipos Categorias seleccionadas
+            const categoriasCheckboxes = document.querySelectorAll('#categoriaCheckboxes input[type="checkbox"]:checked');
+            const categoriasSeleccionados = new Set();
+
+            categoriasCheckboxes.forEach(checkbox => {
+                categoriasSeleccionados.add(checkbox.value);
+            });
+
+            console.log(tipoProductosSeleccionados);
+
+            // Aplica el filtro por tipos productos
+            datosFiltradosProductos = datosFiltradosProductos.filter(producto => {
+                console.log(producto.TipoCat);
+                return categoriasSeleccionados.size === 0 || categoriasSeleccionados.has(producto.TipoCat);
+            });
+
+
+            // Aplica el filtro por rango de precio
+            const minPrecio = parseFloat(document.getElementById('filtroPrecioMinProducto').value);
+            const maxPrecio = parseFloat(document.getElementById('filtroPrecioMaxProducto').value);
+
+            if ( minPrecio < 0 || maxPrecio < 0 || minPrecio > maxPrecio) {
+                Swal.fire({
+                    position: 'top-end',
+                    icon: 'error',
+                    title: 'Error en el Rango de Precio',
+                    text: 'el mínimo no puede ser mayor que el máximo, y no pueden ser números negativos.',
+                    showConfirmButton: false,
+                    timer: 3000,
+                    background: false,
+                    backdrop: false,
+                    customClass: {
+                        container: 'custom-container-class',
+                        popup: 'custom-popup-class',
+                        title: 'custom-title-class',
+                        icon: 'custom-icon-class',
+                    },
+                });
+                return
+            }
+
+            console.log(minPrecio);
+            console.log(maxPrecio);
+            // Filtra los datos por rango de precio si se han proporcionado valores válidos
+            if (!isNaN(minPrecio) && !isNaN(maxPrecio) && minPrecio <= maxPrecio) {
+                datosFiltradosProductos = datosFiltradosProductos.filter(producto => {
+                    
+                    const precioCostoProducto = parseFloat(producto.PrecioCosto);
+                    //console.log(minPrecio , " " , precioCostoProducto , " ", maxPrecio)
+                    return precioCostoProducto >= minPrecio && precioCostoProducto <= maxPrecio;
+                });
+            }
+
+
+            console.log(datosFiltradosProductos);
+
+            if (filtroProveedor === '' && filtroProducto === '' && tipoProductosSeleccionados.size === 0 && categoriasSeleccionados.size === 0 && (isNaN(minPrecio) || isNaN(maxPrecio) || minPrecio > maxPrecio)) {
+                datosFiltradosProductos = datosOriginalesProductos;
+            }
+
+
+
+
+            // Después de aplicar todos los filtros, actualiza la tabla con los datos filtrados
+            actualizarTablaProdcutos(datosFiltradosProductos);
+
+        }
+
+        function actualizarTablaProdcutos(datosFiltradosProductos) {
+            if (tablaProductos) {
+                // Si ya existe una instancia de DataTable, actualiza los datos sin destruirla
+                tablaProductos.clear().rows.add(datosFiltradosProductos).draw();
+            }
+        }
 
         function generarTablaVentas() {
             // Realiza una solicitud GET para obtener los datos de ventas desde el servidor
@@ -648,10 +1122,6 @@ session_start();
         }
 
         function crearTablaVentas(data) {
-            //creamos el modal de todos los productos
-            const productos = obtenerProductos(datosOriginales);
-            agregarCasillasDeVerificacion(productos);
-
 
             //creamos los checks de las sucursales
             const sucursales = obtenerSucursales(datosOriginales);
@@ -751,169 +1221,7 @@ session_start();
 
 // --------------------------------------FIN---------------------------------------------------//
 
-
-// --------------------------------------FILTRADO POR PRODCUTOS---------------------------------------------------//
-
-        const productosSeleccionados = new Set();
-        // Agregar un controlador de eventos clic al botón
-        document.getElementById('btnFiltrarProductos').addEventListener('click', function () {
-            // Selecciona el modal por su id y llama al método `modal` de Bootstrap para abrirlo
-            $('#modalListaProductos').modal('show');
-        });
-
-
-        function obtenerProductos(data) {
-            console.log(data);
-            const productosUnicos = new Set();
-            data.forEach(venta => {
-                productosUnicos.add(venta.Producto);
-            });
-            return Array.from(productosUnicos);
-        }
-
-        function limpiarCasillasDeVerificacion() {
-            const contenedor = document.getElementById('productosCheckboxes');
-            contenedor.innerHTML = ''; // Borra todo el contenido anterior
-        }
-
-        function agregarCasillasDeVerificacion(productos) {
-            limpiarCasillasDeVerificacion()
-            const contenedor = document.getElementById('productosCheckboxes');
-
-            const totalProductos = productos.length;
-            const mitadProductos = Math.ceil(totalProductos / 2);
-
-            // Divide los productos en dos mitades
-            const mitad1 = productos.slice(0, mitadProductos);
-            const mitad2 = productos.slice(mitadProductos);
-
-            // Ordena ambas mitades alfabéticamente
-            mitad1.sort();
-            mitad2.sort();
-
-            const columna1 = document.createElement('div');
-            columna1.classList.add('col-6'); // Columna izquierda
-
-            const columna2 = document.createElement('div');
-            columna2.classList.add('col-6'); // Columna derecha
-
-            for (let i = 0; i < mitad1.length; i++) {
-                const producto1 = mitad1[i];
-                const producto2 = mitad2[i];
-
-                const div1 = document.createElement('div');
-                div1.classList.add('form-check');
-
-                const checkbox1 = document.createElement('input');
-                checkbox1.type = 'checkbox';
-                checkbox1.value = producto1;
-                checkbox1.id = `checkbox-${producto1}`;
-                checkbox1.classList.add('form-check-input'); // Agrega una clase para el checkbox
-
-                const label1 = document.createElement('label');
-                label1.htmlFor = `checkbox-${producto1}`;
-                label1.textContent = producto1;
-                label1.classList.add('form-check-label'); // Agrega una clase para el label
-
-                div1.appendChild(checkbox1);
-                div1.appendChild(label1);
-
-                columna1.appendChild(div1);
-
-                // Si hay un producto en la segunda mitad, crear su casilla
-                if (producto2) {
-                    const div2 = document.createElement('div');
-                    div2.classList.add('form-check');
-
-                    const checkbox2 = document.createElement('input');
-                    checkbox2.type = 'checkbox';
-                    checkbox2.value = producto2;
-                    checkbox2.id = `checkbox-${producto2}`;
-                    checkbox2.classList.add('form-check-input'); // Agrega una clase para el checkbox
-
-                    const label2 = document.createElement('label');
-                    label2.htmlFor = `checkbox-${producto2}`;
-                    label2.textContent = producto2;
-                    label2.classList.add('form-check-label'); // Agrega una clase para el label
-
-                    div2.appendChild(checkbox2);
-                    div2.appendChild(label2);
-
-                    columna2.appendChild(div2);
-                }
-            }
-
-            // Crea una fila para albergar ambas columnas
-            const fila = document.createElement('div');
-            fila.classList.add('row');
-
-            fila.appendChild(columna1);
-            fila.appendChild(columna2);
-
-            contenedor.appendChild(fila);
-        }
-
-        //evento para boton de ver productos, aplicar
-        document.getElementById('btnAplicarFiltroProductos').addEventListener('click', function () {
-            // Obtén una lista de todos los checkboxes seleccionados
-            const checkboxes = document.querySelectorAll('input[type="checkbox"]:checked');
-
-            // Extrae los valores de los checkboxes seleccionados
-            const productosSeleccionadosArray = Array.from(checkboxes).map(checkbox => checkbox.value);
-
-            // Actualiza la variable productosSeleccionados con los productos seleccionados
-            productosSeleccionados.clear();
-            productosSeleccionadosArray.forEach(producto => {
-                productosSeleccionados.add(producto);
-            });
-
-            // Llama a la función para filtrar por productos con la lista de productos seleccionados
-            filtrarPorProductos(productosSeleccionadosArray);
-
-            // Cierra el modal
-            $('#modalListaProductos').modal('hide');
-        });
-
-        //evento para boton de ver productos, cancelar
-        document.getElementById('btnCerrarModal').addEventListener('click', function (event) {
-            event.preventDefault(); // Evita el comportamiento predeterminado del botón
-
-            const checkboxes = document.querySelectorAll('input[type="checkbox"]');
-            const cambiosPendientes = Array.from(checkboxes).some(checkbox => {
-                const producto = checkbox.value;
-                return checkbox.checked !== productosSeleccionados.has(producto);
-            });
-
-            if (cambiosPendientes) {
-                Swal.fire({
-                    title: 'Cambios no guardados',
-                    confirmButtonText: 'OK',
-                }).then(() => {
-                    // Cierra el modal sin guardar
-                    $('#modalListaProductos').modal('hide');
-                    // Restaura el estado de los checkboxes a su estado original
-                    checkboxes.forEach(checkbox => {
-                        checkbox.checked = productosSeleccionados.has(checkbox.value);
-                    });
-                });
-            } else {
-                // Cierra el modal sin mostrar la advertencia
-                $('#modalListaProductos').modal('hide');
-            }
-        });
-
-        // Define la función para filtrar por productos
-        function filtrarPorProductos(productosSeleccionadosArray) {
-            // Limpia el conjunto de productos seleccionados antes de agregar los nuevos
-            productosSeleccionados.clear();
-
-            // Agrega los productos seleccionados al conjunto
-            productosSeleccionadosArray.forEach(producto => {
-                productosSeleccionados.add(producto);
-            })
-        }
-
-        // --------------------------------------FILTRADO POR sucursales---------------------------------------------------//
+// --------------------------------------FILTRADO POR sucursales---------------------------------------------------//
         function obtenerSucursales(data) {
             const sucursalesUnicas = new Set();
             data.forEach(venta => {
@@ -959,13 +1267,10 @@ session_start();
             });
         }
 
-
-
-
         // --------------------------------------FIN---------------------------------------------------//
-
         function aplicarFiltros() {
             const filtroVendedor = document.getElementById('filtroVendedor').value.toLowerCase(); // Obtener el valor del campo de búsqueda en minúsculas
+            const filtroNombreProducto = document.getElementById('filtroNombreProducto').value.toLowerCase().trim(); 
             // Limpia los datos filtrados antes de aplicar nuevos filtros
             datosFiltrados = datosOriginales;
 
@@ -977,10 +1282,13 @@ session_start();
                 });
             }
 
+
             // Aplica el filtro de productos
             datosFiltrados = datosFiltrados.filter(venta => {
-                return productosSeleccionados.size === 0 || productosSeleccionados.has(venta.Producto);
+                const nombreProductoVenta = venta.Producto.toLowerCase().trim(); // Obtener el nombre del proveedor en minúsculas y eliminar espacios en blanco
+                return nombreProductoVenta.includes(filtroNombreProducto); // Comprobar si el nombre del proveedor incluye el filtro
             });
+
 
             // Obtiene los checkbox de sucursales seleccionadas
             const sucursalCheckboxes = document.querySelectorAll('#sucursalFilterGroup input[type="checkbox"]:checked');
@@ -995,25 +1303,23 @@ session_start();
                 return sucursalesSeleccionadas.size === 0 || sucursalesSeleccionadas.has(venta.Sucursal);
             });
 
-
             // Aplica el filtro por vendedor
             datosFiltrados = datosFiltrados.filter(venta => {
                 const nombreVendedor = venta.Vendedor.toLowerCase(); // Obtener el nombre del vendedor en minúsculas
                 return nombreVendedor.includes(filtroVendedor); // Comprobar si el nombre del vendedor incluye el filtro
             });
 
-            
             // Aplica el filtro por rango de precio
             const minPrecio = parseFloat(document.getElementById('filtroPrecioMin').value);
             const maxPrecio = parseFloat(document.getElementById('filtroPrecioMax').value);
 
 
-            if (minPrecio > maxPrecio) {
+            if ( minPrecio < 0 || maxPrecio < 0 || minPrecio > maxPrecio) {
                 Swal.fire({
                     position: 'top-end',
                     icon: 'error',
-                    title: 'Error Rango de Precio',
-                    text: 'El precio mínimo no puede ser mayor que el precio máximo',
+                    title: 'Error en el Rango de Precio',
+                    text: 'el mínimo no puede ser mayor que el máximo, y no pueden ser números negativos.',
                     showConfirmButton: false,
                     timer: 3000,
                     background: false,
@@ -1025,28 +1331,24 @@ session_start();
                         icon: 'custom-icon-class',
                     },
                 });
-                return;
+                return
             }
 
-            // Filtra los datos por rango de precio
-            datosFiltrados = datosFiltrados.filter(venta => {
-                const precioVenta = parseFloat(venta.Total);
-                console.log(precioVenta, "precioVenta");
-                console.log(typeof (precioVenta));
-                console.log(typeof (minPrecio));
-                console.log(typeof (maxPrecio));
-                
-                return precioVenta >= minPrecio && precioVenta <= maxPrecio;
-            });
-
+            // Filtra los datos por rango de precio si se han proporcionado valores válidos
+            if (!isNaN(minPrecio) && !isNaN(maxPrecio) && minPrecio <= maxPrecio) {
+                datosFiltrados = datosFiltrados.filter(venta => {
+                    const precioVenta = parseFloat(venta.Total);
+                    return precioVenta >= minPrecio && precioVenta <= maxPrecio;
+                });
+            }
 
             // Verifica si no se ha seleccionado ningún filtro y muestra todos los registros
-            if (!filtros.fechaDesde && !filtros.fechaHasta && productosSeleccionados.size === 0 && sucursalesSeleccionadas.size === 0 && filtroVendedor === '' && (isNaN(minPrecio) || isNaN(maxPrecio) || minPrecio > maxPrecio)) {
+            if (!filtros.fechaDesde && !filtros.fechaHasta && filtroNombreProducto.size === '' && sucursalesSeleccionadas.size === 0 && filtroVendedor === '' && (isNaN(minPrecio) || isNaN(maxPrecio) || minPrecio > maxPrecio)) {
                 datosFiltrados = datosOriginales;
+                console.log(datosFiltrados, "nada");
             }
 
             console.log(datosFiltrados); // Muestra los datos filtrados por fecha, productos y sucursales.
-
 
             // Después de aplicar todos los filtros, actualiza la tabla con los datos filtrados
             actualizarTabla(datosFiltrados);
@@ -1058,6 +1360,386 @@ session_start();
                 tablaVentas.clear().rows.add(datos).draw();
             }
         }
+
+
+        function resetFiltrosVentas () {
+            console.log("reset");
+
+            //resetea las fechas
+            filtros.fechaDesde = ''; // Restablece la fecha desde
+            filtros.fechaHasta = ''; // Restablece la fecha hasta
+            // Luego, actualiza los campos de entrada y los elementos de filtro en la interfaz gráfica si es necesario
+            document.querySelector('#datepickerDesde').value = '';
+            document.querySelector('#datepickerHasta').value = '';
+
+            // Resetea el input de productos
+            const filtroNombreProducto = document.getElementById('filtroNombreProducto');
+            filtroNombreProducto.value = ''; // Establece el valor en una cadena vacía
+
+            
+            // Resetea el input de Vendedor
+            const filtroVendedor = document.getElementById('filtroVendedor');
+            filtroVendedor.value = ''; // Establece el valor en una cadena vacía
+
+            // Resetea todos los checkboxes de sucursal
+            const sucursalCheckboxes = document.querySelectorAll('#sucursalFilterGroup input[type="checkbox"]');
+            sucursalCheckboxes.forEach(checkbox => {
+                checkbox.checked = false;
+            });
+
+
+            // Resetea los inputs de rangos de precio
+            const inputMinPrecio = document.getElementById('filtroPrecioMin');
+            const inputMaxPrecio = document.getElementById('filtroPrecioMax');
+
+            // Restablece los valores a los originales
+            inputMinPrecio.value = ''; // Establece el valor mínimo en vacío
+            inputMaxPrecio.value = ''; // Establece el valor máximo en vacío
+
+            //Resetea la tabla
+            actualizarTabla(datosOriginales);
+
+        }
+
+        function resetFiltrosProductos () {
+            console.log("asdsad")
+
+            // Resetea el input de Nombre de Producto
+            const filtroProducto = document.getElementById('filtroProducto');
+            filtroProducto.value = ''; 
+
+            // Resetea el input de Proveedor
+            const filtroProveedor = document.getElementById('filtroProveedor');
+            filtroProveedor.value = ''; 
+
+            // Resetea todos los checkboxes de Tipo Producto
+            const TipoProductoCheckboxes = document.querySelectorAll('#TipoProductoCheckboxes input[type="checkbox"]');
+            TipoProductoCheckboxes.forEach(checkbox => {
+                checkbox.checked = false;
+            });
+
+            // Resetea todos los checkboxes de Tipo Producto
+            const categoriaCheckboxes = document.querySelectorAll('#categoriaCheckboxes input[type="checkbox"]');
+            categoriaCheckboxes.forEach(checkbox => {
+                checkbox.checked = false;
+            });
+
+            // Resetea los inputs de rangos de precio
+            const inputMinPrecio = document.getElementById('filtroPrecioMinProducto');
+            const inputMaxPrecio = document.getElementById('filtroPrecioMaxProducto');
+
+            // Restablece los valores a los originales
+            inputMinPrecio.value = ''; // Establece el valor mínimo en vacío
+            inputMaxPrecio.value = ''; // Establece el valor máximo en vacío
+
+            //Resetea la tabla
+            actualizarTablaProdcutos(datosOriginalesProductos);
+        }
+
+
+
+        function generarPDFVentas(){
+        const data = datosFiltrados; 
+
+        // Verificar si hay datos para generar el PDF
+        if (data.length === 0) {
+            Swal.fire({
+                position: 'top-end',
+                icon: 'warning',
+                title: 'No Realizó Ningún Filtro',
+                showConfirmButton: false,
+                timer: 3000,
+                background: false,
+                backdrop: false,
+                customClass: {
+                    container: 'custom-container-class',
+                    popup: 'custom-popup-class',
+                    title: 'custom-title-class',
+                    icon: 'custom-icon-class',
+                }
+            });
+            return;
+        }
+        // Agregar un contador a los datos antes de generar el PDF
+        const dataWithCounter = data.map((venta, index) => {
+            return { nro: index + 1, ...venta };
+        });
+
+        const totalSum = data.reduce((acc, venta) => {
+            if (venta.Total) {
+                console.log(acc , venta.Total)
+                return acc + parseFloat(venta.Total);
+            }
+            return acc;
+        }, 0);
+
+        console.log(totalSum)
+
+        // Agregar una fila al final con el total
+        const tableBody = [
+            ...dataWithCounter.map(venta => [
+                { text: venta.nro, alignment: 'center' }, 
+                { text: venta.Fecha, alignment: 'center' }, 
+                { text: venta.Producto, alignment: 'center' }, 
+                { text: venta.cantidad, alignment: 'center' }, 
+                { text: venta.Vendedor, alignment: 'center' }, 
+                { text: venta.Sucursal, alignment: 'center' }, 
+                { text: venta.Total, alignment: 'center' }
+            ]),
+        ];
+        const docDefinition = {
+            content: [
+                { text: 'Reporte de Ventas', style: 'header' },
+                '\n',
+                {
+                    table: {
+                        headerRows: 1,
+                        widths: [40, 80, 230, 70, 120, 100, 60],
+                        body: [
+                            [{ text: 'Nro', style: 'tableHeader' }, { text: 'Fecha', style: 'tableHeader' }, { text: 'Producto', style: 'tableHeader' }, { text: 'Cantidad', style: 'tableHeader' }, { text: 'Vendedor', style: 'tableHeader' }, { text: 'Sucursal', style: 'tableHeader' }, { text: 'Total', style: 'tableHeader' }],
+                            ...tableBody // Usamos la tabla con la fila de totales
+                        ],
+                    },
+                },
+                {
+                    layout: 'noBorders', // Elimina los bordes de esta sección
+                    table: {
+                        widths: ['*', 'auto'], // Dos columnas: una con tamaño automático y otra con un ancho específico
+                        body: [
+                            [
+                                { text: 'Total', style: 'totalLabel' },
+                                { text: '$' + totalSum.toFixed(2).toString(), style: 'totalValue', alignment: 'right' } // Alinea el valor a la derecha
+                            ]
+                        ]
+                    }
+                }
+            ],
+            styles: {
+                header: { 
+                    fontSize: 25, // Tamaño de fuente
+                    bold: true, // Texto en negrita
+                    alignment: 'center', // Alineación en el centro
+                    margin: [0, 10, 0, 20], // Márgenes [arriba, derecha, abajo, izquierda]
+                    color: 'black', // Color de texto
+                    lineHeight: 1.2, // Altura de línea
+                    padding: 5, // Espaciado interno
+                },
+                tableHeader: { bold: true, fontSize: 15, color: 'black', fillColor: '#DFDFDF', alignment: 'center' },
+                tableCell: { fontSize: 15, alignment: 'center' }, // Alineación del texto en las celdas de datos
+                totalLabel: { fontSize: 15, bold: true, border: [true, true, true, false]}, // Borde solo en la parte superior
+                totalValue: { fontSize: 15, bold: true, border: [true, true, true, true], alignment: 'center' }, // Borde en todos los lados
+            },
+            defaultStyle: {
+                fontSize: 13,
+            },
+            columnStyles: {
+                0: { alignment: 'center' }, // Centrar la primera columna (Nro)
+                1: { alignment: 'center' }, // Centrar la segunda columna (Fecha)
+                2: { alignment: 'center' }, // Centrar la tercera columna (Producto)
+                3: { alignment: 'center' }, // Centrar la cuarta columna (Cantidad)
+                4: { alignment: 'center' }, // Centrar la quinta columna (Vendedor)
+                5: { alignment: 'center' }, // Centrar la sexta columna (Sucursal)
+                6: { alignment: 'center' }, // Centrar la séptima columna (Total)
+            },
+            pageOrientation: 'landscape', // Configura la orientación a apaisada
+            footer: function (currentPage, pageCount) {
+                const currentDate = new Date();
+                const months = ["enero", "febrero", "marzo", "abril", "mayo", "junio", "julio", "agosto", "septiembre", "octubre", "noviembre", "diciembre"];
+
+                const formattedDate = currentDate.getDate() + " de " + months[currentDate.getMonth()] + " de " + currentDate.getFullYear();
+
+                return {
+                    text: [
+                        { text: 'Página ' + currentPage.toString() + ' de ' + pageCount, alignment: 'right', fontSize: 12, bold: true },
+                        '\n',
+                        { text: formattedDate, alignment: 'right', fontSize: 12, bold: true },
+                    ],
+                    margin: [20, 0],
+                };
+            },
+        };
+
+        // Personaliza la apariencia de la tabla
+        docDefinition.styles.table = {
+            margin: [0, 5, 0, 15], // Márgenes de la tabla
+            fontSize: 10, // Tamaño de fuente de las celdas de la tabla
+            alignment: 'center', // Alineación del texto en las celdas
+        };
+
+        // Estilo de las celdas de datos (puedes personalizarlo según tus preferencias)
+        docDefinition.styles.tableCell = {
+            fillColor: '#F5F5F5', // Color de fondo de las celdas
+            fontSize: 10, // Tamaño de fuente de las celdas de datos
+            color: 'black', // Color del texto en las celdas de datos
+        };
+
+        pdfMake.createPdf(docDefinition).open();
+
+}
+
+    function generarPDFVentasProductos() {
+    const dataProductos = datosFiltradosProductos;
+
+    console.log(dataProductos);
+
+    // Verificar si hay datos para generar el PDF
+    if (dataProductos.length === 0) {
+        Swal.fire({
+            position: 'top-end',
+            icon: 'warning',
+            title: 'No Realizó Ningún Filtro',
+            showConfirmButton: false,
+            timer: 3000,
+            background: false,
+            backdrop: false,
+            customClass: {
+                container: 'custom-container-class',
+                popup: 'custom-popup-class',
+                title: 'custom-title-class',
+                icon: 'custom-icon-class',
+            }
+        });
+        return;
+    }
+
+    // Agregar un contador a los datos antes de generar el PDF
+    const dataWithCounter = dataProductos.map((producto, index) => {
+        return { nro: index + 1, ...producto };
+    });
+
+    const totalSumCostoProducto = dataProductos.reduce((acc, producto) => {
+        if (!isNaN(parseFloat(producto.PrecioCosto))) { // Verificar si el valor es un número válido
+            return acc + parseFloat(producto.PrecioCosto);
+        }
+        return acc;
+    }, 0);
+
+    console.log(totalSumCostoProducto);
+
+
+    // Crear una tabla para el PDF
+    const tableBody = [
+        ...dataWithCounter.map(producto => [
+            { text: producto.nro, alignment: 'center' },
+            { text: producto.Nombre, alignment: 'center' },
+            { text: producto.Proveedor, alignment: 'center' },
+            { text: producto.TipoProd, alignment: 'center' },
+            { text: producto.TipoCat, alignment: 'center' },
+            { text: producto.Tamaño, alignment: 'center' },
+            { text: producto.Medida, alignment: 'center' },
+            { text: producto.CantidadTotal, alignment: 'center' },
+            { text: `$${parseFloat(producto.PrecioCosto).toFixed(2)}`, alignment: 'center' },
+        ]),
+    ];
+
+    // Definir la estructura del documento PDF
+    const docDefinition = {
+        content: [
+            { text: 'Reporte de Productos', style: 'header' },
+            '\n',
+            {
+                table: {
+                    headerRows: 1,
+                    widths: [30, 210, 70, 70, 80, 50, 50, 60, 80],
+                    body: [
+                        [
+                            { text: 'Nro', style: 'tableHeader' },
+                            { text: 'Nombre', style: 'tableHeader' },
+                            { text: 'Proveedor', style: 'tableHeader' },
+                            { text: 'Tipo', style: 'tableHeader' },
+                            { text: 'Categoría', style: 'tableHeader' },
+                            { text: 'Tamaño', style: 'tableHeader' },
+                            { text: 'Medida', style: 'tableHeader' },
+                            { text: 'Cantidad', style: 'tableHeader' },
+                            { text: 'Precio Costo', style: 'tableHeader' },
+                        ],
+                        ...tableBody,
+                    ],
+                },
+            },
+            {
+                    layout: 'noBorders', // Elimina los bordes de esta sección
+                    table: {
+                        widths: ['*', 'auto'], // Dos columnas: una con tamaño automático y otra con un ancho específico
+                        body: [
+                            [
+                                { text: 'Total', style: 'totalLabel' },
+                                { text: '$' + totalSumCostoProducto.toFixed(2).toString(), style: 'totalValue', alignment: 'right' } // Alinea el valor a la derecha
+                            ]
+                        ]
+                    }
+            }
+        ],
+        styles: {
+            header: {
+                fontSize: 25,
+                bold: true,
+                alignment: 'center',
+                margin: [0, 10, 0, 20],
+                color: 'black',
+                lineHeight: 1.2,
+                padding: 5,
+            },
+            tableHeader: {
+                bold: true,
+                fontSize: 13,
+                color: 'black',
+                fillColor: '#DFDFDF',
+                alignment: 'center',
+            },
+            tableCell: { fontSize: 13, alignment: 'center' }, // Alineación del texto en las celdas de datos
+            totalLabel: { fontSize: 13, bold: true, border: [true, true, true, false]}, // Borde solo en la parte superior
+            totalValue: { fontSize: 13, bold: true, border: [true, true, true, true], alignment: 'center' }, // Borde en todos los lados
+        },
+        defaultStyle: {
+            fontSize: 13,
+        },
+        columnStyles: {
+            0: { alignment: 'center' },
+            1: { alignment: 'center' },
+            2: { alignment: 'center' },
+            3: { alignment: 'center' },
+            4: { alignment: 'center' },
+            5: { alignment: 'center' },
+            6: { alignment: 'center' },
+            7: { alignment: 'center' },
+            8: { alignment: 'center' },
+        },
+        pageOrientation: 'landscape', // Configura la orientación a apaisada
+            footer: function (currentPage, pageCount) {
+                const currentDate = new Date();
+                const months = ["enero", "febrero", "marzo", "abril", "mayo", "junio", "julio", "agosto", "septiembre", "octubre", "noviembre", "diciembre"];
+
+                const formattedDate = currentDate.getDate() + " de " + months[currentDate.getMonth()] + " de " + currentDate.getFullYear();
+
+                return {
+                    text: [
+                        { text: 'Página ' + currentPage.toString() + ' de ' + pageCount, alignment: 'right', fontSize: 12, bold: true },
+                        '\n',
+                        { text: formattedDate, alignment: 'right', fontSize: 12, bold: true },
+                    ],
+                    margin: [20, 0],
+                };
+            },
+    };
+
+        // Personaliza la apariencia de la tabla
+        docDefinition.styles.table = {
+        margin: [0, 5, 0, 15], // Márgenes de la tabla
+        fontSize: 10, // Tamaño de fuente de las celdas de la tabla
+        alignment: 'center', // Alineación del texto en las celdas
+    };
+
+    // Estilo de las celdas de datos (puedes personalizarlo según tus preferencias)
+    docDefinition.styles.tableCell = {
+        fillColor: '#F5F5F5', // Color de fondo de las celdas
+        fontSize: 10, // Tamaño de fuente de las celdas de datos
+        color: 'black', // Color del texto en las celdas de datos
+    };
+
+    pdfMake.createPdf(docDefinition).open();
+    }
+
 
 
     </script>
