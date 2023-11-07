@@ -4,7 +4,6 @@ include('../bd/conexion.php');
 try {
     // Verifica si se ha recibido una solicitud POST
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-
         // Obtiene el cuerpo de la solicitud POST como una cadena JSON
         $json_data = file_get_contents('php://input');
         $data = json_decode($json_data, true);
@@ -20,6 +19,13 @@ try {
             $idSucursal = $_SESSION['idSucursales'];
             $idEmpleado = $_SESSION['idEmpleado'];
             // Construye la descripción que contiene todos los datos
+            date_default_timezone_set('America/Argentina/Buenos_Aires');
+            $fechaActual = date('Y-m-d H:i:s');
+            
+            // Inicializa una cadena de consulta SQL vacía
+            $sql = "";
+
+            // Recorre los datos y acumula las consultas SQL
             foreach ($datos as $dato) {
                 $codigo = $dato['Código'];
                 $nombre = $dato['Nombre'];
@@ -27,23 +33,17 @@ try {
                 $tamaño = $dato['Tamaño'];
                 $medida = $dato['Medida'];
                 $cantidad = $dato['Cantidad'];
+                $sql .= "INSERT INTO PedidosSucursales (idEmpleado,fecha,codigoProducto,nombreProducto,tipoProducto,tamaño,medida,cantidad,idSucursales,estado) 
+                VALUES ('$idEmpleado','$fechaActual','$codigo','$nombre','$tipoProducto','$tamaño','$medida','$cantidad',$idSucursal,'En aprobacion'); ";
             }
 
-            // Obtiene la fecha actual en el formato deseado (ajusta el formato según tu base de datos)
-            date_default_timezone_set('America/Argentina/Buenos_Aires');
-            $fechaActual = date('Y-m-d H:i:s');
-
             // Realiza la inserción en la tabla "PedidosSucursales"
-            $sql = "INSERT INTO PedidosSucursales (idEmpleado,fecha,codigoProducto,nombreProducto,tipoProducto,tamaño,medida,cantidad,idSucursales,estado) 
-                    VALUES ('$idEmpleado','$fechaActual','$codigo','$nombre','$tipoProducto','$tamaño','$medida','$cantidad',$idSucursal,'En aprobacion')";
-
-            if ($conn->query($sql) === TRUE) {
+            if ($conn->multi_query($sql) === TRUE) {
                 // Inserción exitosa en "PedidosSucursales"
                 // Puedes agregar aquí cualquier lógica adicional que necesites para el pedido
-                
             } else {
                 // Error en la inserción en "PedidosSucursales"
-                $response = ['success' => false, 'message' => 'Error en la insercion a la tabla PedidosSucursales.'];
+                $response = ['success' => false, 'message' => 'Error en la inserción a la tabla PedidosSucursales.'];
             }
         }
 

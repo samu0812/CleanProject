@@ -3,8 +3,6 @@ session_Start();
 include ('../bd/conexion.php');
 $idPersona = $_SESSION['idPersona'];
 $idEmpleado= $_SESSION['idEmpleado'];
-
-
 ?>
 <!DOCTYPE html>
 <html lang="en">
